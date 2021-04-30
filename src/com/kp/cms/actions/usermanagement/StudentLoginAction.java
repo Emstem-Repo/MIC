@@ -136,6 +136,7 @@ public class StudentLoginAction extends BaseDispatchAction {
 		 ActionErrors errors = loginForm.validate(mapping, request);
 		HttpSession session = request.getSession(true);
 		loginForm.clearMideSemExam();
+		System.out.println("Emstem");
 		session.setAttribute("USERNAME", loginForm.getUserName());
 		if (errors.isEmpty()) {
 			try {
