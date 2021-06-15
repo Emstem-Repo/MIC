@@ -60,4 +60,8 @@ public interface INewUpdateProccessTransaction {
 	
 	public boolean saveRegularOverAllAfterRevaluation(List<StudentFinalMarkDetails> boList) throws Exception;
 
+	public double getStudentRetestMarksForSubject(Integer subId, int studentId, List<Integer> intExamId, ClassesTO to,
+			String subType, int limit, boolean isInd, int examId, NewUpdateProccessForm newUpdateProccessForm) throws ApplicationException;
+
+	public List<Integer> getInternalExamIdForRetest(int examId) throws Exception;
 }

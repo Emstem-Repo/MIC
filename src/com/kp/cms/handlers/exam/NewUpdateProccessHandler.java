@@ -22,6 +22,7 @@ public class NewUpdateProccessHandler {
 	private final int PROCESS_SUPPLEMENTARY_DATA_CREATION = 3;
 	private final int PROCESS_UPDATE_PASS_FAIL = 4;
 	private final int PROCESS_REVALUATION_MODERATION = 5;
+	private final int PROCESS_CALC_INTERNAL_RETEST_MARKS = 6;
 	
 	/**
 	 * Singleton object of NewUpdateProccessHandler
@@ -86,7 +87,7 @@ public class NewUpdateProccessHandler {
 		case PROCESS_SUPPLEMENTARY_DATA_CREATION:
 			isUpdated = supplementaryDataCreation(newUpdateProccessForm);
 			break;
-		case PROCESS_UPDATE_PASS_FAIL:
+		case PROCESS_UPDATE_PASS_FAIL: 
 			 passOrFail(newUpdateProccessForm);
 			 isUpdated=true;
 			 break;
@@ -98,10 +99,16 @@ public class NewUpdateProccessHandler {
 					if(newUpdateProccessForm.getErrorMessage() == null || newUpdateProccessForm.getErrorMessage().isEmpty())
 						passOrFail(newUpdateProccessForm);
 				}
-			 break;	 
+			 break;	
+		case PROCESS_CALC_INTERNAL_RETEST_MARKS:
+			isUpdated = calculateInternalRetestOverAllMarks(newUpdateProccessForm);
+			if(newUpdateProccessForm.getErrorList()==null || newUpdateProccessForm.getErrorList().isEmpty())
+				passOrFail(newUpdateProccessForm);
+			break;
 		}
 		return isUpdated;
 	}
+	
 	
 	/**
 	 * @param newUpdateProccessForm
@@ -152,5 +159,8 @@ public class NewUpdateProccessHandler {
 	private boolean calculateRevaluationModeration(NewUpdateProccessForm newUpdateProccessForm) throws Exception {
 		return NewUpdateProccessHelper.getInstance().calculateRevaluationModerationAndSaveData(newUpdateProccessForm);
 		
+	}
+	private boolean calculateInternalRetestOverAllMarks(NewUpdateProccessForm newUpdateProccessForm) throws Exception {
+		return NewUpdateProccessHelper.getInstance().calculateInternalRetestOverAllAndSaveData(newUpdateProccessForm);
 	}
 }

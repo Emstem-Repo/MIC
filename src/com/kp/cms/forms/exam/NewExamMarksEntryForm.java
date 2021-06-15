@@ -67,6 +67,7 @@ public class NewExamMarksEntryForm extends BaseActionForm {
 	
 	private boolean isRoleIdForDeveloper;
 	private boolean isExamMaxEntry;
+	private String retest;
 	
 
 
@@ -402,6 +403,12 @@ public class NewExamMarksEntryForm extends BaseActionForm {
 	}
 	public void setIsExamMaxEntry(Boolean isExamMaxEntry) {
 		this.isExamMaxEntry = isExamMaxEntry;
+	}
+	public String getRetest() {
+		return retest;
+	}
+	public void setRetest(String retest) {
+		this.retest = retest;
 	}
 	
 	

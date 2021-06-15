@@ -937,11 +937,12 @@ return openSession;
 				ExamInternalRetestApplicationBO stbo=new ExamInternalRetestApplicationBO();
 				for (ExamInternalRetestApplicationSubjectsTO to : toList) {
 					ExamInternalRetestApplicationSubjectsBO bo=new ExamInternalRetestApplicationSubjectsBO();
+					stbo=(ExamInternalRetestApplicationBO) session.get(ExamInternalRetestApplicationBO.class, to.getExamInternalRetestApplicationId());
 					
 					if (to.getIsApplied()) {
 						bo.setIsApplied(1);
 						stbo.setIsApplied(1);
-						stbo.setId(to.getExamInternalRetestApplicationId());
+						//stbo.setId(to.getExamInternalRetestApplicationId());
 					}
 					else if (!to.getIsApplied()) {
 						bo.setIsApplied(0);

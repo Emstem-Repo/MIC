@@ -41,6 +41,7 @@ public class StudentMarksTO implements Serializable,Comparable<StudentMarksTO> {
 	private boolean allInternalDateExceeded;
 	private String maxMarksInternal;
 	private Boolean isConversion;
+	private boolean retests;
 	
 	public int getId() {
 		return id;
@@ -275,6 +276,12 @@ public class StudentMarksTO implements Serializable,Comparable<StudentMarksTO> {
 	}
 	public void setIsConversion(Boolean isConversion) {
 		this.isConversion = isConversion;
+	}
+	public boolean isRetests() {
+		return retests;
+	}
+	public void setRetests(boolean retests) {
+		this.retests = retests;
 	}
 	
 }

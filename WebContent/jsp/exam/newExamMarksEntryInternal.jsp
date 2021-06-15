@@ -378,6 +378,17 @@
 									 <html:radio property="displaySubType" styleId="sCodeName_2" value="sName" onchange="getSCodeName(this.value)">Subject Name</html:radio>
 									</div>
 									</td>
+									<td width="28%" class="row-odd">
+									<div align="right"><span class="Mandatory">*</span>
+									Retest:</div></td>
+									<td height="25" colspan="2" class="row-even">
+									<div align="left">
+									
+									<html:radio property="retest" styleId="rt1" value="no" onclick="retest(this.value)">No</html:radio>
+									
+									 <html:radio property="retest" styleId="rt2" value="yes" onclick="retest(this.value)">Yes</html:radio>
+									</div>
+									</td>
 								</tr>
 								<tr>
 									<td height="25" class="row-odd">

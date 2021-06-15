@@ -26,6 +26,7 @@ import com.kp.cms.bo.admin.Student;
 import com.kp.cms.bo.admin.Subject;
 import com.kp.cms.bo.exam.ExamBlockUnblockHallTicketBO;
 import com.kp.cms.bo.exam.ExamDefinitionBO;
+import com.kp.cms.bo.exam.ExamInternalRetestApplicationSubjectsBO;
 import com.kp.cms.bo.exam.ExamPublishHallTicketMarksCardBO;
 import com.kp.cms.bo.exam.ExamRegularApplication;
 import com.kp.cms.bo.exam.ExamSettingsBO;
@@ -128,6 +129,8 @@ public class NewExamMarksEntryTransactionImpl implements INewExamMarksEntryTrans
 						if(to.getIsTheory()){
 							detailBo.setTheoryMarks(to.getTheoryMarks().trim());
 						}
+							detailBo.setIsRetest(to.isRetests());
+						
 						detailBo.setModifiedBy(newExamMarksEntryForm.getUserId());
 						detailBo.setLastModifiedDate(new Date());
 						session.update(detailBo);
@@ -1409,6 +1412,29 @@ public class NewExamMarksEntryTransactionImpl implements INewExamMarksEntryTrans
 			}
 		}
 		return isEligWithoutAttCheck;
+	}
+	@Override
+	public int checkSubjectInRetestForm(NewExamMarksEntryForm form, int id) {
+		Session session=null;
+		List<ExamInternalRetestApplicationSubjectsBO> list =new ArrayList();
+		try{
+			session=HibernateUtil.getSession();
+			Query query=session.createQuery("from ExamInternalRetestApplicationSubjectsBO rt where rt.subjectId="+form.getSubjectId()+ " and rt.examInternalRetestApplicationId=(select sbo.id from ExamInternalRetestApplicationBO sbo where  sbo.studentId="+id+")");
+			list=query.list();
+			if (!list.isEmpty()) {
+				return 1;
+			}
+			System.out.println("");
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		finally{
+			if(session!=null){
+				session.flush();
+			}
+		}
+		return 0;
 	}
 	
 

@@ -1850,7 +1850,7 @@ public class ExamGenImpl {
 
 				HQL_QUERY = " from ExamDefinitionBO e where e.examTypeUtilBO.name  in ('Regular','Regular & Supplementary','Supplementary','Special Supplementary') and e.delIsActive = 1 and e.isActive =1";
 
-			} else if (processType.contains("2")) {
+			} else if (processType.contains("2") || processType.contains("6")) {
 
 				HQL_QUERY = " from ExamDefinitionBO e where e.examTypeUtilBO.name  in ('Regular','Regular & Supplementary') and e.delIsActive = 1 and e.isActive=1";
 

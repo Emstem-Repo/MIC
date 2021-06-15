@@ -166,9 +166,9 @@ public List<Subject> getOptionalCourseSubjects(
 	  if(form.getDepartmentId().equalsIgnoreCase("1")){
 			s+=" and s.department.id!=31";
 		} 	
-	  if(form.getDepartmentId().equalsIgnoreCase("31")){
+	  /*if(form.getDepartmentId().equalsIgnoreCase("31")){
 			s+=" and s.department.id!=1";
-		} 
+		} */
 	    boList = session.createQuery(s).list();
 		session.flush();
 		return boList;

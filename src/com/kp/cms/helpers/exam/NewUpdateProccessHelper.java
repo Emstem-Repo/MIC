@@ -2363,5 +2363,222 @@ public class NewUpdateProccessHelper {
 		INewUpdateProccessTransaction transaction=NewUpdateProccessTransactionImpl.getInstance();
 		return transaction.getStudentIds(id,examId);	
 	}
+	public boolean calculateInternalRetestOverAllAndSaveData(NewUpdateProccessForm newUpdateProccessForm) throws Exception {
+		ExamDefinition exam=new ExamDefinition();
+		exam.setId(Integer.parseInt(newUpdateProccessForm.getExamId()));
+		List<ClassesTO> classList=newUpdateProccessForm.getClassesList();
+		List<StudentOverallInternalMarkDetails> boList=new ArrayList<StudentOverallInternalMarkDetails>();
+		INewUpdateProccessTransaction transaction=NewUpdateProccessTransactionImpl.getInstance();
+		//List<Integer> intExamId=transaction.getInternalExamId(Integer.parseInt(newUpdateProccessForm.getExamId()));
+		List<Integer> intExamId=transaction.getInternalExamIdForRetest(Integer.parseInt(newUpdateProccessForm.getExamId()));
+		if(classList!=null && !classList.isEmpty()){
+			Iterator<ClassesTO> itr=classList.iterator();
+			while (itr.hasNext()) {
+				ClassesTO to = (ClassesTO) itr.next();
+				if(to.getChecked()!=null && !to.getChecked().isEmpty() && to.getChecked().equalsIgnoreCase("on")){
+					Map<Integer,SubjectRuleSettingsTO> subRuleMap=transaction.getSubjectRuleSettings(to.getCourseId(),to.getYear(),to.getTermNo());
+					List<StudentTO> studentList=getStudentListForClassForRetest(to.getId());
+					if(studentList!=null && !studentList.isEmpty()){
+						Iterator<StudentTO> sitr=studentList.iterator();
+						while (sitr.hasNext()) {
+							StudentTO sto = (StudentTO) sitr.next();
+						//if(sto.getId()==9032){//remove this
+							Map<String,StudentAttendanceTO> stuAttMap=transaction.getAttendanceForStudent(to.getId(),sto.getId(),sto.getSubjectIdList());
+							Map<Integer,StudentAttendanceTO> stuAssMap=transaction.getAssignmentMarksForStudent(to.getCourseId(),sto.getId(),sto.getSubjectIdList());
+							if(sto.getSubjectIdList()!=null && !sto.getSubjectIdList().isEmpty()){
+								Iterator<Integer> subItr=sto.getSubjectIdList().iterator();
+								while (subItr.hasNext()) {
+									Integer subId = (Integer) subItr.next();
+									//if(subId==197){//remove this
+									StudentOverallInternalMarkDetails bo=new StudentOverallInternalMarkDetails();
+									Student student=new Student();
+									student.setId(sto.getId());
+									bo.setStudent(student);
+									Classes classes=new Classes();
+									classes.setId(to.getId());
+									bo.setClasses(classes);
+									bo.setExam(exam);
+									Subject subject=new Subject();
+									subject.setId(subId);
+									bo.setSubject(subject);
+									double theoryAttendance=0;
+									double theoryAssignMarks=0;
+									double theoryMarks=0;
+									double practicalAttendance=0;
+									double practicalAssignMarks=0;
+									double practicalMarks=0;
+									if(subRuleMap.containsKey(subId)){
+										SubjectRuleSettingsTO subTo=subRuleMap.get(subId);
+										if(subTo.getIsTheoryPractical().equalsIgnoreCase("T")){
+											if(subTo.isTheoryAttendanceCheck()){
+												theoryAttendance=getAttendanceMarksForSubject(subId,stuAttMap,subTo.getTheoryAttTypeId(),subTo.isTheoryCoLeaveCheck(),subTo.isTheoryLeaveCheck(),to,transaction);
+												bo.setTheoryTotalAttendenceMarks(String.valueOf(theoryAttendance));
+											}
+											if(subTo.isTheoryAssignmentCheck()){
+												theoryAssignMarks=getAssignMarksForSubject(subId,stuAssMap,"t");
+												bo.setTheoryTotalAssignmentMarks(String.valueOf(theoryAssignMarks));
+											}
+											if(subTo.isTheoryInteralCheck()){
+												theoryMarks=getStudentRetestMarksForSubject(subId,sto.getId(),intExamId,to,"t",transaction,subTo.getTheoryBest(),subTo.isTheoryIndCheck(),exam.getId(),newUpdateProccessForm);
+											}
+											bo.setTheoryTotalSubInternalMarks(String.valueOf(theoryMarks));
+											
+											if(to.getSectionName().equalsIgnoreCase("UG")){
+												if(CMSConstants.UG_INTERNALCALC_REGULAREXAM2015_IDSLIST.contains(Integer.parseInt(newUpdateProccessForm.getExamId()))){
+													bo.setTheoryTotalMarks(String.valueOf(Math.ceil(theoryAttendance+theoryAssignMarks+theoryMarks)));
+												}else{
+													bo.setTheoryTotalMarks(String.valueOf(theoryAttendance+theoryAssignMarks+theoryMarks));
+												}
+											}else{
+												if(CMSConstants.PG_INTERNALCALC_REGULAREXAM2104_IDSLIST.contains(Integer.parseInt(newUpdateProccessForm.getExamId()))){
+													bo.setTheoryTotalMarks(String.valueOf(theoryAttendance+theoryAssignMarks+theoryMarks));
+												}else{
+													bo.setTheoryTotalMarks(String.valueOf(Math.ceil(theoryAttendance+theoryAssignMarks+theoryMarks)));
+												}
+											}
+											
+											bo.setIsGracing(newUpdateProccessForm.getIsGracing());
+										}else if(subTo.getIsTheoryPractical().equalsIgnoreCase("P")){
+											if(subTo.isPracticalAttendanceCheck()){
+												practicalAttendance=getAttendanceMarksForSubject(subId,stuAttMap,subTo.getPracticalAttTypeId(),subTo.isPracticalCoLeaveCheck(),subTo.isPracticalLeaveCheck(),to,transaction);
+												bo.setPracticalTotalAttendenceMarks(String.valueOf(practicalAttendance));
+											}
+											if(subTo.isPracticalAssigntmentCheck()){
+												practicalAssignMarks=getAssignMarksForSubject(subId,stuAssMap,"p");
+												bo.setPracticalTotalAssignmentMarks(String.valueOf(practicalAssignMarks));
+											}
+											if(subTo.isPracticalInternalCheck()){
+												practicalMarks=getStudentRetestMarksForSubject(subId,sto.getId(),intExamId,to,"p",transaction,subTo.getPracticalBest(),subTo.isPracticalIndCheck(),exam.getId(),newUpdateProccessForm);
+											}
+											bo.setPracticalTotalSubInternalMarks(String.valueOf(practicalMarks));
+											
+											if(to.getSectionName().equalsIgnoreCase("UG")){
+												if(CMSConstants.UG_INTERNALCALC_REGULAREXAM2015_IDSLIST.contains(Integer.parseInt(newUpdateProccessForm.getExamId()))){
+													bo.setPracticalTotalMarks(String.valueOf(Math.ceil(practicalAttendance+practicalAssignMarks+practicalMarks)));
+												}else{
+													bo.setPracticalTotalMarks(String.valueOf(practicalAttendance+practicalAssignMarks+practicalMarks));
+												}
+												
+												
+											}else{
+												if(CMSConstants.PG_INTERNALCALC_REGULAREXAM2104_IDSLIST.contains(Integer.parseInt(newUpdateProccessForm.getExamId()))){
+													bo.setPracticalTotalMarks(String.valueOf(practicalAttendance+practicalAssignMarks+practicalMarks));
+												}else{
+													bo.setPracticalTotalMarks(String.valueOf(Math.ceil(practicalAttendance+practicalAssignMarks+practicalMarks)));
+												}
+											}
+											
+											
+											bo.setIsGracing(newUpdateProccessForm.getIsGracing());
+										}else if(subTo.getIsTheoryPractical().equalsIgnoreCase("B")){
+											if(subTo.isTheoryAttendanceCheck()){
+												theoryAttendance=getAttendanceMarksForSubject(subId,stuAttMap,subTo.getTheoryAttTypeId(),subTo.isTheoryCoLeaveCheck(),subTo.isTheoryLeaveCheck(),to,transaction);
+												bo.setTheoryTotalAttendenceMarks(String.valueOf(theoryAttendance));
+											}
+											if(subTo.isTheoryAssignmentCheck()){
+												theoryAssignMarks=getAssignMarksForSubject(subId,stuAssMap,"t");
+												bo.setTheoryTotalAssignmentMarks(String.valueOf(theoryAssignMarks));
+											}
+											if(subTo.isTheoryInteralCheck()){
+												theoryMarks=getStudentRetestMarksForSubject(subId,sto.getId(),intExamId,to,"t",transaction,subTo.getTheoryBest(),subTo.isTheoryIndCheck(),exam.getId(),newUpdateProccessForm);
+												bo.setIsGracing(newUpdateProccessForm.getIsGracing());
+											}
+											bo.setTheoryTotalSubInternalMarks(String.valueOf(theoryMarks));
+											if(subTo.isPracticalAttendanceCheck()){
+												practicalAttendance=getAttendanceMarksForSubject(subId,stuAttMap,subTo.getPracticalAttTypeId(),subTo.isPracticalCoLeaveCheck(),subTo.isPracticalLeaveCheck(),to,transaction);
+												bo.setPracticalTotalAttendenceMarks(String.valueOf(practicalAttendance));
+											}
+											if(subTo.isPracticalAssigntmentCheck()){
+												practicalAssignMarks=getAssignMarksForSubject(subId,stuAssMap,"p");
+												bo.setPracticalTotalAssignmentMarks(String.valueOf(practicalAssignMarks));
+											}
+											if(subTo.isPracticalInternalCheck()){
+												practicalMarks=getStudentRetestMarksForSubject(subId,sto.getId(),intExamId,to,"p",transaction,subTo.getPracticalBest(),subTo.isPracticalIndCheck(),exam.getId(),newUpdateProccessForm);
+												if(bo.getIsGracing()!=null && bo.getIsGracing()){
+													bo.setIsGracing(true);
+												}else{
+													bo.setIsGracing(newUpdateProccessForm.getIsGracing());
+												}
+											}
+											bo.setPracticalTotalSubInternalMarks(String.valueOf(practicalMarks));
+											
+											bo.setTheoryTotalMarks(String.valueOf(Math.ceil(theoryAttendance+theoryAssignMarks+theoryMarks)));
+											
+											if(to.getSectionName().equalsIgnoreCase("UG")){
+												if(CMSConstants.UG_INTERNALCALC_REGULAREXAM2015_IDSLIST.contains(Integer.parseInt(newUpdateProccessForm.getExamId()))){
+													bo.setTheoryTotalMarks(String.valueOf(Math.ceil(theoryAttendance+theoryAssignMarks+theoryMarks)));
+												}else{
+													bo.setTheoryTotalMarks(String.valueOf(theoryAttendance+theoryAssignMarks+theoryMarks));
+												}
+											}else{
+												if(CMSConstants.PG_INTERNALCALC_REGULAREXAM2104_IDSLIST.contains(Integer.parseInt(newUpdateProccessForm.getExamId()))){
+													bo.setTheoryTotalMarks(String.valueOf(theoryAttendance+theoryAssignMarks+theoryMarks));
+												}else{
+													bo.setTheoryTotalMarks(String.valueOf(Math.ceil(theoryAttendance+theoryAssignMarks+theoryMarks)));
+												}
+											}
+											
+											if(to.getSectionName().equalsIgnoreCase("UG")){
+												if(CMSConstants.UG_INTERNALCALC_REGULAREXAM2015_IDSLIST.contains(Integer.parseInt(newUpdateProccessForm.getExamId()))){
+													bo.setPracticalTotalMarks(String.valueOf(Math.ceil(practicalAttendance+practicalAssignMarks+practicalMarks)));
+												}else{
+													bo.setPracticalTotalMarks(String.valueOf(practicalAttendance+practicalAssignMarks+practicalMarks));
+												}
+											}else{
+												if(CMSConstants.PG_INTERNALCALC_REGULAREXAM2104_IDSLIST.contains(Integer.parseInt(newUpdateProccessForm.getExamId()))){
+													bo.setPracticalTotalMarks(String.valueOf(practicalAttendance+practicalAssignMarks+practicalMarks));
+												}else{
+													bo.setPracticalTotalMarks(String.valueOf(Math.ceil(practicalAttendance+practicalAssignMarks+practicalMarks)));
+												}
+											}
+											
+										}
+										boList.add(bo);
+									}
+								}
+							//}//remove this
+							}
+						//}// remove this
+						}
+					}
+				}
+			}
+		}
+		
+		return transaction.saveInternalOverAll(boList);
+	}
+	private List<StudentTO> getStudentListForClassForRetest(int classId) throws Exception {
+		List<StudentTO> studentList=new ArrayList<StudentTO>();
+		String query=getCurrentClassQueryForRetest(classId);// Getting Current Class Students Query
+		INewExamMarksEntryTransaction transaction=NewExamMarksEntryTransactionImpl.getInstance();
+		List<Student> currentStudentList=transaction.getDataForQuery(query);
+		getFinalStudentsForCurrentClass(currentStudentList,studentList);//Adding current Class Students for StudentList
+		String preQuery=getPreviousClassQueryForRetest(classId);
+		List<Object[]> previousStudentList=transaction.getDataForQuery(preQuery);
+		getFinalStudentsForPreviousClass(previousStudentList,studentList);
+		return studentList;
+	}
+	private String getCurrentClassQueryForRetest(int classId) throws Exception{
+		String query="from Student s" +
+				" where s.admAppln.isCancelled=0 and s.isAdmitted=1 " +
+				" and s.classSchemewise.classes.id="+classId+" and s.id in(select rt.studentId from ExamInternalRetestApplicationBO rt where rt.classId="+classId+")";
+		return query;
+	}
+	private String getPreviousClassQueryForRetest(int classId)  throws Exception{
+		String query="select s.id,subSet.subject,s.registerNo,s.admAppln.appliedYear from Student s" +
+				" join s.studentPreviousClassesHistory classHis" +
+				" join classHis.classes.classSchemewises classSchemewise" +
+				" join classSchemewise.curriculumSchemeDuration cd" +
+				" join s.studentSubjectGroupHistory subjHist " +
+				" join subjHist.subjectGroup.subjectGroupSubjectses subSet" +
+				" where s.admAppln.isCancelled=0 and s.isAdmitted=1 and subSet.isActive=1 and classHis.classes.id=" +classId+
+				" and s.classSchemewise.classes.id <> "+classId+
+				" and classHis.schemeNo=subjHist.schemeNo and s.id in(select rt.studentId from ExamInternalRetestApplicationBO rt where rt.classId="+classId+")" ;
+		return query;
+	}
+private double getStudentRetestMarksForSubject(Integer subId, int studentId, List<Integer> intExamId, ClassesTO to, String subType,INewUpdateProccessTransaction transaction,int limit,boolean isInd,int examId,NewUpdateProccessForm newUpdateProccessForm) throws Exception {
+		
+		return transaction.getStudentRetestMarksForSubject(subId,studentId,intExamId,to,subType,limit,isInd,examId,newUpdateProccessForm);
+	}
 
 }

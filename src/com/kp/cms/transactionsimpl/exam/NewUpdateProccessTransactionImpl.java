@@ -35,6 +35,7 @@ import com.kp.cms.helpers.exam.NewUpdateProccessHelper;
 import com.kp.cms.to.attendance.ClassesTO;
 import com.kp.cms.to.exam.StudentMarksTO;
 import com.kp.cms.to.exam.SubjectMarksTO;
+import com.kp.cms.to.exam.SubjectRtTo;
 import com.kp.cms.to.exam.SubjectRuleSettingsTO;
 import com.kp.cms.to.usermanagement.StudentAttendanceTO;
 import com.kp.cms.transactions.exam.INewUpdateProccessTransaction;
@@ -530,7 +531,7 @@ public class NewUpdateProccessTransactionImpl implements
 		Session session = null;
 		try {
 			session = HibernateUtil.getSession();
-			list=session.createQuery("select e.id from ExamDefinition e where e.id in ( select e.internalExamNameId from ExamInternalExamDetailsBO e where e.examId=:examId )").setParameter("examId",examId).list();
+			list=session.createQuery("select e.id from ExamDefinition e where e.id in ( select e.internalExamNameId from ExamInternalExamDetailsBO e where e.examId=:examId ) and e.examType<>5").setParameter("examId",examId).list();
 			return list;
 		} catch (Exception e) {
 			log.error("Error while retrieving selected candidates.." +e);
@@ -1249,6 +1250,207 @@ public class NewUpdateProccessTransactionImpl implements
 				session.close();
 			}
 			throw new ApplicationException(e);
+		}
+	}
+	@Override
+	public double getStudentRetestMarksForSubject(Integer subId, int studentId, List<Integer> intExamId, ClassesTO to,
+			String subType, int limit, boolean isInd, int examId, NewUpdateProccessForm newUpdateProccessForm) throws ApplicationException {
+		List<Object[]> list=null;
+		double marks=0;
+		Session session = null;
+		boolean isGracing=false;
+		try {
+			session = HibernateUtil.getSession();
+			String query="from MarksEntryDetails md, SubjectRuleSettings s " +
+					" left join s.examSubjectRuleSettingsSubInternals subInt" +
+					" where md.subject.id=" +subId+
+					" and md.marksEntry.student.id="+studentId+" and md.marksEntry.exam.id in (:examId)" +
+					" and md.subject.id=s.subject.id and s.course.id="+to.getCourseId()+"" +
+					" and s.academicYear="+to.getYear()+" and s.schemeNo="+to.getTermNo()+
+					" and s.isActive=1 and subInt.isActive=1 and subInt.isTheoryPractical='" +subType+
+					"' and subInt.internalExamTypeId= md.marksEntry.exam.internalExamTypeBO.id" +
+					" group by md.marksEntry.exam.id,s.subject.id";
+			if(subType.equalsIgnoreCase("t")){
+				/*query="select md.marksEntry.exam.id, cast(max(md.theoryMarks) as integer) as marks," +
+					  " subInt.enteredMaxMark as subIntEntMaxMarks," +
+					  " subInt.maximumMark as subIntMaxMarks, s.theoryIntEntryMaxMarksTotal, s.theoryIntMaxMarksTotal," +
+					  " (cast(max(md.theoryMarks) as integer)/ subInt.enteredMaxMark)*100 as percentage, md.isGracing "+query+
+					  " order by (cast(max(md.theoryMarks) as integer)/ subInt.enteredMaxMark)*100 DESC";
+		*/	
+				//raghu
+				query="select md.marksEntry.exam.id, max(md.theoryMarks) as marks," +
+				  " subInt.enteredMaxMark as subIntEntMaxMarks," +
+				  " subInt.maximumMark as subIntMaxMarks, s.theoryIntEntryMaxMarksTotal, s.theoryIntMaxMarksTotal," +
+				  " ((max(md.theoryMarks))/ subInt.enteredMaxMark)*100 as percentage, md.isGracing,md.isRetest,md.marksEntry.exam.internalExamTypeId "+query+
+				  " order by ((max(md.theoryMarks))/ subInt.enteredMaxMark)*100 DESC";
+	
+			
+			}else if(subType.equalsIgnoreCase("p")){
+				
+				/*query="select md.marksEntry.exam.id," +
+					  " cast(max(md.practicalMarks) as integer) as marks," +
+					  " subInt.enteredMaxMark as subIntEntMaxMarks, subInt.maximumMark as subIntMaxMarks," +
+					  " s.practicalIntEntryMaxMarksTotal, s.practicalIntMaxMarksTotal," +
+					  " (cast(max(md.practicalMarks) as integer)/ subInt.enteredMaxMark)*100 as percentage, md.isGracing "+query+
+					  " order by (cast(max(md.practicalMarks) as integer)/ subInt.enteredMaxMark)*100 DESC";
+				*/
+				
+				query="select md.marksEntry.exam.id," +
+				  " max(md.practicalMarks) as marks," +
+				  " subInt.enteredMaxMark as subIntEntMaxMarks, subInt.maximumMark as subIntMaxMarks," +
+				  " s.practicalIntEntryMaxMarksTotal, s.practicalIntMaxMarksTotal," +
+				  " ((max(md.practicalMarks))/ subInt.enteredMaxMark)*100 as percentage, md.isGracing,md.isRetest,md.marksEntry.exam.internalExamTypeId "+query+
+				  " order by ((max(md.practicalMarks))/ subInt.enteredMaxMark)*100 DESC";
+			
+			}
+			list=session.createQuery(query).setParameterList("examId",intExamId).list();
+			if(list!=null && !list.isEmpty()){
+				if(limit==0)
+					limit=list.size();
+				List<SubjectRtTo> listTo=new ArrayList();
+				int save=0;
+				for (Iterator iterator = list.iterator(); iterator.hasNext();) {
+					Object[] obj = (Object[]) iterator.next();
+					SubjectRtTo to1=null;
+					if (!listTo.isEmpty()) {
+						for (SubjectRtTo ob : listTo) {
+							if (ob.getIntExamType()==(Integer) obj[9]) {
+								to1=ob;
+								save=1;
+								continue;
+							}else{
+								save=0;
+								to1=new SubjectRtTo();
+							}
+						}
+					}else{
+						to1=new SubjectRtTo();
+						save=0;
+					}
+					to1.setExaamId((Integer) obj[0]);
+					if (obj[8]==null || ((Boolean) obj[8])==false) {
+					to1.setMarks(Double.parseDouble(obj[1].toString()));
+					}else{
+						to1.setRetestMarks(Double.parseDouble(obj[1].toString()));
+					}
+					to1.setIntEntMaxMarks(Double.parseDouble(obj[2].toString()));
+					to1.setIntMaxMarks(Double.parseDouble( obj[3].toString()));
+					to1.setTheoryIntEntryMaxMarksTotal(Double.parseDouble(obj[4].toString()));
+					to1.setTheoryIntMaxMarksTotal(Double.parseDouble( obj[5].toString()));
+					to1.setPercentage(Double.parseDouble( obj[6].toString()));
+					if(obj[7]!=null && !obj[7].toString().trim().isEmpty()){
+						if(obj[7].toString().trim().equalsIgnoreCase("true")){
+							isGracing=true;
+						}else if(obj[7].toString().trim().equalsIgnoreCase("false")){
+							if(isGracing){
+								isGracing=true;
+							}else{
+								isGracing=false;
+							}
+						}
+					}
+					to1.setGracing(isGracing);
+					if (obj[8]!=null) {
+						to1.setRetest((Boolean) obj[8]);
+					}
+					to1.setIntExamType((Integer) obj[9]);
+					if (save==0) {
+						listTo.add(to1);
+					}
+				}
+				if(isInd){
+					for (SubjectRtTo sb : listTo) {
+						double totalMark=0;
+						double totalMarks=0;
+						double RetotalMarks=0;
+						double enterdMaxMarks=0;
+						double maxMarks=0;
+						if(!Pattern.matches("[a-zA-Z]+", String.valueOf(sb.getMarks()))) {
+							totalMark=Double.parseDouble(String.valueOf(sb.getMarks()));
+						}
+						if(!Pattern.matches("[a-zA-Z]+", String.valueOf(sb.getRetestMarks()))) {
+							RetotalMarks=Double.parseDouble(String.valueOf(sb.getRetestMarks()));
+						}
+						enterdMaxMarks=sb.getIntEntMaxMarks();
+						maxMarks=sb.getIntMaxMarks();
+						if (totalMark>=RetotalMarks) {
+							totalMarks=totalMark;
+						}else{
+							totalMarks=RetotalMarks;
+						}
+						marks=marks+((totalMarks/enterdMaxMarks)*maxMarks);
+//						Math.round(marks);
+						if(!NewUpdateProccessHelper.avoidExamIds.contains(examId))
+							//Math.round(Double.parseDouble(df.format(marks)));
+							Double.parseDouble(df.format(marks));
+						//else
+							//Math.round(marks);
+
+					}
+				}else{
+
+					for (SubjectRtTo sb : listTo) {
+						double totalMark=0;
+						double totalMarks=0;
+						double RetotalMarks=0;
+						double enterdMaxMarks=0;
+						double maxMarks=0;
+						if(!Pattern.matches("[a-zA-Z]+", String.valueOf(sb.getMarks()))) {
+							totalMark=Double.parseDouble(String.valueOf(sb.getMarks()));
+						}
+						if(!Pattern.matches("[a-zA-Z]+", String.valueOf(sb.getRetestMarks()))) {
+							RetotalMarks=Double.parseDouble(String.valueOf(sb.getRetestMarks()));
+						}
+						enterdMaxMarks=sb.getIntEntMaxMarks();
+						maxMarks=sb.getIntMaxMarks();
+						if (totalMark>=RetotalMarks) {
+							totalMarks=totalMark;
+						}else{
+							totalMarks=RetotalMarks;
+						}
+						marks=(totalMarks/enterdMaxMarks)*maxMarks;
+//						Math.round(marks);
+						if(!NewUpdateProccessHelper.avoidExamIds.contains(examId))
+							//Math.round(Double.parseDouble(df.format(marks)));
+							Double.parseDouble(df.format(marks));
+						//else
+							//Math.round(marks);
+						
+
+					}
+				
+				}
+			}
+			newUpdateProccessForm.setIsGracing(isGracing);
+			if(!NewUpdateProccessHelper.avoidExamIds.contains(examId))
+				//return Math.round(Double.parseDouble(df.format(marks)));
+				return Double.parseDouble(df.format(marks));
+			else
+				//return Math.round(marks);
+				return marks;
+		} catch (Exception e) {
+			log.error("Error while retrieving selected candidates.." +e);
+			throw  new ApplicationException(e);
+		} finally {
+			if (session != null) {
+				session.flush();
+			}
+		}
+	}
+	public List<Integer> getInternalExamIdForRetest(int examId) throws Exception {
+		List<Integer> list=null;
+		Session session = null;
+		try {
+			session = HibernateUtil.getSession();
+			list=session.createQuery("select e.id from ExamDefinition e where e.id in ( select e.internalExamNameId from ExamInternalExamDetailsBO e where e.examId=:examId )").setParameter("examId",examId).list();
+			return list;
+		} catch (Exception e) {
+			log.error("Error while retrieving selected candidates.." +e);
+			throw  new ApplicationException(e);
+		} finally {
+			if (session != null) {
+				session.flush();
+			}
 		}
 	}
 }

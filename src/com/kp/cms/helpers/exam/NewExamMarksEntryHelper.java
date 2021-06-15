@@ -153,6 +153,9 @@ public class NewExamMarksEntryHelper {
 		if(newExamMarksEntryForm.getSection()!=null && !newExamMarksEntryForm.getSection().isEmpty() && !newExamMarksEntryForm.getSection().equalsIgnoreCase("0")){
 			query=query+" and s.classSchemewise.classes.id="+newExamMarksEntryForm.getSection();
 		}
+		if (newExamMarksEntryForm.getRetest().equalsIgnoreCase("yes")) {
+			query=query+" and s.id in(select rt.studentId from ExamInternalRetestApplicationBO rt where rt.classId="+newExamMarksEntryForm.getSection()+")";
+		}
 		return query;
 	}
 	/**
@@ -174,6 +177,11 @@ public class NewExamMarksEntryHelper {
 					StudentMarksTO to=new StudentMarksTO();
 					to.setStudentId(student.getId());
 					to.setName(student.getAdmAppln().getPersonalData().getFirstName());
+					if (newExamMarksEntryForm.getRetest().equalsIgnoreCase("yes")) {
+						to.setRetests(true);
+					}else{
+						to.setRetests(false);
+					}
 					/*if(oldRegNo.containsKey(student.getId())){
 						to.setRegisterNo(oldRegNo.get(student.getId()));
 					}else{*/
@@ -259,6 +267,9 @@ public class NewExamMarksEntryHelper {
 		if(newExamMarksEntryForm.getSection()!=null && !newExamMarksEntryForm.getSection().isEmpty() && !newExamMarksEntryForm.getSection().equalsIgnoreCase("0")){
 			query=query+" and classSchemewise.classes.id="+newExamMarksEntryForm.getSection();
 		}
+		if (newExamMarksEntryForm.getRetest().equalsIgnoreCase("yes")) {
+			query=query+" and s.id in(select rt.studentId from ExamInternalRetestApplicationBO rt where rt.classId=521)";
+		}
 		query=query+" and subjHist.schemeNo="+newExamMarksEntryForm.getSchemeNo();
 		return query;
 	}
@@ -270,6 +281,7 @@ public class NewExamMarksEntryHelper {
 	 */
 	public Set<StudentMarksTO> convertBotoTOListForPreviousClassStudents(Set<StudentMarksTO> studentList, List previousStudentList,Map<Integer, MarksDetailsTO> existsMarks,List<Integer> listOfDetainedStudents,NewExamMarksEntryForm newExamMarksEntryForm/*,Map<Integer,String> oldRegNo*/) throws Exception {
 		boolean disable=true;
+		INewExamMarksEntryTransaction txn=NewExamMarksEntryTransactionImpl.getInstance();
 		if(!newExamMarksEntryForm.isInternal() && !newExamMarksEntryForm.isRegular())
 			disable=false;
 		boolean isfalsegenerated=false;
@@ -278,10 +290,23 @@ public class NewExamMarksEntryHelper {
 			Object[] objects = (Object[]) itr.next();
 			if(objects[0]!=null){
 				Student student=(Student)objects[0];
+				if (newExamMarksEntryForm.getRetest().equalsIgnoreCase("yes")) {
+					int result=txn.checkSubjectInRetestForm(newExamMarksEntryForm,student.getId());
+					if (result==0) {
+						continue;
+					}
+				}
+				
 				if(!listOfDetainedStudents.contains(student.getId())){
 					StudentMarksTO to=new StudentMarksTO();
 					to.setStudentId(student.getId());
 					to.setName(student.getAdmAppln().getPersonalData().getFirstName());
+					to.setName(student.getAdmAppln().getPersonalData().getFirstName());
+					if (newExamMarksEntryForm.getRetest().equalsIgnoreCase("yes")) {
+						to.setRetests(true);
+					}else{
+						to.setRetests(false);
+					}
 					/*if(oldRegNo.containsKey(student.getId())){
 						to.setRegisterNo(oldRegNo.get(student.getId()));
 					}else{*/
@@ -297,7 +322,7 @@ public class NewExamMarksEntryHelper {
 						"  marksCardSiNo.courseId="+newExamMarksEntryForm.getCourseId()+"and marksCardSiNo.semister="+newExamMarksEntryForm.getSchemeNo()+"and marksCardSiNo.academicYear="+newExamMarksEntryForm.getYear();*/
 						
 						
-		INewExamMarksEntryTransaction txn=NewExamMarksEntryTransactionImpl.getInstance();
+		
 		List falsenoList=txn.getFalseNoForQuery(falsenoquery);
 		if(falsenoList!=null && !falsenoList.isEmpty()){
 			isfalsegenerated=true;

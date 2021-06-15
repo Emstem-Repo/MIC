@@ -58,7 +58,7 @@ public class PasswordPrintAction  extends BaseDispatchAction{
 		   }
 		if(!CMSConstants.IPADDRESSLIST.contains(ipAddress)){
 			
-			return mapping.findForward("logout");	
+			//return mapping.findForward("logout");	
 		}
 	
 		printPasswordForm.reset(mapping, request);

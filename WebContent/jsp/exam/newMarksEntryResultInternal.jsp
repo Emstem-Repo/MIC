@@ -271,7 +271,7 @@
 											<logic:equal value="true" property="isTheorySecured" name="examMarksEntryStudentTO">	
 											<nested:text disabled="true" property="theoryMarks" maxlength="6" styleId= '<%=id %>' onkeydown="movenext(this.name, event, this.id)" /></logic:equal>
 											<logic:equal value="false" property="isTheorySecured" name="examMarksEntryStudentTO">	
-												<nested:text disabled="true"property="theoryMarks" maxlength="6" styleId= '<%=id %>' onkeydown="movenext(this.name, event, this.id)"/>
+												<nested:text disabled="true" property="theoryMarks" maxlength="6" styleId= '<%=id %>' onkeydown="movenext(this.name, event, this.id)"/>
 											</logic:equal>
 											</td>
 										</logic:equal>

@@ -122,6 +122,7 @@
 										<html:option value="3">Supplementary data creation</html:option>
 										<html:option value="4">Update Pass Or Fail</html:option>
 										<html:option value="5">Update Moderation/Revaluation</html:option>	
+										<html:option value="6">Update Overall Internal Retest marks</html:option>	
 									</html:select></td>
 
 

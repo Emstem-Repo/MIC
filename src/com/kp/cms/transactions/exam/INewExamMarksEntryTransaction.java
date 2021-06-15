@@ -63,7 +63,9 @@ public interface INewExamMarksEntryTransaction {
 	
 	public boolean isEligibleWithoutAttendanceCheck(int studentId,int examId) throws Exception;
 
-	List<Object[]> getDataByStudentAndClassId(int studentId, int classId, int subjectId,
+	public List<Object[]> getDataByStudentAndClassId(int studentId, int classId, int subjectId,
 			Integer year)throws Exception;
+
+	public int checkSubjectInRetestForm(NewExamMarksEntryForm newExamMarksEntryForm, int id);
 
 }
