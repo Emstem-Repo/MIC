@@ -696,7 +696,7 @@ public class NewSupplementaryImpApplicationAction extends BaseDispatchAction {
 		}
 
 		if (newSupplementaryImpApplicationForm.getStudentObj().getIsEgrand()) {
-			newSupplementaryImpApplicationForm.setTotalFees(30);
+			newSupplementaryImpApplicationForm.setTotalFees(1030);
 		}
 		// online payment code temporarily commented do not delete
 		/*
@@ -1563,7 +1563,7 @@ public class NewSupplementaryImpApplicationAction extends BaseDispatchAction {
 					newSupplementaryImpApplicationForm.setStudentObj(student);
 					if (newSupplementaryImpApplicationForm.getStudentObj()
 							.getIsEgrand()) {
-						newSupplementaryImpApplicationForm.setTotalFees(30);
+						newSupplementaryImpApplicationForm.setTotalFees(1030);
 					}
 					String printData = NewSupplementaryImpApplicationHandler
 					.getInstance().getPrintData(

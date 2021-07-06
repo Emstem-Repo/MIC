@@ -96,7 +96,7 @@ function viewTotalPoint(){
 	  }else {
 		  if(scr.checked){
 			  if(checkedCount >= 1){
-					 var amount = (500* checkedCount) + 30;
+					 var amount = (100* checkedCount) + 30;
 				  }else {
 					  amount = 0;
 				  }  

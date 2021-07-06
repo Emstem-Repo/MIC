@@ -94,6 +94,7 @@ public class SupplementaryFeesHandler {
 			if(supplementaryFeesForm.getOnlineServiceChargeFees()!=null && !supplementaryFeesForm.getOnlineServiceChargeFees().equalsIgnoreCase(""))
 			bo.setOnlineServiceChargeFees(new BigDecimal(supplementaryFeesForm.getOnlineServiceChargeFees()));
 			bo.setAcademicYear(supplementaryFeesForm.getAcademicYear());
+			bo.setEgrandFees(new BigDecimal(supplementaryFeesForm.getEgrandFees()));
 			boList.add(bo);
 		}
 		log.info("Exit from addOrUpdate");
@@ -182,6 +183,7 @@ public class SupplementaryFeesHandler {
 			if(!supplementaryFeesForm.getOnlineServiceChargeFees().isEmpty())
 				bo.setOnlineServiceChargeFees(new BigDecimal(supplementaryFeesForm.getOnlineServiceChargeFees()));
 			bo.setAcademicYear(supplementaryFeesForm.getAcademicYear());
+			bo.setEgrandFees(new BigDecimal(supplementaryFeesForm.getEgrandFees()));
 			boList.add(bo);
 		}
 		log.info("Exit from addOrUpdate");
@@ -193,6 +195,141 @@ public class SupplementaryFeesHandler {
 		RegularExamFees bo=(RegularExamFees) transaction.getMasterEntryDataById(RegularExamFees.class, id);
 
 		return PropertyUtil.getInstance().delete(bo);
+	}
+	public void setEditData(int id,SupplementaryFeesForm form) throws Exception {
+		ISingleFieldMasterTransaction transaction=SingleFieldMasterTransactionImpl.getInstance();
+		SupplementaryFees bo=(SupplementaryFees) transaction.getMasterEntryDataById(SupplementaryFees.class, id);
+		form.setAcademicYear(bo.getAcademicYear());
+		String[] ab={String.valueOf(bo.getCourse().getId())};
+		form.setProgramTypeId(String.valueOf(bo.getCourse().getProgram().getId()));
+		form.setSelectedCourse(ab);
+		form.setTheoryFees(String.valueOf(bo.getTheoryFees().doubleValue()));
+		form.setPracticalFees(String.valueOf(bo.getPracticalFees().doubleValue()));
+		form.setApplicationFees(String.valueOf(bo.getApplicationFees().doubleValue()));
+		form.setCvCampFees(String.valueOf(bo.getCvCampFees().doubleValue()));
+		form.setMarksListFees(String.valueOf(bo.getMarksListFees().doubleValue()));
+		form.setOnlineServiceChargeFees(String.valueOf(bo.getOnlineServiceChargeFees()));
+		form.setEgrandFees(String.valueOf(bo.getEgrandFees().doubleValue()));
+		form.setId(bo.getId());
+		
+		// TODO Auto-generated method stub
+		
+	}
+	public boolean UpdateFees(SupplementaryFeesForm supplementaryFeesForm) throws Exception {
+		log.info("Entered into addOrUpdate");
+		
+		String[] tempArray=supplementaryFeesForm.getSelectedCourse();
+		String  courseId=tempArray[0];
+		ISingleFieldMasterTransaction transaction=SingleFieldMasterTransactionImpl.getInstance();
+		INewExamMarksEntryTransaction transactionbo=NewExamMarksEntryTransactionImpl.getInstance();
+		/*String query="from SupplementaryFees s where s.isActive=1 and s.academicYear="+supplementaryFeesForm.getAcademicYear()+" and s.course.id="+courseId;
+		INewExamMarksEntryTransaction transaction=NewExamMarksEntryTransactionImpl.getInstance();
+		List<SupplementaryFees> fees=transaction.getDataForQuery(query);
+		if(fees!=null && !fees.isEmpty()){
+			String programNames="";
+			for (SupplementaryFees bo: fees) {
+				if(!programNames.isEmpty())
+					programNames=programNames+","+bo.getCourse().getName();
+				else
+					programNames=programNames+","+bo.getCourse().getName();
+			}
+			throw new DuplicateException(programNames);
+		}*/
+		SupplementaryFees bo=(SupplementaryFees) transaction.getMasterEntryDataById(SupplementaryFees.class, supplementaryFeesForm.getId());
+		
+			Course course=new Course();
+			course.setId(Integer.parseInt(courseId));
+			bo.setCourse(course);
+			bo.setIsActive(true);
+			bo.setId(supplementaryFeesForm.getId());
+			bo.setCreatedBy(supplementaryFeesForm.getUserId());
+			bo.setModifiedBy(supplementaryFeesForm.getUserId());
+			bo.setCreatedDate(new Date());
+			bo.setLastModifiedDate(new Date());
+			bo.setTheoryFees(new BigDecimal(supplementaryFeesForm.getTheoryFees()));
+			bo.setPracticalFees(new BigDecimal(supplementaryFeesForm.getPracticalFees()));
+			if(supplementaryFeesForm.getApplicationFees()!=null && !supplementaryFeesForm.getApplicationFees().equalsIgnoreCase(""))
+			bo.setApplicationFees(new BigDecimal(supplementaryFeesForm.getApplicationFees()));
+			if(supplementaryFeesForm.getCvCampFees()!=null&& !supplementaryFeesForm.getCvCampFees().equalsIgnoreCase(""))
+			bo.setCvCampFees(new BigDecimal(supplementaryFeesForm.getCvCampFees()));
+			if(supplementaryFeesForm.getMarksListFees()!=null && !supplementaryFeesForm.getMarksListFees().equalsIgnoreCase(""))
+			bo.setMarksListFees(new BigDecimal(supplementaryFeesForm.getMarksListFees()));
+			if(supplementaryFeesForm.getOnlineServiceChargeFees()!=null && !supplementaryFeesForm.getOnlineServiceChargeFees().equalsIgnoreCase(""))
+			bo.setOnlineServiceChargeFees(new BigDecimal(supplementaryFeesForm.getOnlineServiceChargeFees()));
+			bo.setAcademicYear(supplementaryFeesForm.getAcademicYear());
+			bo.setEgrandFees(new BigDecimal(supplementaryFeesForm.getEgrandFees()));
+			
+		
+		log.info("Exit from addOrUpdate");
+		return transactionbo.saveBo(bo);
+	}
+	public boolean UpdateRegularFee(SupplementaryFeesForm supplementaryFeesForm) throws Exception {
+		log.info("Entered into addOrUpdate");
+		
+		String[] tempArray=supplementaryFeesForm.getSelectedClasses();
+		String  classId=tempArray[0];
+		ISingleFieldMasterTransaction transaction=SingleFieldMasterTransactionImpl.getInstance();
+		INewExamMarksEntryTransaction transactionbo=NewExamMarksEntryTransactionImpl.getInstance();
+		/*String query="from SupplementaryFees s where s.isActive=1 and s.academicYear="+supplementaryFeesForm.getAcademicYear()+" and s.course.id="+courseId;
+		INewExamMarksEntryTransaction transaction=NewExamMarksEntryTransactionImpl.getInstance();
+		List<SupplementaryFees> fees=transaction.getDataForQuery(query);
+		if(fees!=null && !fees.isEmpty()){
+			String programNames="";
+			for (SupplementaryFees bo: fees) {
+				if(!programNames.isEmpty())
+					programNames=programNames+","+bo.getCourse().getName();
+				else
+					programNames=programNames+","+bo.getCourse().getName();
+			}
+			throw new DuplicateException(programNames);
+		}*/
+		RegularExamFees bo=(RegularExamFees) transaction.getMasterEntryDataById(RegularExamFees.class, supplementaryFeesForm.getId());
+		
+		Classes classes=new Classes();
+		classes.setId(Integer.parseInt(classId));
+		bo.setClasses(classes);
+		bo.setIsActive(true);
+		bo.setCreatedBy(supplementaryFeesForm.getUserId());
+		bo.setModifiedBy(supplementaryFeesForm.getUserId());
+		bo.setCreatedDate(new Date());
+		bo.setLastModifiedDate(new Date());
+		bo.setTheoryFees(new BigDecimal(supplementaryFeesForm.getTheoryFees()));
+		if(!supplementaryFeesForm.getPracticalFees().isEmpty())
+			bo.setPracticalFees(new BigDecimal(supplementaryFeesForm.getPracticalFees()));
+		if(!supplementaryFeesForm.getApplicationFees().isEmpty())
+			bo.setApplicationFees(new BigDecimal(supplementaryFeesForm.getApplicationFees()));
+		if(!supplementaryFeesForm.getCvCampFees().isEmpty())
+			bo.setCvCampFees(new BigDecimal(supplementaryFeesForm.getCvCampFees()));
+		if(!supplementaryFeesForm.getMarksListFees().isEmpty())
+			bo.setMarksListFees(new BigDecimal(supplementaryFeesForm.getMarksListFees()));
+		if(!supplementaryFeesForm.getOnlineServiceChargeFees().isEmpty())
+			bo.setOnlineServiceChargeFees(new BigDecimal(supplementaryFeesForm.getOnlineServiceChargeFees()));
+		bo.setAcademicYear(supplementaryFeesForm.getAcademicYear());
+		bo.setEgrandFees(new BigDecimal(supplementaryFeesForm.getEgrandFees()));
+			
+		
+		log.info("Exit from addOrUpdate");
+		return transactionbo.saveRegularBo(bo);
+	}
+	public void setEditForRegularData(int id, SupplementaryFeesForm form) throws Exception {
+		ISingleFieldMasterTransaction transaction=SingleFieldMasterTransactionImpl.getInstance();
+		RegularExamFees bo=(RegularExamFees) transaction.getMasterEntryDataById(RegularExamFees.class, id);
+		form.setAcademicYear(bo.getAcademicYear());
+		String[] ab={String.valueOf(bo.getClasses().getId())};
+		form.setSelectedClassArray(ab[0]);
+		form.setSelectedClasses(ab);
+		form.setProgramTypeId(String.valueOf(bo.getClasses().getCourse().getProgram().getId()));
+		form.setTheoryFees(String.valueOf(bo.getTheoryFees().doubleValue()));
+		form.setPracticalFees(String.valueOf(bo.getPracticalFees().doubleValue()));
+		form.setApplicationFees(String.valueOf(bo.getApplicationFees().doubleValue()));
+		form.setCvCampFees(String.valueOf(bo.getCvCampFees().doubleValue()));
+		form.setMarksListFees(String.valueOf(bo.getMarksListFees().doubleValue()));
+		form.setOnlineServiceChargeFees(String.valueOf(bo.getOnlineServiceChargeFees()));
+		form.setEgrandFees(String.valueOf(bo.getEgrandFees().doubleValue()));
+		form.setId(bo.getId());
+		
+		// TODO Auto-generated method stub
+		
 	}
 
 }

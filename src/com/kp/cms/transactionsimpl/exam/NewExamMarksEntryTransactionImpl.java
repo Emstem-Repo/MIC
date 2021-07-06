@@ -21,6 +21,7 @@ import org.hibernate.Transaction;
 import org.hibernate.exception.ConstraintViolationException;
 
 import com.kp.cms.bo.admin.Classes;
+import com.kp.cms.bo.admin.MobileMessaging;
 import com.kp.cms.bo.admin.ProgramType;
 import com.kp.cms.bo.admin.Student;
 import com.kp.cms.bo.admin.Subject;
@@ -33,7 +34,9 @@ import com.kp.cms.bo.exam.ExamSettingsBO;
 import com.kp.cms.bo.exam.MarksEntry;
 import com.kp.cms.bo.exam.MarksEntryDetails;
 import com.kp.cms.bo.exam.PublishSupplementaryImpApplication;
+import com.kp.cms.bo.exam.RegularExamFees;
 import com.kp.cms.bo.exam.StudentSupplementaryImprovementApplication;
+import com.kp.cms.bo.exam.SupplementaryFees;
 import com.kp.cms.constants.CMSConstants;
 import com.kp.cms.exceptions.ApplicationException;
 import com.kp.cms.exceptions.BusinessException;
@@ -45,6 +48,7 @@ import com.kp.cms.to.exam.StudentMarksTO;
 import com.kp.cms.transactions.exam.INewExamMarksEntryTransaction;
 import com.kp.cms.utilities.CommonUtil;
 import com.kp.cms.utilities.HibernateUtil;
+import com.kp.cms.utilities.InitSessionFactory;
 
 public class NewExamMarksEntryTransactionImpl implements INewExamMarksEntryTransaction {
 
@@ -1435,6 +1439,62 @@ public class NewExamMarksEntryTransactionImpl implements INewExamMarksEntryTrans
 			}
 		}
 		return 0;
+	}
+	@Override
+	public boolean saveBo(SupplementaryFees bo) throws Exception {
+		log.debug("inside addTermsConditionCheckList");
+		Session session = null;
+		Transaction transaction = null;
+		MobileMessaging tcLChecklist;
+		try {
+			session = InitSessionFactory.getInstance().openSession();
+			transaction = session.beginTransaction();
+			transaction.begin();
+			int count = 0;
+			session.update(bo);
+			
+			transaction.commit();
+			session.flush();
+			//session.close();
+			log.debug("leaving addTermsConditionCheckList");
+			return true;
+		} catch (ConstraintViolationException e) {
+			transaction.rollback();
+			log.error("Error in addTermsConditionCheckList impl...", e);
+			throw new BusinessException(e);
+		} catch (Exception e) {
+			transaction.rollback();
+			log.error("Error in addTermsConditionCheckList impl...", e);
+			throw new ApplicationException(e);
+		}
+	}
+	@Override
+	public boolean saveRegularBo(RegularExamFees bo) throws Exception {
+		log.debug("inside addTermsConditionCheckList");
+		Session session = null;
+		Transaction transaction = null;
+		MobileMessaging tcLChecklist;
+		try {
+			session = InitSessionFactory.getInstance().openSession();
+			transaction = session.beginTransaction();
+			transaction.begin();
+			int count = 0;
+			session.update(bo);
+			
+			transaction.commit();
+			session.flush();
+			//session.close();
+			log.debug("leaving addTermsConditionCheckList");
+			return true;
+		} catch (ConstraintViolationException e) {
+			transaction.rollback();
+			log.error("Error in addTermsConditionCheckList impl...", e);
+			throw new BusinessException(e);
+		} catch (Exception e) {
+			transaction.rollback();
+			log.error("Error in addTermsConditionCheckList impl...", e);
+			throw new ApplicationException(e);
+		}
 	}
 	
 

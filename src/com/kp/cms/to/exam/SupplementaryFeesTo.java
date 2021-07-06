@@ -1,6 +1,7 @@
 package com.kp.cms.to.exam;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 /**
  * @author user
@@ -19,6 +20,7 @@ public class SupplementaryFeesTo implements Serializable,Comparable<Supplementar
 	private double marksListFees;
 	private double onlineServiceChargeFees;
 	private String academicYear;
+	private double egrandFees;
 	
 	public int getId() {
 		return id;
@@ -96,6 +98,12 @@ public class SupplementaryFeesTo implements Serializable,Comparable<Supplementar
 	}
 	public void setAcademicYear(String academicYear) {
 		this.academicYear = academicYear;
+	}
+	public double getEgrandFees() {
+		return egrandFees;
+	}
+	public void setEgrandFees(double egrandFees) {
+		this.egrandFees = egrandFees;
 	}
 	
 }

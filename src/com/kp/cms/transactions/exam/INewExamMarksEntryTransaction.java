@@ -6,7 +6,9 @@ import java.util.Map;
 
 import com.kp.cms.bo.admin.ProgramType;
 import com.kp.cms.bo.exam.ExamBlockUnblockHallTicketBO;
+import com.kp.cms.bo.exam.RegularExamFees;
 import com.kp.cms.bo.exam.StudentSupplementaryImprovementApplication;
+import com.kp.cms.bo.exam.SupplementaryFees;
 import com.kp.cms.forms.exam.NewExamMarksEntryForm;
 import com.kp.cms.forms.exam.NewSecuredMarksEntryForm;
 import com.kp.cms.forms.exam.NewSupplementaryImpApplicationForm;
@@ -67,5 +69,9 @@ public interface INewExamMarksEntryTransaction {
 			Integer year)throws Exception;
 
 	public int checkSubjectInRetestForm(NewExamMarksEntryForm newExamMarksEntryForm, int id);
+
+	boolean saveBo(SupplementaryFees bo) throws Exception;
+
+	boolean saveRegularBo(RegularExamFees bo) throws Exception;
 
 }

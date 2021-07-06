@@ -24,6 +24,7 @@ public class RegularExamFees implements Serializable {
 	private BigDecimal marksListFees;
 	private BigDecimal onlineServiceChargeFees;
 	private String academicYear;
+	private BigDecimal egrandFees;
 	
 	public RegularExamFees() {
 		super();
@@ -139,6 +140,14 @@ public class RegularExamFees implements Serializable {
 
 	public void setAcademicYear(String academicYear) {
 		this.academicYear = academicYear;
+	}
+
+	public BigDecimal getEgrandFees() {
+		return egrandFees;
+	}
+
+	public void setEgrandFees(BigDecimal egrandFees) {
+		this.egrandFees = egrandFees;
 	}
 
 	

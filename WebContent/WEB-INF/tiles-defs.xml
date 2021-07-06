@@ -12164,5 +12164,14 @@ This is a blank Tiles definition file with a commented example.
         <put name="module" value="Admin"/>
         <put name="body" value="/jsp/studentlogin/initInternalRetest.jsp"/>
     </definition>
+    
+    <!-- examPublishMarksCard -->
+    <definition name="examPublishMarkCard" extends=".cmsLayout">
+        <put name="title" value="Exam Home"/>
+        <put name="module" value="Exam"/>
+        <put name="page" value="Room Type">
+        </put>
+        <put name="body" value="/jsp/exam/ExamPublishMarksCard.jsp"/>
+    </definition>
 	 
 </tiles-definitions>

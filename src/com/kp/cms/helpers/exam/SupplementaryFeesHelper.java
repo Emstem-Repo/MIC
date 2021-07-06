@@ -57,6 +57,7 @@ public class SupplementaryFeesHelper {
 			if(bo.getOnlineServiceChargeFees()!=null)
 			to.setOnlineServiceChargeFees(bo.getOnlineServiceChargeFees().doubleValue());
 			to.setAcademicYear(bo.getAcademicYear());
+			to.setEgrandFees(bo.getEgrandFees().doubleValue());
 			toList.add(to);
 		}
 		return toList;
@@ -81,6 +82,7 @@ public class SupplementaryFeesHelper {
 			if(bo.getOnlineServiceChargeFees()!=null)
 				to.setOnlineServiceChargeFees(bo.getOnlineServiceChargeFees().doubleValue());
 			to.setAcademicYear(bo.getAcademicYear());
+			to.setEgrandFees(bo.getEgrandFees().doubleValue());
 			toList.add(to);
 		}
 		return toList;

@@ -561,10 +561,10 @@ function onlinePay(){
 					 <td colspan="3" style="height: 20px; font-size: 15px">
 					 	<b>Examination Fee : </b> <bean:write name="newSupplementaryImpApplicationForm" property="totalFees" /></td>
 					 </tr>
-					 <tr align="center" >
+					 <%-- <tr align="center" >
 					 <td colspan="3" style="height: 20px; font-size: 15px">
 					 	<b>Late Fine Fee : </b> <bean:write name="newSupplementaryImpApplicationForm" property="onlineServiceChargeFees" /></td>
-					 </tr>
+					 </tr> --%>
 		
 						<tr>
 							<td width="47%" height="35">

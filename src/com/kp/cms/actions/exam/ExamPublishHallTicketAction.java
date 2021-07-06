@@ -45,6 +45,7 @@ public class ExamPublishHallTicketAction extends BaseDispatchAction {
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		ExamPublishHallTicketForm objform = (ExamPublishHallTicketForm) form;
+		System.out.println(request.getParameter("menuName"));
 		errors.clear();
 		objform.pageclear();
 		setIntialValues(objform);
@@ -54,6 +55,9 @@ public class ExamPublishHallTicketAction extends BaseDispatchAction {
 		HttpSession session = request.getSession(false);		
 		if(objform.isExamCenterDispaly()){
 			session.setAttribute("examCenterDisp", "true");
+		}
+		if (request.getParameter("menuName").equalsIgnoreCase("Publish Marks Card")) {
+			return mapping.findForward(CMSConstants.EXAM_PUBLISH_MARKS_CARD);
 		}
 		return mapping.findForward(CMSConstants.EXAM_PUBLISH_HALL_TICKET);
 

@@ -155,5 +155,6 @@ public class CMSExamConstants {
 	
 	public static final String EXAM_GRADEPOINT = "GradePointDefinition";
 	public static final String EXAM_GRADEPOINT_ADD = "GradePointDefinitionAdd";
+	public static final String EXAM_PUBLISH_MARKS_CARD = "examPublishMarkCard";
 
 }

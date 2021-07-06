@@ -59,6 +59,9 @@
          <property name="academicYear" >
             <column name="academic_year" />
         </property>
+        <property name="egrandFees" type="java.math.BigDecimal">
+            <column name="egrand_fees" />
+        </property>
         
 	</class>
 </hibernate-mapping>

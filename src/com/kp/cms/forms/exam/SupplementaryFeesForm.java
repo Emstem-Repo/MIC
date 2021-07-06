@@ -30,6 +30,7 @@ public class SupplementaryFeesForm extends BaseActionForm {
 	private String marksListFees;
 	private String onlineServiceChargeFees;
 	private String[] selectedClasses;
+	private String egrandFees;
 
 	public String[] getProgramIds() {
 		return programIds;
@@ -81,6 +82,13 @@ public class SupplementaryFeesForm extends BaseActionForm {
 		this.programIds=null;
 		this.theoryFees=null;
 		this.practicalFees=null;
+		this.selectedCourse=null;
+		this.applicationFees=null;
+		this.cvCampFees=null;
+		this.onlineServiceChargeFees=null;
+		this.marksListFees=null;
+		this.egrandFees=null;
+		this.id=0;
 	}
 
 	/* (non-Javadoc)
@@ -141,6 +149,12 @@ public class SupplementaryFeesForm extends BaseActionForm {
 	}
 	public void setSelectedClasses(String[] selectedClasses) {
 		this.selectedClasses = selectedClasses;
+	}
+	public String getEgrandFees() {
+		return egrandFees;
+	}
+	public void setEgrandFees(String egrandFees) {
+		this.egrandFees = egrandFees;
 	}
 
 }

@@ -17,6 +17,7 @@ public class RegularExamFeesTo implements Serializable,Comparable<RegularExamFee
 	private double marksListFees;
 	private double onlineServiceChargeFees;
 	private String academicYear;
+	private double egrandFees;
 	
 	public int getId() {
 		return id;
@@ -82,6 +83,12 @@ public class RegularExamFeesTo implements Serializable,Comparable<RegularExamFee
 	}
 	public void setAcademicYear(String academicYear) {
 		this.academicYear = academicYear;
+	}
+	public double getEgrandFees() {
+		return egrandFees;
+	}
+	public void setEgrandFees(double egrandFees) {
+		this.egrandFees = egrandFees;
 	}
 	
 }

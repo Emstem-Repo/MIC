@@ -12,6 +12,15 @@ function deleteDocExam(id){
 		document.location.href = "SupplementaryFees.do?method=deleteOrReactivatePublish&mode=delete&id="+ id;
 	}
 }
+function editFee(id){
+	deleteConfirm = confirm("Are you sure you want to update this entry?");
+	if (deleteConfirm) {
+		document.location.href = "SupplementaryFees.do?method=editOrUpdatePublish&mode=edit&id="+ id;
+	}
+}
+function caancelOp(){
+		document.location.href = "SupplementaryFees.do?method=initSupplementaryFees";
+}
 function resetFormFields(){
 	resetFieldAndErrMsgs();
 }
@@ -116,6 +125,20 @@ function setCourseName() {
 										key="knowledgepro.admin.programtype" />:</div>
 									</td>
 
+									<c:choose>
+									<c:when test="${operation == 'edit'}">
+									<td width="20%" height="15" class="row-even"><html:select
+										property="programTypeId" styleClass="body"
+										styleId="programType" disabled="true">
+										<html:option value="">
+											<bean:message key="knowledgepro.select" />
+										</html:option>
+										<html:optionsCollection name="supplementaryFeesForm"
+											property="programTypeList" label="programTypeName" value="programTypeId" />
+
+									</html:select></td>
+									</c:when>
+									<c:otherwise>
 									<td width="20%" height="15" class="row-even"><html:select
 										property="programTypeId" styleClass="body"
 										styleId="programType" onchange="getCourses(this.value)" onclick="resetErrMsgs()">
@@ -126,10 +149,26 @@ function setCourseName() {
 											property="programTypeList" label="programTypeName" value="programTypeId" />
 
 									</html:select></td>
+									</c:otherwise>
+									</c:choose>
 									<td width="15%" class="row-odd">
 									<div align="right"><span class="Mandatory">*</span>&nbsp;<bean:message
 										key="knowledgepro.admin.course" />:</div>
 									</td>
+									<c:choose>
+									<c:when test="${operation == 'edit'}">
+									<td width="16%" class="row-even"><nested:select
+										property="selectedCourse" styleClass="body"
+										style="width:300px" disabled="true">
+											<c:if test="${supplementaryFeesForm.courseMap != null}">
+												<nested:optionsCollection property="courseMap" name="supplementaryFeesForm"
+													label="value" value="key" styleClass="comboBig" />
+											</c:if>
+
+
+									</nested:select></td>
+									</c:when>
+									<c:otherwise>
 									<td width="16%" class="row-even"><nested:select
 										property="selectedCourse" styleClass="body"
 										multiple="multiple" size="5" styleId="course"
@@ -141,6 +180,9 @@ function setCourseName() {
 
 
 									</nested:select></td>
+									</c:otherwise>
+									</c:choose>
+									
 							
 								
 								</tr>
@@ -194,6 +236,24 @@ function setCourseName() {
 									</td>
 								</tr>
 								
+								<tr>
+							
+							        <td height="25" class="row-odd">
+									<div align="right">Egrand fees:</div>
+									</td>
+									<td class="row-even">
+									<html:text name="supplementaryFeesForm" property="egrandFees" styleId="cvCampFees" size="10" maxlength="16" onkeypress="return isNumberKey(event)"/>
+									</td>
+									<td height="25" class="row-odd">
+									</td>
+									<td class="row-even">
+									</td>
+									<td height="25" class="row-odd">
+									</td>
+									<td class="row-even">
+									</td>
+								</tr>
+								
 								
 								
 							</table>
@@ -225,8 +285,9 @@ function setCourseName() {
 								</div>
 							</td>
 							<td width="2%"></td>
-							<td width="53%"><html:cancel value="Reset" styleClass="formbutton" ></html:cancel></td>
-							</c:when>
+							<td width="53%"><html:button property=""
+							styleClass="formbutton" value="cancel"
+							onclick="caancelOp()"></html:button></c:when>
 							<c:otherwise>
 								<td width="45%" height="35">
 							<div align="right">
@@ -288,7 +349,13 @@ function setCourseName() {
 											<div align="center">Project Fees</div>
 											</td>
 											<td width="15%" class="row-odd">
+											<div align="center">Egrand Fees</div>
+											</td>
+											<td width="15%" class="row-odd">
 											<div align="center">Late Fine Fees</div>
+											</td>
+											<td class="row-odd" align="center">
+												<div align="center"><bean:message key="knowledgepro.edit" /></div>
 											</td>
 											<td width="8%" class="row-odd">
 											<div align="center"><bean:message
@@ -318,6 +385,13 @@ function setCourseName() {
 											<td align="center"><bean:write name="dList" property="cvCampFees" /></td>
 											<td align="center"><bean:write name="dList" property="marksListFees" /></td>
 											<td align="center"><bean:write name="dList" property="onlineServiceChargeFees" /></td>
+											<td align="center"><bean:write name="dList" property="egrandFees" /></td>
+											<td width="5%" height="25" align="center">
+												<div align="center"><img src="images/edit_icon.gif"
+												width="16" height="18"  style="cursor:pointer" 
+												onclick="editFee('<bean:write name="dList" property="id" />')">
+												</div>
+											</td>
 											<td height="25">
 											<div align="center"><img src="images/delete_icon.gif"
 													width="16" height="16" onclick="deleteDocExam('<bean:write name="dList" property="id" />')" /></div>

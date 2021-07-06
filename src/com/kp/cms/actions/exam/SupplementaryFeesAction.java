@@ -22,6 +22,7 @@ import com.kp.cms.actions.BaseDispatchAction;
 import com.kp.cms.constants.CMSConstants;
 import com.kp.cms.exceptions.DuplicateException;
 import com.kp.cms.exceptions.ReActivateException;
+import com.kp.cms.forms.admin.CourseForm;
 import com.kp.cms.forms.exam.SupplementaryFeesForm;
 import com.kp.cms.handlers.admin.ProgramHandler;
 import com.kp.cms.handlers.admin.ProgramTypeHandler;
@@ -110,7 +111,12 @@ public class SupplementaryFeesAction extends BaseDispatchAction {
 		if (errors.isEmpty()) {
 			try{
 			setUserId(request, supplementaryFeesForm);
-			isPublishSupAppAdded =SupplementaryFeesHandler.getInstance().addOrUpdate(supplementaryFeesForm);
+			if (supplementaryFeesForm.getMode()=="add" || supplementaryFeesForm.getMode().equalsIgnoreCase("add")) {
+				isPublishSupAppAdded =SupplementaryFeesHandler.getInstance().addOrUpdate(supplementaryFeesForm);
+			}else if(supplementaryFeesForm.getMode()=="update" || supplementaryFeesForm.getMode().equalsIgnoreCase("update")){
+				isPublishSupAppAdded =SupplementaryFeesHandler.getInstance().UpdateFees(supplementaryFeesForm);
+			}
+			
 			}catch (Exception e) {
 				if(e instanceof DuplicateException){
 					errors.add("error", new ActionError("knowledgepro.admin.supplementaryFees.program.exists"));
@@ -253,7 +259,11 @@ public class SupplementaryFeesAction extends BaseDispatchAction {
 		if (errors.isEmpty()) {
 			try{
 			setUserId(request, supplementaryFeesForm);
-			isPublishSupAppAdded =SupplementaryFeesHandler.getInstance().addOrUpdateRegularFee(supplementaryFeesForm);
+			if (supplementaryFeesForm.getMode()=="add" || supplementaryFeesForm.getMode().equalsIgnoreCase("add")) {
+				isPublishSupAppAdded =SupplementaryFeesHandler.getInstance().addOrUpdateRegularFee(supplementaryFeesForm);
+			}else if(supplementaryFeesForm.getMode()=="update" || supplementaryFeesForm.getMode().equalsIgnoreCase("update")){
+				isPublishSupAppAdded =SupplementaryFeesHandler.getInstance().UpdateRegularFee(supplementaryFeesForm);
+			}
 			}catch (Exception e) {
 				if(e instanceof DuplicateException){
 					errors.add("error", new ActionError("knowledgepro.admin.regular.fees.exists"));
@@ -344,6 +354,56 @@ public class SupplementaryFeesAction extends BaseDispatchAction {
 		}
 		setRequiredDatatoFormRegular(supplementaryFeesForm,request);
 		return mapping.findForward(CMSConstants.INIT_REGULAR_FEES);
+	}
+	
+	public ActionForward editOrUpdatePublish(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		SupplementaryFeesForm supplementaryFeesForm = (SupplementaryFeesForm) form;
+		assignDataToForm(request, supplementaryFeesForm); 
+		return mapping.findForward(CMSConstants.INIT_SUPPLEMENTARY_FEES);
+	}
+	
+
+	private void assignDataToForm(HttpServletRequest request, SupplementaryFeesForm supplementaryFeesForm) throws Exception {
+		
+		request.setAttribute("operation", "edit");
+		SupplementaryFeesHandler.getInstance().setEditData(supplementaryFeesForm.getId(),supplementaryFeesForm);
+		Map<Integer,String> courseMap = new HashMap<Integer,String>();
+		if(supplementaryFeesForm.getProgramTypeId()!=null && !supplementaryFeesForm.getProgramTypeId().isEmpty()){
+			List<KeyValueTO> list = CommonAjaxHandler.getInstance().getCoursesByProgramTypes1(supplementaryFeesForm.getProgramTypeId());
+			if(list!=null && !list.isEmpty()){
+				Iterator<KeyValueTO> itr=list.iterator();
+				while (itr.hasNext()) {
+					KeyValueTO keyValueTO = (KeyValueTO) itr.next();
+					courseMap.put(keyValueTO.getId(),keyValueTO.getDisplay());
+				}
+			}
+			request.setAttribute("coursesMap",courseMap);
+			supplementaryFeesForm.setCourseMap(courseMap);
+		}
+		
+	}
+	
+	public ActionForward editOrUpdateRegularPublish(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		SupplementaryFeesForm supplementaryFeesForm = (SupplementaryFeesForm) form;
+		assigRegularDataToForm(request, supplementaryFeesForm); 
+		return mapping.findForward(CMSConstants.INIT_REGULAR_FEES);
+	}
+
+	private void assigRegularDataToForm(HttpServletRequest request, SupplementaryFeesForm supplementaryFeesForm) throws Exception {
+		request.setAttribute("operation", "edit");
+		Map<Integer,String> classMap = new HashMap<Integer,String>();
+		SupplementaryFeesHandler.getInstance().setEditForRegularData(supplementaryFeesForm.getId(),supplementaryFeesForm);
+		if(supplementaryFeesForm.getProgramTypeId()!=null && !supplementaryFeesForm.getProgramTypeId().isEmpty()){
+			classMap = CommonAjaxHandler.getInstance().getClassesByProgramTypeId(Integer.parseInt(supplementaryFeesForm.getProgramTypeId()));
+			request.setAttribute("coursesMap",classMap);
+			supplementaryFeesForm.setClassMap(classMap);
+		}
+		
+		
 	}
 
 }
