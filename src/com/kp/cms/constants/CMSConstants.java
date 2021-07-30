@@ -6121,4 +6121,5 @@ public class CMSConstants extends CMSExamConstants {
 	    public static final String PUBLISH_SPECIAL_FEES_LIST = "publishSpecialFeeList";
 	    public static final String REDIRECT_PGI_SPECIAL_FEE = "redirectPgiSpecialFee";
 		public static final String INIT_MEMO_PAGE = "initAllotementMemo";
+		public static final String INIT_FORMS_ONLINE = "initFormsOnline";
 	}  

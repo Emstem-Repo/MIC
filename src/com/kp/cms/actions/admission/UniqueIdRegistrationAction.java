@@ -305,8 +305,8 @@ import com.kp.cms.utilities.CommonUtil;
 			if(Integer.parseInt(objForm.getProgramTypeId()) == 1) {
 				int age = 0;
 				age = CommonUtil.getDiffYears(new Date(objForm.getRegisterDateOfBirth()), new Date("02/06/" + Calendar.getInstance().get(Calendar.YEAR)));
-				if(((Integer.parseInt(objForm.getSubReligionId()) == 2 || Integer.parseInt(objForm.getSubReligionId()) == 3) && age > 24) ||
-				   (Integer.parseInt(objForm.getSubReligionId()) != 2 && Integer.parseInt(objForm.getSubReligionId()) != 3) && age > 22) {	//	SC/ST religion_section table
+				if(((Integer.parseInt(objForm.getSubReligionId()) == 2 || Integer.parseInt(objForm.getSubReligionId()) == 3) && age > 25) ||
+				   (Integer.parseInt(objForm.getSubReligionId()) != 2 && Integer.parseInt(objForm.getSubReligionId()) != 3) && age > 23) {	//	SC/ST religion_section table
 					errors.add("error", new ActionError("admissionFormForm.doblimit.larger"));
 				}
 			}

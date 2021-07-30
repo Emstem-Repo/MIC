@@ -4296,8 +4296,9 @@ public Map<String, String> getYear() throws Exception {
 		Session session = null;
 		StudentCourseAllotment allotment= null;
 		try{
+			Query query=null;
 	       session = HibernateUtil.getSession();
-	       int catetory=Integer.parseInt(admForm.getCategoryId());
+	     /*  int catetory=Integer.parseInt(admForm.getCategoryId());
 	       Query query=null;
 	       if (catetory==11) {
 	    	   query = session.createQuery("from StudentCourseAllotment s where s.admAppln.id=:id and s.allotmentNo=:max and s.isGeneral=1 and s.course.id="+admForm.getDeptId());
@@ -4310,7 +4311,9 @@ public Map<String, String> getYear() throws Exception {
 	      // query = session.createQuery("from StudentCourseAllotment s where s.admAppln.id=:id and s.allotmentNo=:max and s.isCaste=1 and s.course.id="+admForm.getDeptId());
 			 query = session.createQuery("from StudentCourseAllotment s where s.admAppln.id=:id and s.allotmentNo=:max" );
 	       
-		}query.setInteger("id",id);
+		}*/
+	       query = session.createQuery("from StudentCourseAllotment s where s.admAppln.id=:id and s.allotmentNo=:max" );
+	       query.setInteger("id",id);
 	       query.setInteger("max", max);
 	       allotment = (StudentCourseAllotment) query.uniqueResult();
 	       
@@ -4552,13 +4555,13 @@ public Map<String, String> getYear() throws Exception {
 		List<StudentCourseChanceMemo> allotment= null;
 		try{
 	       session = HibernateUtil.getSession();
-	       String hqlQuery = "from StudentCourseChanceMemo s where s.admAppln.id=:id and s.course.id=:courseId";
-	       if(isCaste)
-    		   hqlQuery += " and s.isCaste = true";
-    	   else if(isCommunity)
-    		   hqlQuery += " and s.isCommunity = true";
-    	   else
-    		   hqlQuery += " and s.isGeneral = true";
+	       String hqlQuery = "from StudentCourseChanceMemo s where s.admAppln.id=:id and s.course.id=:courseId and s.isAccept=1";
+//	       if(isCaste)
+//    		   hqlQuery += " and s.isCaste = true";
+//    	   else if(isCommunity)
+//    		   hqlQuery += " and s.isCommunity = true";
+//    	   else
+//    		   hqlQuery += " and s.isGeneral = true";
 	       Query query = session.createQuery(hqlQuery);
 	       query.setInteger("id",id);
 	       query.setInteger("courseId", courseId);

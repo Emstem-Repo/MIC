@@ -12173,5 +12173,12 @@ This is a blank Tiles definition file with a commented example.
         </put>
         <put name="body" value="/jsp/exam/ExamPublishMarksCard.jsp"/>
     </definition>
+    
+    <definition name="initFormsOnline" extends=".cmsLayout">
+        <put name="title" value="Admin Home"/>
+        <put name="module" value="Admission"/>
+        <put name="page" value="Admission Form "/>
+        <put name="body" value="/jsp/admission/init_formsOnline.jsp"/>
+    </definition>
 	 
 </tiles-definitions>

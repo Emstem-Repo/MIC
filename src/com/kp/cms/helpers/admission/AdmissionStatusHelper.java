@@ -300,13 +300,13 @@ public class AdmissionStatusHelper {
 				//Iterator<CandidatePreference> prefItr = prefSet.iterator();
 				Boolean isCaste = false;
 				Boolean isCommunity = false;
-				int catetory=Integer.parseInt(admissionStatusForm.getCategoryId());
-				if (catetory==8) {
-					isCommunity=true;
-				}
-				if (catetory==2 || catetory==3) {
-					isCaste=true;
-				}
+//				int catetory=Integer.parseInt(admissionStatusForm.getCategoryId());
+//				if (catetory==8) {
+//					isCommunity=true;
+//				}
+//				if (catetory==2 || catetory==3) {
+//					isCaste=true;
+//				}
 				Integer maxChanceNo = txn2.getMaxChanceNo(appln.getAppliedYear(),appln.getCourse().getProgram().getProgramType().getId(), Integer.parseInt(admissionStatusForm.getDeptId()), isCaste, isCommunity);
 			      int mxChance = 0;
 			        if(maxChanceNo!=null){

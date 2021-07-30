@@ -3909,8 +3909,8 @@ public class AdmissionFormHelper {
 			preferenceTO = copyPropertiesValue(admApplnBo.getCandidatePreferences());
 			adminAppTO.setPreference(preferenceTO);
 	
-			editDocuments = copyPropertiesEditDocValue(admApplnBo.getApplnDocs(),adminAppTO.getSelectedCourse().getId(),adminAppTO,admApplnBo.getAppliedYear());
-			adminAppTO.setEditDocuments(editDocuments);
+			//editDocuments = copyPropertiesEditDocValue(admApplnBo.getApplnDocs(),adminAppTO.getSelectedCourse().getId(),adminAppTO,admApplnBo.getAppliedYear());
+			//adminAppTO.setEditDocuments(editDocuments);
 			
 			prereqList=copyPrerequisiteDetails(admApplnBo.getCandidatePrerequisiteMarks());
 			adminAppTO.setPrerequisiteTos(prereqList);

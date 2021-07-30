@@ -109,13 +109,13 @@
 										<cms:renderYear></cms:renderYear>
 									</html:select></td>
 									<td class="row-odd">
-									<div align="right"><span class="Mandatory">*</span>&nbsp; Category</div>
+									<!-- <div align="right"><span class="Mandatory">*</span>&nbsp; Category</div> -->
 									</td>
 									<td class="row-odd">
-										<html:select property="categoryId" name="admissionStatusForm">
+										<%-- <html:select property="categoryId" name="admissionStatusForm">
 											<html:option value="">Select</html:option>
 											<html:optionsCollection name="admissionStatusForm" property="categoryMap" label="value" value="key"/>
-										</html:select>
+										</html:select> --%>
 									</td>
 								</tr>
 								<tr>

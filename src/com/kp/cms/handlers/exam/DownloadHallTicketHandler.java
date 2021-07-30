@@ -199,11 +199,11 @@ public class DownloadHallTicketHandler {
 		String hallTicketQuery= DownloadHallTicketHelper.getInstance().getQueryForStudentHallTicket(loginForm.getStudentId(),loginForm.getExamId());
 		IDownloadHallTicketTransaction transaction= DownloadHallTicketTransactionImpl.getInstance();
 		int schemeNoByClassId = 0;
-		if(loginForm.getRevClassId() != 0){
-		 schemeNoByClassId = transaction.getTermNumber(loginForm.getRevClassId());
-		}else {
+		//if(loginForm.getRevClassId() != 0){
+		// schemeNoByClassId = transaction.getTermNumber(loginForm.getRevClassId());
+		//}else {
 			schemeNoByClassId = transaction.getTermNumber(Integer.parseInt(loginForm.getClassId()));
-		}
+		//}
 		String prevHallTicketQuery= DownloadHallTicketHelper.getInstance().getQueryForStudentPrevHallTicket(loginForm.getStudentId(),loginForm.getExamId(),schemeNoByClassId-1);
 		List<ExamFooterAgreementBO> footer=transaction.getFooterDetails(loginForm.getProgramTypeId(),"H",loginForm.getClassId());
 		if(footer!=null && !footer.isEmpty()){

@@ -5679,6 +5679,17 @@ public class NewSupplementaryImpApplicationAction extends BaseDispatchAction {
 				request.setAttribute("test", newSupplementaryImpApplicationForm.getTest());
 				request.setAttribute("surl",CMSConstants.PAYUMONEY_SUCCESSURL_REVALUATION_SUPPLY);
 				request.setAttribute("furl",CMSConstants.PAYUMONEY_FAILUREURL_REVALUATION_SUPPLY);
+				System.out.println("hash   "+ hash);
+				System.out.println("txnid   "+newSupplementaryImpApplicationForm.getRefNo());
+				System.out.println("productinfo   "+newSupplementaryImpApplicationForm.getProductinfo());
+				System.out.println("amount   "+newSupplementaryImpApplicationForm.getTotalRevaluationPaymentFees());
+				System.out.println("email    "+newSupplementaryImpApplicationForm.getEmail());
+				System.out.println("firstname   "+newSupplementaryImpApplicationForm.getNameOfStudent());
+				System.out.println("phone   "+newSupplementaryImpApplicationForm.getMobileNo());
+				System.out.println("test   "+ newSupplementaryImpApplicationForm.getTest());
+				System.out.println("surl   "+CMSConstants.PAYUMONEY_SUCCESSURL_REVALUATION_SUPPLY);
+				System.out.println("furl   "+CMSConstants.PAYUMONEY_FAILUREURL_REVALUATION_SUPPLY);
+				
 				log.info("*************************** exam rev hash " + hash);
 
 			} catch (Exception exception) {

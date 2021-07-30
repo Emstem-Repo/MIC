@@ -6496,6 +6496,15 @@
          type="com.kp.cms.actions.admin.PublishSpecialFeesAction">
             <forward name="publishSpecialFees" path="publishSpecialFees"/>
         </action>
+        
+        <action path="/admissionFormsOnline" name="admissionFormForm"
+         type="com.kp.cms.actions.admission.AdmissionFormOnlineAction" parameter="method" validate="false" scope="session">
+            <forward name="initFormsOnline" path="initFormsOnline"/>
+            <forward name="OnlineapplicationDetailPage" path="OnlineapplicationDetailPage"/>
+            <forward name="onlineMembership" path="/jsp/admission/formsOnlineMembershipApplication.jsp"/>
+            <forward name="onlineBioDataForm" path="/jsp/admission/formsOnlineBioDataForm.jsp"/>
+            <forward name="onlineAnnexure" path="/jsp/admission/formsOnlineOnlineAnnexure.jsp"/>
+            </action>
 		
 	</action-mappings>
 

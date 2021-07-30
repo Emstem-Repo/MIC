@@ -280,20 +280,20 @@
 								<tr>
 									<td rowspan="2">1</td>
 									<td rowspan="2">B.A</td>
-									<td rowspan="2">English Language and Literature</td>
-									<td>1. History of English Language &amp; Literature</td>
-								</tr>
-								<tr>
-									<td>2. History of the Modern World</td>
-								</tr>
-								<tr>
-									<td rowspan="2">2</td>
-									<td rowspan="2">B.A</td>
 									<td rowspan="2">Economics</td>
 									<td>1. Political Science</td>
 								</tr>
 								<tr>
 									<td>2. History of Modern India/Mathematics</td>
+								</tr>
+								<tr>
+									<td rowspan="2">2</td>
+									<td rowspan="2">B.A</td>
+									<td rowspan="2">English Language and Literature</td>
+									<td>1. History of English Language & Literature</td>
+								</tr>
+								<tr>
+									<td>2. History of the Modern World</td>
 								</tr>
 								<tr>
 									<td rowspan="2">3</td>
@@ -304,17 +304,9 @@
 								<tr>
 									<td>2. Creative Writing : English</td>
 								</tr>
+								
 								<tr>
 									<td rowspan="2">4</td>
-									<td rowspan="2">B.A</td>
-									<td rowspan="2">Journalism, Mass Communication &amp; Video Production</td>
-									<td>1. Creative Writing: Malayalam</td>
-								</tr>
-								<tr>
-									<td>2. Creative Writing : English</td>
-								</tr>
-								<tr>
-									<td rowspan="2">5</td>
 									<td rowspan="2">B.Sc</td>
 									<td rowspan="2">Mathematics</td>
 									<td>1. Physics</td>
@@ -323,7 +315,7 @@
 									<td>2. Statistics</td>
 								</tr>
 								<tr>
-									<td rowspan="2">6</td>
+									<td rowspan="2">5</td>
 									<td rowspan="2">B.Sc</td>
 									<td rowspan="2">Physics</td>
 									<td>1. Mathematics</td>
@@ -331,8 +323,18 @@
 								<tr>
 									<td>2. Chemistry</td>
 								</tr>
-								<tr>
+                                                                 <tr>
 									<td rowspan="2">6</td>
+									<td rowspan="2">B.Sc</td>
+									<td rowspan="2">Physics with Machine Learning</td>
+									<td>1. Mathematics</td>
+								</tr>
+								<tr>
+									<td>2. Machine Learning</td>
+								</tr>
+
+								<tr>
+									<td rowspan="2">7</td>
 									<td rowspan="2">B.Sc</td>
 									<td rowspan="2">Chemistry</td>
 									<td>1. Mathematics</td>
@@ -341,7 +343,7 @@
 									<td>2. Physics</td>
 								</tr>
 								<tr>
-									<td rowspan="2">7</td>
+									<td rowspan="2">8</td>
 									<td rowspan="2">B.Sc</td>
 									<td rowspan="2">Botany</td>
 									<td>1. Chemistry</td>
@@ -350,7 +352,7 @@
 									<td>2. Zoology</td>
 								</tr>
 								<tr>
-									<td rowspan="2">8</td>
+									<td rowspan="2">9</td>
 									<td rowspan="2">B.Sc</td>
 									<td rowspan="2">Zoology</td>
 									<td>1. Chemistry</td>
@@ -359,13 +361,13 @@
 									<td>2. Botany</td>
 								</tr>
 								<tr>
-									<td>9</td>
+									<td>10</td>
 									<td>B.Sc</td>
 									<td>Botany &amp; Biotechnology</td>
 									<td>1. Biochemistry</td>
 								</tr>
 								<tr>
-									<td>10</td>
+									<td>11</td>
 									<td>B.Com</td>
 									<td>Commerce</td>
 									<td>1. Finance/Computer Applications/Co-operation (Electives)</td>
@@ -380,27 +382,67 @@
 									<th width="30%">PROGRAMME</th>
 									<th width="55%">COMPLEMENTARY COURSE</th>
 								</tr>
+                                                                <tr>
+									<td  rowspan="2">1</td>
+									<td  rowspan="2">B.A</td>
+									<td  rowspan="2">Analytical Economics </td>
+									<td>1. Political Science</td>
+								</tr>
+                                                                <tr>
+									<td>2. History / Mathematics</td>
+								</tr>
+
+
 								<tr>
-									<td rowspan="2">1</td>
+									<td rowspan="2">2</td>
 									<td rowspan="2">B.A</td>
-									<td rowspan="2">English Language and Literature</td>
+									<td rowspan="2">English Language and Literature </td>
 									<td>1. History of English Language &amp; Literature</td>
 								</tr>
 								<tr>
 									<td>2. History of the Modern World</td>
 								</tr>
-								<tr>
-									<td>2</td>
-									<td>B.Com</td>
-									<td>Commerce</td>
-									<td>1. Finance (Electives)</td>
-								</tr>
-								<tr>
+
+
+                                                                <tr>
 									<td>3</td>
-									<td>B.Com</td>
-									<td>B.Com Accounts &amp; Audit (Self Financing) </td>
-									<td>1. Accounts &amp; Audit (Electives)</td>
+									<td>B.A</td>
+									<td>English & Communicative English  </td>
+									<td>1. History of English Literature</td>
 								</tr>
+                                                                <tr>
+									<td>4</td>
+									<td>B.Sc</td>
+									<td>Computer Science  </td>
+									<td>1. Mathematics </td>
+								</tr>
+
+                                                                 <tr>
+									<td rowspan="2">5</td>
+									<td rowspan="2">B.Sc</td>
+									<td rowspan="2">Statistics  </td>
+									<td>1. Mathematics </td>
+								</tr>
+                                                                 <tr>
+									<td>2. Computer Science</td>
+								</tr>
+
+
+								<tr>
+									<td>6</td>
+									<td>B.Com</td>
+									<td>Commerce </td>
+									<td>1. Finance </td>
+								</tr>
+								<tr>
+									<td>7</td>
+									<td>B.Com</td>
+									<td>B.Com Accounts &amp; Audit  </td>
+									<td>1. Accounts &amp; Audit </td>
+								</tr>
+                                                                
+                                                                
+
 							</table>
 						</td>
 					</tr>			

@@ -1964,10 +1964,10 @@
                 <msg name="required" key="knowledgepro.employee.course.required"/>
                 <arg0 key="admissionStatusForm.applicationNo"/>
             </field>
-			<field property="categoryId" depends="required">
+			<!-- <field property="categoryId" depends="required">
                 <msg name="required" key="knowledgepro.admin.FineCategory.required"/>
                 <arg0 key="admissionStatusForm.applicationNo"/>
-            </field>
+            </field> -->
 			<field property="year" depends="required">
                 <msg name="required" key="knowledgepro.admission.AppliedYear.required"/>
                 <arg0 key="admissionStatusForm.applicationNo"/>

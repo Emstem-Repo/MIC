@@ -813,7 +813,7 @@ public class StudentLoginAction extends BaseDispatchAction {
 					if(examBlockUnblockHallTicketBO!= null && examBlockUnblockHallTicketBO.getId() > 0){
 						isBlockedStudent = true;
 					}
-			/*		int previousClassId=DownloadHallTicketHandler.getInstance().getPreClassId(Integer.parseInt(studentid), loginForm);
+					int previousClassId=DownloadHallTicketHandler.getInstance().getPreClassId(Integer.parseInt(studentid), loginForm);
 					if(previousClassId == 550 ||
 					   previousClassId == 559 ||
 					   previousClassId == 558 ||
@@ -840,7 +840,30 @@ public class StudentLoginAction extends BaseDispatchAction {
 					   previousClassId == 574 ||
 					   previousClassId == 575 ||
 					   previousClassId == 584 ||
-					   previousClassId == 555 ){
+					   previousClassId == 555 ||
+					   //new
+					   previousClassId==682 ||
+					   previousClassId==681 ||
+					   previousClassId==680 ||
+					   previousClassId==679 ||
+					   previousClassId==678 ||
+					   previousClassId==677 ||
+					   previousClassId==676 ||
+					   previousClassId==675 ||
+					   previousClassId==674 ||
+					   previousClassId==673 ||
+					   previousClassId==672 ||
+					   previousClassId==671 ||
+					   previousClassId==670 ||
+					   previousClassId==669 ||
+					   previousClassId==668 ||
+					   previousClassId==667 ||
+					   previousClassId==666 ||
+					   previousClassId==665 ||
+					   previousClassId==664 ||
+					   previousClassId==663 ||
+					   previousClassId==662 ||
+					   previousClassId==661){
 						
 						classId = previousClassId;
 						examId = DownloadHallTicketHandler.getInstance().getExamIdByClassId(classId, loginForm, "Hall Ticket");
@@ -853,7 +876,7 @@ public class StudentLoginAction extends BaseDispatchAction {
 							isBlockedStudent = true;
 						}
 					}
-				*/
+				
 					boolean isDateValid = DownloadHallTicketHandler.getInstance().isDateValid(classId, examId, "Hall Ticket", false);
 					if(classId > 0 && examId > 0 && isDateValid){
 						session.setAttribute("showHallTicket", true);
@@ -4121,7 +4144,7 @@ return mapping.findForward(CMSConstants.STUDENT_LOGIN_MARKSCARD);
 		List<PublishSpecialFeesTO> puList = StudentLoginHandler.getInstance().getPublishList(loginForm.getClassId());
 		loginForm.setPublishList(puList);
 		if(student.getIsEgrand() == true){
-			loginForm.setSpecialFeesAmount("25");
+			loginForm.setSpecialFeesAmount("320");
 		}else {
 		SpecialFeesBO bo = StudentLoginHandler.getInstance().getTotalAmount(loginForm.getClassId());
 		double tutionFees = 0.0;
