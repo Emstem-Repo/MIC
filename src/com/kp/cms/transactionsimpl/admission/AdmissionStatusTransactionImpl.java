@@ -2,18 +2,23 @@ package com.kp.cms.transactionsimpl.admission;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.exception.ConstraintViolationException;
 
 import com.kp.cms.bo.admin.AdmAppln;
 import com.kp.cms.bo.admin.CandidatePGIDetails;
+import com.kp.cms.bo.admin.CertificateCourse;
 import com.kp.cms.bo.admin.InterviewCard;
 import com.kp.cms.bo.admin.InterviewCardHistory;
+import com.kp.cms.bo.admin.StudentCertificateCourse;
 import com.kp.cms.bo.admin.StudentCourseAllotment;
 import com.kp.cms.bo.admin.StudentCourseChanceMemo;
 import com.kp.cms.bo.admission.ApplnAcknowledgement;
@@ -22,9 +27,12 @@ import com.kp.cms.bo.admission.StudentAllotmentPGIDetails;
 import com.kp.cms.exceptions.ApplicationException;
 import com.kp.cms.exceptions.BusinessException;
 import com.kp.cms.forms.admission.AdmissionStatusForm;
+import com.kp.cms.to.admission.CertificateCourseTO;
+import com.kp.cms.to.admission.StudentCertificateCourseTO;
 import com.kp.cms.transactions.admission.IAdmissionStatusTransaction;
 import com.kp.cms.utilities.CommonUtil;
 import com.kp.cms.utilities.HibernateUtil;
+import com.kp.cms.utilities.InitSessionFactory;
 
 public class AdmissionStatusTransactionImpl implements IAdmissionStatusTransaction {
 	
@@ -229,7 +237,7 @@ public class AdmissionStatusTransactionImpl implements IAdmissionStatusTransacti
 		String d=CommonUtil.formatDate(dob);
 		try {
 			session = HibernateUtil.getSession();
-			Query query=session.createQuery("from StudentCourseChanceMemo s where s.admAppln.applnNo = " + applicationNo + 
+			Query query=session.createQuery("from StudentCourseChanceMemo s where s.chanceNo=1 and s.admAppln.applnNo = " + applicationNo + 
 					" and s.admAppln.personalData.dateOfBirth='" + d + "'" + ")");
 			courseAllotment = query.list();		
 			return courseAllotment;	
@@ -275,7 +283,7 @@ public class AdmissionStatusTransactionImpl implements IAdmissionStatusTransacti
 		StudentCourseChanceMemo courseAllotment= new StudentCourseChanceMemo();	
 		try {
 			session = HibernateUtil.getSession();
-			Query query=session.createQuery("from StudentCourseChanceMemo s where s.isAccept=1 and s.admAppln.id = " + admApplnId + ")");
+			Query query=session.createQuery("from StudentCourseChanceMemo s where s.isAccept=s and s.admAppln.id = " + admApplnId + ")");
 			courseAllotment =(StudentCourseChanceMemo) query.uniqueResult();		
 			return courseAllotment;	
 		} catch (Exception e) {
@@ -392,30 +400,420 @@ public class AdmissionStatusTransactionImpl implements IAdmissionStatusTransacti
 		}
 		return allotments;
 	}
-	public List<AdmAppln> getDetailsAdmAppln(String applicationNo,String year)throws Exception {
-		log.info("Inside of getDetailsAdmAppln of AdmissionStatusTransactionImpl");
+
+	@Override
+	public List<StudentCourseAllotment> getBolistForAllotment(String applicationNo, String dateOfBirth)
+			throws Exception {
+		log.info("Inside of getInterviewResult of AdmissionStatusTransactionImpl");
 		Session session = null;
-		List<AdmAppln> admAppln;
+		List<StudentCourseAllotment> courseAllotment= new ArrayList<StudentCourseAllotment>();
+		String d=CommonUtil.formatDate(dateOfBirth);
 		try {
-			//session =InitSessionFactory.getInstance().openSession();
 			session = HibernateUtil.getSession();
-			Query query = session.createQuery("from AdmAppln adm where adm.applnNo= " + applicationNo +  
-					" and appliedYear ="+year);
-			admAppln = query.list();
-			if(!admAppln.isEmpty())
-			{
-				return admAppln;
-			}			
+			Query query=session.createQuery("from StudentCourseAllotment s where s.allotmentNo=2 and s.admAppln.applnNo = " + applicationNo + 
+					" and s.admAppln.personalData.dateOfBirth='" + d + "'" );
+			courseAllotment = query.list();		
+			return courseAllotment;	
 		} catch (Exception e) {
-		log.error("Exception ocured in getDetailsAdmAppln of AdmissionStatusTransactionImpl :"+e);
 			throw  new ApplicationException(e);
-		} finally {
-		if (session != null) {
-			session.flush();
-			//session.close();
+			} finally {
+			if (session != null) {
+				session.flush();
+			}
 		}
 	}
-		log.info("End of getDetailsAdmAppln of AdmissionStatusTransactionImpl");
-		return admAppln;
+
+	@Override
+	public boolean isUpdatedForPg(List<StudentCourseAllotment> courseAllotments) throws Exception {
+		Session session = null;
+		Transaction tx = null;
+		boolean isUpdate = false;
+		try{
+			session = HibernateUtil.getSession();
+			tx = session.beginTransaction();
+			tx.begin();
+			for(StudentCourseAllotment allotment:courseAllotments){
+				session.update(allotment);
+			}
+			tx.commit();
+			isUpdate = true;
+		}catch (Exception e) {
+			throw new ApplicationException(e);
+		}
+		finally {
+		if (session != null) {
+			session.flush();
+			session.close();
+		}
+		
+	}
+		return isUpdate;
+	}
+
+	@Override
+	public int getProgramTypeId(String applicationNo, String dateOfBirth) throws Exception {
+		Session session=null;
+		Integer programType=0;
+		String dateOf=CommonUtil.formatDate(dateOfBirth);
+		try{
+			session=HibernateUtil.getSession();
+			String hql=" select a.course.program.programType.id " +
+					   " from AdmAppln a " +
+					   " where a.applnNo="+Integer.parseInt(applicationNo) +
+					   " and a.personalData.dateOfBirth='" + dateOf + "'" ;
+			Query query = session.createQuery(hql);
+			programType=(Integer)query.uniqueResult();
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return programType;
+	}
+
+	@Override
+	public boolean isUpdateForBoth(List<StudentCourseChanceMemo> allotments,
+			List<StudentCourseAllotment> courseAllotments, AdmissionStatusForm admissionStatusForm) throws Exception {
+		
+		
+		List<StudentCourseChanceMemo> totalChances = new ArrayList<StudentCourseChanceMemo>();
+		
+		List<StudentCourseAllotment> totalAllotment = new ArrayList<StudentCourseAllotment>();
+		boolean isupdate=false;
+		
+		try{
+			String type=admissionStatusForm.getChancOrAllotment();
+			if(type.equalsIgnoreCase("Allotment")){
+				
+				StudentCourseAllotment all=courseAllotments.get(0);
+				StudentCourseChanceMemo chance=allotments.get(0);
+				if(admissionStatusForm.getSelectedValue().equalsIgnoreCase("accept")){
+					all.setIsAccept(true);
+					all.setModifiedBy(admissionStatusForm.getUserId());
+					all.setLastModifiedDate(new Date());
+					chance.setIsDecline(true);
+					chance.setModifiedBy(admissionStatusForm.getUserId());
+					chance.setLastModifiedDate(new Date());
+					totalAllotment.add(all);
+					totalChances.add(chance);
+					isupdate=isUpdateFo(totalChances,totalAllotment);
+				}else{
+					all.setIsDecline(true);
+					all.setModifiedBy(admissionStatusForm.getUserId());
+					all.setLastModifiedDate(new Date());
+					totalAllotment.add(all);
+					isupdate=isUpdatedForPg(totalAllotment);
+				}
+				
+			}else{
+				
+				StudentCourseAllotment all=courseAllotments.get(0);
+				StudentCourseChanceMemo chance=allotments.get(0);
+				if(admissionStatusForm.getSelectedValue().equalsIgnoreCase("accept")){
+					chance.setIsAccept(true);
+					chance.setModifiedBy(admissionStatusForm.getUserId());
+					chance.setLastModifiedDate(new Date());
+					all.setIsDecline(true);
+					all.setModifiedBy(admissionStatusForm.getUserId());
+					all.setLastModifiedDate(new Date());
+					totalChances.add(chance);
+					totalAllotment.add(all);
+					isupdate=isUpdateFo(totalChances,totalAllotment);
+				}else{
+					chance.setIsDecline(true);
+					chance.setModifiedBy(admissionStatusForm.getUserId());
+					chance.setLastModifiedDate(new Date());
+					totalChances.add(chance);
+					isupdate=isUpdated(totalChances);
+				}
+				
+				
+			}
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return isupdate;
+	}
+
+	private boolean isUpdateFo(List<StudentCourseChanceMemo> totalChances,
+			List<StudentCourseAllotment> totalAllotment)throws Exception {
+		Session session = null;
+		Transaction tx = null;
+		boolean isUpdate = false;
+		try{
+			session = HibernateUtil.getSession();
+			tx = session.beginTransaction();
+			tx.begin();
+			for(StudentCourseAllotment allotment:totalAllotment){
+				session.update(allotment);
+			}
+			for(StudentCourseChanceMemo allotment:totalChances){
+				session.update(allotment);
+			}
+			tx.commit();
+			isUpdate = true;
+		}catch (Exception e) {
+			throw new ApplicationException(e);
+		}
+		finally {
+		if (session != null) {
+			session.flush();
+			session.close();
+		}
+		
+	}
+		return isUpdate;
+	}
+
+	@Override
+	public List<StudentCourseChanceMemo> getBolistForPG(String applicationNo, String dateOfBirth) throws Exception {
+		log.info("Inside of getInterviewResult of AdmissionStatusTransactionImpl");
+		Session session = null;
+		List<StudentCourseChanceMemo> courseAllotment= new ArrayList<StudentCourseChanceMemo>();
+		String d=CommonUtil.formatDate(dateOfBirth);
+		try {
+			session = HibernateUtil.getSession();
+			Query query=session.createQuery("from StudentCourseChanceMemo s where s.chanceNo=2 and s.admAppln.applnNo = " + applicationNo + 
+					" and s.admAppln.personalData.dateOfBirth='" + d + "'");
+			courseAllotment = query.list();		
+			return courseAllotment;	
+		} catch (Exception e) {
+			throw  new ApplicationException(e);
+			} finally {
+			if (session != null) {
+				session.flush();
+			}
+		}
+	}
+
+	@Override
+	public int getSelectedCourseId(String applicationNo, String dateOfBirth) throws Exception {
+		Session session=null;
+		Integer cousrseId=0;
+		String dateOf=CommonUtil.formatDate(dateOfBirth);
+		try{
+			session=HibernateUtil.getSession();
+			String hql=" select a.course.id " +
+					   " from AdmAppln a " +
+					   " where a.applnNo="+Integer.parseInt(applicationNo) +
+					   " and a.personalData.dateOfBirth='" + dateOf + "'" ;
+			Query query = session.createQuery(hql);
+			cousrseId=(Integer)query.uniqueResult();
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return cousrseId;
+	}
+
+	@Override
+	public List<StudentCourseChanceMemo> getBolistForUg(String applicationNo, String dateOfBirth) throws Exception {
+		log.info("Inside of getInterviewResult of AdmissionStatusTransactionImpl");
+		Session session = null;
+		List<StudentCourseChanceMemo> courseAllotment= new ArrayList<StudentCourseChanceMemo>();
+		String d=CommonUtil.formatDate(dateOfBirth);
+		try {
+			session = HibernateUtil.getSession();
+			Query query=session.createQuery("from StudentCourseChanceMemo s where s.chanceNo=1 and s.admAppln.applnNo = " + applicationNo + 
+					" and s.admAppln.personalData.dateOfBirth='" + d + "'" );
+			courseAllotment = query.list();		
+			return courseAllotment;	
+		} catch (Exception e) {
+			throw  new ApplicationException(e);
+			} finally {
+			if (session != null) {
+				session.flush();
+			}
+		}
+	}
+
+	@Override
+	public List<StudentCourseAllotment> getBolistForAllotmentUg(String applicationNo, String dateOfBirth)
+			throws Exception {
+		log.info("Inside of getInterviewResult of AdmissionStatusTransactionImpl");
+		Session session = null;
+		List<StudentCourseAllotment> courseAllotment= new ArrayList<StudentCourseAllotment>();
+		String d=CommonUtil.formatDate(dateOfBirth);
+		try {
+			session = HibernateUtil.getSession();
+			Query query=session.createQuery("from StudentCourseAllotment s where s.allotmentNo=2 and s.admAppln.applnNo = " + applicationNo + 
+					" and s.admAppln.personalData.dateOfBirth='" + d + "'" );
+			courseAllotment = query.list();		
+			return courseAllotment;	
+		} catch (Exception e) {
+			throw  new ApplicationException(e);
+			} finally {
+			if (session != null) {
+				session.flush();
+			}
+		}
+	}
+
+	@Override
+	public boolean isUpdateForBothForUg(List<StudentCourseChanceMemo> allotments,
+			List<StudentCourseAllotment> courseAllotments, AdmissionStatusForm admissionStatusForm)
+			throws Exception {
+		
+		
+		List<StudentCourseChanceMemo> totalChances = new ArrayList<StudentCourseChanceMemo>();
+		
+		List<StudentCourseAllotment> totalAllotment = new ArrayList<StudentCourseAllotment>();
+		boolean isupdate=false;
+		
+		try{
+			String type=admissionStatusForm.getChancOrAllotment();
+			if(type.equalsIgnoreCase("Allotment")){
+				
+				StudentCourseAllotment all=courseAllotments.get(0);
+				if(admissionStatusForm.getSelectedValue().equalsIgnoreCase("accept")){
+					all.setIsAccept(true);
+					all.setModifiedBy(admissionStatusForm.getUserId());
+					all.setLastModifiedDate(new Date());
+					for(StudentCourseChanceMemo memo:allotments){
+						//memo.setIsDecline(true);
+						memo.setModifiedBy(admissionStatusForm.getUserId());
+						memo.setLastModifiedDate(new Date());
+						totalChances.add(memo);
+					}
+					totalAllotment.add(all);
+					isupdate=isUpdateFo(totalChances,totalAllotment);
+				}else if(admissionStatusForm.getSelectedValue().equalsIgnoreCase("decline")){
+					all.setIsDecline(true);
+					all.setModifiedBy(admissionStatusForm.getUserId());
+					all.setLastModifiedDate(new Date());
+						for(StudentCourseChanceMemo memo:allotments){
+							//memo.setIsDecline(true);
+							memo.setModifiedBy(admissionStatusForm.getUserId());
+							memo.setLastModifiedDate(new Date());
+							totalChances.add(memo);
+						}
+					totalAllotment.add(all);
+					isupdate=isUpdatedForPg(totalAllotment);
+				}else{
+					//all.setIsDecline(true);
+					all.setModifiedBy(admissionStatusForm.getUserId());
+					all.setLastModifiedDate(new Date());
+					totalAllotment.add(all);
+					isupdate=isUpdatedForPg(totalAllotment);
+				}
+				
+			}else{
+				
+				StudentCourseAllotment all=courseAllotments.get(0);
+				if(admissionStatusForm.getSelectedValue().equalsIgnoreCase("accept")){
+					for(StudentCourseChanceMemo memo:allotments){
+						if(memo.getCourse().getId()==admissionStatusForm.getSelectedCourseId()){
+							memo.setIsAccept(true);
+							memo.setModifiedBy(admissionStatusForm.getUserId());
+							memo.setLastModifiedDate(new Date());
+						}else{
+							memo.setIsDecline(true);
+							memo.setModifiedBy(admissionStatusForm.getUserId());
+							memo.setLastModifiedDate(new Date());
+						}
+						totalChances.add(memo);
+					}
+					//all.setIsDecline(true);
+					all.setModifiedBy(admissionStatusForm.getUserId());
+					all.setLastModifiedDate(new Date());
+					totalAllotment.add(all);
+					isupdate=isUpdateFo(totalChances,totalAllotment);
+				}else{
+					for(StudentCourseChanceMemo memo:allotments){
+						if(memo.getCourse().getId()==admissionStatusForm.getSelectedCourseId()){
+							memo.setIsDecline(true);
+							memo.setModifiedBy(admissionStatusForm.getUserId());
+							memo.setLastModifiedDate(new Date());
+						}
+						totalChances.add(memo);
+					}
+					isupdate=isUpdated(totalChances);
+				}
+				
+				
+			}
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return isupdate;
+	}
+	
+	public List<CertificateCourse> getActiveCertificateCourses(int year)throws Exception
+	{
+		log.info("Start of getActiveCourses of CourseTransactionImpl");
+		Session session = null;
+		List<CertificateCourse> courseBoList;
+		try {
+			session = InitSessionFactory.getInstance().openSession();
+			courseBoList = session.createQuery("from CertificateCourse c where c.isActive = 1").list();
+			} catch (Exception e) {
+			log.error("Error in getActiveCertificateCourses of Course Impl",e);
+			throw new ApplicationException(e);
+			} finally {
+			if (session != null) {
+				session.flush();
+				}
+			}
+			log.info("End of getActiveCertificateCourses of impl");
+			return courseBoList;
+	}
+
+	@Override
+	public boolean saveStudentCertificateCourse(List<StudentCertificateCourse> studCertCourse) throws Exception {
+		log.debug("inside addCertificateCourse");
+		Session session = null;
+		Transaction transaction = null;
+		try {
+			session = HibernateUtil.getSession();
+			transaction = session.beginTransaction();
+			transaction.begin();
+			for (StudentCertificateCourse bo : studCertCourse) {
+				session.save(bo);
+			}
+			
+			transaction.commit();
+			if (session != null) {
+				session.flush();
+				session.close();
+			}
+			log.debug("leaving addCertificateCourse");
+			return true;
+		} catch (ConstraintViolationException e) {
+			transaction.rollback();
+			log.error("Error during saving addCertificateCourse..." , e);
+			throw new BusinessException(e);
+		} catch (Exception e) {
+			transaction.rollback();
+			log.error("Error during saving addCertificateCourse data..." , e);
+			throw new ApplicationException(e);
+		}
+
+	}
+	@Override
+	public List<CertificateCourseTO> getCertificateCoursesprint(int id) throws Exception {
+		log.info("Inside of getInterviewResult of AdmissionStatusTransactionImpl");
+		Session session = null;
+		try {
+			session = HibernateUtil.getSession();
+			List<StudentCertificateCourse> list=new ArrayList<StudentCertificateCourse>();
+			List<CertificateCourseTO> toList=new ArrayList<CertificateCourseTO>();
+			Query query=session.createQuery("from StudentCertificateCourse s where s.admAppln.id="+id );
+			 list = query.list();	
+			if (list!=null) {
+				for (StudentCertificateCourse bo : list) {
+					CertificateCourseTO to=new CertificateCourseTO();
+					to.setId(bo.getId());
+					to.setCourseName(bo.getCertificateCourse().getCertificateCourseName());
+					toList.add(to);
+				}
+				return toList;
+			}
+		} catch (Exception e) {
+			throw  new ApplicationException(e);
+			} finally {
+			if (session != null) {
+				session.flush();
+			}
+		}
+		return null;
 	}
 }

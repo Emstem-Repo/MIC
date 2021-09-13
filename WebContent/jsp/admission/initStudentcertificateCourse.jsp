@@ -15,135 +15,161 @@ function getSchemeNo(registerNo) {
 	document.studentCertificateCourseForm.submit();
 }
 
-
+function submitAddMorePreferences(method){
+	document.getElementById("method").value=method;
+	document.admissionStatusForm.submit();
+}
+function submitAddMorePreferences(method){
+	document.getElementById("method").value=method;
+	document.admissionStatusForm.submit();
+}
+function submitgetstatus(){
+	document.getElementById("method").value="getOnlineApplicationStatus";
+	document.admissionStatusForm.submit();
+}
+function addCourseId(id){
+		document.getElementById("courseId").value=id;
+}
+function removePreferences(){
+	document.getElementById("method").value="removePreferences";
+	document.admissionStatusForm.submit();
+}
+function submitcourse(){
+	document.getElementById("method").value="submitcourse";
+	document.admissionStatusForm.submit();
+}
 </script>
-<html:form action="/StudentCertificateCourse">	
-		<html:hidden property="method" styleId="method" value="getStudentCertificateCourse" />
-		<html:hidden property="formName" value="studentCertificateCourseForm"/>
-		<html:hidden property="pageType" value="1" />
+<html:form action="/StudentCertificateCourse">
+	<html:hidden property="method" styleId="method"
+		value="getStudentCertificateCourse" />
+	<html:hidden property="formName" value="studentCertificateCourseForm" />
+	<html:hidden property="pageType" value="1" />
 	<table width="100%" border="0">
 		<tr>
-			<td><span class="Bredcrumbs"><bean:message key="knowledgepro.admin"/>
-			<span class="Bredcrumbs">&gt;&gt;
-			<bean:message key="knowledgepro.admin.certificate.course"/>
-			 &gt;&gt;</span></span></td>
+			<td><span class="Bredcrumbs"><bean:message
+						key="knowledgepro.admin" /> <span class="Bredcrumbs">&gt;&gt;
+						<bean:message key="knowledgepro.admin.certificate.course" />
+						&gt;&gt;
+				</span></span></td>
 		</tr>
 		<tr>
 			<td valign="top">
-			<table width="100%" border="0" cellpadding="0" cellspacing="0">
-				<tr>
-					<td width="9"><img src="images/Tright_03_01.gif" width="9"
-						height="29"></td>
-					<td background="images/Tcenter.gif" class="body"><strong
-						class="boxheader"> <bean:message key="knowledgepro.admin.certificate.course"/> Entry</strong></td>
+				<table width="100%" border="0" cellpadding="0" cellspacing="0">
+					<tr>
+						<td width="9"><img src="images/Tright_03_01.gif" width="9"
+							height="29"></td>
+						<td background="images/Tcenter.gif" class="body"><strong
+							class="boxheader"> <bean:message
+									key="knowledgepro.admin.certificate.course" /> Entry
+						</strong></td>
 
-					<td width="10"><img src="images/Tright_1_01.gif" width="9"
-						height="29"></td>
-				</tr>
-				<tr>
-					<td height="20" valign="top" background="images/Tright_03_03.gif"></td>
-					<td valign="top" class="news">
-					<div align="right"><FONT color="red"> <span class='MandatoryMark'><bean:message key="knowledgepro.mandatoryfields"/></span></FONT></div>
-					<div id="errorMessage"><FONT color="red"><html:errors /></FONT>
-					<FONT color="green"> <html:messages id="msg"
-						property="messages" message="true">
-						<c:out value="${msg}" escapeXml="false"></c:out>
-						<br>
-					</html:messages> </FONT></div>
-					</td>
-					<td valign="top" background="images/Tright_3_3.gif" class="news"></td>
-				</tr>
-				<tr>
-					<td height="41" valign="top" background="images/Tright_03_03.gif"></td>
-					<td valign="top" class="news">
-					<table width="100%" border="0" align="center" cellpadding="0"
-						cellspacing="0">
-						<tr>
-							<td><img src="images/01.gif" width="5" height="5" /></td>
-							<td width="914" background="images/02.gif"></td>
-							<td><img src="images/03.gif" width="5" height="5" /></td>
-						</tr>
-						<tr>
-							<td width="5" background="images/left.gif"></td>
-							<td valign="top">
-							<table width="100%" cellspacing="1" cellpadding="2">
+						<td width="10"><img src="images/Tright_1_01.gif" width="9"
+							height="29"></td>
+					</tr>
+					<tr>
+						<td height="20" valign="top" background="images/Tright_03_03.gif"></td>
+						<td valign="top" class="news">
+							<div align="right">
+								<FONT color="red"> <span class='MandatoryMark'><bean:message
+											key="knowledgepro.mandatoryfields" /></span></FONT>
+							</div>
+							<div id="errorMessage">
+								<FONT color="red"><html:errors /></FONT> <FONT color="green">
+									<html:messages id="msg" property="messages" message="true">
+										<c:out value="${msg}" escapeXml="false"></c:out>
+										<br>
+									</html:messages>
+								</FONT>
+							</div>
+						</td>
+						<td valign="top" background="images/Tright_3_3.gif" class="news"></td>
+					</tr>
+					<tr>
+						<td height="41" valign="top" background="images/Tright_03_03.gif"></td>
+						<td valign="top" class="news">
+							<table width="100%" border="0" align="center" cellpadding="0"
+								cellspacing="0">
 								<tr>
-									<td width="22%" height="25" class="row-odd">
-									<div align="right"><span class="Mandatory">*</span>
-										<bean:message key="knowledgepro.certificate.course.regno"/>:</div>
+									<td><img src="images/01.gif" width="5" height="5" /></td>
+									<td width="914" background="images/02.gif"></td>
+									<td><img src="images/03.gif" width="5" height="5" /></td>
+								</tr>
+								<tr>
+									<td width="5" background="images/left.gif"></td>
+									<td valign="top">
+										<table width="100%" cellspacing="1" cellpadding="2">
+											<tr>
+												<td width="27%" class="row-odd">
+													<div align="right">
+														<span class="Mandatory">*</span>&nbsp;
+														<bean:message key="knowledgepro.admission.appNo" />
+													</div>
+												</td>
+												<td width="20%" class="row-even"><html:text
+														property="appNo" styleId="appNo" size="9"
+														onkeypress="return isNumberKey(event)" maxlength="30"></html:text>
+												</td>
+												<td height="25" class="row-odd"><div align="right">
+														<span class="Mandatory">*</span>
+														<bean:message
+															key="admissionForm.studentedit.admyear.label" />
+													</div></td>
+												<td class="row-even"><input type="hidden" id="tempyear"
+													name="tempyear"
+													value="<bean:write name="studentCertificateCourseForm" property="year"/>" />
+													<html:select property="year" styleId="year"
+														styleClass="combo">
+														<html:option value=" ">
+															<bean:message key="knowledgepro.admin.select" />
+														</html:option>
+														<cms:renderAcademicYearForAdmission></cms:renderAcademicYearForAdmission>
+													</html:select></td>
+											</tr>
+										</table>
 									</td>
-								<td width="21%" class="row-even" valign="top"><html:text property="registerNO" styleId="registerNo"  onchange="getSchemeNo(this.value)"></html:text></td>																	
-								
-								<td width="23%" height="25" class="row-odd">
-									<div align="right"><span class="Mandatory">*</span>
-										<bean:message key="knowledgepro.certificate.course.Semester"/>:</div>
-								</td>
-									
-								<td width="23%" class="row-even" valign="top"> <input type="hidden" id="schemeNo" name="schemeNo"
-								value='<bean:write name="studentCertificateCourseForm" property="semester"/>' onfocus="getSchemeNo(this.value)"/>
-							       <html:select property="semester" styleClass="combo" styleId="semester" >
-										<html:option value=""><bean:message key="knowledgepro.select" /></html:option>
-										<html:option value="1">1</html:option>
-										<html:option value="2">2</html:option>
-										<html:option value="3">3</html:option>
-										<html:option value="4">4</html:option>
-										<html:option value="5">5</html:option>
-										<html:option value="6">6</html:option>
-										<html:option value="7">7</html:option>
-										<html:option value="8">8</html:option>
-										<html:option value="9">9</html:option>
-										<html:option value="10">10</html:option>
-										<html:option value="11">11</html:option>
-										<html:option value="12">12</html:option>
-										<html:option value="13">13</html:option>
-										<html:option value="14">14</html:option>
-									</html:select>
-								</td>
+									<td width="5" height="29" background="images/right.gif"></td>
+								</tr>
+
+								<tr>
+									<td height="5"><img src="images/04.gif" width="5"
+										height="5" /></td>
+									<td background="images/05.gif"></td>
+									<td><img src="images/06.gif" /></td>
 								</tr>
 							</table>
-							</td>
-							<td width="5" height="29" background="images/right.gif"></td>
-						</tr>
+						</td>
+						<td valign="top" background="images/Tright_3_3.gif" class="news"></td>
+					</tr>
+					<tr>
+						<td height="35" valign="top" background="images/Tright_03_03.gif"></td>
+						<td valign="top" class="news">
+							<table width="100%" border="0" cellspacing="0" cellpadding="0">
+								<tr>
+									<td height="35" align="center">
+										<div align="center">
+											<html:submit property="" styleClass="formbutton"
+												value="Submit" styleId="submitbutton">
+											</html:submit>
+										</div>
+									</td>
+								</tr>
+							</table>
+						</td>
+						<td width="10" valign="top" background="images/Tright_3_3.gif"
+							class="news"></td>
+					</tr>
+					<tr>
+						<td height="19" valign="top" background="images/Tright_03_03.gif"></td>
 
-						<tr>
-							<td height="5"><img src="images/04.gif" width="5" height="5" /></td>
-							<td background="images/05.gif"></td>
-							<td><img src="images/06.gif" /></td>
-						</tr>
-					</table>
-					</td>
-					<td valign="top" background="images/Tright_3_3.gif" class="news"></td>
-				</tr>
-				<tr>
-					<td height="35" valign="top" background="images/Tright_03_03.gif"></td>
-					<td valign="top" class="news">
-					<table width="100%" border="0" cellspacing="0" cellpadding="0">
-						<tr>
-							<td height="35" align="center">
-							<div align="center">
-									<html:submit property="" styleClass="formbutton" value="Submit"
-										styleId="submitbutton">
-									</html:submit>
-								</div>
-							</td>
-						</tr>
-					</table>
-					</td>
-					<td width="10" valign="top" background="images/Tright_3_3.gif"
-						class="news"></td>
-				</tr>				
-				<tr>
-					<td height="19" valign="top" background="images/Tright_03_03.gif"></td>
-
-					<td valign="top" class="news">&nbsp;</td>
-					<td valign="top" background="images/Tright_3_3.gif" class="news"></td>
-				</tr>
-				<tr>
-					<td><img src="images/Tright_03_05.gif" width="9" height="29"></td>
-					<td width="0" background="images/TcenterD.gif"></td>
-					<td><img src="images/Tright_02.gif" width="9" height="29"></td>
-				</tr>
-			</table>
+						<td valign="top" class="news">&nbsp;</td>
+						<td valign="top" background="images/Tright_3_3.gif" class="news"></td>
+					</tr>
+					<tr>
+						<td><img src="images/Tright_03_05.gif" width="9" height="29"></td>
+						<td width="0" background="images/TcenterD.gif"></td>
+						<td><img src="images/Tright_02.gif" width="9" height="29"></td>
+					</tr>
+				</table>
 			</td>
 
 		</tr>
@@ -154,5 +180,9 @@ var print = "<c:out value='${studentCertificateCourseForm.printCourse}'/>";
 if(print.length != 0 && print == "true") {
 	var url ="StudentCertificateCourse.do?method=showStudentDetails";
 	myRef = window.open(url,"certificateCourse","left=20,top=20,width=800,height=500,toolbar=1,resizable=0,scrollbars=1");
+}
+var year = document.getElementById("tempyear").value;
+if (year.length != 0) {
+	document.getElementById("year").value = year;
 }
 </script>

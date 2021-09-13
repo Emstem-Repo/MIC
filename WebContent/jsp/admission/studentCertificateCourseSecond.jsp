@@ -83,6 +83,29 @@
 		}
 		document.getElementById("certificateCourseName").value = document.getElementById("optionalId").options[document.getElementById("optionalId").selectedIndex].text;
 	}
+	function submitAddMorePreferences(method){
+		document.getElementById("method").value=method;
+		document.studentCertificateCourseForm.submit();
+	}
+	function submitAddMorePreferences(method){
+		document.getElementById("method").value=method;
+		document.studentCertificateCourseForm.submit();
+	}
+	function submitgetstatus(){
+		document.getElementById("method").value="getOnlineApplicationStatus";
+		document.studentCertificateCourseForm.submit();
+	}
+	function addCourseId(id){
+			document.getElementById("courseId").value=id;
+	}
+	function removePreferences(){
+		document.getElementById("method").value="removePreferences";
+		document.studentCertificateCourseForm.submit();
+	}
+	function submitcourse(){
+		document.getElementById("method").value="submitcourse";
+		document.studentCertificateCourseForm.submit();
+	}
 </script>
 <html:form action="/StudentCertificateCourse">
 	<html:hidden property="method" styleId="method" value="saveCertificateCourse" />
@@ -91,6 +114,7 @@
 
 	<html:hidden property="certificateCourseName" styleId="certificateCourseName" value="" />
 	<html:hidden property="printCourse" styleId="printCourse" value="false" />
+	<html:hidden property="courseId" styleId="courseId"/>
 	<table width="98%" border="0">
 		<tr>
 			<td></td>
@@ -139,46 +163,87 @@
 									<div id="mandatory">
 									<table width="99%" border="0" align="center" cellpadding="0"
 										cellspacing="0">
-										<logic:notEmpty name="studentCertificateCourseForm"
-											property="mandatorycourseList">
-											<tr>
-												<td align="center" class="heading">Mandatory</td>
-											</tr>
+										<tr class="row-odd">
 
-											<tr>
-												<td>&nbsp;</td>
-											</tr>
-											<c:set var="manLen" value="0" />
-											<nested:iterate name="studentCertificateCourseForm"
-												property="mandatorycourseList" id="mandatorycourseList"
-												indexId="count">
-												<c:choose>
-													<c:when test="${count%2 == 0}">
-														<tr class="row-even">
-													</c:when>
-													<c:otherwise>
-														<tr class="row-white">
-													</c:otherwise>
-												</c:choose>
-												<%
-													String s1 = "mandatory_check_" + count;
-																String s2 = "hidden_" + count;
-												%>
-												<td width="55%"><nested:checkbox property="courseCheck"
-													styleId="<%=s1%>" onclick="hideOptionalCourse(this.id)" />&nbsp;&nbsp;&nbsp;
-												<nested:write name="mandatorycourseList"
-													property="courseName" /></td>
-												<td width="20%"><b>
-												<nested:write name="mandatorycourseList"
-													property="maxIntake" /></b>
-												</td>	
-												<td height="25" align="center">
-												<div align="center"><a href="#"
-													onclick="viewDetails('<nested:write name="mandatorycourseList" property="id"/>')">Details</a></div>
-												</td>
-												<c:set var="manLen" value="${manLen+1}" />
-											</nested:iterate>
-										</logic:notEmpty>
+																<td align="center" class="bodytext" colspan="5"
+																	height="25" class="row-even">Choice of
+																	Diploma/Certificate Add-on Courses</td>
+															</tr>
+															<nested:iterate id="admissionpreference"
+																name="studentCertificateCourseForm" property="prefList"
+																indexId="count">
+																<tr class="row-odd">
+																	<td align="center" class="bodytext" colspan="5"
+																		height="25" class="row-even">
+																		<html:text property="courseName" styleClass="pref" size="50"
+																			name="admissionpreference" disabled="true"></html:text>
+																	</td>
+																</tr>
+															</nested:iterate>
+															
+															<c:if test="${studentCertificateCourseForm.preCount<3}">
+																<c:if
+																	test="${studentCertificateCourseForm.certificationCourseDone!=true}">
+																	<tr class="row-odd">
+																		<td height="25" class="row-odd" colspan="2"
+																			align="right">preferences</td>
+																		<td height="25" class="row-even" colspan="3">
+																			<%-- <bean:define id="prefNo" name="admissionpreference" property="semType"></bean:define> --%>
+																			<nested:select property="certicateId"
+																				name="studentCertificateCourseForm"
+																				onchange="addCourseId(this.value)">
+																				<html:option value="">
+																					<bean:message key="knowledgepro.admin.select" />
+																				</html:option>
+																				<html:optionsCollection name="studentCertificateCourseForm"
+																					property="certicateCourses" label="value"
+																					value="key" />
+																			</nested:select>
+																		</td>
+																	</tr>
+																</c:if>
+															</c:if>
+
+															
+
+																<c:if
+																	test="${studentCertificateCourseForm.certificationCourseDone!=true}">
+																	<c:if test="${studentCertificateCourseForm.preCount<3}">
+																		<tr class="row-odd">
+																			<td align="center" class="bodytext" colspan="5"
+																				height="25" class="row-even"><a href="url"
+																				style="text-decoration: none; vertical-align: middle; color: #007700; font-weight: bold"
+																				onclick="submitAddMorePreferences('submitAddMorePreferences'); return false;">
+																					Click here &nbsp;<img
+																					src="images/admission/images/12673199831854453770medical cross button.svg.med.png"
+																					width="20px" ; height="20px"
+																					; style="vertical-align: middle;">
+																			</a> to Add More Choice</td>
+																		</tr>
+																	</c:if>
+																	<c:if test="${studentCertificateCourseForm.preCount>0}">
+																		<tr class="row-odd">
+																			<td align="center" class="bodytext" colspan="5"
+																				height="25" class="row-even"><a href="url"
+																				style="text-decoration: none; vertical-align: middle; color: #B91A1A; font-weight: bold"
+																				onclick="removePreferences(); return false;">
+																					Click here &nbsp;<img
+																					src="images/admission/images/15107-illustration-of-a-red-close-button-pv.png"
+																					width="20px" ; height="20px"
+																					; style="vertical-align: middle;">
+																			</a> to Remove Choice.&nbsp; &nbsp; &nbsp;</td>
+																		</tr>
+																	</c:if>
+																	<c:if test="${studentCertificateCourseForm.preCount==3}">
+																		<tr class="row-odd">
+																			<td align="center" class="bodytext" colspan="5"
+																				height="25" class="row-even">
+																				<button class="formbutton" onclick="submitcourse()">Submit
+																					certificate Courses</button>
+																			</td>
+																		</tr>
+																	</c:if>
+																</c:if>
 									</table>
 									</div>
 									</td>
@@ -246,14 +311,14 @@
 					<table width="100%" border="0" cellspacing="0" cellpadding="0">
 						<tr>
 							<td width="30%" height="35">
-							<div align="right"><html:button property=""
+							<div align="right"><%-- <html:button property=""
 								styleClass="formbutton" value="save&print"
-								onclick="printCertCourse()"></html:button></div>
+								onclick="printCertCourse()"></html:button> --%></div>
 							</td>
-							<td width="15%" height="35">
+							<td width="15%" height="35"><%-- 
 							<div align="right"><html:button property=""
 								styleClass="formbutton" value="save"
-								onclick="saveCertCourse()"></html:button></div>
+								onclick="saveCertCourse()"></html:button></div> --%>
 							</td>
 							<td width="45%" height="35">
 							<div><html:button property="" styleClass="formbutton"

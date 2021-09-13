@@ -18,15 +18,10 @@ function updateClasses(req) {
 
 function printCc(studentId)
 {
-	if(validateCC(studentId))
-	{	
-		var classes=document.getElementById("classes").value;
-		var year=document.getElementById("academicYear").value;
-		var fromUsn=document.getElementById("fromUsn").value;
-		var toUsn=document.getElementById("toUsn").value;
-		var	url = "conductCertificate.do?method=printCC&classes="+classes+"&year="+year+"&fromUsn="+fromUsn+"&toUsn="+toUsn+"&studentId="+studentId;			
+		var reg=document.getElementById("registerNo").value;
+		var type=document.getElementById("searchval").value;
+		var	url = "conductCertificate.do?method=printCC&registerNo="+reg+"&searchBy="+type;			
 		myRef = window.open(url,"CC","left=20,top=20,width=600,height=500,toolbar=10,resizable=0,scrollbars=1");
-	}	
 }
 function getCandidatesForCCPrint(){
 	var fromReg=document.getElementById("fromUsn").value;
@@ -37,7 +32,7 @@ function getCandidatesForCCPrint(){
 	document.getElementById("method").value = "getCandidatesForCCPrint";	
 	document.conductCertificateForm.submit();
 }
-function validateCC(studentId)
+/* function validateCC(studentId)
 {
 	var error="";
 	if(document.getElementById("academicYear").value=="")
@@ -56,13 +51,20 @@ function validateCC(studentId)
 		return false;
 	}			
 							
-}
+} */
 function resetFieldAndErrMsgs()
 {
 	resetErrMsgs();
 	var year = document.getElementById("tempyear").value;
 	if(year.length != 0) {
 	 	document.getElementById("academicYear").value=year;
+	}
+}
+function serchFn(val){
+	if (val=="R") {
+		document.getElementById("searchval").value = "R";
+	}else{
+		document.getElementById("searchval").value = "A";
 	}
 }
 </script>
@@ -72,6 +74,7 @@ function resetFieldAndErrMsgs()
 	<html:hidden property="method" styleId="method" value="initConductCertificate"/>
 	<html:hidden property="pageType" value="1"/>
 	<html:hidden property="studentId" styleId="studentId"/>	
+	<html:hidden property="searchBy" styleId="searchval" />
 	<table width="98%" border="0">
   		<tr>
     		<td><span class="heading"><bean:message key="knowledgepro.admission"/><span class="Bredcrumbs">&gt;&gt;<bean:message key="knowledgepro.admission.ccCertificate"/> &gt;&gt;</span></span></td>
@@ -115,7 +118,48 @@ function resetFieldAndErrMsgs()
 		                       						<td width="5"  background="images/left.gif"></td>
 		                       						<td valign="top">
 		                       							<table width="100%" cellspacing="1" cellpadding="2">
-						        							<tr>
+		                       							<tr>
+									<%--
+											<td width="20%" height="25" class="row-odd">
+											<div align="right"><span class="Mandatory">*</span><bean:message
+												key="knowledgepro.admin.program.Type" /></div>
+											</td>
+											<td width="26%" height="25" class="row-even"><span
+												class="star"> <html:select property="programTypeId"
+												styleClass="comboLarge" styleId="programTypeId" onchange="getExamNames()">
+												<html:option value="">
+													<bean:message key="knowledgepro.admin.select" />
+												</html:option>
+												<logic:notEmpty name="tCDetailsForm" property = "programTypeList">
+												<html:optionsCollection name="programTypeList" 
+													label="programTypeName" value="programTypeId" /></logic:notEmpty>
+											</html:select>
+											</span></td>
+									 --%>
+					
+									<td width="25%" height="25" class="row-odd">
+										<div align="right">
+											<span class="Mandatory">*</span>
+											<bean:message key="knowledgepro.exam.assignStudentsToRoom.displayOrder.regNo" />
+											/
+											<bean:message key="knowledgepro.admission.admission.number"/>
+										</div>
+									</td>
+									<td width="25%" class="row-even">
+										<html:text property="registerNo" styleId="registerNo" maxlength="10" size="10"></html:text>
+									</td>
+									
+									<td width="25%" height="25" class="row-odd">
+										<div align="right">
+											<span class="Mandatory">*</span>Search by
+										</div>
+									</td>
+									<td width="25%" class="row-even">
+										<input type="radio"  id="searchByR" value="R" onclick="serchFn(this.value)"/>Register Number
+										<input type="radio" id="searchByA" value="A" onclick="serchFn(this.value)"/>Admission Number
+									</td>
+								</tr>
+						        							<%-- <tr>
 				                       							<td class="row-odd"><div align="right"><span class="Mandatory">*</span><bean:message key="knowledgepro.fee.academicyear"/>:</div></td>
 					        		   							<td class="row-even" align="left">
 					                           						<input type="hidden" id="tempyear" name="tempyear" value="<bean:write name="conductCertificateForm" property="year"/>"/>
@@ -136,13 +180,13 @@ function resetFieldAndErrMsgs()
 						                  							</html:select>
 					                  							</td>                  							
 					                  							
-					                						</tr>					                						
-					                						<tr>
+					                						</tr>	 --%>				                						
+					                						<%-- <tr>
 																<td class="row-odd"><div align="right"><bean:message key="knowledgepro.attendance.regno.from"/>:</div></td>
 																<td class="row-even" align="left"><html:text property="fromUsn" styleId="fromUsn"></html:text> </td>
 																<td class="row-odd"><div align="right"><bean:message key="knowledgepro.attendance.regno.to"/>:</div></td>
 																<td class="row-even" align="left"><html:text property="toUsn" styleId="toUsn"></html:text> </td>																					                						
-					                						</tr>
+					                						</tr> --%>
 		                       							</table>
 		                       						</td>
 		                       						<td width="5" height="30"  background="images/right.gif"></td>
@@ -173,7 +217,7 @@ function resetFieldAndErrMsgs()
 	                   						</table>
 	                   					</td>
 	                				</tr>
-	                 				<tr>
+	                 				<%-- <tr>
 	                    				<td height="35" colspan="6" class="body" >
 				        					<table width="50%" border="0" align="center" cellpadding="0" cellspacing="0">
 		                     					<!--<tr>
@@ -205,7 +249,7 @@ function resetFieldAndErrMsgs()
 												<tr><td width="25%">&nbsp;</td></tr>
 	                   						</table>
 	                   					</td>	
-	                 				</tr>
+	                 				</tr> --%>
 	                 		<nested:notEmpty name="conductCertificateForm" property="tcDetails">
 	                 		<tr>
 		                       			<td ><img src="images/01.gif" width="5" height="5" /></td>

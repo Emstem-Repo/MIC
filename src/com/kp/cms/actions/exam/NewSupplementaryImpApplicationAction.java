@@ -696,7 +696,7 @@ public class NewSupplementaryImpApplicationAction extends BaseDispatchAction {
 		}
 
 		if (newSupplementaryImpApplicationForm.getStudentObj().getIsEgrand()) {
-			newSupplementaryImpApplicationForm.setTotalFees(1030);
+			newSupplementaryImpApplicationForm.setTotalFees(30);
 		}
 		// online payment code temporarily commented do not delete
 		/*
@@ -1563,7 +1563,7 @@ public class NewSupplementaryImpApplicationAction extends BaseDispatchAction {
 					newSupplementaryImpApplicationForm.setStudentObj(student);
 					if (newSupplementaryImpApplicationForm.getStudentObj()
 							.getIsEgrand()) {
-						newSupplementaryImpApplicationForm.setTotalFees(1030);
+						newSupplementaryImpApplicationForm.setTotalFees(30);
 					}
 					String printData = NewSupplementaryImpApplicationHandler
 					.getInstance().getPrintData(
@@ -1960,10 +1960,15 @@ public class NewSupplementaryImpApplicationAction extends BaseDispatchAction {
 	private void setDataToFormForRegular(
 			NewSupplementaryImpApplicationForm newSupplementaryImpApplicationForm,
 			HttpServletRequest request) throws Exception {
+		List<Integer> regClassList=new ArrayList(); 
+		regClassList.add(699);regClassList.add(700);regClassList.add(701);regClassList.add(702);regClassList.add(703);regClassList.add(704);regClassList.add(705);
+		regClassList.add(706);regClassList.add(707);regClassList.add(711);
+		regClassList.add(716);		
 		HttpSession session = request.getSession(true);
 		newSupplementaryImpApplicationForm.setIsPreviousExam(session
 				.getAttribute("isPrevApplicationAvailable").toString());
 		Integer prevClassId = (Integer) session.getAttribute("prevClassId");
+		
 		newSupplementaryImpApplicationForm.setPrevClassId(String
 				.valueOf(prevClassId));
 		newSupplementaryImpApplicationForm.setStudentId(Integer
@@ -1972,6 +1977,11 @@ public class NewSupplementaryImpApplicationAction extends BaseDispatchAction {
 		.getInstance();
 		Student student = (Student) txn.getMasterEntryDataById(Student.class,
 				newSupplementaryImpApplicationForm.getStudentId());
+		
+		int classId=student.getClassSchemewise().getClasses().getId();
+		if (regClassList.contains(prevClassId)) {
+			classId=prevClassId;
+		}
 		newSupplementaryImpApplicationForm.setStudentObj(student);
 		List<Integer> examIds = new ArrayList<Integer>();
 		if (newSupplementaryImpApplicationForm.getPreviousExam()) {
@@ -1985,8 +1995,7 @@ public class NewSupplementaryImpApplicationAction extends BaseDispatchAction {
 			.setClassId(String.valueOf(student.getClassSchemewise()
 					.getClasses().getId()));
 			examIds = NewSupplementaryImpApplicationHandler.getInstance()
-			.checkRegularAppAvailable(
-					student.getClassSchemewise().getClasses().getId());
+			.checkRegularAppAvailable(classId);
 		}
 		IDownloadHallTicketTransaction txn1 = DownloadHallTicketTransactionImpl
 		.getInstance();
@@ -1998,8 +2007,7 @@ public class NewSupplementaryImpApplicationAction extends BaseDispatchAction {
 			ExamBlockUnblockHallTicketBO h = null;
 			for (Integer examId : examIds) {
 				h = txn1
-				.isHallTicketBlockedStudent(student.getId(), student
-						.getClassSchemewise().getClasses().getId(),
+				.isHallTicketBlockedStudent(student.getId(), classId,
 						examId, "A");
 			}
 			if (h != null) {
@@ -2844,6 +2852,17 @@ public class NewSupplementaryImpApplicationAction extends BaseDispatchAction {
 				String hash = NewSupplementaryImpApplicationHandler
 				.getInstance().getParameterForPGIForSuppl(
 						newSupplementaryImpApplicationForm);
+				System.out.println("hash "+ hash);
+				System.out.println("txnid "+newSupplementaryImpApplicationForm.getRefNo());
+				System.out.println("productinfo "+newSupplementaryImpApplicationForm.getProductinfo());
+				System.out.println("amount "+newSupplementaryImpApplicationForm.getApplicationAmount());
+				System.out.println("email "+newSupplementaryImpApplicationForm.getEmail());
+				System.out.println("firstname "+newSupplementaryImpApplicationForm.getNameOfStudent());
+				System.out.println("phone"+newSupplementaryImpApplicationForm.getStudentObj().getAdmAppln().getPersonalData().getMobileNo1()+ ""+ newSupplementaryImpApplicationForm.getStudentObj().getAdmAppln().getPersonalData().getMobileNo2());
+				System.out.println("test"+ newSupplementaryImpApplicationForm.getTest());
+				System.out.println("surl"+CMSConstants.SUP_EXAM_APP_PAYUMONEY_SUCCESSURL);
+				System.out.println("furl"+CMSConstants.SUP_EXAM_APP_PAYUMONEY_FAILUREURL);
+				
 				// request.setAttribute("pgiMsg", msg);
 				request.setAttribute("hash", hash);
 				request.setAttribute("txnid",

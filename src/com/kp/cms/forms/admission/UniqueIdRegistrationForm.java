@@ -74,6 +74,8 @@ public class UniqueIdRegistrationForm extends BaseActionForm{
 	private Boolean malankara;
 	private String categoryOther;
 	private String parishName;
+	
+	private String pageNum;
 //	setter getter methods
 	
 	
@@ -453,6 +455,12 @@ public class UniqueIdRegistrationForm extends BaseActionForm{
 	}
 	public void setParishName(String parishName) {
 		this.parishName = parishName;
+	}
+	public String getPageNum() {
+		return pageNum;
+	}
+	public void setPageNum(String pageNum) {
+		this.pageNum = pageNum;
 	}
 	
 	

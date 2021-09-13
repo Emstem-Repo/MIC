@@ -200,6 +200,17 @@ public class PersonalData implements java.io.Serializable {
 	private String sportsParticipationYear;
 	
 	private String familyAnnualIncome;
+	private String nameWithInitial;
+	private String motherTonge;
+	private String parentOldStudent;
+	private String relativeOldStudent;
+	private String placeOfBirth;
+	private String district;
+	private String thaluk;
+	private String scholarship;
+	private String reasonFrBreakStudy;
+	private Boolean isSpc;
+	private Boolean isScouts;
 	
 	
 
@@ -1986,5 +1997,101 @@ public class PersonalData implements java.io.Serializable {
 	public void setFamilyAnnualIncome(String familyAnnualIncome) {
 		this.familyAnnualIncome = familyAnnualIncome;
 	}
+
+	public String getNameWithInitial() {
+		return nameWithInitial;
+	}
+
+	public void setNameWithInitial(String nameWithInitial) {
+		this.nameWithInitial = nameWithInitial;
+	}
+
+	public String getMotherTonge() {
+		return motherTonge;
+	}
+
+	public void setMotherTonge(String motherTonge) {
+		this.motherTonge = motherTonge;
+	}
+
+	public String getParentOldStudent() {
+		return parentOldStudent;
+	}
+
+	public void setParentOldStudent(String parentOldStudent) {
+		this.parentOldStudent = parentOldStudent;
+	}
+
+	public String getRelativeOldStudent() {
+		return relativeOldStudent;
+	}
+
+	public void setRelativeOldStudent(String relativeOldStudent) {
+		this.relativeOldStudent = relativeOldStudent;
+	}
+
+	public String getPlaceOfBirth() {
+		return placeOfBirth;
+	}
+
+	public void setPlaceOfBirth(String placeOfBirth) {
+		this.placeOfBirth = placeOfBirth;
+	}
+
+	
+
+	public String getThaluk() {
+		return thaluk;
+	}
+
+	public void setThaluk(String thaluk) {
+		this.thaluk = thaluk;
+	}
+
+	public void setCurentEmployee(boolean isCurentEmployee) {
+		this.isCurentEmployee = isCurentEmployee;
+	}
+
+	public String getDistrict() {
+		return district;
+	}
+
+	public void setDistrict(String district) {
+		this.district = district;
+	}
+
+	public String getScholarship() {
+		return scholarship;
+	}
+
+	public void setScholarship(String scholarship) {
+		this.scholarship = scholarship;
+	}
+
+	public String getReasonFrBreakStudy() {
+		return reasonFrBreakStudy;
+	}
+
+	public void setReasonFrBreakStudy(String reasonFrBreakStudy) {
+		this.reasonFrBreakStudy = reasonFrBreakStudy;
+	}
+
+	public Boolean getIsSpc() {
+		return isSpc;
+	}
+
+	public void setIsSpc(Boolean isSpc) {
+		this.isSpc = isSpc;
+	}
+
+	public Boolean getIsScouts() {
+		return isScouts;
+	}
+
+	public void setIsScouts(Boolean isScouts) {
+		this.isScouts = isScouts;
+	}
+
+	
 	
 }

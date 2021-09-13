@@ -4292,42 +4292,25 @@ public Map<String, String> getYear() throws Exception {
 	
     //vibin for status change
 	@Override
-	public StudentCourseAllotment getallotmentdetails(int id,int max,AdmissionStatusForm admForm) throws Exception {
-		Session session = null;
-		StudentCourseAllotment allotment= null;
-		try{
-			Query query=null;
-	       session = HibernateUtil.getSession();
-	     /*  int catetory=Integer.parseInt(admForm.getCategoryId());
-	       Query query=null;
-	       if (catetory==11) {
-	    	   query = session.createQuery("from StudentCourseAllotment s where s.admAppln.id=:id and s.allotmentNo=:max and s.isGeneral=1 and s.course.id="+admForm.getDeptId());
-		}else if (catetory==6){
-			query = session.createQuery("from StudentCourseAllotment s where s.admAppln.id=:id and s.allotmentNo=:max and s.isCommunity=1 and s.course.id="+admForm.getDeptId());
-		}
-		else if (catetory==2 || catetory==3){
-			query = session.createQuery("from StudentCourseAllotment s where s.admAppln.id=:id and s.allotmentNo=:max and s.isCommunity=1 and s.course.id="+admForm.getDeptId());
-		}else{
-	      // query = session.createQuery("from StudentCourseAllotment s where s.admAppln.id=:id and s.allotmentNo=:max and s.isCaste=1 and s.course.id="+admForm.getDeptId());
-			 query = session.createQuery("from StudentCourseAllotment s where s.admAppln.id=:id and s.allotmentNo=:max" );
-	       
-		}*/
-	       query = session.createQuery("from StudentCourseAllotment s where s.admAppln.id=:id and s.allotmentNo=:max" );
-	       query.setInteger("id",id);
-	       query.setInteger("max", max);
-	       allotment = (StudentCourseAllotment) query.uniqueResult();
-	       
-	       
-		}catch (Exception e) {
-			log.error("Error during getting allotment deatails", e);
-
-			if (session != null) {
-				session.flush();
-			}
-			throw new ApplicationException(e);
-		}
-		return allotment;
-	}
+	 public StudentCourseAllotment getallotmentdetails(final int id, final int max) throws Exception {
+        Session session = null;
+        StudentCourseAllotment allotment = null;
+        try {
+            session = HibernateUtil.getSession();
+            final Query query = session.createQuery("from StudentCourseAllotment s where s.admAppln.id=:id and s.allotmentNo=:max");
+            query.setInteger("id", id);
+            query.setInteger("max", max);
+            allotment = (StudentCourseAllotment)query.uniqueResult();
+        }
+        catch (Exception e) {
+            AdmissionFormTransactionImpl.log.error((Object)"Error during getting allotment deatails", (Throwable)e);
+            if (session != null) {
+                session.flush();
+            }
+            throw new ApplicationException(e);
+        }
+        return allotment;
+    }
 	
 	
 
@@ -4556,12 +4539,12 @@ public Map<String, String> getYear() throws Exception {
 		try{
 	       session = HibernateUtil.getSession();
 	       String hqlQuery = "from StudentCourseChanceMemo s where s.admAppln.id=:id and s.course.id=:courseId and s.isAccept=1";
-//	       if(isCaste)
-//    		   hqlQuery += " and s.isCaste = true";
-//    	   else if(isCommunity)
-//    		   hqlQuery += " and s.isCommunity = true";
-//    	   else
-//    		   hqlQuery += " and s.isGeneral = true";
+	       if(isCaste)
+    		   hqlQuery += " and s.isCaste = true";
+    	   else if(isCommunity)
+    		   hqlQuery += " and s.isCommunity = true";
+    	   else
+    		   hqlQuery += " and s.isGeneral = true";
 	       Query query = session.createQuery(hqlQuery);
 	       query.setInteger("id",id);
 	       query.setInteger("courseId", courseId);

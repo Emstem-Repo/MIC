@@ -29,6 +29,7 @@ public class CertificateCourseTO implements Serializable,Comparable<CertificateC
 	private boolean checkBoxDisplay;
 	private String semType;
 	
+	
 	public String getCourseName() {
 		return courseName;
 	}

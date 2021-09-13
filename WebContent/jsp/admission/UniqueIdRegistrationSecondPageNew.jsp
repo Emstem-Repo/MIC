@@ -253,13 +253,14 @@ response.setHeader("Expires", "0"); // Proxies.
 		 
 		 </td></tr>
      <tr> <td  style="text-align:center">
-     <logic:equal value="1" property="programTypeId" name="uniqueIdRegistrationForm">
+     <logic:equal value="2" property="programTypeId" name="uniqueIdRegistrationForm">
+
 	<logic:notEmpty property="incompleteApplication" name="uniqueIdRegistrationForm">
 	
 	<logic:notEmpty property="admissionStatusTOList" name="uniqueIdRegistrationForm">
 	<nested:iterate name="uniqueIdRegistrationForm" id="toList" property="admissionStatusTOList" indexId="count">
 		<a href="javascript:void(0)" style="color:#FF0000;font-size:large"
-	   	   onclick="completeApplication('<bean:write name="toList" property="id"/>','<bean:write name="toList" property="applnMode"/>')">Click here to Complete Application</a><br></br>			
+	   	   onclick="completeApplication('<bean:write name="toList" property="id"/>','<bean:write name="toList" property="applnMode"/>')">Click here to Complete Application</a>   <br></br>			
 	</nested:iterate>
 	</logic:notEmpty>
 	
@@ -267,8 +268,9 @@ response.setHeader("Expires", "0"); // Proxies.
 	</logic:notEmpty>
 	</logic:equal>
 
+
 	<logic:empty property="admissionStatusTOList" name="uniqueIdRegistrationForm">
-		<a href="javascript:void(0)" onclick="newCourse()" id="applyCourses" style="color:red;font-size:large;"><b>Click here to continue application</b></a>
+		<a href="javascript:void(0)" onclick="newCourse()" id="applyCourses" style="color:red;font-size:large;"><b>Click here to continue application</b></a>   
 	</logic:empty>
 	
 	<logic:notEmpty property="admissionStatusTOList" name="uniqueIdRegistrationForm">
@@ -287,6 +289,61 @@ response.setHeader("Expires", "0"); // Proxies.
 	  <tr ><td height="20px"></td></tr>
 	
     </table>
+
+
+
+
+
+
+
+
+
+ <table id="displayApplyCourses" width="100%" border="0" align="center" cellpadding="0" class="profiletable" >
+    
+    
+    
+    <tr><td height="20">
+		 
+		 </td></tr>
+     <tr> <td  style="text-align:center">
+     <logic:equal value="1" property="programTypeId" name="uniqueIdRegistrationForm">
+
+	<logic:notEmpty property="incompleteApplication" name="uniqueIdRegistrationForm">
+	
+	<logic:notEmpty property="admissionStatusTOList" name="uniqueIdRegistrationForm">
+	<nested:iterate name="uniqueIdRegistrationForm" id="toList" property="admissionStatusTOList" indexId="count">
+		<a href="javascript:void(0)" style="color:#FF0000;font-size:large"
+	   	   onclick="completeApplication('<bean:write name="toList" property="id"/>','<bean:write name="toList" property="applnMode"/>')"> <b>Click here to continue application</b>               </a>     <br></br>  			
+	</nested:iterate>
+	</logic:notEmpty>
+	
+			
+	</logic:notEmpty>
+	</logic:equal>
+
+
+	<logic:empty property="admissionStatusTOList" name="uniqueIdRegistrationForm">
+	<!--	<a href="javascript:void(0)" onclick="newCourse()" id="applyCourses" style="color:red;font-size:large;"><b>Click here to continue application</b></a>    -->
+	</logic:empty>
+	
+	<logic:notEmpty property="admissionStatusTOList" name="uniqueIdRegistrationForm">
+	
+	<!--<logic:empty property="incompleteApplication" name="uniqueIdRegistrationForm">
+	Application Successfully Submitted.
+	<br/>
+	Your Application Number is <b><bean:write name="uniqueIdRegistrationForm" property="applicationNo"/></b><br/>
+	Click on Print & Downloads and print your Application. 
+	</logic:empty> -->
+	</logic:notEmpty>
+	</td>
+		  
+    </tr> 
+	
+	  <tr ><td height="20px"></td></tr>
+	
+    </table>
+    
+
     
    
    
@@ -300,15 +357,17 @@ response.setHeader("Expires", "0"); // Proxies.
     <tr><td height="20">
 		 
 		 </td></tr>
-    <tr> <td  style="text-align:center"> Application entry will close by <%=CMSConstants.CLOSE_DATE %>.</td>
+ <!--   <tr> <td  style="text-align:center"> Application entry will close by <%=CMSConstants.CLOSE_DATE %>.</td> </tr> -->
+<!-- <tr> <td  style="text-align:center"><b> Application status is only available after publishing the first allotment,</b> kindly check the college website www.mic.ac.in for latest updates.</td> -->
 		  
     </tr>
 	<tr> <td  style="text-align:center">
 	<logic:notEmpty property="admissionStatusTOList" name="uniqueIdRegistrationForm">
 	
 	<logic:empty property="incompleteApplication" name="uniqueIdRegistrationForm">
+         
 	
-	 <!-- <a  href="javascript:void(0)" style=" color:#FF0000;font-size:large" href="" onclick="getStatus();" >Click here to Check Status</a> -->
+	  <a  href="javascript:void(0)" style=" color:#FF0000;font-size:large" href="" onclick="getStatus();" >Click here to Check Allotment Status</a>   
 	
 	</logic:empty>
 	</logic:notEmpty>
@@ -324,20 +383,20 @@ response.setHeader("Expires", "0"); // Proxies.
     <!-- downloads here -->
     
    <table id="displayAlerts" width="100%" border="0" cellpadding="0"  align="center" class="profiletable"  >
-        <tr><td  align="center" ><u>PRINT & DOWNLOADS</u></td></tr>  
+        <tr><td  align="center" >kindly download the below application for future reference.<b> No need to submit the hard copy of the application in the college office.</td></tr>  
   <tr><td height="20">
 		 
 		 </td></tr>
 
 		
-  		  <tr>
+  	<!--	  <tr>
 		 	<td  style="text-align:center" height="20%">
 		 		If you plan to pay application fee through Challan of <%= CMSConstants.BANK_NAME %>, Please Click on
 			 	<a  href="javascript:void(0)" style=" color:#FF0000;font-size:large" href="" onclick="downloadChallanTieupBank();">Print Challan</a>
 		 	</td>
-		  </tr>
+		  </tr>  -->
 		  
-		  <tr style="display: none;">
+	<!--	  <tr style="display: none;">
 		 	<td  height="20">
 		 		<span style="color: red;">
             		<i>
@@ -347,14 +406,14 @@ response.setHeader("Expires", "0"); // Proxies.
             	</span>
 		 	</td>
 		
-		  </tr>
+		  </tr>   -->
 		  
-		  <tr>
+	<!--	  <tr>
 		 	<td  style="text-align:center" height="20%">
 		 		If you plan to pay application fee through Challan of Other Banks, Click on 
 		 		<a  href="javascript:void(0)" style=" color:#FF0000;font-size:large" href="" onclick="downloadChallanOtherBank();">Print Challan</a>
 		 	</td>
-		  </tr>
+		  </tr>   -->
 	   
 		  <tr>
 		 	<td  height="40">
@@ -386,17 +445,18 @@ response.setHeader("Expires", "0"); // Proxies.
     
    <table id="displaySMS" width="100%" border="0" cellpadding="0"  align="center" class="profiletable"  >
          <tr>
-		 <td style="text-align:center"><u>COLLEGE DETAILS</u></td>
+		 <td style="text-align:center"><u>Admission Help Desk Details</u></td>
 		 </tr>
 		 <tr><td height="20">
 		 
 		 </td></tr>
-		 <tr>
+<!--		 <tr>
 		 <td style="text-align:center"><%=CMSConstants.COLLEGE_NAME %> Details</td>
-		 </tr>
+		 </tr>   -->
 		  <tr ><td height="20px"></td></tr>
-		  <tr ><td height="20px" style="text-align:center">Contact : 9496370418, 9447025333</td></tr>
-		  <tr ><td height="20px" style="text-align:center">Email : info@mic.ac.in, it.admin@mic.ac.in</td></tr>		  
+                  <tr ><td height="20px" style="text-align:center">Working hours : 09:00AM - 04:00PM</td></tr>
+		  <tr ><td height="20px" style="text-align:center">Contact No : 9496370418</td></tr>
+		  <tr ><td height="20px" style="text-align:center">Email : admission2021@mic.ac.in</td></tr>		  
         </table>
     
     

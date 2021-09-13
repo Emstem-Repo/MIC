@@ -260,7 +260,7 @@
 		</logic:equal>
 		
 		<tr><td height="20px"></td></tr>
-		
+		<logic:equal name="onlineApplicationForm" property="programTypeId" value="1">
    		<tr class="row-odd">
    			<td align="center" colspan="2" width="100%">
 	   			<table width="100%">
@@ -437,7 +437,7 @@
 								<tr>
 									<td>7</td>
 									<td>B.Com</td>
-									<td>B.Com Accounts &amp; Audit  </td>
+									<td>Accounts &amp; Audit  </td>
 									<td>1. Accounts &amp; Audit </td>
 								</tr>
                                                                 
@@ -449,6 +449,25 @@
 				</table>
    			</td>
    		</tr>
+   		</logic:equal>
+   		<logic:equal name="onlineApplicationForm" property="programTypeId" value="2">
+   			<tr>
+   				<td align="center">
+   					<table border="1" style=" border-collapse: collapse;">
+   					<tr><th>Ser.No.</th><th>Programme</th></tr>
+   						<tr><td>1</td><td>MA English Language  Literature</td></tr>
+   						<tr><td>2</td><td>MA. Malayalam with Media Studies</td></tr>
+   						<tr><td>3</td><td>M.Sc. Mathematics</td></tr>
+   						<tr><td>4</td><td>M.Sc. Statistics with Data Analytics</td></tr>
+   						<tr><td>5</td><td>M.Sc. Physics</td></tr>
+   						<tr><td>6</td><td>M.Sc. Chemistry</td></tr>
+   						<tr><td>7</td><td>M.Sc. Zoology</td></tr>
+   						<tr><td>8</td><td>M.Com.</td></tr>
+   						<tr><td>9</td><td>MTTM</td></tr>
+   					</table>
+   				</td>
+   			</tr>
+   		</logic:equal>
   		<tr>
   			<td width="100%" align="center">
     			<html:button property="" onclick="submitAdmissionForm('submitPriferencePageOnline')" styleClass="cntbtn" value="Save & Continue to Personal Details">  </html:button>

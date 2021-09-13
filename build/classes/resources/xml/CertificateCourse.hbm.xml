@@ -9,12 +9,12 @@
             <column name="id" />
             <generator class="native" />
         </id>
-         <many-to-one name="users" class="com.kp.cms.bo.admin.Users" fetch="select">
+        <!--  <many-to-one name="users" class="com.kp.cms.bo.admin.Users" fetch="select">
             <column name="user_id" />
-        </many-to-one>
-        <many-to-one name="subject" class="com.kp.cms.bo.admin.Subject" fetch="select">
+        </many-to-one> -->
+        <!-- <many-to-one name="subject" class="com.kp.cms.bo.admin.Subject" fetch="select">
             <column name="subject_id" />
-        </many-to-one> 
+        </many-to-one>  -->
         <property name="createdBy" type="string" update="false">
 			<column name="created_by" length="50">
 				<comment></comment>

@@ -12,7 +12,7 @@
 	function printPage(p) {
 		var appno=document.getElementById('appNo').value; 
 		var year=document.getElementById('year').value; 
-		var url="admissionFormsOnline.do?method=printAdmissionFormOnline&applicationNumber="+appno+"&applicationYear="+year;
+		var url="admissionFormsOnline.do?method=printAdmissionFormOnline&applicationNumber="+appno+"&applicationYear="+year+"&pageNum="+p;
 		window.open(url,'PrintApplication','left=20,top=20,width=800,height=1000,toolbar=1,resizable=0,scrollbars=1');
 	}
 </script>
@@ -117,7 +117,7 @@
 												</td>
 											</tr>
 										</table>
-										 <%-- 	<logic:notEmpty> --%>
+										 	<logic:notEmpty name="admissionFormForm" property="applicantDetails">
 										<table width="100%">
 											<tr>
 												<th>ANNEXURE - VII</th>
@@ -127,12 +127,12 @@
 											</tr>
 											<tr align="center">
 												<td onclick="printPage(1);"><a>Downllod</a></td>
-												<td>Row 1: Col 2</td>
-												<td>Row 1: Col 2</td>
-												<td>Row 1: Col 2</td>
+												<td onclick="printPage(2);">Downllod</td>
+												<td onclick="printPage(3);">Downllod</td>
+												<td onclick="printPage(4);">Downllod</td>
 											</tr>
 										</table> 
-										<%-- 	</logic:notEmpty> --%>
+											</logic:notEmpty>
 									</td>
 									<td width="10" valign="top" background="images/Tright_3_3.gif"
 										class="news"></td>

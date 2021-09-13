@@ -1011,7 +1011,7 @@ public class UniqueIdRegistrationHandler {
 		temp=temp+ URLEncoder.encode(""+CommonUtil.formatDates(onlineApplication.getDateOfBirth())+"","UTF-8");
 		temp=temp+ URLEncoder.encode(" and Your password is  "+onlineApplication.getUniqueId()+"","UTF-8");
 		temp=temp+ URLEncoder.encode(" Keep safe for future reference.","UTF-8");
-		temp=temp+URLEncoder.encode(" from "+collegeName,"UTF-8");
+		temp=temp+URLEncoder.encode(collegeName,"UTF-8");
 		
 		
 		PasswordMobileMessaging mob=new PasswordMobileMessaging();						

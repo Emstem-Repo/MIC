@@ -915,6 +915,65 @@
                 <comment></comment>
             </column>
         </property>
-         
+         <property name="nameWithInitial" type="string">
+            <column name="name_with_initial">
+                <comment></comment>
+            </column>
+        </property>
+        <property name="motherTonge" type="string">
+            <column name="mother_tonge">
+                <comment></comment>
+            </column>
+        </property>
+        <property name="parentOldStudent" type="string">
+            <column name="parent_old_student">
+                <comment></comment>
+            </column>
+        </property>
+        <property name="relativeOldStudent" type="string">
+            <column name="relative_old_student">
+                <comment></comment>
+            </column>
+        </property>
+        <property name="placeOfBirth" type="string">
+            <column name="place_of_birth">
+                <comment></comment>
+            </column>
+        </property>
+        <property name="thaluk" type="string">
+            <column name="thaluk">
+                <comment></comment>
+            </column>
+        </property>
+        <property name="district" type="string">
+            <column name="district">
+                <comment></comment>
+            </column>
+        </property>
+         <property name="scholarship" type="string">
+            <column name="scholarship">
+                <comment></comment>
+            </column>
+        </property>
+         <property name="reasonFrBreakStudy" type="string">
+            <column name="reason_for_breakStudy">
+                <comment></comment>
+            </column>
+        </property>
+        <property name="isSpc" type="java.lang.Boolean">
+            <column name="is_spc">
+                <comment></comment>
+            </column>
+        </property>
+         <property name="isScouts" type="java.lang.Boolean">
+            <column name="is_scouts">
+                <comment></comment>
+            </column>
+        </property>
+        <!-- <many-to-one name="district" class="com.kp.cms.bo.admin.District" fetch="select" >
+            <column name="district">
+                <comment></comment>
+            </column>
+        </many-to-one> -->
     </class>
 </hibernate-mapping>

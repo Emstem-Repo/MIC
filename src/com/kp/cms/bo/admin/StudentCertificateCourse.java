@@ -25,6 +25,7 @@ public class StudentCertificateCourse implements Serializable{
 	private Boolean isPaymentFailed; 
 	private BigDecimal feeAmount;
 	private Boolean isOnline;
+	private AdmAppln admAppln;
 	
 	public StudentCertificateCourse(){
 		
@@ -212,6 +213,16 @@ public class StudentCertificateCourse implements Serializable{
 
 	public void setIsOnline(Boolean isOnline) {
 		this.isOnline = isOnline;
+	}
+
+
+	public AdmAppln getAdmAppln() {
+		return admAppln;
+	}
+
+
+	public void setAdmAppln(AdmAppln admAppln) {
+		this.admAppln = admAppln;
 	}
 	
 	

@@ -2434,7 +2434,7 @@ import com.kp.cms.utilities.HibernateUtil;
 				if(applicantDetail.getTransferDetailBos()!=null && !applicantDetail.getTransferDetailBos().isEmpty()){
 					appBO.setApplicantTransferDetailses(applicantDetail.getTransferDetailBos());
 				}
-			
+				
 				
 				if(applicantDetail.getSubjectGroupIds()!=null && applicantDetail.getSubjectGroupIds().length!=0)
 				{
@@ -2607,7 +2607,6 @@ import com.kp.cms.utilities.HibernateUtil;
 					onlineApplication.setId(Integer.parseInt(admForm.getUniqueId()));
 					appBO.setStudentOnlineApplication(onlineApplication);
 				}
-				
 				
 			}
 			log.info("exit getApplicantBO" );
@@ -3349,6 +3348,46 @@ import com.kp.cms.utilities.HibernateUtil;
 					data.setSportsParticipationYear(dataTo.getSportsParticipationYear());
 				if(dataTo.getFamilyAnnualIncome()!=null && !dataTo.getFamilyAnnualIncome().isEmpty())
 					data.setFamilyAnnualIncome(dataTo.getFamilyAnnualIncome());
+				
+				if (dataTo.getNameWithInitial()!=null && !dataTo.getNameWithInitial().isEmpty()) {
+					data.setNameWithInitial(dataTo.getNameWithInitial());
+				}
+				if (dataTo.getMotherTonge()!=null && !dataTo.getMotherTonge().isEmpty()) {
+					data.setMotherTonge(dataTo.getMotherTonge());
+				}
+				if (dataTo.getParentOldStudent()!=null && !dataTo.getParentOldStudent().isEmpty()) {
+					data.setParentOldStudent(dataTo.getParentOldStudent());
+				}
+				if (dataTo.getRelativeOldStudent()!=null && !dataTo.getRelativeOldStudent().isEmpty()) {
+					data.setRelativeOldStudent(dataTo.getRelativeOldStudent());
+				}
+				if (dataTo.getThaluk()!=null &&  !dataTo.getThaluk().isEmpty()) {
+					data.setThaluk(dataTo.getThaluk());
+				}
+				if (dataTo.getPlaceOfBirth()!=null && !dataTo.getPlaceOfBirth().isEmpty()) {
+					data.setPlaceOfBirth(dataTo.getPlaceOfBirth());
+				}
+				if (dataTo.getDistrict()!=null && !dataTo.getDistrict().isEmpty()) {
+					data.setDistrict(dataTo.getDistrict());
+				}
+				if (dataTo.getScholarship()!=null && !dataTo.getScholarship().isEmpty()) {
+					data.setScholarship(dataTo.getScholarship());
+				}else{
+					data.setScholarship(null);
+				}
+				if (dataTo.getReasonFrBreakStudy()!=null && !dataTo.getReasonFrBreakStudy().isEmpty()) {
+					data.setReasonFrBreakStudy(dataTo.getReasonFrBreakStudy());
+				}else{
+					data.setReasonFrBreakStudy(null);
+				}
+				if (dataTo.isSpc()) {
+					data.setIsSpc(true);
+				}else{data.setIsSpc(false);}
+				
+				if (dataTo.isScouts()) {
+					data.setIsScouts(true);
+				}else{data.setIsScouts(false);}
+				
 			}
 			log.info("exit setPersonaldataBO" );
 		}
@@ -7281,6 +7320,44 @@ import com.kp.cms.utilities.HibernateUtil;
 				if(personalData.getGuardianRelationShip() != null && !personalData.getGuardianRelationShip().isEmpty())
 					personalDataTO.setGuardianRelationShip(personalData.getGuardianRelationShip());
 				personalDataTO.setSportsParticipationYear(personalData.getSportsParticipationYear());
+				
+				if (personalData.getNameWithInitial()!=null && !personalData.getNameWithInitial().isEmpty()) {
+					personalDataTO.setNameWithInitial(personalData.getNameWithInitial());
+				}
+				if (personalData.getMotherTonge()!=null && !personalData.getMotherTonge().isEmpty()) {
+					personalDataTO.setMotherTonge(personalData.getMotherTonge());
+				}
+				if (personalData.getParentOldStudent()!=null && !personalData.getParentOldStudent().isEmpty()) {
+					personalDataTO.setParentOldStudent(personalData.getParentOldStudent());
+				}
+				if (personalData.getRelativeOldStudent()!=null && !personalData.getRelativeOldStudent().isEmpty()) {
+					personalDataTO.setRelativeOldStudent(personalData.getRelativeOldStudent());
+				}
+				if (personalData.getThaluk()!=null &&  !personalData.getThaluk().isEmpty()) {
+					personalDataTO.setThaluk(personalData.getThaluk());
+				}
+				if (personalData.getPlaceOfBirth()!=null && !personalData.getPlaceOfBirth().isEmpty()) {
+					personalDataTO.setPlaceOfBirth(personalData.getPlaceOfBirth());
+				}
+				if (personalData.getDistrict()!=null && !personalData.getDistrict().isEmpty()) {
+					personalDataTO.setDistrict(personalData.getDistrict());
+				}
+				if (personalData.getScholarship()!=null && !personalData.getScholarship().isEmpty()) {
+					personalDataTO.setScholarship(personalData.getScholarship());
+					personalDataTO.setHasScholarship(true);
+				}else{personalDataTO.setHasScholarship(false);}
+				
+				if (personalData.getReasonFrBreakStudy()!=null && !personalData.getReasonFrBreakStudy().isEmpty()) {
+					personalDataTO.setReasonFrBreakStudy(personalData.getReasonFrBreakStudy());
+					personalDataTO.setDidBreakStudy(true);
+				}else{personalDataTO.setDidBreakStudy(false);}
+				if (personalData.getIsSpc()!=null && personalData.getIsSpc()) {
+					personalDataTO.setSpc(true);
+				}else{personalDataTO.setSpc(false);}
+				
+				if (personalData.getIsScouts()!=null && personalData.getIsScouts()) {
+					personalDataTO.setScouts(true);
+				}else{personalDataTO.setScouts(false);}
 			}
 			
 			log.info("exit copyPropertiesValue personal data" );

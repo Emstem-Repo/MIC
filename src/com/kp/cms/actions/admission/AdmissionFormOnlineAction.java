@@ -123,18 +123,21 @@ import com.kp.cms.to.admin.UGCoursesTO;
 import com.kp.cms.to.admin.UniversityTO;
 import com.kp.cms.to.admission.AddressTO;
 import com.kp.cms.to.admission.AdmApplnTO;
+import com.kp.cms.to.admission.CertificateCourseTO;
 import com.kp.cms.to.admission.PersonalDataTO;
 import com.kp.cms.to.admission.PreferenceTO;
 import com.kp.cms.transactions.admin.IProgramTransaction;
 import com.kp.cms.transactions.admin.ISubReligionTransaction;
 import com.kp.cms.transactions.admin.ITemplatePassword;
 import com.kp.cms.transactions.admission.IAdmissionFormTransaction;
+import com.kp.cms.transactions.admission.IAdmissionStatusTransaction;
 import com.kp.cms.transactionsimpl.admin.DioceseTransactionImpl;
 import com.kp.cms.transactionsimpl.admin.ParishTransactionImpl;
 import com.kp.cms.transactionsimpl.admin.ProgramTransactionImpl;
 import com.kp.cms.transactionsimpl.admin.SubReligionTransactionImpl;
 import com.kp.cms.transactionsimpl.admin.TemplateImpl;
 import com.kp.cms.transactionsimpl.admission.AdmissionFormTransactionImpl;
+import com.kp.cms.transactionsimpl.admission.AdmissionStatusTransactionImpl;
 import com.kp.cms.utilities.CSVUpdater;
 import com.kp.cms.utilities.CommonUtil;
 import com.kp.cms.utilities.SubjectGroupDetailsComparator;
@@ -234,111 +237,7 @@ public class AdmissionFormOnlineAction extends BaseDispatchAction {
 						admForm.setWorkExpNeeded(false);
 					}
 						admForm.setApplicantDetails(applicantDetails);
-					/*ProgramTypeHandler programtypehandler = ProgramTypeHandler.getInstance();
-						List<ProgramTypeTO> programtypes = programtypehandler
-									.getProgramType();
-						// set flags
-						if (programtypes!=null) {
-							admForm.setEditProgramtypes(programtypes);
-							Iterator<ProgramTypeTO> typeitr= programtypes.iterator();
-							while (typeitr.hasNext()) {
-								ProgramTypeTO typeTO = (ProgramTypeTO) typeitr.next();
-								if(typeTO.getProgramTypeId()==admForm.getApplicantDetails().getCourse().getProgramTypeId()){
-									if(typeTO.getPrograms()!=null){
-										admForm.setEditprograms(typeTO.getPrograms());
-										Iterator<ProgramTO> programitr= typeTO.getPrograms().iterator();
-											while (programitr.hasNext()) {
-												ProgramTO programTO = (ProgramTO) programitr
-														.next();
-												if(programTO.getId()== admForm.getApplicantDetails().getCourse().getProgramId()){
-													admForm.setEditcourses(programTO.getCourseList());
-													if(programTO!=null){ 
-														if(programTO.getIsMotherTongue()==true)
-														admForm.setDisplayMotherTongue(true);
-														if(programTO.getIsDisplayLanguageKnown()==true)
-															admForm.setDisplayLanguageKnown(true);
-														if(programTO.getIsHeightWeight()==true)
-															admForm.setDisplayHeightWeight(true);
-														if(programTO.getIsDisplayTrainingCourse()==true)
-															admForm.setDisplayTrainingDetails(true);
-														if(programTO.getIsAdditionalInfo()==true)
-															admForm.setDisplayAdditionalInfo(true);
-														if(programTO.getIsExtraDetails()==true)
-															admForm.setDisplayExtracurricular(true);
-														if(programTO.getIsSecondLanguage()==true)
-															admForm.setDisplaySecondLanguage(true);
-														if(programTO.getIsFamilyBackground()==true)
-															admForm.setDisplayFamilyBackground(true);
-														if(programTO.getIsTCDetails()==true)
-															admForm.setDisplayTCDetails(true);
-														if(programTO.getIsEntranceDetails()==true)
-															admForm.setDisplayEntranceDetails(true);
-														if(programTO.getIsLateralDetails()==true)
-															admForm.setDisplayLateralDetails(true);
-														if(programTO.getIsTransferCourse()==true)
-															admForm.setDisplayTransferCourse(true);
-													}
-												}
-											}
-									}	
-								}
-							}
-						}
-						*/
-						
-						//checkExtradetailsDisplay(admForm);
-						//checkLateralTransferDisplay(admForm);
-						// Admitted Through
-//						List<AdmittedThroughTO> admittedList=AdmittedThroughHandler.getInstance().getAdmittedThrough();
-//						admForm.setAdmittedThroughList(admittedList);
-//						OrganizationHandler orgHandler= OrganizationHandler.getInstance();
-////						if(admForm.isDisplayAdditionalInfo())
-////						{
-//							
-//							List<OrganizationTO> tos=orgHandler.getOrganizationDetails();
-//							if(tos!=null && !tos.isEmpty())
-//							{
-//								OrganizationTO orgTO=tos.get(0);
-//								admForm.setOrganizationName(orgTO.getOrganizationName());
-//								admForm.setNeedApproval(orgTO.isNeedApproval());
-//							}
-////						}
-//						
-//							Properties prop = new Properties();
-//							try {
-//								InputStream inputStream = CommonUtil.class.getClassLoader()
-//										.getResourceAsStream(CMSConstants.APPLICATION_PROPERTIES);
-//								prop.load(inputStream);
-//							} 
-//							catch (IOException e) {
-//								log.error("Error occured at convertToExcel of studentDetailsReportHelper ",e);
-//								throw new IOException(e);
-//							}
-//							String fileName=prop.getProperty(CMSConstants.PRG_TYPE);
-//							if(admForm.getApplicantDetails().getSelectedCourse().getProgramTypeId()==Integer.parseInt(fileName)){
-//								admForm.setViewextradetails(true);
-//							}
-//					
-//					if(applicantDetails.getPersonalData()!=null && applicantDetails.getPersonalData().getPassportValidity()!=null && !StringUtils.isEmpty(applicantDetails.getPersonalData().getPassportValidity()) )
-//						applicantDetails.getPersonalData().setPassportValidity(CommonUtil.ConvertStringToDateFormat(applicantDetails.getPersonalData().getPassportValidity(), AdmissionFormOnlineAction.SQL_DATEFORMAT,AdmissionFormOnlineAction.FROM_DATEFORMAT));
-//					
-//					// set photo to session
-//					if(applicantDetails.getEditDocuments()!=null){
-//						Iterator<ApplnDocTO> docItr=applicantDetails.getEditDocuments().iterator();
-//						while (docItr.hasNext()) {
-//							ApplnDocTO docTO = (ApplnDocTO) docItr.next();
-//							if(docTO.getSubmitDate()!=null && !StringUtils.isEmpty(docTO.getSubmitDate()))
-//							{
-//								admForm.setSubmitDate(docTO.getSubmitDate());
-//							}
-//							if(docTO.getDocName()!=null && docTO.getDocName().equalsIgnoreCase("Photo")){
-//								HttpSession session= request.getSession(false);
-//								if(session!=null){
-//									session.setAttribute(AdmissionFormOnlineAction.PHOTOBYTES, docTO.getPhotoBytes());
-//								}
-//							}
-//						}
-//					}
+					
 				}
 			
 			}catch (Exception e){
@@ -360,11 +259,27 @@ public class AdmissionFormOnlineAction extends BaseDispatchAction {
 			HttpServletResponse response) throws Exception {
 		log.info("entered initAdmissionApproval..");
 		AdmissionFormForm admForm = (AdmissionFormForm) form;
+		List<CertificateCourseTO> toList=new ArrayList();
+		IAdmissionStatusTransaction admissionStatusTransaction=new AdmissionStatusTransactionImpl();
 		String applicationNumber = admForm.getApplicationNumber().trim();
 		int applicationYear = Integer.parseInt(admForm.getApplicationYear());
 		AdmApplnTO applicantDetails = AdmissionFormHandler.getInstance().getApplicantDetails(applicationNumber, applicationYear,false);
 		admForm.setApplicantDetails(applicantDetails);
-		return mapping.findForward("onlineBioDataForm");
+		toList=admissionStatusTransaction.getCertificateCoursesprint(applicantDetails.getId());
+		admForm.setCerticateCoursesPrint(toList);
+		if (admForm.getPageNum()=="1" || admForm.getPageNum().equalsIgnoreCase("1")) {
+			return mapping.findForward("onlineAnnexure");
+		}
+		else if (admForm.getPageNum()=="2" || admForm.getPageNum().equalsIgnoreCase("2")) {
+			return mapping.findForward("onlineMembership");
+		}
+		else if (admForm.getPageNum()=="3" || admForm.getPageNum().equalsIgnoreCase("3")) {
+			return mapping.findForward("onlineBioDataForm");
+		}
+		else if (admForm.getPageNum()=="4" || admForm.getPageNum().equalsIgnoreCase("4")) {
+			return mapping.findForward("onlineAPPAdmission");
+		}
+		return mapping.findForward("onlineAPPAdmission");
 	}
 	
 	/**

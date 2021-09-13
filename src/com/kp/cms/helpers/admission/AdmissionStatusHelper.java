@@ -29,6 +29,7 @@ import com.kp.cms.bo.admin.AdmAppln;
 import com.kp.cms.bo.admin.AdmapplnAdditionalInfo;
 import com.kp.cms.bo.admin.CandidatePGIDetails;
 import com.kp.cms.bo.admin.CandidatePreference;
+import com.kp.cms.bo.admin.CertificateCourse;
 import com.kp.cms.bo.admin.GroupTemplate;
 import com.kp.cms.bo.admin.InterviewCard;
 import com.kp.cms.bo.admin.InterviewCardHistory;
@@ -37,6 +38,7 @@ import com.kp.cms.bo.admin.InterviewSelected;
 import com.kp.cms.bo.admin.Organisation;
 import com.kp.cms.bo.admin.SeatAllocation;
 import com.kp.cms.bo.admin.Student;
+import com.kp.cms.bo.admin.StudentCertificateCourse;
 import com.kp.cms.bo.admin.StudentCourseAllotment;
 import com.kp.cms.bo.admin.StudentCourseChanceMemo;
 import com.kp.cms.bo.admin.StudentRank;
@@ -53,11 +55,13 @@ import com.kp.cms.to.admin.CourseTO;
 import com.kp.cms.to.admin.StudentCourseAllotmentTo;
 import com.kp.cms.to.admission.AdmApplnTO;
 import com.kp.cms.to.admission.AdmissionStatusTO;
+import com.kp.cms.to.admission.CertificateCourseTO;
 import com.kp.cms.to.admission.InterviewCardTO;
 import com.kp.cms.to.admission.InterviewProgramCourseTO;
 import com.kp.cms.to.admission.InterviewResultTO;
 import com.kp.cms.to.admission.InterviewScheduleTO;
 import com.kp.cms.to.admission.PersonalDataTO;
+import com.kp.cms.to.admission.StudentCertificateCourseTO;
 import com.kp.cms.transactions.admission.IAdmSubjectForRank;
 import com.kp.cms.transactions.admission.IAdmissionFormTransaction;
 import com.kp.cms.transactions.admission.IAdmissionStatusTransaction;
@@ -110,10 +114,24 @@ public class AdmissionStatusHelper {
 				 * Checks for the columns. If does not contain  null values then set those values from BO to TO
 				 */
 				admissionStatusTO.setId(appln.getId());
-				/*if(appln.getIsBypassed()!= null && appln.getIsBypassed()){
+				if(appln.getIsBypassed()!= null && appln.getIsBypassed()){
 					//if(false){
 					admissionStatusTO.setByPassed(appln.getIsBypassed());
 				}
+				/* code Added for courses having intervie_selection_schedule data defined---- code starts here*/
+			/*	if(appln.getInterScheduleSelection()!=null && appln.getInterScheduleSelection().getId()>0 && appln.getPersonalData()!=null && appln.getPersonalData().getDateOfBirth()!=null 
+						&& appln.getPersonalData().getId()!=0 && appln.getIsCancelled()!=null){
+					admissionStatusTO.setApplicationNo(appln.getApplnNo());
+					admissionStatusTO.setDateOfBirth(CommonUtil.getStringDate(appln.getPersonalData().getDateOfBirth()));
+					admissionStatusTO.setPersonalDataId(appln.getPersonalData().getId());
+					boolean isFinalMeritApproved = false;
+					if(appln.getIsFinalMeritApproved()!=null){
+						isFinalMeritApproved = appln.getIsFinalMeritApproved();
+					}
+					admissionStatusTO.setIsSelected(convertBoolValueIsSelected(appln.getIsSelected(),isFinalMeritApproved));	
+					admissionStatusTO.setInterviewSelectionSchedule(String.valueOf(appln.getInterScheduleSelection().getId()));
+				}*/
+				/* code Added for courses having intervie_selection_schedule data defined----code ends here*/
 				else if(appln.getIsSelected()!=null && appln.getPersonalData()!=null && appln.getPersonalData().getDateOfBirth()!=null 
 				&& appln.getPersonalData().getId()!=0 && appln.getIsCancelled()!=null){
 						
@@ -128,7 +146,7 @@ public class AdmissionStatusHelper {
 							isFinalMeritApproved = appln.getIsFinalMeritApproved();
 						}
 						admissionStatusTO.setIsSelected(convertBoolValueIsSelected(appln.getIsSelected(),isFinalMeritApproved));				
-				}*/
+				}
 				if(appln.getPersonalData()!=null && appln.getPersonalData().getEmail()!=null){
 					admissionStatusTO.setEmail(appln.getPersonalData().getEmail());
 				}									
@@ -140,7 +158,7 @@ public class AdmissionStatusHelper {
 					//admissionStatusTO.setCourseId(appln.getCourse().getId());
 					admissionStatusTO.setCourseId(appln.getCourseBySelectedCourseId().getId());
 				}
-				/*Set<InterviewResult> intResultSet=appln.getInterviewResults();
+				Set<InterviewResult> intResultSet=appln.getInterviewResults();
 				Set<InterviewResultTO> interviewResultTOSet=new HashSet<InterviewResultTO>();
 				Iterator<InterviewResult> iterator1=intResultSet.iterator();
 				while (iterator1.hasNext()) {
@@ -168,9 +186,9 @@ public class AdmissionStatusHelper {
 							interviewResultTOSet.add(interviewResultTO);
 							}
 						}	
-				}*/
+				}
 				admissionStatusTO.setAdmStatus(appln.getAdmStatus());
-				//admissionStatusTO.setInterviewResultTO(interviewResultTOSet);
+				admissionStatusTO.setInterviewResultTO(interviewResultTOSet);
 				Set<Student> studentSet = appln.getStudents();
 				Iterator<Student> stItr = studentSet.iterator();
 				boolean isAdmitted = false;
@@ -180,17 +198,7 @@ public class AdmissionStatusHelper {
 					isAdmitted = student.getIsAdmitted();
 				}
 				admissionStatusTO.setAdmitted(isAdmitted);
-				admissionStatusTO.setApplicationNo(appln.getApplnNo());
-				//applied year added by manu
-				admissionStatusTO.setAppliedYear(appln.getAppliedYear());
-
-				admissionStatusTO.setDateOfBirth(CommonUtil.getStringDate(appln.getPersonalData().getDateOfBirth()));
-				admissionStatusTO.setPersonalDataId(appln.getPersonalData().getId());
-				boolean isFinalMeritApproved = false;
-				if(appln.getIsFinalMeritApproved()!=null){
-					isFinalMeritApproved = appln.getIsFinalMeritApproved();
-				}
-				admissionStatusTO.setIsSelected(convertBoolValueIsSelected(appln.getIsSelected(),isFinalMeritApproved));	
+				
 				//raghu
 				if(appln.getMode()!=null && appln.getMode().equalsIgnoreCase("CHALLAN")){
 				if(appln.getIsChallanRecieved()!=null && appln.getIsChallanRecieved()){
@@ -231,17 +239,26 @@ public class AdmissionStatusHelper {
 				 Integer maxallotment = txn.getmaxallotment(appln.getCourse().getProgram().getProgramType().getId(),appln.getAppliedYear());
 				 Integer maxChance=txn.getMaxChance(appln.getCourse().getProgram().getProgramType().getId(),appln.getAppliedYear(),admissionStatusForm.getApplicationNo());
 		       int mxal = 0;
-		       /* if(maxChance!=null){
+		        if(maxChance!=null){
 		         mxal = maxChance.intValue();
-		        }*/
-		        if(maxallotment!=null){
-			         mxal = maxallotment.intValue();
-			        }
+		        }
+		        if(appln.getCourse().getProgram().getProgramType().getId()==2){
+		        	if(maxChance!=null){
+		        		mxal=maxChance.intValue();
+		        	}else if (maxallotment!=null) {
+						mxal=maxallotment.intValue();
+					}
+		        }else{
+		        	if(maxChance!=null){
+		        		mxal=maxChance.intValue();
+		        	}else if (maxallotment!=null) {
+						mxal=maxallotment.intValue();
+					}
+		        }
 		        admissionStatusForm.setMaxallotment(mxal);
-		       
 		        
 		        StudentRank studentrank;
-				StudentCourseAllotment allotmentdata = txn.getallotmentdetails(appln.getId(),mxal, admissionStatusForm);
+				StudentCourseAllotment allotmentdata = txn.getallotmentdetails(appln.getId(),mxal);
 				
 			    if(allotmentdata!=null){
 			       admissionStatusTO.setIndexmark(allotmentdata.getIndexMark().toString());
@@ -259,7 +276,6 @@ public class AdmissionStatusHelper {
 			       admissionStatusTO.setAlmntcaste(allotmentdata.getIsCaste());
 			       admissionStatusTO.setAlmntgeneral(allotmentdata.getIsGeneral());
 			       admissionStatusTO.setAlmntCommunity(allotmentdata.getIsCommunity());
-			       //admissionStatusTO.setIsSelected(appln.getIsSelected());
 			       if(allotmentdata.getCourse().getDateTime()!=null)
 				        admissionStatusTO.setDateTime(allotmentdata.getCourse().getDateTime());
 			       if(admissionStatusTO.isAlmntgeneral()){
@@ -291,86 +307,14 @@ public class AdmissionStatusHelper {
 			       admissionStatusTO.setAllotmentflag(true);
 			    	
 			    }
-			    admissionStatusTO.setAllotmentflag(true);
+			    
 			    // Chance memo data collection from stored table
 				IApplicationEditTransaction txn2=ApplicationEditTransactionimpl.getInstance();
 				Map<Integer,AdmissionStatusTO> chanceMap = new HashMap<Integer, AdmissionStatusTO>();
 				List<AdmissionStatusTO> chanceListFormap  =new ArrayList<AdmissionStatusTO>();
-				//Set<CandidatePreference> prefSet = appln.getCandidatePreferences();
-				//Iterator<CandidatePreference> prefItr = prefSet.iterator();
-				Boolean isCaste = false;
-				Boolean isCommunity = false;
-//				int catetory=Integer.parseInt(admissionStatusForm.getCategoryId());
-//				if (catetory==8) {
-//					isCommunity=true;
-//				}
-//				if (catetory==2 || catetory==3) {
-//					isCaste=true;
-//				}
-				Integer maxChanceNo = txn2.getMaxChanceNo(appln.getAppliedYear(),appln.getCourse().getProgram().getProgramType().getId(), Integer.parseInt(admissionStatusForm.getDeptId()), isCaste, isCommunity);
-			      int mxChance = 0;
-			        if(maxChanceNo!=null){
-			        	mxChance = maxChanceNo.intValue();
-			        }
-				List<StudentCourseChanceMemo> chanceList = txn.GetChanceListForStudent(appln.getId(),mxChance, Integer.parseInt(admissionStatusForm.getDeptId()), isCaste, isCommunity);	
-			    if(chanceList!=null && chanceList.size()>0){
-			    	admissionStatusTO.setChanceflag(true);
-			    	admissionStatusForm.setChanceMemo(true);
-			    	Iterator<StudentCourseChanceMemo> chanceItr = chanceList.iterator();
-			    	while (chanceItr.hasNext()) {
-			    		AdmissionStatusTO to = new AdmissionStatusTO();
-						StudentCourseChanceMemo memo = (StudentCourseChanceMemo) chanceItr.next();
-						to.setAllotmentflag(true);
-						if(memo.getCourse().getDateTime()!=null){
-					        to.setDateTime(memo.getCourse().getChanceGenDateTime());
-					        to.setCommunityDateTime(memo.getCourse().getChanceGenDateTime());
-						}
-						to.setChanceGeneralFee(memo.getCourse().getGeneralFee());
-						to.setChanceCasteFee(memo.getCourse().getCasteFee());
-						//raghu
-					       if(memo.getCourse().getGeneralFee()!=null){
-					    	 //admissionStatusTO.setGeneralFee(memo.getCourse().getGeneralFee());
-					    	 to.setGeneralFee(memo.getCourse().getGeneralFee());
-					       }
-					       if(memo.getCourse().getCasteFee()!=null){
-					    	  //admissionStatusTO.setCasteFee(memo.getCourse().getCasteFee());
-					    	  to.setCasteFee(memo.getCourse().getCasteFee());
-					       }
-					       
-						to.setChanceCurrentcourse(memo.getCourse().getName());
-						to.setChanceCurrentcourseid(memo.getCourse().getId());
-						admissionStatusForm.setChanceCourseId(memo.getCourse().getId());
-						to.setChancePref(memo.getPrefNo());
-						to.setChanceIndexmark(memo.getIndexMark().toString());
-						to.setChanceCategory(memo.getAdmAppln().getPersonalData().getReligionSection().getName());
-						if(memo.getIsCaste()){
-					    	to.setChanceCategory(memo.getAdmAppln().getPersonalData().getReligionSection().getName());
-				    		if(memo.getAdmAppln().getPersonalData().getReligionSection().getId()==2 || memo.getAdmAppln().getPersonalData().getReligionSection().getId()==3){
-				    	    	 if(memo.getCourse().getChanceCasteDateTime()!=null)
-				    	    		 to.setCommunityDateTime(memo.getCourse().getChanceCasteDateTime());
-				    	    }
-				    		to.setChanceAlmntcaste(true);
-				    		to.setCasteRank(memo.getChanceRank());
-						}
-					    else if(memo.getIsGeneral()){
-					    	to.setChanceCategory("GENERAL");
-							to.setChanceAlmntgeneral(true);
-							to.setGenRank(memo.getChanceRank());
-						}
-					    else if(memo.getIsCommunity()) {
-					    	if(memo.getCourse().getChanceCommDateTime()!=null){
-						        to.setCommunityDateTime(memo.getCourse().getChanceCommDateTime());
-							}
-							to.setChanceCategory("COMMUNITY");
-							to.setCasteRank(memo.getChanceRank());
-							to.setChanceAlmntCommunity(true);
-					    }
-						
-						chanceMap.put(memo.getCourse().getId(),to);
-						chanceListFormap.add(to);
-					}
-			    }	
-				/*while(prefItr.hasNext()) {
+				Set<CandidatePreference> prefSet = appln.getCandidatePreferences();
+				Iterator<CandidatePreference> prefItr = prefSet.iterator();
+				while(prefItr.hasNext()) {
 					
 					CandidatePreference candidatePreference = prefItr.next();
 					Boolean isCaste = false;
@@ -382,8 +326,63 @@ public class AdmissionStatusHelper {
 					        if(maxChanceNo!=null){
 					        	mxChance = maxChanceNo.intValue();
 					        }
-					        System.out.println(candidatePreference.getCourse().getId());
-					    				   					    
+						
+					    List<StudentCourseChanceMemo> chanceList = txn.GetChanceListForStudent(appln.getId(),mxChance, candidatePreference.getCourse().getId(), isCaste, isCommunity);	
+					    if(chanceList!=null && chanceList.size()>0){
+					    	admissionStatusTO.setChanceflag(true);
+					    	Iterator<StudentCourseChanceMemo> chanceItr = chanceList.iterator();
+					    	while (chanceItr.hasNext()) {
+					    		AdmissionStatusTO to = new AdmissionStatusTO();
+								StudentCourseChanceMemo memo = (StudentCourseChanceMemo) chanceItr.next();
+								
+								if(memo.getCourse().getDateTime()!=null){
+							        to.setDateTime(memo.getCourse().getChanceGenDateTime());
+							        to.setCommunityDateTime(memo.getCourse().getChanceGenDateTime());
+								}
+								to.setChanceGeneralFee(memo.getCourse().getGeneralFee());
+								to.setChanceCasteFee(memo.getCourse().getCasteFee());
+								//raghu
+							       if(memo.getCourse().getGeneralFee()!=null){
+							    	 //admissionStatusTO.setGeneralFee(memo.getCourse().getGeneralFee());
+							    	 to.setGeneralFee(memo.getCourse().getGeneralFee());
+							       }
+							       if(memo.getCourse().getCasteFee()!=null){
+							    	  //admissionStatusTO.setCasteFee(memo.getCourse().getCasteFee());
+							    	  to.setCasteFee(memo.getCourse().getCasteFee());
+							       }
+							       
+								to.setChanceCurrentcourse(memo.getCourse().getName());
+								to.setChanceCurrentcourseid(memo.getCourse().getId());
+								to.setChancePref(memo.getPrefNo());
+								to.setChanceIndexmark(memo.getIndexMark().toString());
+								to.setChanceCategory(memo.getAdmAppln().getPersonalData().getReligionSection().getName());
+								if(memo.getIsCaste()){
+							    	to.setChanceCategory(memo.getAdmAppln().getPersonalData().getReligionSection().getName());
+						    		if(memo.getAdmAppln().getPersonalData().getReligionSection().getId()==2 || memo.getAdmAppln().getPersonalData().getReligionSection().getId()==3){
+						    	    	 if(memo.getCourse().getChanceCasteDateTime()!=null)
+						    	    		 to.setCommunityDateTime(memo.getCourse().getChanceCasteDateTime());
+						    	    }
+						    		to.setChanceAlmntcaste(true);
+						    		to.setCasteRank(memo.getChanceRank());
+								}
+							    else if(memo.getIsGeneral()){
+							    	to.setChanceCategory("GENERAL");
+									to.setChanceAlmntgeneral(true);
+									to.setGenRank(memo.getChanceRank());
+								}
+							    else if(memo.getIsCommunity()) {
+							    	if(memo.getCourse().getChanceCommDateTime()!=null){
+								        to.setCommunityDateTime(memo.getCourse().getChanceCommDateTime());
+									}
+									to.setChanceCategory("COMMUNITY");
+									to.setCasteRank(memo.getChanceRank());
+									to.setChanceAlmntCommunity(true);
+							    }
+								
+								chanceMap.put(memo.getCourse().getId(),to);
+								chanceListFormap.add(to);
+							}
+					    }					   					    
 					}
 					
 					isCaste = true;
@@ -393,7 +392,7 @@ public class AdmissionStatusHelper {
 					        if(maxChanceNo!=null){
 					        	mxChance = maxChanceNo.intValue();
 					        }
-						System.out.println(74851);
+						
 					    List<StudentCourseChanceMemo> chanceList = txn.GetChanceListForStudent(appln.getId(),mxChance, candidatePreference.getCourse().getId(), isCaste, isCommunity);	
 					    if(chanceList!=null && chanceList.size()>0){
 					    	admissionStatusTO.setChanceflag(true);
@@ -520,7 +519,7 @@ public class AdmissionStatusHelper {
 							}
 					    }
 				    }
-				}	*/			
+				}				
 			    
 				admissionStatusTO.setChanceMemoMap(chanceMap);
 				Collections.sort(chanceListFormap);
@@ -1900,17 +1899,17 @@ public class AdmissionStatusHelper {
 				admissionStatusForm.setAdmApplnId(String.valueOf(allotment.getAdmAppln().getId()));
 				to.setCourseId(allotment.getCourse().getId());
 				if(allotment.getIsAccept() && allotment.getIsGeneral()){
-					to.setMsgValue(" the allotment for "+allotment.getCourse().getName()+" under Genearal Quota,kindly download the following form and upload the documents");
+					to.setMsgValue(" the allotment for "+allotment.getCourse().getName()+" under Genearal Quota");
 					to.setIsAccept(true);
 					admissionStatusForm.setIsOnceAccept(true);
 					selectedCourseId=allotment.getCourse().getId();
 				}else if(allotment.getIsAccept() && allotment.getIsCaste()){
-					to.setMsgValue(" the allotment for "+allotment.getCourse().getName()+" under SC/ST Quota,kindly download the following form and upload the documents");
+					to.setMsgValue(" the allotment for "+allotment.getCourse().getName()+" under SC/ST Quota");
 					to.setIsAccept(true);
 					admissionStatusForm.setIsOnceAccept(true);
 					selectedCourseId=allotment.getCourse().getId();
 				}else if(allotment.getIsAccept() && allotment.getIsCommunity()){
-					to.setMsgValue(" the allotment for "+allotment.getCourse().getName()+" under Malankara Syrian Catholic Quota,kindly download the following form and upload the documents");
+					to.setMsgValue(" the allotment for "+allotment.getCourse().getName()+" under Malankara Syrian Catholic Quota");
 					to.setIsAccept(true);
 					admissionStatusForm.setIsOnceAccept(true);
 					selectedCourseId=allotment.getCourse().getId();
@@ -1926,6 +1925,8 @@ public class AdmissionStatusHelper {
 					to.setIsDecline(true);
 				}
 				if(allotment.getIsAccept()){
+					if(allotment.getPayonline())
+						admissionStatusForm.setPayonline(true);
 					IAdmissionFormTransaction tx= AdmissionFormTransactionImpl.getInstance();
 					StudentAllotmentPGIDetails details=tx.getBoObj(allotment.getAdmAppln().getStudentOnlineApplication().getId());
 					if(details!=null){
@@ -2078,7 +2079,17 @@ public class AdmissionStatusHelper {
 		StudentAllotmentPGIDetails bo=new StudentAllotmentPGIDetails();
 		StringBuilder temp=new StringBuilder();
 		
-		try{
+		
+		
+		
+		System.out.println("+++++++++++++++++++++++++++++++++++  this is data before hash alogoritham ++++++++++++++++++++++++++++++"+temp.toString());
+		
+		
+		//String hash=AdmissionFormHandler.getInstance().hashCal("SHA-512",temp.toString());
+		
+		
+		
+		
 		
 			bo.setCandidateRefNo(admForm.getTxnid());
 			bo.setTxnRefNo(admForm.getPayuMoneyId());
@@ -2099,13 +2110,352 @@ public class AdmissionStatusHelper {
 			admForm.setTxnAmt(admForm.getAmount());
 			admForm.setTxnRefNo(admForm.getPayuMoneyId());
 			admForm.setTxnDate(CommonUtil.ConvertStringToDateFormat(CommonUtil.getDateTime(), "MM/dd/yyyy hh:mm:ss", "dd/MM/yyyy"));
-		}catch (Exception e) {
-			e.printStackTrace();
-			System.out.println("+++++++" +e+"+++++++++++");
-		}
+			
 		
 		return bo;
 	
+	}
+	public List<AdmissionStatusTO> setTOPGList(List<StudentCourseChanceMemo> allotments,
+			AdmissionStatusForm admissionStatusForm, List<StudentCourseAllotment> courseAllotments)throws Exception {
+		List<AdmissionStatusTO> statusTOs = new ArrayList<AdmissionStatusTO>();
+		List<AdmissionStatusTO> chanceTOs = new ArrayList<AdmissionStatusTO>();
+		List<AdmissionStatusTO> allotmentTOs = new ArrayList<AdmissionStatusTO>();
+		IAdmissionStatusTransaction trx=new AdmissionStatusTransactionImpl();
+		List<PublishForAllotment> publishForAllotments=trx.getPublishAllotment();
+		Map<Integer, Integer>  publishMap= new HashMap<Integer, Integer>();
+		Map<Integer, Integer>  publishMapForChance= new HashMap<Integer, Integer>();
+		if(publishForAllotments!=null){
+			for(PublishForAllotment bo:publishForAllotments){
+				publishMap.put(bo.getCourse().getId(), bo.getAllotmentNo());
+				publishMapForChance.put(bo.getCourse().getId(), bo.getChanceNo());
+			}
+		}
+		admissionStatusForm.setIsOnceAccept(false);
+		admissionStatusForm.setIsUploadDocument(false);
+		admissionStatusForm.setPayonline(false);
+		int selectedCourseId=0;
+		try{
+			for(StudentCourseAllotment allotment:courseAllotments){
+				AdmissionStatusTO to = new AdmissionStatusTO();
+				to.setCourseName(allotment.getCourse().getName());
+				to.setAllotmentno(allotment.getAllotmentNo());
+				to.setChanceAllotment("Allotment");
+				if(allotment.getIsGeneral()){
+					to.setCasteName("You have been provisionally Alloted- General Quota-");
+				}else if(allotment.getIsCaste()){
+					to.setCasteName("You have been provisionally Alloted-SC/ST Quota-");
+				}else{
+					to.setCasteName("You have been provisionally Alloted-Malankara Syrian catholic");
+				}
+				admissionStatusForm.setAdmApplnId(String.valueOf(allotment.getAdmAppln().getId()));
+				to.setCourseId(allotment.getCourse().getId());
+				if(allotment.getIsAccept() && allotment.getIsGeneral() && allotment.getPayonline()){
+					to.setMsgValue(" the allotment for "+allotment.getCourse().getName()+" under Genearal Quota");
+					to.setIsAccept(true);
+					admissionStatusForm.setIsOnceAccept(true);
+					selectedCourseId=allotment.getCourse().getId();
+				}else if(allotment.getIsAccept() && allotment.getIsCaste()){
+					to.setMsgValue(" the allotment for "+allotment.getCourse().getName()+" under SC/ST Quota");
+					to.setIsAccept(true);
+					admissionStatusForm.setIsOnceAccept(true);
+					selectedCourseId=allotment.getCourse().getId();
+				}else if(allotment.getIsAccept() && allotment.getIsCommunity()){
+					to.setMsgValue(" the allotment for "+allotment.getCourse().getName()+" under Malankara Syrian Catholic Quota");
+					to.setIsAccept(true);
+					admissionStatusForm.setIsOnceAccept(true);
+					selectedCourseId=allotment.getCourse().getId();
+				}
+				if(allotment.getIsDecline() && allotment.getIsGeneral()){
+					to.setMsgValue("Your admission for "+allotment.getCourse().getName()+" under Genearal Quota is ");
+					to.setIsDecline(true);
+				}else if(allotment.getIsDecline() && allotment.getIsCaste()){
+					to.setMsgValue("Your admission for "+allotment.getCourse().getName()+" under SC/ST Quota is ");
+					to.setIsDecline(true);
+				}else if(allotment.getIsDecline() && allotment.getIsCommunity()){
+					to.setMsgValue("Your admission for "+allotment.getCourse().getName()+" under Malankara Syrian Catholic is ");
+					to.setIsDecline(true);
+				}
+				if(allotment.getIsAccept()){
+					IAdmissionFormTransaction tx= AdmissionFormTransactionImpl.getInstance();
+					StudentAllotmentPGIDetails details=tx.getBoObj(allotment.getAdmAppln().getStudentOnlineApplication().getId());
+					if(details!=null){
+						admissionStatusForm.setIsPaid(true);
+					}
+				}
+				if(allotment.getIsAccept() && allotment.getPayonline()){
+					if(allotment.getPayonline())
+						admissionStatusForm.setPayonline(true);
+					if(allotment.getAdmAppln().getPersonalData().getReligionSection().getId()==2 
+							|| allotment.getAdmAppln().getPersonalData().getReligionSection().getId()==3
+							|| allotment.getAdmAppln().getPersonalData().getReligionSection().getId()==4){
+						if(allotment.getCourse().getIsSelfFinancing()){
+							if(allotment.getIsGeneral()){
+								admissionStatusForm.setApplicationAmount(allotment.getCourse().getGeneralFee());
+							}else if(allotment.getIsCaste()){
+								admissionStatusForm.setApplicationAmount(allotment.getCourse().getCasteFee());
+							}else if(allotment.getIsCommunity()){
+								admissionStatusForm.setApplicationAmount(allotment.getCourse().getGeneralFee());
+							}
+						}else{
+							admissionStatusForm.setApplicationAmount(allotment.getCourse().getCasteFee());
+						}
+					}else{
+						admissionStatusForm.setApplicationAmount(allotment.getCourse().getGeneralFee());
+					}
+					if(allotment.getAdmAppln().getPersonalData().getFirstName()!=null && !allotment.getAdmAppln().getPersonalData().getFirstName().isEmpty()){
+						admissionStatusForm.setApplicantName(allotment.getAdmAppln().getPersonalData().getFirstName());
+					}
+					if(allotment.getAdmAppln().getCourse()!=null && allotment.getPayonline()){
+						admissionStatusForm.setCourseId(String.valueOf(allotment.getCourse().getId()));
+						admissionStatusForm.setCourseName(allotment.getCourse().getName());
+					}
+					if(allotment.getAdmAppln()!=null){
+						admissionStatusForm.setUniqueId(String.valueOf(allotment.getAdmAppln().getStudentOnlineApplication().getId()));
+					}
+					if(allotment.getAdmAppln().getPersonalData().getMobileNo1()!=null 
+							&& !allotment.getAdmAppln().getPersonalData().getMobileNo1().isEmpty()
+							&& allotment.getAdmAppln().getPersonalData().getMobileNo2()!=null
+							&& !allotment.getAdmAppln().getPersonalData().getMobileNo2().isEmpty()){
+						admissionStatusForm.setMobile1(allotment.getAdmAppln().getPersonalData().getMobileNo1());
+						admissionStatusForm.setMobile2(allotment.getAdmAppln().getPersonalData().getMobileNo2());
+					}
+					if(allotment.getAdmAppln().getPersonalData().getEmail()!=null 
+							&& !allotment.getAdmAppln().getPersonalData().getEmail().isEmpty()){
+						admissionStatusForm.setEmail(allotment.getAdmAppln().getPersonalData().getEmail());
+					}
+					if(allotment.getAdmAppln().getPersonalData().getResidentCategory()!=null){
+						admissionStatusForm.setResidentCategoryForOnlineAppln
+						(String.valueOf(allotment.getAdmAppln().getPersonalData().getResidentCategory().getId()));
+					}
+				}
+				if(!publishMap.isEmpty()){
+					if(publishMap.containsKey(to.getCourseId()) && publishMap.containsValue(to.getAllotmentno())){
+						allotmentTOs.add(to);
+					}
+				}
+			}
+			for(StudentCourseChanceMemo allotment:allotments){
+				AdmissionStatusTO to = new AdmissionStatusTO();
+				to.setCourseName(allotment.getCourse().getName());
+				to.setAllotmentno(allotment.getChanceNo());
+				to.setChanceAllotment("Chance");
+				if(allotment.getIsGeneral()){
+					to.setCasteName("You have been provisionally Alloted- General Quota-");
+				}else if(allotment.getIsCaste()){
+					to.setCasteName("You have been provisionally Alloted-SC/ST Quota-");
+				}else{
+					to.setCasteName("You have been provisionally Alloted-Malankara Syrian catholic");
+				}
+				admissionStatusForm.setAdmApplnId(String.valueOf(allotment.getAdmAppln().getId()));
+				to.setCourseId(allotment.getCourse().getId());
+				if(allotment.getIsAccept() && allotment.getIsGeneral()){
+					to.setMsgValue(" the allotment for "+allotment.getCourse().getName()+" under Genearal Quota");
+					to.setIsAccept(true);
+					admissionStatusForm.setIsOnceAccept(true);
+					selectedCourseId=allotment.getCourse().getId();
+				}else if(allotment.getIsAccept() && allotment.getIsCaste()){
+					to.setMsgValue(" the allotment for "+allotment.getCourse().getName()+" under SC/ST Quota");
+					to.setIsAccept(true);
+					admissionStatusForm.setIsOnceAccept(true);
+					selectedCourseId=allotment.getCourse().getId();
+				}else if(allotment.getIsAccept() && allotment.getIsCommunity()){
+					to.setMsgValue(" the allotment for "+allotment.getCourse().getName()+" under Malankara Syrian Catholic Quota");
+					to.setIsAccept(true);
+					admissionStatusForm.setIsOnceAccept(true);
+					selectedCourseId=allotment.getCourse().getId();
+				}
+				if(allotment.getIsDecline() && allotment.getIsGeneral()){
+					to.setMsgValue("Your admission for "+allotment.getCourse().getName()+" under Genearal Quota is ");
+					to.setIsDecline(true);
+				}else if(allotment.getIsDecline() && allotment.getIsCaste()){
+					to.setMsgValue("Your admission for "+allotment.getCourse().getName()+" under SC/ST Quota is ");
+					to.setIsDecline(true);
+				}else if(allotment.getIsDecline() && allotment.getIsCommunity()){
+					to.setMsgValue("Your admission for "+allotment.getCourse().getName()+" under Malankara Syrian Catholic is ");
+					to.setIsDecline(true);
+				}
+				if(allotment.getIsAccept()){
+					IAdmissionFormTransaction tx= AdmissionFormTransactionImpl.getInstance();
+					StudentAllotmentPGIDetails details=tx.getBoObj(allotment.getAdmAppln().getStudentOnlineApplication().getId());
+					if(details!=null){
+						admissionStatusForm.setIsPaid(true);
+					}
+				}
+				if(allotment.getIsAccept() && allotment.getPayonline()){
+					if(allotment.getPayonline())
+						admissionStatusForm.setPayonline(true);
+					if(allotment.getAdmAppln().getPersonalData().getReligionSection().getId()==2 
+							|| allotment.getAdmAppln().getPersonalData().getReligionSection().getId()==3
+							|| allotment.getAdmAppln().getPersonalData().getReligionSection().getId()==4){
+						if(allotment.getCourse().getIsSelfFinancing()){
+							if(allotment.getIsGeneral()){
+								admissionStatusForm.setApplicationAmount(allotment.getCourse().getGeneralFee());
+							}else if(allotment.getIsCaste()){
+								admissionStatusForm.setApplicationAmount(allotment.getCourse().getCasteFee());
+							}else if(allotment.getIsCommunity()){
+								admissionStatusForm.setApplicationAmount(allotment.getCourse().getGeneralFee());
+							}
+						}else{
+							admissionStatusForm.setApplicationAmount(allotment.getCourse().getCasteFee());
+						}
+					}else{
+						admissionStatusForm.setApplicationAmount(allotment.getCourse().getGeneralFee());
+					}
+					if(allotment.getAdmAppln().getPersonalData().getFirstName()!=null && !allotment.getAdmAppln().getPersonalData().getFirstName().isEmpty()){
+						admissionStatusForm.setApplicantName(allotment.getAdmAppln().getPersonalData().getFirstName());
+					}
+					if(allotment.getAdmAppln().getCourse()!=null && allotment.getPayonline()){
+						admissionStatusForm.setCourseId(String.valueOf(allotment.getCourse().getId()));
+						admissionStatusForm.setCourseName(allotment.getCourse().getName());
+					}
+					if(allotment.getAdmAppln()!=null){
+						admissionStatusForm.setUniqueId(String.valueOf(allotment.getAdmAppln().getStudentOnlineApplication().getId()));
+					}
+					if(allotment.getAdmAppln().getPersonalData().getMobileNo1()!=null 
+							&& !allotment.getAdmAppln().getPersonalData().getMobileNo1().isEmpty()
+							&& allotment.getAdmAppln().getPersonalData().getMobileNo2()!=null
+							&& !allotment.getAdmAppln().getPersonalData().getMobileNo2().isEmpty()){
+						admissionStatusForm.setMobile1(allotment.getAdmAppln().getPersonalData().getMobileNo1());
+						admissionStatusForm.setMobile2(allotment.getAdmAppln().getPersonalData().getMobileNo2());
+					}
+					if(allotment.getAdmAppln().getPersonalData().getEmail()!=null 
+							&& !allotment.getAdmAppln().getPersonalData().getEmail().isEmpty()){
+						admissionStatusForm.setEmail(allotment.getAdmAppln().getPersonalData().getEmail());
+					}
+					if(allotment.getAdmAppln().getPersonalData().getResidentCategory()!=null){
+						admissionStatusForm.setResidentCategoryForOnlineAppln
+						(String.valueOf(allotment.getAdmAppln().getPersonalData().getResidentCategory().getId()));
+					}
+				}
+				if(!publishMapForChance.isEmpty()){
+					if(publishMapForChance.containsKey(to.getCourseId()) && publishMapForChance.containsValue(to.getAllotmentno())){
+						chanceTOs.add(to);
+					}
+				}
+			}
+			if(!allotmentTOs.isEmpty()){
+				statusTOs.addAll(allotmentTOs);
+			}
+			if(!chanceTOs.isEmpty()){
+				statusTOs.addAll(chanceTOs);
+			}
+			if(admissionStatusForm.getIsOnceAccept()){
+				if(selectedCourseId==1){
+					admissionStatusForm.setFormlink("https://forms.gle/aqj96G5zE57AewGX7");
+				}else if(selectedCourseId==2){
+					admissionStatusForm.setFormlink("https://forms.gle/7AvRSvvEQkT8WPfv7");
+				}else if(selectedCourseId==27){
+					admissionStatusForm.setFormlink("https://forms.gle/QqcsCnBXKMgAKty1A");
+				}else if(selectedCourseId==4){
+					admissionStatusForm.setFormlink("https://forms.gle/evCC73va9mw4fLBy6");
+				}else if(selectedCourseId==8){
+					admissionStatusForm.setFormlink("https://forms.gle/8qwvGmP7RarpQYs18");
+				}else if(selectedCourseId==5){
+					admissionStatusForm.setFormlink("https://forms.gle/xjKYam1eMkLccjcc9");
+				}else if(selectedCourseId==6){
+					admissionStatusForm.setFormlink("https://forms.gle/TAhB1Ux6CMmB2taaA");
+				}else if(selectedCourseId==7){
+					admissionStatusForm.setFormlink("https://forms.gle/ktfGitTYZrXtRcgn8");
+				}else if(selectedCourseId==20){
+					admissionStatusForm.setFormlink("https://forms.gle/YAcqWQ53v6L5uVgz6");
+				}else if(selectedCourseId==9){
+					admissionStatusForm.setFormlink("https://forms.gle/bWF5mJGdnP3QQAQ5A");
+				}else if(selectedCourseId==22){
+					admissionStatusForm.setFormlink("https://forms.gle/sr767p5DreTEgNUi9");
+				}else if(selectedCourseId==29){
+					admissionStatusForm.setFormlink("https://forms.gle/688atwmugdvGSxD28");
+				}else if(selectedCourseId==23){
+					admissionStatusForm.setFormlink("https://forms.gle/H31pgNwK9AaLeni76");
+				}else if(selectedCourseId==26){
+					admissionStatusForm.setFormlink("https://forms.gle/ftoEqouxTbLC9yJCA");
+				}else if(selectedCourseId==28){
+					admissionStatusForm.setFormlink("https://forms.gle/tsYjtF1wyUBJxAUZ7");
+				}
+			}
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return statusTOs;
+	}
+	public List<StudentCourseAllotment> getUpdatedBoPG(List<StudentCourseAllotment> allotments,
+			AdmissionStatusForm admissionStatusForm)throws Exception{
+		List<StudentCourseAllotment> studentCourseAllotments= new ArrayList<StudentCourseAllotment>();
+		List<StudentCourseAllotment> courseAllotments = new ArrayList<StudentCourseAllotment>();
+		List<StudentCourseAllotment> totalAllotments = new ArrayList<StudentCourseAllotment>();
+		Map<Integer, Integer> publishMap = new HashMap<Integer, Integer>();
+ 		boolean isOnceAccept=false;
+		try{
+			for(StudentCourseAllotment allotment:allotments){
+				if(allotment.getCourse().getId()==admissionStatusForm.getSelectedCourseId()){
+					if(admissionStatusForm.getSelectedValue().equalsIgnoreCase("accept")){
+						allotment.setIsAccept(true);
+						isOnceAccept=true;
+					}else if(admissionStatusForm.getSelectedValue().equalsIgnoreCase("decline")){
+						allotment.setIsDecline(true);
+					}
+					allotment.setModifiedBy(admissionStatusForm.getUserId());
+					allotment.setLastModifiedDate(new Date());
+				}
+				studentCourseAllotments.add(allotment);
+			}
+			if(isOnceAccept){ 
+				for(StudentCourseAllotment allotment:studentCourseAllotments){
+					if(allotment.getCourse().getId()!=admissionStatusForm.getSelectedCourseId()){
+						publishMap.put(allotment.getCourse().getId(), allotment.getAdmAppln().getId());
+						courseAllotments.add(allotment);
+					}
+				}
+				if(courseAllotments.isEmpty()){
+					return studentCourseAllotments;
+				}else{
+					for(StudentCourseAllotment s:studentCourseAllotments){
+						if(publishMap.containsKey(s.getCourse().getId())){
+							//s.setIsDecline(true);
+							s.setModifiedBy(admissionStatusForm.getUserId());
+							s.setLastModifiedDate(new Date());
+							totalAllotments.add(s);
+						}else{
+							totalAllotments.add(s);
+						}
+					}
+					return totalAllotments;
+				}
+			}
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return studentCourseAllotments;
+	}
+	public Map<Integer, String> populateCourseBOtoTO(List<CertificateCourse> courseBoList) {
+		log.info("Start of populateCourseBOtoTO of CertificateCourseHelper");
+		CertificateCourseTO certificateCourseTO;
+		List<CertificateCourseTO> courseToList = new ArrayList<CertificateCourseTO>();
+		Iterator<CertificateCourse> iterator=courseBoList.iterator();
+		Map<Integer, String> certificateCourses=new HashMap<Integer, String>();
+		while (iterator.hasNext()) {
+			CertificateCourse certificateCourse = iterator.next();
+			certificateCourses.put(certificateCourse.getId(), certificateCourse.getCertificateCourseName());
+			
+		}
+		log.info("End of populateCourseBOtoTO of CertificateCourseHelper");
+		return certificateCourses;		
+	}
+	public List<StudentCertificateCourse> copyBoTo(List<CertificateCourseTO> prefList,AdmissionStatusForm admForm) {
+		List<StudentCertificateCourse> studcertCoursBoList=new ArrayList<StudentCertificateCourse>();
+		for (CertificateCourseTO to : prefList) {
+			StudentCertificateCourse bo=new StudentCertificateCourse();
+			CertificateCourse course=new CertificateCourse();
+			course.setId(to.getId());
+			bo.setCertificateCourse(course);
+			AdmAppln adm=new AdmAppln();
+			adm.setId(Integer.parseInt(admForm.getAdmApplnId()));
+			bo.setAdmAppln(adm);
+			studcertCoursBoList.add(bo);
+			
+		}
+		return studcertCoursBoList;
 	}
 	
 	

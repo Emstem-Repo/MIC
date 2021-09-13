@@ -33,7 +33,7 @@ public class ConductCertificateHandler {
 	public List<PrintTcDetailsTo> getStudentsByClass(HttpServletRequest request,ConductCertificateForm form)throws Exception 
 	{
 		List<PrintTcDetailsTo> studentList=new ArrayList<PrintTcDetailsTo>();
-		List<StudentTCDetails>  studentBoList=certificateTransaction.getStudentList(form.getClasses(),form.getFromUsn(),form.getToUsn(),form.getStudentId());
+		List<StudentTCDetails>  studentBoList=certificateTransaction.getStudentList(form.getRegisterNo(),form.getSearchBy(),form.getToUsn(),form.getStudentId());
 		studentList=ConductCertificateHelper.getInstance().convertStudentBoToTo(studentBoList,request,form);
 		return studentList;
 	}

@@ -54,6 +54,7 @@ import com.kp.cms.to.admin.UGCoursesTO;
 import com.kp.cms.to.admin.UniversityTO;
 import com.kp.cms.to.admission.AddressTO;
 import com.kp.cms.to.admission.AdmApplnTO;
+import com.kp.cms.to.admission.CertificateCourseTO;
 import com.kp.cms.to.admission.PreferenceTO;
 /**
  * 
@@ -673,6 +674,8 @@ public class AdmissionFormForm extends BaseActionForm {
 	private Boolean chanceMemo;
 	
 	private String correctionFor;
+	private String pageNum;
+	List<CertificateCourseTO> certicateCoursesPrint;
 
 	
 	public String getApplicationAmount1() {
@@ -5208,5 +5211,25 @@ public class AdmissionFormForm extends BaseActionForm {
 
 	public void setCorrectionFor(String correctionFor) {
 		this.correctionFor = correctionFor;
+	}
+
+	public String getPageNum() {
+		return pageNum;
+	}
+
+	public void setPageNum(String pageNum) {
+		this.pageNum = pageNum;
+	}
+
+	public List<CertificateCourseTO> getCerticateCoursesPrint() {
+		return certicateCoursesPrint;
+	}
+
+	public void setCerticateCoursesPrint(List<CertificateCourseTO> certicateCoursesPrint) {
+		this.certicateCoursesPrint = certicateCoursesPrint;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 }

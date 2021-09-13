@@ -98,5 +98,10 @@
                 <comment></comment>
             </column>
         </property>
+        <many-to-one name="admAppln" class="com.kp.cms.bo.admin.AdmAppln" fetch="select">
+            <column name="adm_appln_id">
+                <comment></comment>
+            </column>
+        </many-to-one>
     </class>
 </hibernate-mapping>

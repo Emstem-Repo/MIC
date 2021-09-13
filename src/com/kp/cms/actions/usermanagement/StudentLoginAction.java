@@ -1348,10 +1348,16 @@ public class StudentLoginAction extends BaseDispatchAction {
 							isDateValid = DownloadHallTicketHandler.getInstance().isDateValid(classId, examId,"Regular Application", false);
 							if(appliedForPrevExam)
 							session.setAttribute("isPrevApplicationAvailable","no");
-								
+							List<Integer> regClassList=new ArrayList(); 
+							regClassList.add(699);regClassList.add(700);regClassList.add(701);regClassList.add(702);regClassList.add(703);regClassList.add(704);regClassList.add(705);
+							regClassList.add(706);regClassList.add(707);regClassList.add(711);regClassList.add(716);
+							
 							if (classId > 0 && examId > 0 && isDateValid) {
 								session.setAttribute("showRegApp", true);
-							} else {
+							}else if(regClassList.contains(prevClassId)){
+								session.setAttribute("showRegApp", true);
+							}
+							else {
 								session.setAttribute("showRegApp", false);
 							}
 							if (isBlockedStudentRegularApp) {
@@ -1471,7 +1477,15 @@ public class StudentLoginAction extends BaseDispatchAction {
 								applicableCourse = true;
 								loginForm.setStudentSemesterFeesAmount("12250");
 							}
-							if(isDateValidForStudentSemesterFees && applicableCourse){
+
+							else if(loginForm.getCourseId().equalsIgnoreCase("30")){
+								applicableCourse = true;
+								loginForm.setStudentSemesterFeesAmount("10000");
+							}
+							else if(loginForm.getCourseId().equalsIgnoreCase("31")){
+								applicableCourse = true;
+								loginForm.setStudentSemesterFeesAmount("12250");
+							}if(isDateValidForStudentSemesterFees && applicableCourse){
 								session.setAttribute("studentSemesterFees", true);
 							}else {
 								session.setAttribute("studentSemesterFees", false);
@@ -3659,6 +3673,12 @@ return mapping.findForward(CMSConstants.STUDENT_LOGIN_MARKSCARD);
 		}else if(loginForm.getCourseId().equalsIgnoreCase("28")){
 			loginForm.setStudentSemesterFeesAmount("19750");
 		}else if(loginForm.getCourseId().equalsIgnoreCase("29")){
+			loginForm.setStudentSemesterFeesAmount("12250");
+		}
+		else if(loginForm.getCourseId().equalsIgnoreCase("30")){
+			loginForm.setStudentSemesterFeesAmount("10000");
+		}
+		else if(loginForm.getCourseId().equalsIgnoreCase("31")){
 			loginForm.setStudentSemesterFeesAmount("12250");
 		}
 		boolean paymentDone = StudentLoginHandler.getInstance().paymentDone(loginForm);

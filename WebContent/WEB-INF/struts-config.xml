@@ -1953,6 +1953,7 @@
             <forward name="viewapplication" path="/jsp/admission/viewApplicationPrint.jsp"/>
 			 <forward name="viewallotmentmemo" path="/jsp/admission/viewAllotmentMemoPrint.jsp"/>
 			  <forward name="viewchancememo" path="/jsp/admission/viewChanceMemoPrint.jsp"/>
+			   <forward name="adminChanceMemo" path="/jsp/admission/viewChanceMemoPrintAdmin.jsp"/>
 			
             <forward name="admitCardPrint" path="/jsp/admission/admitCardPrint.jsp"/>
             <forward name="admissionCardPrint" path="/jsp/admission/admissionCardPrint.jsp"/>
@@ -1960,6 +1961,10 @@
 			<forward name="viewAcknowledgement" path="/jsp/admission/viewAcknowledgementPrint.jsp"/>
 			<forward name="forwardDashBordPage" path="/jsp/admission/dashBoardDisplayForPrint.jsp"></forward>
 			<forward name="paymentsuccessforchance" path="paymentsuccessforchance"/>
+			<forward name="onlineMembership" path="/jsp/admission/formsOnlineMembershipApplicationStud.jsp"/>
+            <forward name="onlineBioDataForm" path="/jsp/admission/formsOnlineBioDataFormStud.jsp"/>
+            <forward name="onlineAnnexure" path="/jsp/admission/formsOnlineOnlineAnnexureStud.jsp"/>
+            <forward name="onlineAPPAdmission" path="/jsp/admission/formsOnlineAppAdmissionStud.jsp"/>
         </action>
         <action path="/PublishAdmitcard" name="publishAdmitcardForm"
          parameter="method" scope="request" validate="false"
@@ -6225,7 +6230,8 @@
 			<forward name="basicInfoMethod" path="/onlineApplicationSubmit.do?method=initStudentOnlineBasicInfo"/>
 			<forward name="outsideAccessMethod" path="/onlineApplicationSubmit.do?method=initOutsideStudentOnilineAccessOfAdmission"/>
 			<forward name="outsideAccessStatus" path="/AdmissionStatus.do?method=initOutsideAccessAdmissionStatusOfStudent"/>
-
+			 <forward name="OnlineapplicationDetailPage" path="OnlineapplicationDetailPage"/>
+            
 		</action>
 	  
 	  
@@ -6504,6 +6510,7 @@
             <forward name="onlineMembership" path="/jsp/admission/formsOnlineMembershipApplication.jsp"/>
             <forward name="onlineBioDataForm" path="/jsp/admission/formsOnlineBioDataForm.jsp"/>
             <forward name="onlineAnnexure" path="/jsp/admission/formsOnlineOnlineAnnexure.jsp"/>
+            <forward name="onlineAPPAdmission" path="/jsp/admission/formsOnlineAppAdmission.jsp"/>
             </action>
 		
 	</action-mappings>

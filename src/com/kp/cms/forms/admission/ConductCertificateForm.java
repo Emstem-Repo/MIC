@@ -23,6 +23,10 @@ public class ConductCertificateForm extends BaseActionForm{
 	private List<TCDetailsTO> tcDetails; 		
 	private String studentName;
 	private String studentId;
+	private String searchBy;
+	private String registerNo;
+	
+	
 	public String getYear() {
 		return year;
 	}
@@ -98,5 +102,17 @@ public class ConductCertificateForm extends BaseActionForm{
 		this.classes=null;
 		this.year="2015";
 		this.tcDetails=null;
+	}
+	public String getSearchBy() {
+		return searchBy;
+	}
+	public void setSearchBy(String searchBy) {
+		this.searchBy = searchBy;
+	}
+	public String getRegisterNo() {
+		return registerNo;
+	}
+	public void setRegisterNo(String registerNo) {
+		this.registerNo = registerNo;
 	}
 }

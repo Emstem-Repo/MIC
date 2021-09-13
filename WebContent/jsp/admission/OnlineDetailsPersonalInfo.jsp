@@ -27,6 +27,21 @@
 		function disableParish() {
 			document.getElementById("parish_description").style.display = "none";
 		}
+		
+		function setSpc(val) {
+			if (val) {
+				document.getElementById("spc").value=true;
+			}else{
+				document.getElementById("spc").value=false;
+			}
+		}
+		function setScot(val) {
+			if (val) {
+				document.getElementById("scot").value=true;
+			}else{
+				document.getElementById("scot").value=false;
+			}
+		}
 	</script>
 
  	<style type="text/css">
@@ -35,6 +50,7 @@
 	    	-moz-box-shadow:inset 2px 1px 1px #008000, 1px 1px 3px #008000;
 	    	box-shadow:inset 2px 1px 1px #008000, 1px 1px 3px #008000;
 		}
+	
  	</style>
  
 	<style type="text/css">
@@ -276,6 +292,45 @@
 							<nested:text property="applicantDetails.personalData.aadharCardNumber" styleId="applicantadhaarNo" name="onlineApplicationForm" size="25%"  maxlength="12" onkeypress="return isNumberKey(event)" style="border-radius: 6px;"></nested:text>
 							<a href="#" title="Enter Your Aadhaar Card Number" class="tooltip"><span title="Help"><img alt="" src="images/admission/images/Tooltip_QIcon.png"/></span></a>
 						</td>
+          			</tr>
+          			<tr>
+          				<td class="row-odd" align="right">Name with initials expanded</td>
+            			<td class="row-even">
+            				<div align="left">
+            					<nested:text property="applicantDetails.personalData.nameWithInitial" styleId="applicantEmail" name="onlineApplicationForm" size="25%"  maxlength="50" style="border-radius: 6px;"></nested:text>
+             					<a href="#" title="Enter your Name with initials expanded" class="tooltip"><span title="Help"><img alt="" src="images/admission/images/Tooltip_QIcon.png"/></span></a>
+            				</div>
+            			</td>
+						<td class="row-odd" align="right">Mother Tongue<span class="Mandatory">*</span>:</td>
+						<td class="row-even">
+							<nested:text property="applicantDetails.personalData.motherTonge" styleId="applicantadhaarNo" name="onlineApplicationForm" size="25%"  maxlength="12" style="border-radius: 6px;"></nested:text>
+							<a href="#" title="Enter Your Mother tongue" class="tooltip"><span title="Help"><img alt="" src="images/admission/images/Tooltip_QIcon.png"/></span></a>
+						</td>
+          			</tr>
+          			<tr>
+          				<td class="row-odd" align="right">Place of birth<span class="Mandatory">*</span>:</td>
+            			<td class="row-even">
+            				<div align="left">
+            					<nested:text  property="applicantDetails.personalData.placeOfBirth" styleId="applicantEmail" name="onlineApplicationForm" size="25%"  maxlength="50" style="border-radius: 6px;"></nested:text>
+             					<a href="#" title="Enter your place of birth" class="tooltip"><span title="Help"><img alt="" src="images/admission/images/Tooltip_QIcon.png"/></span></a>
+            				</div>
+            			</td>
+						<td class="row-odd" align="right">thaluk<span class="Mandatory">*</span>:</td>
+						<td class="row-even">
+							<nested:text property="applicantDetails.personalData.thaluk" styleId="applicantadhaarNo" name="onlineApplicationForm" size="25%"  maxlength="12"  style="border-radius: 6px;"></nested:text>
+							<a href="#" title="Enter Birth taluk" class="tooltip"><span title="Help"><img alt="" src="images/admission/images/Tooltip_QIcon.png"/></span></a>
+						</td>
+          			</tr>
+          			<tr>
+          				<td class="row-odd" align="right">District<span class="Mandatory">*</span>:</td>
+            			<td class="row-even">
+            				<div align="left">
+            					<nested:text  property="applicantDetails.personalData.district" styleId="applicantEmail" name="onlineApplicationForm" size="25%"  maxlength="50" style="border-radius: 6px;"></nested:text>
+             					<a href="#" title="Enter Birth District" class="tooltip"><span title="Help"><img alt="" src="images/admission/images/Tooltip_QIcon.png"/></span></a>
+            				</div>
+            			</td>
+						<td class="row-odd" align="right"></td>
+						<td class="row-even"></td>
           			</tr>
           		</table>
        		</td>
@@ -557,6 +612,8 @@
             				<div align="left">
 	            				<nested:select property="applicantDetails.titleOfFather" styleId='titleOfFather' name="onlineApplicationForm" styleClass="dropdownsmall" onchange="fatherIncomeMandatory()">
 									<html:option value="Mr">Mr.</html:option>
+                                                                         <html:option value="Late">Late.</html:option>
+
 								</nested:select>
 								<nested:text property="applicantDetails.personalData.fatherName" styleId="fatherName" name="onlineApplicationForm" size="25px" maxlength="50" onkeypress="IsAlphaDot(event)" style="border-radius: 6px;"></nested:text>
 								<a href="#" title="Enter name of father" class="tooltip"><span title="Help"><img alt="" src="images/admission/images/Tooltip_QIcon.png"/></span></a>
@@ -569,6 +626,7 @@
 							<div align="left">
 								<nested:select property="applicantDetails.titleOfMother" styleId='titleOfMother' name="onlineApplicationForm" styleClass="dropdownsmall" onchange="motherIncomeMandatory()">
 									<html:option value="Mrs">Mrs.</html:option>
+                                                                         <html:option value="Late">Late.</html:option>
 								</nested:select>
 								<nested:text property="applicantDetails.personalData.motherName" styleId="motherName"  name="onlineApplicationForm" size="25px" maxlength="50" onkeypress="IsAlphaDot(event)" style="border-radius: 6px;"></nested:text>
 								<a href="#" title="Enter name of mother" class="tooltip"><span title="Help"><img alt="" src="images/admission/images/Tooltip_QIcon.png"/></span></a>
@@ -681,6 +739,22 @@
 							<a href="#" title="Enter name of guardian" class="tooltip"><span title="Help"><img alt="" src="images/admission/images/Tooltip_QIcon.png"/></span></a>
 						</td>
 		          	</tr>
+		          	
+		          	<tr>
+						<td class="row-odd" width="25%" align="right">If any of the parents of the applicant was a student of this college, give details, including present address</td>
+						<td class="row-even" width="25%" align="right">
+							<div align="left">
+							<nested:textarea name="onlineApplicationForm" style="width:240px" rows="3" cols="8" property="applicantDetails.personalData.parentOldStudent" styleClass="textboxmedium" ></nested:textarea>
+							<a href="#" title="Enter relationship " class="tooltip"><span title="Help"><img alt="" src="images/admission/images/Tooltip_QIcon.png"/></span></a>
+							</div>
+						
+						</td>
+						<td class="row-odd" align="right" width="25%">Whether the applicant is related to any former student(s) of this College. If so give the details including present address</td>
+						<td class="row-even">
+							<nested:textarea name="onlineApplicationForm" style="width:240px" rows="3" cols="8" property="applicantDetails.personalData.relativeOldStudent" styleClass="textboxmedium" ></nested:textarea>
+							<a href="#" title="Enter relationship " class="tooltip"><span title="Help"><img alt="" src="images/admission/images/Tooltip_QIcon.png"/></span></a>
+						</td>
+          			</tr>
           
            			<tr>
 						<td class="row-odd" width="25%" align="right"></td>
@@ -1114,7 +1188,31 @@
 		            		<a href="#" title="Select the year in which you got the prize in sports participation"><span title="Help"><img alt="" src="images/admission/images/Tooltip_QIcon.png"/></span></a>
 						</td>			           
 		          	</tr>
-			   
+		          	<logic:equal name="onlineApplicationForm" property="programTypeId" value="1">
+		          	<tr>
+            			<td class="row-odd" align="right">Holder of SPC certificate (Student Police cadet ):<span class="Mandatory">*</span></td>
+            			<nested:hidden property="applicantDetails.personalData.spc" name="onlineApplicationForm" styleId="spc"></nested:hidden>
+			            <td class="row-even">
+			            	<fieldset style="border: 0px">
+			             		<input type="radio" id="spcradYes" name="spc" value="false" onclick="setSpc(true)"/>
+			             		<label for="no"><span><span></span></span>Yes</label> 
+						 		<input type="radio" id="spcradNo" name="spc" value="true" onclick="setSpc(false)">
+						 		<label for="yes"><span><span></span></span>No</label>
+						 		<a href="#" title="Select If yes" class="tooltip"><span title="Help"><img alt="" src="images/admission/images/Tooltip_QIcon.png"/></span></a> 
+			   				</fieldset>
+						</td>
+             			<td class="row-odd" align="right">Holder of  Scouts and Guides:<span class="Mandatory">*</span></td>
+			            <nested:hidden name="onlineApplicationForm" property="applicantDetails.personalData.scouts" styleId="scot"></nested:hidden>
+			            <td class="row-even">
+			            	<input type="radio" Id="scotradYes" name="scout" value="false" onclick="setScot(true)"/>
+			             														<label for="no"><span><span></span></span>Yes</label> 
+						 														<input type="radio" Id="scotradNo" name="scout" value="true" onclick="setScot(false)"/>
+						 														<label for="yes"><span><span></span></span>No</label>
+						 														<a href="#" title="Select If yes" class="tooltip"><span title="Help"><img alt="" src="images/admission/images/Tooltip_QIcon.png"/></span></a> 
+			            
+			            </td>
+					</tr>
+			   </logic:equal>
 			   		<!--  this one we are not using -->
 			    	<tr style="display: none;">
 						<%String dynaStyle3="display:none;"; %>
@@ -1333,5 +1431,18 @@
 				document.getElementById("displayFatherOccupation").style.display = "none";
 				document.getElementById("otherOccupationFather").value = "";
 			}
+		}
+		var spc = document.getElementById("spc").value;
+		if(spc=="true") {
+			document.getElementById("spcradYes").checked = true;
+		}else{
+			document.getElementById("spcradNo").checked = true;
+		}
+		
+		var scot = document.getElementById("scot").value;
+		if(scot=="true") {
+			document.getElementById("scotradYes").checked = true;
+		}else{
+			document.getElementById("scotradNo").checked = true;
 		}
 	</script>

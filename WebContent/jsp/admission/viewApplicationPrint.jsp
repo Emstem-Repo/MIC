@@ -365,8 +365,8 @@
 			</td>
              <td  align="center" style="border:1px solid black; border-collapse: collapse "><bean:write name="ednQualList" property="previousRegNo" /></td>
              <td  align="center" style="border:1px solid black; border-collapse: collapse "><bean:write name="ednQualList" property="yearPassing" /></td>
-             <td  align="center" style="border:1px solid black; border-collapse: collapse "><bean:write name="ednQualList"property="universityName" /></td>
-             <td  align="center" style="border:1px solid black; border-collapse: collapse "><bean:write name="ednQualList"property="institutionName" /></td>
+             <td  align="center" style="border:1px solid black; border-collapse: collapse "><bean:write name="ednQualList" property="universityName" /></td>
+             <td  align="center" style="border:1px solid black; border-collapse: collapse "><bean:write name="ednQualList" property="institutionName" /></td>
              <td  align="center" style="border:1px solid black; border-collapse: collapse "><bean:write name="ednQualList" property="percentage" /></td>
              <td  align="center" style="border:1px solid black; border-collapse: collapse "><bean:write name="ednQualList" property="marksObtained" /></td>
              <td  align="center" style="border:1px solid black; border-collapse: collapse "><bean:write name="ednQualList" property="totalMarks" /></td>

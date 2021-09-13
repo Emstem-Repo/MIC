@@ -21,27 +21,13 @@ public class ConductCertificateTransactionImpl implements IConductCertificateTra
 			StringBuffer sqlString = new StringBuffer(
 					"from StudentTCDetails s where  "	);
 			
-			if(fromReg!= null && toReg!= null && !fromReg.trim().isEmpty() && !toReg.trim().isEmpty() && fromReg.trim().equalsIgnoreCase(toReg.trim())){
-				sqlString.append("( s.student.admAppln.isSelected=1 and s.student.admAppln.isApproved=1 OR ( s.student.admAppln.isCancelled = 1))");
+			if(fromReg!= null && (fromReg == "R" || fromReg.equalsIgnoreCase("R"))){
+				sqlString.append("( s.student.admAppln.isSelected=1 and s.student.admAppln.isApproved=1 and s.student.registerNo>='"+classId+"' OR ( s.student.admAppln.isCancelled = 1)) and s.student.registerNo='"+classId+"'");
 			}
 			else{
-				sqlString.append(" s.student.admAppln.isSelected=1 and s.student.admAppln.isApproved=1 ");
+				sqlString.append("( s.student.admAppln.isSelected=1 and s.student.admAppln.isApproved=1 and s.student.registerNo>='"+classId+"' OR ( s.student.admAppln.isCancelled = 1)) and s.student.registerNo='"+classId+"'");
 			}
-			//OR ( s.student.admAppln.isCancelled = 1 and s.student.admAppln.isApproved=1)
-			//" and s.tcNo is null"
-			if(classId!=null && !classId.trim().isEmpty() && (studentId==null || studentId.trim().isEmpty()) || studentId.equalsIgnoreCase("undefined"))
-				sqlString.append(" and s.student.classSchemewise.id="+classId);
-						
-			if(fromReg!=null && !fromReg.trim().isEmpty())
-				sqlString.append(" and s.student.registerNo>='"+fromReg+"'");
-			if(toReg!=null && !toReg.trim().isEmpty())
-				sqlString.append(" and s.student.registerNo<='"+toReg+"'");
-			;
-			if(studentId!=null && !studentId.trim().isEmpty())
-			{
-				if(studentId.equalsIgnoreCase("undefined")==false)
-				sqlString.append(" and s.student.id='"+studentId+"'");
-			}
+			
 			Query  query = session.createQuery(sqlString.toString());
 			List<StudentTCDetails> studentList = query.list();
 			session.flush();

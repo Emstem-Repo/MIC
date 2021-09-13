@@ -36,6 +36,7 @@ import com.kp.cms.actions.BaseDispatchAction;
 import com.kp.cms.bo.admin.Organisation;
 import com.kp.cms.constants.CMSConstants;
 import com.kp.cms.exceptions.ApplicationException;
+import com.kp.cms.forms.admission.AdmissionFormForm;
 import com.kp.cms.forms.admission.UniqueIdRegistrationForm;
 import com.kp.cms.handlers.admin.MaintenanceAlertHandler;
 import com.kp.cms.handlers.admin.OrganizationHandler;
@@ -517,7 +518,7 @@ import com.kp.cms.utilities.CommonUtil;
 				
 				
 			int applicationYear = Integer.parseInt(admForm.getAcademicYear());
-			
+			HttpSession session= request.getSession(false);
 			//make values null
 			admForm.setApplicantDetails(null);
 
@@ -632,7 +633,7 @@ import com.kp.cms.utilities.CommonUtil;
 					//applicantDetails.getPersonalData().setPassportValidity(CommonUtil.ConvertStringToDateFormat(applicantDetails.getPersonalData().getPassportValidity(), UniqueIdRegistrationAction.SQL_DATEFORMAT,UniqueIdRegistrationAction.FROM_DATEFORMAT));
 				
 				// set photo to session
-				HttpSession session= request.getSession(false);
+				HttpSession session1= request.getSession(false);
 				//session.setAttribute("STUDENT_IMAGE", "images/StudentPhotos/"+admForm.getStudentId()+".jpg?"+applicantDetails.getLastModifiedDate());
 				
 				if(applicantDetails.getEditDocuments()!=null){
@@ -1004,7 +1005,6 @@ import com.kp.cms.utilities.CommonUtil;
 			 	//onlineApplicationSubmit.do?method=initOutsideSinglePageAccess&admApplnId="+id+"&mode=CurrentID
 				return mapping.findForward("outsideAccessStatus");
 		}
-
-		
+	
 
 	}

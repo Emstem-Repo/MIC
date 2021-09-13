@@ -1451,6 +1451,24 @@ public class ApplicationEditAction extends BaseDispatchAction {
 				}
 			}
 	*/	
+			if(admForm.getApplicantDetails().getPersonalData().getMotherTonge()==null || admForm.getApplicantDetails().getPersonalData().getMotherTonge().isEmpty()){
+				errors.add(CMSConstants.ERROR, new ActionError("errors.required"," Mother Tongue "));
+				}
+			if(admForm.getApplicantDetails().getPersonalData().getDistrict()==null || admForm.getApplicantDetails().getPersonalData().getDistrict().isEmpty()){
+				errors.add(CMSConstants.ERROR, new ActionError("errors.required"," District "));
+				}
+			if(admForm.getApplicantDetails().getPersonalData().getThaluk()==null || admForm.getApplicantDetails().getPersonalData().getThaluk().isEmpty()){
+				errors.add(CMSConstants.ERROR, new ActionError("errors.required","Thaluk"));
+				}
+			if(admForm.getApplicantDetails().getPersonalData().getPlaceOfBirth()==null || admForm.getApplicantDetails().getPersonalData().getPlaceOfBirth().isEmpty()){
+				errors.add(CMSConstants.ERROR, new ActionError("errors.required"," Place of Birth"));
+				}
+			if (admForm.getApplicantDetails().getPersonalData().isDidBreakStudy() && (admForm.getApplicantDetails().getPersonalData().getReasonFrBreakStudy()==null || admForm.getApplicantDetails().getPersonalData().getReasonFrBreakStudy().isEmpty())) {
+				errors.add(CMSConstants.ERROR, new ActionError("errors.required"," Reason For break study "));
+			}
+			if (admForm.getApplicantDetails().getPersonalData().isHasScholarship() && (admForm.getApplicantDetails().getPersonalData().getScholarship()==null || admForm.getApplicantDetails().getPersonalData().getScholarship().isEmpty())) {
+				errors.add(CMSConstants.ERROR, new ActionError("errors.required"," Scholarship details required "));
+			}
 			if(admForm.getIsInterviewSelectionSchedule()!=null && admForm.getIsInterviewSelectionSchedule().equalsIgnoreCase("true")){
 				if(admForm.getInterviewSelectionDate()== null || admForm.getInterviewSelectionDate().isEmpty()){
 					if (errors.get("knowledgepro.admission.appln.interview.date.required") != null && !errors.get("knowledgepro.admission.appln.interview.date.required").hasNext()) {

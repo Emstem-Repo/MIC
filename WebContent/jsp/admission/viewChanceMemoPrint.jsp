@@ -139,66 +139,66 @@ div {
 						</tr>
 						<logic:notEmpty name="admissionStatusForm"
 							property="admissionStatusTO.chanceList">
-							<logic:iterate id="chncList" name="admissionStatusForm"
-								property="admissionStatusTO.chanceList">
+							<%-- <logic:iterate id="chncList" name="admissionStatusForm"
+								property="admissionStatusTO.chanceList"> --%>
 								<%
 									String chanceCourseId = request.getAttribute(
 														"chanceCourseId").toString();
 								%>
-								<logic:equal value="<%=chanceCourseId%>" name="chncList"
-									property="chanceCurrentcourseid">
-									<logic:equal value="true" name="chncList"
-										property="chanceAlmntgeneral">
+								<logic:equal value="<%=chanceCourseId%>" name="admissionStatusForm"
+									property="admissionStatusTO.chanceCurrentcourseid">
+									<logic:equal value="true" name="admissionStatusForm"
+										property="admissionStatusTO.chanceAlmntgeneral">
 										<tr>
 											<td align="center" class="mytabledata"><bean:write
-												name="chncList" property="chancePref" /></td>
+												name="admissionStatusForm" property="admissionStatusTO.chancePref" /></td>
 											<td align="center" class="mytabledata"><bean:write
-												name="chncList" property="chanceCurrentcourse" /></td>
+												name="admissionStatusForm" property="admissionStatusTO.chanceCurrentcourse" /></td>
 											<td align="center" class="mytabledata">General</td>
 											<td align="center" class="mytabledata"><bean:write
-												name="chncList" property="chanceIndexmark" /></td>
+												name="admissionStatusForm" property="admissionStatusTO.chanceIndexmark" /></td>
 											<td align="center" class="mytabledata"><bean:write
-												name="chncList" property="genRank" /></td>
+												name="admissionStatusForm" property="admissionStatusTO.genRank" /></td>
 											<td align="center" class="mytabledata"><bean:write
-												name="chncList" property="dateTime" /></td>
+												name="admissionStatusForm" property="admissionStatusTO.dateTime" /></td>
 										</tr>
 									</logic:equal>
-									<logic:equal value="true" name="chncList"
-										property="chanceAlmntcaste">
+									<logic:equal value="true" name="admissionStatusForm"
+										property="admissionStatusTO.chanceAlmntcaste">
 										<tr>
 											<td align="center" class="mytabledata"><bean:write
-												name="chncList" property="chancePref" /></td>
+												name="admissionStatusForm" property="admissionStatusTO.chancePref" /></td>
 											<td align="center" class="mytabledata"><bean:write
-												name="chncList" property="chanceCurrentcourse" /></td>
+												name="admissionStatusForm" property="admissionStatusTO.chanceCurrentcourse" /></td>
 											<td align="center" class="mytabledata"><bean:write
-												name="chncList" property="chanceCategory" /></td>
+												name="admissionStatusForm" property="admissionStatusTO.chanceCategory" /></td>
 											<td align="center" class="mytabledata"><bean:write
-												name="chncList" property="chanceIndexmark" /></td>
+												name="admissionStatusForm" property="admissionStatusTO.chanceIndexmark" /></td>
 											<td align="center" class="mytabledata"><bean:write
-												name="chncList" property="casteRank" /></td>
+												name="admissionStatusForm" property="admissionStatusTO.casteRank" /></td>
 											<td align="center" class="mytabledata"><bean:write
-												name="chncList" property="communityDateTime" /></td>
+												name="admissionStatusForm" property="admissionStatusTO.communityDateTime" /></td>
 										</tr>
 									</logic:equal>
-									<logic:equal value="true" name="chncList"
-										property="chanceAlmntCommunity">
+									<logic:equal value="true" name="admissionStatusForm"
+										property="admissionStatusTO.chanceAlmntCommunity">
 										<tr>
 											<td align="center" class="mytabledata"><bean:write
-												name="chncList" property="chancePref" /></td>
+												name="admissionStatusForm" property="admissionStatusTO.chancePref" /></td>
 											<td align="center" class="mytabledata"><bean:write
-												name="chncList" property="chanceCurrentcourse" /></td>
+												name="admissionStatusForm" property="admissionStatusTO.chanceCurrentcourse" /></td>
 											<td align="center" class="mytabledata"><bean:write
-												name="chncList" property="chanceCategory" />(Syro Malankara Catholic)</td>
+												name="admissionStatusForm" property="admissionStatusTO.chanceCategory" />(Syro Malankara Catholic)</td>
 											<td align="center" class="mytabledata"><bean:write
-												name="chncList" property="chanceIndexmark" /></td>
+												name="admissionStatusForm" property="admissionStatusTO.chanceIndexmark" /></td>
 											<td align="center" class="mytabledata"><bean:write
-												name="chncList" property="casteRank" /></td>
+												name="admissionStatusForm" property="admissionStatusTO.casteRank" /></td>
 											<td align="center" class="mytabledata"><bean:write
-												name="chncList" property="communityDateTime" /></td>
+												name="admissionStatusForm" property="admissionStatusTO.communityDateTime" /></td>
 										</tr>
 									</logic:equal>
 								</logic:equal>
-							</logic:iterate>
+							<%-- </logic:iterate> --%>
 						</logic:notEmpty>
 					</table>
 					</td>
@@ -719,31 +719,33 @@ div {
 				<table width="100%">
 					<tr>
 						<td>(a)</td>
-						<td class="mytabledata">Allotment Memo</td>
+						<td class="mytabledata">A printed copy of the downloaded Admission Memo.</td>
 					</tr>
 					<tr>
 						<td>(b)</td>
 						<td class="mytabledata">Original T.C, Course &amp; Conduct
-						certificate from the institution last attended.</td>
+						Printed copy of the downloaded Application form, two Bio-
+data forms (original and duplicate), Anti-ragging form and
+PTA form.</td>
 					</tr>
 					<tr>
 						<td>(c)</td>
-						<td class="mytabledata">Printout of the completed online
-						application generated by the candidate.</td>
+						<td class="mytabledata">Original T.C, Course &amp; Conduct certificate from the
+institution last attended.</td>
 					</tr>
 					<tr>
 						<td>(d)</td>
-						<td class="mytabledata">Fee receipt (College Copy) towards
-						Registration fees.</td>
+						<td class="mytabledata">Printout of the completed online application generated by
+the candidate.</td>
 					</tr>
 					<tr>
 						<td>(e)</td>
-						<td class="mytabledata">One self attested copy of SSLC / Class X Certificate.</td>
+						<td class="mytabledata">One self-attested copy of SSLC / Class X Certificate.</td>
 					</tr>
 					<tr>
 						<td>(f)</td>
-						<td class="mytabledata">Original Mark list of the qualifying
-						examination along with one self attested copy of the same.</td>
+						<td class="mytabledata">Original Mark list of the qualifying examination along with
+one self-attested copy of the same.</td>
 					</tr>
 					<tr>
 						<td>(g)</td>
@@ -751,56 +753,50 @@ div {
 					</tr>
 					<tr>
 						<td>(h)</td>
-						<td class="mytabledata"><span style="color: red;"> <b><u>ELIGIBILITY CERTIFICATE</u></b> </span><b>in the case
-						of students OTHER THAN Kerala HSE/VHSE/CBSE/ISC.</b></td>
-					</tr>
+						<td class="mytabledata"><b><u>ELIGIBILITY CERTIFICATE</u>
+</b> <b>in the case of candidates other than
+Kerala HSE/VHSE/CBSE/ISC.</b>.</td>
+			</tr>
 					<tr>
 						<td>(i)</td>
 						<td class="mytabledata">Migration Certificate, if applicable.</td>
 					</tr>
 					<tr>
 						<td>(j)</td>
-						<td class="mytabledata">3 recent passport size photographs.</td>
+						<td class="mytabledata"> Community certificate from the Parish priest and
+Catechism certificate for Malankara Catholics.</td>
 					</tr>
 					<tr>
 						<td>(k)</td>
-						<td class="mytabledata">Community certificate from the Parish
-						priest and Catechism certificate for Malankara Catholics.</td>
+						<td class="mytabledata">Caste / Community / Income Certificates for Reservation /
+Fee concession candidates, from the concerned authority.
+Certificates more than a year old shall be considered
+invalid.</td>
 					</tr>
 					<tr>
 						<td>(l)</td>
-						<td class="mytabledata">Caste / Community / Income
-						Certificates for Reservation / Fee concession candidates.
-						Certificates more than a year old shall be considered invalid.</td>
+						<td class="mytabledata">NCC / NSS / SPC / Scouts &amp; Guides certificate, if
+applicable.</td>
 					</tr>
 					<tr>
 						<td>(m)</td>
-						<td class="mytabledata">NCC / NSS certificate, if applicable.</td>
+						<td class="mytabledata">SC / ST / O.E.C. candidates should produce recent (with
+one year validity) Community / Caste certificate from
+Tahsildar / Village Officer and O.B.C. candidates should
+produce community and income certificates from the
+Village Officer.</td>
 					</tr>
 					<tr>
 						<td>(n)</td>
-						<td class="mytabledata">SC / ST CANDIDATES - Community /
-						Caste and Income Certificate from Tahsildar / Village Officer.</td>
+						<td class="mytabledata">Children of Ex-Service personnel / Jawan should produce
+the concerned certificate</td>
 					</tr>
 					<tr>
 						<td>(o)</td>
-						<td class="mytabledata">Children of Ex-Service personnel /
-						Jawan should produce the concerned certificate.</td>
+						<td class="mytabledata">PWD (Person with disability) candidates should produce
+the medical certificate with 5 year validity</td>
 					</tr>
-					<tr>
-						<td>(p)</td>
-						<td class="mytabledata">PWD (Person with disability)
-						candidates should produce the medical certificate with 1 year
-						validity.</td>
-					</tr>
-					<tr>
-						<td class="mytabledatafee">(q)</td>
-						<td class="mytabledatafee">Those candidates who have more
-						than one memo (Sure / Chance) should produce all the memos (sure
-						&amp; chance), if he/she wants the claim for the concerned
-						subjects.</td>
-					</tr>
-<tr></tr>
+					
 	<tr>
 				<td colspan="2" align="center">
 					<div>

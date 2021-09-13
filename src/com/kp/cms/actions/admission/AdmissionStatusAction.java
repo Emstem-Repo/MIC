@@ -2,12 +2,13 @@ package com.kp.cms.actions.admission;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,6 +32,7 @@ import org.apache.struts.action.ActionMessages;
 import com.kp.cms.actions.BaseDispatchAction;
 import com.kp.cms.bo.admin.AdmAppln;
 import com.kp.cms.bo.admin.CandidatePGIDetails;
+import com.kp.cms.bo.admin.CandidatePreference;
 import com.kp.cms.bo.admin.GroupTemplate;
 import com.kp.cms.bo.admin.InterviewCard;
 import com.kp.cms.bo.admin.InterviewCardHistory;
@@ -39,6 +41,7 @@ import com.kp.cms.constants.CMSConstants;
 import com.kp.cms.exceptions.BusinessException;
 import com.kp.cms.forms.admission.AdmissionStatusForm;
 import com.kp.cms.forms.admission.OnlineApplicationForm;
+import com.kp.cms.forms.admission.UniqueIdRegistrationForm;
 import com.kp.cms.handlers.admin.AdmittedThroughHandler;
 import com.kp.cms.handlers.admin.MaintenanceAlertHandler;
 import com.kp.cms.handlers.admin.OrganizationHandler;
@@ -46,19 +49,20 @@ import com.kp.cms.handlers.admin.ProgramTypeHandler;
 import com.kp.cms.handlers.admin.TemplateHandler;
 import com.kp.cms.handlers.admission.AdmissionFormHandler;
 import com.kp.cms.handlers.admission.AdmissionStatusHandler;
+import com.kp.cms.handlers.admission.CertificateCourseEntryHandler;
 import com.kp.cms.handlers.admission.OnlineApplicationHandler;
 import com.kp.cms.helpers.admission.AdmissionStatusHelper;
 import com.kp.cms.to.admin.AdmittedThroughTO;
 import com.kp.cms.to.admin.ApplnDocTO;
+import com.kp.cms.to.admin.CourseTO;
 import com.kp.cms.to.admin.OrganizationTO;
 import com.kp.cms.to.admin.ProgramTO;
 import com.kp.cms.to.admin.ProgramTypeTO;
 import com.kp.cms.to.admission.AdmApplnTO;
 import com.kp.cms.to.admission.AdmissionStatusTO;
+import com.kp.cms.to.admission.CertificateCourseTO;
 import com.kp.cms.transactions.admission.IAdmissionStatusTransaction;
-import com.kp.cms.transactions.ajax.ICommonAjax;
 import com.kp.cms.transactionsimpl.admission.AdmissionStatusTransactionImpl;
-import com.kp.cms.transactionsimpl.ajax.CommonAjaxImpl;
 import com.kp.cms.utilities.CommonUtil;
 
 
@@ -69,6 +73,7 @@ public class AdmissionStatusAction extends BaseDispatchAction {
 	private static final String DATE = "MM/dd/yyyy"; 
 	private static final String FROM_DATEFORMAT="dd/MM/yyyy";
 	private static final String SQL_DATEFORMAT="dd-MMM-yyyy";
+	private static final String PHOTOBYTES="PhotoBytes";
 	/**
 	 * 
 	 * @param mapping
@@ -89,8 +94,7 @@ public class AdmissionStatusAction extends BaseDispatchAction {
 		try {
 			admissionStatusForm.clear();
 			admissionStatusForm.clearadmissionStatusTO();
-			admissionStatusForm.clearstatusTO();
-			setRequireddata(admissionStatusForm);
+			admissionStatusForm.clearstatusTO();	
 		} catch (Exception e) {
 			log.error("Error occured at initAdmissionStatus of Admission Status Action",e);
 			String msg = super.handleApplicationException(e);
@@ -101,18 +105,7 @@ public class AdmissionStatusAction extends BaseDispatchAction {
 		log.info("Leaving into initAdmissionStatus of AdmissionStatusAction");
 		return mapping.findForward(CMSConstants.ADMISSION_STATUS);
 	}
-	public void setRequireddata(AdmissionStatusForm admissionStatusForm){
-		ICommonAjax txn=new CommonAjaxImpl();
-		Set<Integer> set=new HashSet<Integer>();
-		set.add(0);
-		try {
-			admissionStatusForm.setDeptMap(txn.getCourseByProgramId(set));
-			admissionStatusForm.setCategoryMap(txn.getSubReligion());
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
-		
-	}
+
 	/**
 	 * 
 	 * @param mapping
@@ -273,15 +266,29 @@ public class AdmissionStatusAction extends BaseDispatchAction {
 	public ActionForward getAdmissionStatus(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
-		log.info("Inside of getAdmissionStatus of AdmissionStatusAction");
+		log.info("Inside of getOnlineApplicationStatus of AdmissionStatusAction");
 		AdmissionStatusForm admissionStatusForm = (AdmissionStatusForm) form;
+		IAdmissionStatusTransaction admissionStatusTransaction=new AdmissionStatusTransactionImpl();
+		admissionStatusForm.clearadmissionStatusTO();
+		admissionStatusForm.clearstatusTO();
+		admissionStatusForm.clearpref();
 		 ActionErrors errors = admissionStatusForm.validate(mapping, request);
-		
+		admissionStatusForm.setOnlineAcknowledgement(false);
+		if (admissionStatusForm.getDateOfBirth() != null && !StringUtils.isEmpty(admissionStatusForm.getDateOfBirth())) {
+			if (CommonUtil.isValidDate(admissionStatusForm.getDateOfBirth())) {
+				boolean isValid = validatefutureDate(admissionStatusForm.getDateOfBirth());
+				if (!isValid) {
+					if (errors.get(CMSConstants.ADMISSIONFORM_DOB_LARGE) != null && !errors.get(CMSConstants.ADMISSIONFORM_DOB_LARGE).hasNext()) {
+						errors.add(CMSConstants.ADMISSIONFORM_DOB_LARGE, new ActionError(CMSConstants.ADMISSIONFORM_DOB_LARGE));
+					}
+					admissionStatusForm.clearadmissionStatusTO();
+					admissionStatusForm.clearstatusTO();
+				}
+			}	
+		}
 		try {
 			if (errors.isEmpty() && errors != null) {
 				String applicationNo = admissionStatusForm.getApplicationNo().trim();
-				admissionStatusForm.clearadmissionStatusTO();
-				admissionStatusForm.clearstatusTO();
 				/**
 				 * Calling the getDateOfBirth() by passing the applicationNo
 				 * taken from UI and getting the record (date of birth along with all the fiels of AdmAppln)
@@ -292,11 +299,26 @@ public class AdmissionStatusAction extends BaseDispatchAction {
 				 * Checks If user enters wrong application no. then add appropriate error message 
 				 */
 				if (AdmAppln.isEmpty()) {
+					/* Check if application no is available in Appln Acknowledgement table if available then appropriate msg is displayed  */
+					boolean availableInApplnAcknowledgement=AdmissionStatusHandler.getInstance().checkApplnAvailableInAck(applicationNo,admissionStatusForm.getDateOfBirth());
+					if(availableInApplnAcknowledgement){
+						AdmissionStatusTO admissionStatusTO=new AdmissionStatusTO();
+						admissionStatusForm.setAdmStatus(CMSConstants.ADM_STATUS_OFFLINE_APPLN);
+						admissionStatusTO.setApplicationNo(Integer.parseInt(admissionStatusForm.getApplicationNo()));
+						admissionStatusTO.setDateOfBirth(CommonUtil.ConvertStringToDateFormat(admissionStatusForm.getDateOfBirth(), CMSConstants.DEST_DATE,CMSConstants.SOURCE_DATE));						
+						admissionStatusTO.setEmail("");
+						admissionStatusForm.setAdmissionStatusTO(admissionStatusTO);
+						admissionStatusForm.clear();
+						admissionStatusForm.clearstatusTO();
+						return mapping.findForward(CMSConstants.ADMISSION_STATUS);
+					}
+					else{
 					errors.add(CMSConstants.ERROR,new ActionError(CMSConstants.ADMISSION_ADMISSIONSTATUS_APPNO_INVALID));
 					saveErrors(request, errors);
 					admissionStatusForm.clearadmissionStatusTO();
 					admissionStatusForm.clearstatusTO();
-					return mapping.findForward(CMSConstants.ADMISSION_STATUS);
+					return mapping.findForward(CMSConstants.ADMISSION_INIT_APPLICATIONSTATUS);
+					}
 				}
 				/**
 				 * Checks if multiple records exists in DB based on the entered application no. from UI then add the error message
@@ -310,37 +332,183 @@ public class AdmissionStatusAction extends BaseDispatchAction {
 					admissionStatusForm.clearstatusTO();
 					return mapping.findForward(CMSConstants.ADMISSION_STATUS);			
 				}
+				
 					
 				/**
 				 * Iterating the list of data getting based on the application no. entered from UI 
 				 */
 				
 				Iterator<AdmissionStatusTO> it=AdmAppln.iterator();
+				setDiplomaCourses(admissionStatusForm);
+				
 				while (it.hasNext()) {
-				AdmissionStatusTO admissionStatusTO = (AdmissionStatusTO) it.next();
+					
+					AdmissionStatusTO admissionStatusTO = (AdmissionStatusTO) it.next();
+					if(admissionStatusTO.isCancelled()){
+						errors.add(CMSConstants.ERROR,new ActionError(CMSConstants.ADMISSION_ADMISSIONSTATUS_IS_CANCELLED));
+						saveErrors(request, errors);
+						admissionStatusForm.clear();
+						admissionStatusForm.clearadmissionStatusTO();
+						admissionStatusForm.clearstatusTO();
+						return mapping.findForward(CMSConstants.ADMISSION_INIT_APPLICATIONSTATUS);	
+					}
+					if(admissionStatusTO.isAdmitted()){
+						errors.add(CMSConstants.ERROR,new ActionError(CMSConstants.ADMISSION_ADMISSIONSTATUS_ADMITTED));
+						saveErrors(request, errors);
+						admissionStatusForm.clear();
+						admissionStatusForm.clearadmissionStatusTO();
+						admissionStatusForm.clearstatusTO();
+						return mapping.findForward(CMSConstants.ADMISSION_STATUS);	
+					}				
 
 				/**
 				 * Checks if any of the column (Isselected/PersonalDataId/DateofBirth) is null in DB then add the appropriate error message & show the status
 				 */
 				admissionStatusForm.setAdmStatus(null);
-				
-				if(admissionStatusTO.isAdmitted()){
+				if(admissionStatusTO.getAdmStatus()!= null && !admissionStatusTO.getAdmStatus().trim().isEmpty()){
+					admissionStatusForm.setAdmStatus(admissionStatusTO.getAdmStatus());
+				}				
+				if (admissionStatusTO.getIsSelected() == null || admissionStatusTO.getIsSelected().isEmpty())
+				{
+					admissionStatusTO.setIsSelected(CMSConstants.ADMISSION_ADMISSIONSTATUS_UNDER_PROCESS);
+					admissionStatusTO.setApplicationNo(Integer.parseInt(admissionStatusForm.getApplicationNo()));
+					admissionStatusTO.setDateOfBirth(CommonUtil.ConvertStringToDateFormat(admissionStatusForm.getDateOfBirth(), CMSConstants.DEST_DATE,CMSConstants.SOURCE_DATE));						
 					admissionStatusForm.setAdmissionStatusTO(admissionStatusTO);
-					admissionStatusForm.setStatusTO(admissionStatusTO);
+					admissionStatusForm.clear();
+					admissionStatusForm.clearstatusTO();
+					return mapping.findForward(CMSConstants.ADMISSION_STATUS);
+				}
+				if (admissionStatusTO.getDateOfBirth()==null || admissionStatusTO.getPersonalDataId()==0) {
+					errors.add(CMSConstants.ERROR, new ActionError(CMSConstants.ADMISSION_ADMISSIONSTATUS_NULL));
+					saveErrors(request, errors);
+					admissionStatusForm.clear();
+					admissionStatusForm.clearadmissionStatusTO();
+					admissionStatusForm.clearstatusTO();
+					return mapping.findForward(CMSConstants.ADMISSION_STATUS);
+				}
+				/**
+				 * Checks whether the date of birth retrieved from DB (if
+				 * correct application no is entered) is same with the date of
+				 * birth entered by user or not. If same then adding to formbean and displays the admission status in UI
+				 */
+				if(admissionStatusTO.getApplicationNo()!=0 && admissionStatusTO.getIsSelected()!=null && admissionStatusTO.getDateOfBirth() !=null)
+				{     
+			        String uiDob=admissionStatusForm.getDateOfBirth();
+			        String toDateofBirth=CommonUtil.ConvertStringToDateFormat(admissionStatusTO.getDateOfBirth(), CMSConstants.SOURCE_DATE,CMSConstants.DEST_DATE);
+				if (uiDob.equals(toDateofBirth)) {
+					
+					//Check for the cacelled admission status
+					if(!admissionStatusTO.getIsSelected().equalsIgnoreCase(CMSConstants.SELECTED_FOR_ADMISSION) && admissionStatusTO.isCancelled())
+					{
+						admissionStatusTO.setIsSelected(CMSConstants.ADMISSION_ADMISSIONSTATUS_APPLICATION_CANCELLED);
+						admissionStatusTO.setApplicationNo(Integer.parseInt(admissionStatusForm.getApplicationNo()));
+						admissionStatusTO.setDateOfBirth(CommonUtil.ConvertStringToDateFormat(admissionStatusForm.getDateOfBirth(), CMSConstants.DEST_DATE,CMSConstants.SOURCE_DATE));	
+						admissionStatusForm.setAdmissionStatusTO(admissionStatusTO);
+						admissionStatusForm.clear();
+						admissionStatusForm.clearstatusTO();
+						return mapping.findForward(CMSConstants.ADMISSION_STATUS);
+					}
+					
+					/**
+					 * If the candidate is not selected for admission then check for the interview status and display the last interview round status in UI
+				
+					 */
+				if(!admissionStatusTO.getIsSelected().equalsIgnoreCase(CMSConstants.SELECTED_FOR_ADMISSION) && admissionStatusTO.getInterviewSelectionSchedule()!=null )
+					{
+						AdmissionStatusTO admTO = AdmissionStatusHandler.getInstance().getInterviewResult(applicationNo, admissionStatusTO.getAppliedYear());
+						admissionStatusForm.setStatusTO(admTO);
+						//vibin
+						admissionStatusForm.setAdmissionStatusTO(admissionStatusTO);
+						
+						
+						return mapping.findForward(CMSConstants.ADMISSION_STATUS);	
+					}
+				else if(!admissionStatusTO.getIsSelected().equalsIgnoreCase(CMSConstants.SELECTED_FOR_ADMISSION))
+				{
+					//Used to get the interview status of the application					
+					AdmissionStatusTO admTO = AdmissionStatusHandler.getInstance().getInterviewResult(applicationNo, admissionStatusTO.getAppliedYear());
+					admissionStatusForm.setStatusTO(admTO);
+					//vibin
+					admissionStatusForm.setAdmissionStatusTO(admissionStatusTO);
+					
+					
+					admissionStatusForm.setIsChecked(false);
+					if(admissionStatusForm.getSelectedCourseId() > 0 && admissionStatusForm.getSelectedValue()!=null 
+							&& !admissionStatusForm.getSelectedValue().isEmpty()){
+						boolean isUpdate=AdmissionStatusHandler.getInstance().updateCourseAllotment(applicationNo,admissionStatusForm);
+					}
+					if(admissionStatusForm.getUploadDetail()!=null && !admissionStatusForm.getUploadDetail().isEmpty()){
+						boolean isUpload=AdmissionStatusHandler.getInstance().uploadDetail(applicationNo,admissionStatusForm);
+					}
+					List<AdmissionStatusTO> statusTOs = AdmissionStatusHandler.getInstance().getToListForStatus(applicationNo,admissionStatusForm);
+					admissionStatusForm.setStatusTOs(statusTOs);
+					List<CertificateCourseTO> toList=admissionStatusTransaction.getCertificateCoursesprint(Integer.parseInt(admissionStatusForm.getAdmApplnId()));
+					if (toList!=null && !toList.isEmpty()) {
+						admissionStatusForm.setCertificationCourseDone(true);
+						admissionStatusForm.setPrefList(toList);
+					}
+					return mapping.findForward(CMSConstants.ADMISSION_STATUS);					
+				}
+				
+					if(admissionStatusForm.getApplicationNo()!=null){
+						List interviewCardTOList = AdmissionStatusHandler.getInstance().getStudentsList(admissionStatusForm.getApplicationNo());
+						if(interviewCardTOList!=null && !interviewCardTOList.isEmpty()){
+							if(admissionStatusTO.getIsSelected()!= null){		
+									if(admissionStatusTO.getIsSelected().equalsIgnoreCase(CMSConstants.SELECTED_FOR_ADMISSION)){
+										admissionStatusTO.setIsInterviewSelected(CMSConstants.ADMISSION);
+									}
+							}				
+						}
+						else{
+							if(admissionStatusTO.getIsSelected().equalsIgnoreCase(CMSConstants.SELECTED_FOR_ADMISSION))
+								admissionStatusTO.setIsInterviewSelected(CMSConstants.ADMISSION);
+							else admissionStatusTO.setIsInterviewSelected("false");						
+						}
+					}					
+						admissionStatusForm.setAppliedYear(admissionStatusTO.getAppliedYear());
+						admissionStatusTO.setDateOfBirth(CommonUtil.ConvertStringToDateFormat(admissionStatusTO.getDateOfBirth(), CMSConstants.SOURCE_DATE,CMSConstants.SOURCE_DATE));
+						//--------added for bypass
+						if(admissionStatusTO.isByPassed()){
+							admissionStatusTO.setIsInterviewSelected(CMSConstants.ADMISSION);
+						}
+						//-------
+						
+						admissionStatusForm.setAdmissionStatusTO(admissionStatusTO);
+						admissionStatusForm.clear();
+						admissionStatusForm.clearstatusTO();
+						return mapping.findForward(CMSConstants.ADMISSION_STATUS);
+				}
+				/**
+				 * Else Add appropriate error message if date of birth entered is
+				 * wrong
+				 */
+				else {					
+						errors.add(CMSConstants.ERROR,new ActionError(CMSConstants.ADMISSION_ADMISSIONSTATUS_INVALID_DOB));
+						saveErrors(request, errors);
+						admissionStatusForm.clearadmissionStatusTO();
+						admissionStatusForm.clearstatusTO();
+						return mapping.findForward(CMSConstants.ADMISSION_STATUS);
+				}
 				}
 				}
 			}
 		} catch (Exception e) {
-			log.error("Error occured at getAdmissionStatus of Admission StatusAction",e);
+			log.error("Error occured at getOnlineApplicationStatus of Admission StatusAction",e);
 			String msg = super.handleApplicationException(e);
 			admissionStatusForm.setErrorMessage(msg);
 			admissionStatusForm.setErrorStack(e.getMessage());
-			return mapping.findForward(CMSConstants.ERROR_PAGE);
+			//return mapping.findForward(CMSConstants.ERROR_PAGE);
+			return mapping.findForward("newerrorpage");
 		}
 		saveErrors(request, errors);
-		log.info("Leaving from getAdmissionStatus of AdmissionStatusAction");
+		log.info("Leaving from getOnlineApplicationStatus of AdmissionStatusAction");
 		return mapping.findForward(CMSConstants.ADMISSION_STATUS);
 	}
+	private void setDiplomaCourses(AdmissionStatusForm admissionStatusForm) throws Exception {
+		Map<Integer, String>  certificateMap = AdmissionStatusHandler.getInstance().getActiveCourses1(admissionStatusForm.getAppliedYear());
+		admissionStatusForm.setCerticateCourses(certificateMap);
+	}
+
 	/**
 	 * Method to check the entered date is not a future date
 	 * @param dateString
@@ -534,7 +702,8 @@ public class AdmissionStatusAction extends BaseDispatchAction {
 							}
 							if(docTO.getDocName()!=null && docTO.getDocName().equalsIgnoreCase("Photo") && docTO.isDefaultPhoto())
 							{
-								/*if(session!=null){
+								HttpSession session= request.getSession(false);
+								if(session!=null){
 									byte[] fileData= null;
 									// set default photo image
 									try {
@@ -550,7 +719,7 @@ public class AdmissionStatusAction extends BaseDispatchAction {
 									
 									if(fileData!=null)
 									session.setAttribute(AdmissionStatusAction.PHOTOBYTES,fileData );
-								}*/
+								}
 								request.setAttribute("STUDENT_IMAGE", "images/photoblank.gif");
 							}else if(docTO.getDocName()!=null && docTO.getDocName().equalsIgnoreCase("Photo")){
 								
@@ -584,8 +753,15 @@ public class AdmissionStatusAction extends BaseDispatchAction {
 			}
 			
 		if(admForm.getChanceMemo()!=null && admForm.getChanceMemo()){
+			AdmissionStatusTO to2=null;
 			AdmissionStatusTO to = admForm.getAdmissionStatusTO();
-			AdmissionStatusTO to2 = admForm.getAdmissionStatusTO().getChanceMemoMap().get(admForm.getChanceCourseId());
+			for (AdmissionStatusTO name : admForm.getAdmissionStatusTO().getChanceMemoMap().values()){
+				System.out.println(name.getChanceCurrentcourseid());
+				if (name.getChanceCurrentcourseid()==admForm.getChanceCourseId()) {
+					to2=name;
+				}
+			}
+			//AdmissionStatusTO to2 = admForm.getAdmissionStatusTO().getChanceMemoMap().get(admForm.getCourseId());
      	       to.setChanceIndexmark(to2.getChanceIndexmark());
 		       to.setChanceCurrentcourse(to2.getChanceCurrentcourse());
 		       to.setChanceCurrentcourseid(to2.getChanceCurrentcourseid());
@@ -611,7 +787,7 @@ public class AdmissionStatusAction extends BaseDispatchAction {
 		       to.setChanceAlmntCommunity(to2.isChanceAlmntCommunity());
 		       admForm.setAdmissionStatusTO(to);
 		       request.setAttribute("chanceCourseId", admForm.getChanceCourseId());
-			return mapping.findForward(CMSConstants.VIEW_CHANCE_MEMO);
+			return mapping.findForward("adminChanceMemo");
 		}
 		if(admForm.isMemo()){
 			return mapping.findForward(CMSConstants.VIEW_ALLOTMENT_MEMO);
@@ -693,6 +869,10 @@ public class AdmissionStatusAction extends BaseDispatchAction {
 			HttpServletResponse response) throws Exception {
 		log.info("Inside of getOnlineApplicationStatus of AdmissionStatusAction");
 		AdmissionStatusForm admissionStatusForm = (AdmissionStatusForm) form;
+		IAdmissionStatusTransaction admissionStatusTransaction=new AdmissionStatusTransactionImpl();
+		admissionStatusForm.clearadmissionStatusTO();
+		admissionStatusForm.clearstatusTO();
+		admissionStatusForm.clearpref();
 		 ActionErrors errors = admissionStatusForm.validate(mapping, request);
 		admissionStatusForm.setOnlineAcknowledgement(false);
 		if (admissionStatusForm.getDateOfBirth() != null && !StringUtils.isEmpty(admissionStatusForm.getDateOfBirth())) {
@@ -760,7 +940,10 @@ public class AdmissionStatusAction extends BaseDispatchAction {
 				 */
 				
 				Iterator<AdmissionStatusTO> it=AdmAppln.iterator();
+				setDiplomaCourses(admissionStatusForm);
+				
 				while (it.hasNext()) {
+					
 					AdmissionStatusTO admissionStatusTO = (AdmissionStatusTO) it.next();
 					if(admissionStatusTO.isCancelled()){
 						errors.add(CMSConstants.ERROR,new ActionError(CMSConstants.ADMISSION_ADMISSIONSTATUS_IS_CANCELLED));
@@ -860,6 +1043,11 @@ public class AdmissionStatusAction extends BaseDispatchAction {
 					}
 					List<AdmissionStatusTO> statusTOs = AdmissionStatusHandler.getInstance().getToListForStatus(applicationNo,admissionStatusForm);
 					admissionStatusForm.setStatusTOs(statusTOs);
+					List<CertificateCourseTO> toList=admissionStatusTransaction.getCertificateCoursesprint(Integer.parseInt(admissionStatusForm.getAdmApplnId()));
+					if (toList!=null && !toList.isEmpty()) {
+						admissionStatusForm.setCertificationCourseDone(true);
+						admissionStatusForm.setPrefList(toList);
+					}
 					return mapping.findForward(CMSConstants.ADMISSION_INIT_APPLICATIONSTATUS);					
 				}
 				
@@ -1053,7 +1241,7 @@ public class AdmissionStatusAction extends BaseDispatchAction {
 		     saveErrors(request, errors);
 		
 		}
-		return mapping.findForward(CMSConstants.REDIRECT_PGI_REVALUATION);
+		return mapping.findForward(CMSConstants.REDIRECT_TO_PGI_PAGE);
 	
 	
 	}
@@ -1065,7 +1253,7 @@ public class AdmissionStatusAction extends BaseDispatchAction {
 				errors.add(CMSConstants.ADMISSIONFORM_APPLICATIONAMNT_REQUIRED, new ActionError(CMSConstants.ADMISSIONFORM_APPLICATIONAMNT_REQUIRED));
 			}
 		}
-		if(CMSConstants.PGI_MERCHANT_ID == null || CMSConstants.PGI_MERCHANT_ID.isEmpty()
+		if(CMSConstants.PGI_MERCHANT_ID== null || CMSConstants.PGI_MERCHANT_ID.isEmpty()
 				|| CMSConstants.PGI_MERCHANT_ID==""){
 			if (errors.get(CMSConstants.PGI_MERCHANT_ID_REQUIRED)!=null && !errors.get(CMSConstants.PGI_MERCHANT_ID_REQUIRED).hasNext()) {
 				errors.add(CMSConstants.PGI_MERCHANT_ID_REQUIRED, new ActionError(CMSConstants.PGI_MERCHANT_ID_REQUIRED));
@@ -1118,5 +1306,96 @@ public class AdmissionStatusAction extends BaseDispatchAction {
 	
 	
 	
+	}
+	
+	public ActionForward printAdmissionFormOnline(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		log.info("entered initAdmissionApproval..");
+		AdmissionStatusForm admForm = (AdmissionStatusForm) form;
+		String applicationNumber = admForm.getApplicationNo().trim();
+		List<CertificateCourseTO> toList=new ArrayList();
+		IAdmissionStatusTransaction admissionStatusTransaction=new AdmissionStatusTransactionImpl();
+		int applicationYear = admForm.getAdmissionStatusTO().getAppliedYear();
+		AdmApplnTO applicantDetails = AdmissionFormHandler.getInstance().getApplicationDetails(applicationNumber, applicationYear);
+		//AdmApplnTO applicantDetails = AdmissionFormHandler.getInstance().getApplicantDetails(applicationNumber, applicationYear,false);
+		admForm.setApplicantDetails(applicantDetails);
+		toList=admissionStatusTransaction.getCertificateCoursesprint(Integer.parseInt(admForm.getAdmApplnId()));
+		admForm.setCerticateCoursesPrint(toList);
+		if (admForm.getPageNum()=="1" || admForm.getPageNum().equalsIgnoreCase("1")) {
+			return mapping.findForward("onlineAnnexure");
+		}
+		else if (admForm.getPageNum()=="2" || admForm.getPageNum().equalsIgnoreCase("2")) {
+			return mapping.findForward("onlineMembership");
+		}
+		else if (admForm.getPageNum()=="3" || admForm.getPageNum().equalsIgnoreCase("3")) {
+			return mapping.findForward("onlineBioDataForm");
+		}
+		else if (admForm.getPageNum()=="4" || admForm.getPageNum().equalsIgnoreCase("4")) {
+			return mapping.findForward("onlineAPPAdmission");
+		}
+		return mapping.findForward("onlineAPPAdmission");
+	}
+	public ActionForward submitAddMorePreferences(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		log.info("entered initAdmissionApproval..");
+		AdmissionStatusForm admForm = (AdmissionStatusForm) form;
+		List<CertificateCourseTO> prefList=admForm.getPrefList();
+		int count=1;
+		
+		List<CertificateCourseTO> current=admForm.getPrefList();
+		int dup=0;
+		for (CertificateCourseTO certificateCourseTO : current) {
+			count++;
+			if (certificateCourseTO.getId()==admForm.getCerticateId()) {
+				dup=1;
+			}
+		}
+		if (dup==0) {
+		for (Map.Entry<Integer,String> entry : admForm.getCerticateCourses().entrySet()){
+			CertificateCourseTO to=new CertificateCourseTO();
+			if (entry.getKey()==admForm.getCerticateId()) {
+				to.setId(admForm.getCerticateId());
+				to.setCourseName(entry.getValue());
+				prefList.add(to);
+			}
+           /* System.out.println("Key = " + entry.getKey() +
+                             ", Value = " + entry.getValue());*/
+		}
+		}
+		admForm.setPrefList(prefList);
+		admForm.setPreCount(count);
+		System.out.println(count);
+		return mapping.findForward(CMSConstants.ADMISSION_INIT_APPLICATIONSTATUS);
+		
+	}
+	public ActionForward removePreferences(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		log.info("entered initAdmissionApproval..");
+		AdmissionStatusForm admForm = (AdmissionStatusForm) form;
+		List<CertificateCourseTO> prefList=admForm.getPrefList();
+		if (!prefList.isEmpty()) {
+			 int indexOfLastElement = prefList.size() - 1;
+			 prefList.remove(indexOfLastElement);
+			admForm.setPrefList(prefList);
+			admForm.setPreCount(admForm.getPreCount()-1);
+		}
+		return mapping.findForward(CMSConstants.ADMISSION_INIT_APPLICATIONSTATUS);
+		
+	}
+	
+	public ActionForward submitcourse(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		log.info("entered initAdmissionApproval..");
+		AdmissionStatusForm admForm = (AdmissionStatusForm) form;
+		List<CertificateCourseTO> prefList=admForm.getPrefList();
+		boolean result=AdmissionStatusHandler.getInstance().saveCertificateCourses(admForm);
+		admForm.setCertificationCourseDone(true);
+		
+		return mapping.findForward(CMSConstants.ADMISSION_INIT_APPLICATIONSTATUS);
+		
 	}
 }

@@ -10,6 +10,7 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.kp.cms.bo.admin.AdmAppln;
 import com.kp.cms.bo.admin.CertificateCourse;
 import com.kp.cms.bo.admin.CertificateCourseTeacher;
 import com.kp.cms.bo.admin.PersonalData;
@@ -17,9 +18,11 @@ import com.kp.cms.bo.admin.Student;
 import com.kp.cms.bo.admin.StudentCertificateCourse;
 import com.kp.cms.bo.admin.Subject;
 import com.kp.cms.constants.CMSConstants;
+import com.kp.cms.forms.admission.AdmissionStatusForm;
 import com.kp.cms.forms.admission.CertificateCourseEntryForm;
 import com.kp.cms.forms.admission.StudentCertificateCourseForm;
 import com.kp.cms.to.admin.StudentTO;
+import com.kp.cms.to.admission.CertificateCourseTO;
 import com.kp.cms.to.admission.CertificateCourseTeacherTO;
 import com.kp.cms.to.admission.StudentCertificateCourseTO;
 import com.kp.cms.utilities.CommonUtil;
@@ -47,14 +50,14 @@ public class StudentCertificateCourseHelper {
 //		while (iterator.hasNext()) {
 			certificateCourseTeacherTO = new CertificateCourseTeacherTO();
 			certificateCourseTeacherTO.setCertificateCourseName(bo.getCertificateCourseName());
-			certificateCourseTeacherTO.setTeacherName(bo.getUsers().getUserName());
+		//	certificateCourseTeacherTO.setTeacherName(bo.getUsers().getUserName());
 			if(bo.getStartTime()!=null)
 			certificateCourseTeacherTO.setStartTime(bo.getStartTime());
 			if(bo.getStartTime()!=null)
 			certificateCourseTeacherTO.setEndTime(bo.getEndTime());
 			certificateCourseTeacherTO.setVenue(bo.getVenue());
-			if(bo.getUsers().getEmployee()!=null)
-			certificateCourseTeacherTO.setDepartment(bo.getUsers().getEmployee().getDepartment().getName());
+			//if(bo.getUsers().getEmployee()!=null)
+		//	certificateCourseTeacherTO.setDepartment(bo.getUsers().getEmployee().getDepartment().getName());
 			certificateCourseTeacherTO.setDescription(bo.getDescription());
 			courseToList.add(certificateCourseTeacherTO);
 //		}
@@ -264,6 +267,20 @@ public class StudentCertificateCourseHelper {
 		
 	}
 	}
-	
+	public List<StudentCertificateCourse> copyBoTo(List<CertificateCourseTO> prefList,StudentCertificateCourseForm admForm) {
+		List<StudentCertificateCourse> studcertCoursBoList=new ArrayList<StudentCertificateCourse>();
+		for (CertificateCourseTO to : prefList) {
+			StudentCertificateCourse bo=new StudentCertificateCourse();
+			CertificateCourse course=new CertificateCourse();
+			course.setId(to.getId());
+			bo.setCertificateCourse(course);
+			AdmAppln adm=new AdmAppln();
+			adm.setId(Integer.parseInt(admForm.getAdmApplnId()));
+			bo.setAdmAppln(adm);
+			studcertCoursBoList.add(bo);
+			
+		}
+		return studcertCoursBoList;
+	}
 	
 	}

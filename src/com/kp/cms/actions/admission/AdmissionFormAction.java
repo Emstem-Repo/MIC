@@ -12906,6 +12906,33 @@ public static ActionMessages validateMarksFor12thClass(CandidateMarkTO detailmar
 						}
 					}
 				}
+			}else{
+				System.out.println("photo session");
+				HttpSession session= request.getSession(false);
+				IAdmissionFormTransaction txn= new AdmissionFormTransactionImpl();
+				AdmAppln admAppln = txn.getApplicationDetails(applicationNumber, applicationYear);
+				Set<ApplnDoc> docUploadSet=admAppln.getApplnDocs();
+				Iterator<ApplnDoc> iterator = docUploadSet.iterator();
+				while (iterator.hasNext()) {
+					
+					ApplnDoc applnDocBO = (ApplnDoc) iterator.next();
+
+					
+					if(applnDocBO.getIsPhoto()!=null && applnDocBO.getIsPhoto()){
+							
+							//raghu
+							if(applnDocBO.getDocument()!=null){
+								byte [] myFileBytes = applnDocBO.getDocument();
+								// applnDocTO.setPhotoBytes(myFileBytes);
+								session.setAttribute("PhotoBytes", myFileBytes);	
+								//admForm.setIsPhoto("true");
+							}else{
+								//admForm.setIsPhoto("false");
+							}
+							
+						}
+					
+				}
 			}
 			
 			//get template and replace the data

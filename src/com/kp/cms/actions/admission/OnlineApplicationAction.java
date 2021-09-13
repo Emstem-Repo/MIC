@@ -665,7 +665,7 @@ static {
 							if(amount!=null && !amount.equalsIgnoreCase("")){
 								
 							if(ismng){
-								int amt=Integer.parseInt(amount)+600;//500 is adding for management quota
+								int amt=Integer.parseInt(amount)+750;//500 is adding for management quota
 								amount=String.valueOf(amt);
 							admForm.setApplicationAmount(amount);
 							admForm.setApplicationAmount1(amount);
@@ -4073,7 +4073,7 @@ static {
 					
 			
 			setConfirmationPageDetails(admForm, request);
-			//ActionMessages errors=admForm.validate(mapping, request);
+			 //errors=admForm.validate(mapping, request);
 			
 			
 			/* if(admForm.getApplicantDetails().getPersonalData().getAreaType()== 'P' && admForm.getApplicantDetails().getPersonalData().getPancAreaId().equalsIgnoreCase("")){
@@ -4385,7 +4385,29 @@ static {
 			
 			
 			
+			
+			
+			if(admForm.getApplicantDetails().getPersonalData().getMotherTonge()==null || admForm.getApplicantDetails().getPersonalData().getMotherTonge().isEmpty()){
+				errors.add(CMSConstants.ERROR, new ActionError("errors.required"," Mother Tongue "));
+				}
+			if(admForm.getApplicantDetails().getPersonalData().getDistrict()==null || admForm.getApplicantDetails().getPersonalData().getDistrict().isEmpty()){
+				errors.add(CMSConstants.ERROR, new ActionError("errors.required"," District "));
+				}
+			if(admForm.getApplicantDetails().getPersonalData().getThaluk()==null || admForm.getApplicantDetails().getPersonalData().getThaluk().isEmpty()){
+				errors.add(CMSConstants.ERROR, new ActionError("errors.required","Thaluk"));
+				}
+			if(admForm.getApplicantDetails().getPersonalData().getPlaceOfBirth()==null || admForm.getApplicantDetails().getPersonalData().getPlaceOfBirth().isEmpty()){
+				errors.add(CMSConstants.ERROR, new ActionError("errors.required"," Place of Birth"));
+				}
+			
+			
 			// online age range check
+			
+			
+			
+			
+			
+			
 			
 			if(admForm.getAgeToLimit()!=0 && admForm.getApplicantDetails().getPersonalData().getDob()!=null && !StringUtils.isEmpty(admForm.getApplicantDetails().getPersonalData().getDob())){
 				boolean valid=validateOnlineDOB(admForm.getAgeFromLimit(),admForm.getAgeToLimit(),admForm.getApplicantDetails().getPersonalData().getDob());
@@ -5027,7 +5049,12 @@ static {
 				if((admForm.getApplicantDetails().getPersonalData().getStream()!=null && StringUtils.isEmpty(admForm.getApplicantDetails().getPersonalData().getStream())) || (!StringUtils.isNumeric(admForm.getApplicantDetails().getPersonalData().getStream()))){
 	                errors.add(CMSConstants.ERROR, new ActionError("errors.required"," Stream under Class 12 "));
 				}
-			
+			if (admForm.getApplicantDetails().getPersonalData().isDidBreakStudy() && (admForm.getApplicantDetails().getPersonalData().getReasonFrBreakStudy()==null || admForm.getApplicantDetails().getPersonalData().getReasonFrBreakStudy().isEmpty())) {
+				errors.add(CMSConstants.ERROR, new ActionError("errors.required"," Reason For break study "));
+			}
+			if (admForm.getApplicantDetails().getPersonalData().isHasScholarship() && (admForm.getApplicantDetails().getPersonalData().getScholarship()==null || admForm.getApplicantDetails().getPersonalData().getScholarship().isEmpty())) {
+				errors.add(CMSConstants.ERROR, new ActionError("errors.required"," Scholarship details required "));
+			}
 			
 			    if(admForm.isDisplayTCDetails())
 				validateTcDetailsEdit(admForm, errors);

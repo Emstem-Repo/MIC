@@ -73,7 +73,7 @@ public class CertificateCourseEntryTxnImpl implements ICertificateCourseEntryTxn
 		List<CertificateCourse> courseBoList;
 		try {
 			session = InitSessionFactory.getInstance().openSession();
-			courseBoList = session.createQuery("from CertificateCourse c where c.isActive = 1 and c.year="+year+" and c.semType='"+semType+"'").list();
+			courseBoList = session.createQuery("from CertificateCourse c where c.isActive = 1").list();
 			} catch (Exception e) {
 			log.error("Error in getActiveCertificateCourses of Course Impl",e);
 			throw new ApplicationException(e);
@@ -277,7 +277,7 @@ public class CertificateCourseEntryTxnImpl implements ICertificateCourseEntryTxn
 			}
 			
 			Query query = session.createQuery(sqlString.toString());
-			query.setInteger("subjectId",duplCertificateCourse.getSubject().getId());
+			//query.setInteger("subjectId",duplCertificateCourse.getSubject().getId());
 			query.setInteger("year",duplCertificateCourse.getYear());
 			query.setString("semType", duplCertificateCourse.getSemType());
 			if(duplCertificateCourse.getId()!= 0){

@@ -73,9 +73,9 @@ td {
 		<tr><td align="center" class="title2" colspan="2">Undertaking from the Students as per the provisions of anti-ragging
 															verdict by the Hon’ble Supreme Court of India</td></tr>
 		<tr height="10px"></tr>
-		<tr><td>I, Mr./ Ms. &nbsp;<bean:write name="admissionFormForm" property="applicantDetails.personalData.firstName"/>,&nbsp;&nbsp;&nbsp; Roll No.......... </td></tr>
-		<tr><td>Program:&nbsp; <bean:write name="admissionFormForm" property="applicantDetails.course.name" /> student of Mar Ivanios College (Autonomous) do
-		hereby undertake on this day ....................... Month ............................ year , the following
+		<tr><td>I, Mr./ Ms. &nbsp;<bean:write name="admissionFormForm" property="applicantDetails.personalData.firstName"/>,&nbsp;&nbsp;&nbsp; Roll No..........  ,Program:&nbsp; ..................................................</td></tr>
+		<tr><td> student of Mar Ivanios College (Autonomous) do
+		hereby undertake on this day ....................... Month ............................ year  ............................, the following
 		with respect to above subject and Office Order No: ..................................................
 		</td></tr>
 		<tr><td>
@@ -108,11 +108,17 @@ td {
 				</tr>
 			</table>
 		</td></tr>
+		<tr height="30px"></tr>
 		<tr><td>Signature of Student</td></tr>
 		<tr><td>I hereby fully endorse the undertaking made by my child/ward.</td></tr>
+		<tr height="30px"></tr>
 		<tr><td>Signature of Mother/Father/Guardian</td></tr>
+		<tr height="30px"></tr>
 		<tr><td>Witness: ................................................</td></tr>
-			
+		<tr height="400px"></tr>
+		<tr><td>Mar Ivanios College (Autonomous), UG/PG Admission - 2021-2022
+		<hr>
+		</td></tr>	
 	</table>
 
 </html:form>

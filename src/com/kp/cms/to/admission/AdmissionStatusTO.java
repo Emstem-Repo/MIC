@@ -100,6 +100,7 @@ public class AdmissionStatusTO implements Serializable , Comparable<AdmissionSta
 	private boolean isAccept;
 	private boolean isDecline;
 	private String msgValue;
+	private String chanceAllotment;
 	
 	public int compareTo(AdmissionStatusTO other) {
 		return this.getChancePref() - other.getChancePref();
@@ -716,6 +717,14 @@ public class AdmissionStatusTO implements Serializable , Comparable<AdmissionSta
 
 	public void setMsgValue(String msgValue) {
 		this.msgValue = msgValue;
+	}
+
+	public String getChanceAllotment() {
+		return chanceAllotment;
+	}
+
+	public void setChanceAllotment(String chanceAllotment) {
+		this.chanceAllotment = chanceAllotment;
 	}
 	
 	

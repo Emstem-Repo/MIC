@@ -3,18 +3,22 @@ package com.kp.cms.handlers.admission;
 import java.math.BigDecimal;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.kp.cms.bo.admin.AdmAppln;
 import com.kp.cms.bo.admin.CandidatePGIDetails;
+import com.kp.cms.bo.admin.CertificateCourse;
 import com.kp.cms.bo.admin.Course;
 import com.kp.cms.bo.admin.InterviewCard;
 import com.kp.cms.bo.admin.InterviewCardHistory;
 import com.kp.cms.bo.admin.ResidentCategory;
+import com.kp.cms.bo.admin.StudentCertificateCourse;
 import com.kp.cms.bo.admin.StudentCourseAllotment;
 import com.kp.cms.bo.admin.StudentCourseChanceMemo;
 import com.kp.cms.bo.admin.StudentOnlineApplication;
@@ -22,9 +26,12 @@ import com.kp.cms.bo.admission.StudentAllotmentPGIDetails;
 import com.kp.cms.constants.CMSConstants;
 import com.kp.cms.forms.admission.AdmissionStatusForm;
 import com.kp.cms.helpers.admission.AdmissionStatusHelper;
+import com.kp.cms.helpers.admission.CertificateCourseEntryHelper;
 import com.kp.cms.helpers.admission.OnlineApplicationHelper;
 import com.kp.cms.to.admission.AdmissionStatusTO;
+import com.kp.cms.to.admission.CertificateCourseTO;
 import com.kp.cms.to.admission.InterviewCardTO;
+import com.kp.cms.to.admission.StudentCertificateCourseTO;
 import com.kp.cms.transactions.admission.IAdmissionFormTransaction;
 import com.kp.cms.transactions.admission.IAdmissionStatusTransaction;
 import com.kp.cms.transactions.admission.IOnlineApplicationTxn;
@@ -95,7 +102,7 @@ public class AdmissionStatusHandler {
 	{
 		log.info("Entering into getDetailsAdmAppln of AdmissionStatusHandler");
 		IAdmissionStatusTransaction admissionStatusTransaction=new AdmissionStatusTransactionImpl();
-		List<AdmAppln> newList=admissionStatusTransaction.getDetailsAdmAppln(applicationNo,admissionStatusForm.getYear());
+		List<AdmAppln> newList=admissionStatusTransaction.getDetailsAdmAppln(applicationNo);
 		log.info("Leaving into getDetailsAdmAppln of AdmissionStatusHandler");
 		return AdmissionStatusHelper.getInstance().populateAdmApplnBOtoTO(newList,admissionStatusForm);
 	}
@@ -145,15 +152,88 @@ public class AdmissionStatusHandler {
 	public List<AdmissionStatusTO> getToListForStatus(String applicationNo,AdmissionStatusForm admissionStatusForm)throws Exception {
 		IAdmissionStatusTransaction admissionStatusTransaction=new AdmissionStatusTransactionImpl();
 		List<StudentCourseChanceMemo> allotments = admissionStatusTransaction.getBolist(applicationNo,admissionStatusForm.getDateOfBirth());
-		List<AdmissionStatusTO> statusTOs = AdmissionStatusHelper.getInstance().setToList(allotments,admissionStatusForm);
+		List<StudentCourseAllotment> courseAllotments=admissionStatusTransaction.getBolistForAllotment(applicationNo,admissionStatusForm.getDateOfBirth());
+		List<StudentCourseChanceMemo> chanceMemos = admissionStatusTransaction.getBolistForPG(applicationNo,admissionStatusForm.getDateOfBirth());
+		
+		List<StudentCourseChanceMemo> chanceMemosForUg = admissionStatusTransaction.getBolistForUg(applicationNo,admissionStatusForm.getDateOfBirth());
+		List<StudentCourseAllotment> courseAllotmentsForUg=admissionStatusTransaction.getBolistForAllotmentUg(applicationNo,admissionStatusForm.getDateOfBirth());
+		
+		int programTypeId=admissionStatusTransaction.getProgramTypeId(applicationNo,admissionStatusForm.getDateOfBirth());
+		int selectedCourseId=admissionStatusTransaction.getSelectedCourseId(applicationNo,admissionStatusForm.getDateOfBirth());
+		admissionStatusForm.setProgramTypeId(String.valueOf(programTypeId));
+		admissionStatusForm.setSpecialCourse(false);
+		List<AdmissionStatusTO> statusTOs=null;
+		if(programTypeId==2){
+			 statusTOs = AdmissionStatusHelper.getInstance().setTOPGList(chanceMemos,admissionStatusForm,courseAllotments);
+			 if(selectedCourseId==32){
+				 admissionStatusForm.setSpecialCourse(true);
+			 }
+		}else{
+			statusTOs = AdmissionStatusHelper.getInstance().setTOPGList(chanceMemos,admissionStatusForm,courseAllotments);
+			 //statusTOs = AdmissionStatusHelper.getInstance().setToList(allotments,admissionStatusForm);
+			/* if(selectedCourseId==30 || selectedCourseId==31 ){
+				 admissionStatusForm.setSpecialCourse(true);
+				 statusTOs = AdmissionStatusHelper.getInstance().setTOPGList(chanceMemosForUg,admissionStatusForm,courseAllotmentsForUg);
+			 }*/
+		}
 		return statusTOs;
 	}
 
 	public boolean updateCourseAllotment(String applicationNo, AdmissionStatusForm admissionStatusForm)throws Exception {
 		IAdmissionStatusTransaction tx=new AdmissionStatusTransactionImpl();
 		List<StudentCourseChanceMemo> allotments = tx.getBolist(applicationNo,admissionStatusForm.getDateOfBirth());
-		allotments=AdmissionStatusHelper.getInstance().getUpdatedBo(allotments,admissionStatusForm);
-		boolean isUpdated=tx.isUpdated(allotments);
+		List<StudentCourseAllotment> courseAllotments=tx.getBolistForAllotment(applicationNo,admissionStatusForm.getDateOfBirth());
+		List<StudentCourseChanceMemo> chanceMemos = tx.getBolistForPG(applicationNo,admissionStatusForm.getDateOfBirth());
+		int programTypeId=tx.getProgramTypeId(applicationNo,admissionStatusForm.getDateOfBirth());
+		int selectedCourseId=tx.getSelectedCourseId(applicationNo,admissionStatusForm.getDateOfBirth());
+		
+		List<StudentCourseChanceMemo> chanceMemosForUg = tx.getBolistForUg(applicationNo,admissionStatusForm.getDateOfBirth());
+		List<StudentCourseAllotment> courseAllotmentsForUg=tx.getBolistForAllotmentUg(applicationNo,admissionStatusForm.getDateOfBirth());
+		
+		admissionStatusForm.setProgramTypeId(String.valueOf(programTypeId));
+		boolean isUpdated=false;
+		admissionStatusForm.setSpecialCourse(false);
+		if(programTypeId==1){
+			
+			/*if(selectedCourseId==30 || selectedCourseId==31){
+				admissionStatusForm.setSpecialCourse(true);
+				if(chanceMemosForUg.isEmpty()){
+					courseAllotmentsForUg=AdmissionStatusHelper.getInstance().getUpdatedBoPG(courseAllotmentsForUg,admissionStatusForm);
+					isUpdated=tx.isUpdatedForPg(courseAllotmentsForUg);
+				}else if(courseAllotmentsForUg.isEmpty()){
+					chanceMemosForUg=AdmissionStatusHelper.getInstance().getUpdatedBo(chanceMemosForUg,admissionStatusForm);
+					isUpdated=tx.isUpdated(chanceMemosForUg);
+				}else if(!chanceMemosForUg.isEmpty() && !courseAllotmentsForUg.isEmpty()){
+					isUpdated=tx.isUpdateForBothForUg(chanceMemosForUg,courseAllotmentsForUg,admissionStatusForm);
+				}
+			}else{*/
+				/*allotments=AdmissionStatusHelper.getInstance().getUpdatedBo(allotments,admissionStatusForm);
+				isUpdated=tx.isUpdated(allotments);*/
+				if(chanceMemosForUg.isEmpty()){
+					courseAllotmentsForUg=AdmissionStatusHelper.getInstance().getUpdatedBoPG(courseAllotmentsForUg,admissionStatusForm);
+					isUpdated=tx.isUpdatedForPg(courseAllotmentsForUg);
+				}else if(courseAllotmentsForUg.isEmpty()){
+					chanceMemosForUg=AdmissionStatusHelper.getInstance().getUpdatedBo(chanceMemosForUg,admissionStatusForm);
+					isUpdated=tx.isUpdated(chanceMemosForUg);
+				}else if(!chanceMemosForUg.isEmpty() && !courseAllotmentsForUg.isEmpty()){
+					isUpdated=tx.isUpdateForBothForUg(chanceMemosForUg,courseAllotmentsForUg,admissionStatusForm);
+				}
+			//}
+		}else{
+			if(selectedCourseId==32){
+				admissionStatusForm.setSpecialCourse(true);
+			}
+			if(chanceMemos.isEmpty()){
+				courseAllotments=AdmissionStatusHelper.getInstance().getUpdatedBoPG(courseAllotments,admissionStatusForm);
+				isUpdated=tx.isUpdatedForPg(courseAllotments);
+			}else if(courseAllotments.isEmpty()){
+				chanceMemos=AdmissionStatusHelper.getInstance().getUpdatedBo(chanceMemos,admissionStatusForm);
+				isUpdated=tx.isUpdated(chanceMemos);
+			}else if(!chanceMemos.isEmpty() && !courseAllotments.isEmpty()){
+				isUpdated=tx.isUpdateForBoth(chanceMemos,courseAllotments,admissionStatusForm);
+			}
+			
+		}
 		return isUpdated;
 	}
 
@@ -215,7 +295,7 @@ public class AdmissionStatusHandler {
 		admForm.setProductinfo(productinfo);
 		
 		if(candidateRefNo!=null && !candidateRefNo.isEmpty())
-			temp.append(CMSConstants.PGI_MERCHANT_ID_REV).append("|").append(candidateRefNo).append("|").append(bo.getTxnAmount()).append("|").append(productinfo).append("|").append(bo.getCandidateName()).append("|").append(bo.getEmail()).append("|||||||||||").append(CMSConstants.PGI_SECURITY_ID_REV);
+			temp.append(CMSConstants.PGI_MERCHANT_ID).append("|").append(candidateRefNo).append("|").append(bo.getTxnAmount()).append("|").append(productinfo).append("|").append(bo.getCandidateName()).append("|").append(bo.getEmail()).append("|||||||||||").append(CMSConstants.PGI_SECURITY_ID);
 		String hash=hashCal("SHA-512",temp.toString());
 		admForm.setTest(temp.toString());
 		
@@ -247,5 +327,21 @@ public class AdmissionStatusHandler {
 		return hexString.toString();
 
 
+	}
+
+	public Map<Integer, String>  getActiveCourses1(int appliedYear) throws Exception {
+		IAdmissionStatusTransaction admissionStatusTransaction=new AdmissionStatusTransactionImpl();
+		List<CertificateCourse> courseBoList=admissionStatusTransaction.getActiveCertificateCourses(appliedYear);
+		if(courseBoList != null && !courseBoList.isEmpty() ){
+			return AdmissionStatusHelper.getInstance().populateCourseBOtoTO(courseBoList);
+		}
+		return null;
+	}
+
+	public boolean saveCertificateCourses(AdmissionStatusForm admForm) throws Exception {
+		List<StudentCertificateCourse> studCertCourse=AdmissionStatusHelper.getInstance().copyBoTo(admForm.getPrefList(),admForm);
+		IAdmissionStatusTransaction admissionStatusTransaction=new AdmissionStatusTransactionImpl();
+		boolean result=admissionStatusTransaction.saveStudentCertificateCourse(studCertCourse);
+		return result;
 	}
 }

@@ -118,8 +118,8 @@ private static Map<String, String> monthMap = null;
 				 to.setSlNo(student.getStudent().getSlNo());
 				 to.setRegNo(student.getStudent().getRegisterNo());
 				
-				if(student.getCharacterAndConduct().getName()!=null)
-				to.setConduct(student.getCharacterAndConduct().getName());
+				/*if(student.getCharacterAndConduct().getName()!=null)*/
+				//to.setConduct(student.getCharacterAndConduct().getName());
 				
 
 				

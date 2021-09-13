@@ -9,7 +9,7 @@ public class CertificateCourse implements Serializable{
 	private int id;
 	private String certificateCourseName;
 	private Integer maxIntake;
-	private Users users;
+	//private Users users;
 	private String startTime;
 	private String endTime;
 	private String venue;
@@ -22,7 +22,7 @@ public class CertificateCourse implements Serializable{
 	private String semType;
 	private Set<StudentCertificateCourse> studentCertificateCourses = new HashSet<StudentCertificateCourse>(0);
 //	private Set<Subject> subject=new HashSet<Subject>(0);
-	private Subject subject=new Subject();
+	//private Subject subject=new Subject();
 	private Boolean extracurricular;
 	private Set<CertificateCourseGroup> groups;
 	private String description;
@@ -49,7 +49,7 @@ public class CertificateCourse implements Serializable{
 		super();
 		this.id = id;
 		this.certificateCourseName = certificateCourseName;
-		this.users = users;
+		//this.users = users;
 		this.startTime = startTime;
 		this.endTime = endTime;
 		this.venue = venue;
@@ -86,7 +86,7 @@ public class CertificateCourse implements Serializable{
 	}
 
 
-	public Users getUsers() {
+	/*public Users getUsers() {
 		return users;
 	}
 
@@ -94,7 +94,7 @@ public class CertificateCourse implements Serializable{
 	public void setUsers(Users users) {
 		this.users = users;
 	}
-
+*/
 
 	public String getStartTime() {
 		return startTime;
@@ -215,7 +215,7 @@ public class CertificateCourse implements Serializable{
 	}
 
 
-	public Subject getSubject() {
+	/*public Subject getSubject() {
 		return subject;
 	}
 
@@ -223,7 +223,7 @@ public class CertificateCourse implements Serializable{
 	public void setSubject(Subject subject) {
 		this.subject = subject;
 	}
-
+*/
 
 	public Set<CertificateCourseGroup> getGroups() {
 		return groups;

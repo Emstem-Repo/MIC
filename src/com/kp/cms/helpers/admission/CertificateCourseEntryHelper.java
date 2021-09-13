@@ -52,25 +52,25 @@ public class CertificateCourseEntryHelper {
 		certificateCourse.setCreatedDate(new Date());
 		certificateCourse.setLastModifiedDate(new Date());
 		certificateCourse.setIsActive(true);
-		certificateCourse.setMaxIntake(Integer.parseInt(certificateCourseEntryForm.getMaxIntake()));
-		if(certificateCourseEntryForm.getEndHours()!=null && !certificateCourseEntryForm.getEndHours().isEmpty() && certificateCourseEntryForm.getEndMins()!=null && !certificateCourseEntryForm.getEndMins().isEmpty())
-		certificateCourse.setEndTime(certificateCourseEntryForm.getEndHours()+":"+certificateCourseEntryForm.getEndMins());
-		if(certificateCourseEntryForm.getStartHours()!=null && !certificateCourseEntryForm.getStartHours().isEmpty() && certificateCourseEntryForm.getStartMins()!=null && !certificateCourseEntryForm.getStartMins().isEmpty())
-		certificateCourse.setStartTime(certificateCourseEntryForm.getStartHours()+":"+certificateCourseEntryForm.getStartMins());
-		certificateCourse.setVenue(certificateCourseEntryForm.getVenue());
+		//certificateCourse.setMaxIntake(Integer.parseInt(certificateCourseEntryForm.getMaxIntake()));
+		//if(certificateCourseEntryForm.getEndHours()!=null && !certificateCourseEntryForm.getEndHours().isEmpty() && certificateCourseEntryForm.getEndMins()!=null && !certificateCourseEntryForm.getEndMins().isEmpty())
+		//certificateCourse.setEndTime(certificateCourseEntryForm.getEndHours()+":"+certificateCourseEntryForm.getEndMins());
+		//if(certificateCourseEntryForm.getStartHours()!=null && !certificateCourseEntryForm.getStartHours().isEmpty() && certificateCourseEntryForm.getStartMins()!=null && !certificateCourseEntryForm.getStartMins().isEmpty())
+		//certificateCourse.setStartTime(certificateCourseEntryForm.getStartHours()+":"+certificateCourseEntryForm.getStartMins());
+		//certificateCourse.setVenue(certificateCourseEntryForm.getVenue());
 		certificateCourse.setYear(Integer.parseInt(certificateCourseEntryForm.getAcademicYear()));
-		Users users = new Users();
-		users.setId(Integer.parseInt(certificateCourseEntryForm.getTeacherId()));
-		certificateCourse.setUsers(users);
-		certificateCourse.setSemType(certificateCourseEntryForm.getSemType());
-		certificateCourse.setExtracurricular(certificateCourseEntryForm.getExtracurricular().equalsIgnoreCase("true")? true:false);
-		if(certificateCourseEntryForm.getSubjectId()!=null && !certificateCourseEntryForm.getSubjectId().isEmpty()){
+		//Users users = new Users();
+		/*users.setId(Integer.parseInt(certificateCourseEntryForm.getTeacherId()));
+		certificateCourse.setUsers(users);*/
+		//certificateCourse.setSemType(certificateCourseEntryForm.getSemType());
+		//certificateCourse.setExtracurricular(certificateCourseEntryForm.getExtracurricular().equalsIgnoreCase("true")? true:false);
+		/*if(certificateCourseEntryForm.getSubjectId()!=null && !certificateCourseEntryForm.getSubjectId().isEmpty()){
 			Subject subject=new Subject();
 			subject.setId(Integer.parseInt(certificateCourseEntryForm.getSubjectId()));
 			certificateCourse.setSubject(subject);
-		}
-		if(certificateCourseEntryForm.getDescription()!=null && !certificateCourseEntryForm.getDescription().isEmpty())
-		certificateCourse.setDescription(certificateCourseEntryForm.getDescription());
+		}*/
+		/*if(certificateCourseEntryForm.getDescription()!=null && !certificateCourseEntryForm.getDescription().isEmpty())
+		certificateCourse.setDescription(certificateCourseEntryForm.getDescription());*/
 		return certificateCourse;
 		}
 	
@@ -90,31 +90,31 @@ public class CertificateCourseEntryHelper {
 			}
 			certificateCourseTO = new CertificateCourseTO();
 			certificateCourseTO.setId(certificateCourse.getId());
-			certificateCourseTO.setMaxIntake(String.valueOf(certificateCourse.getMaxIntake()));
+			//certificateCourseTO.setMaxIntake(String.valueOf(certificateCourse.getMaxIntake()));
 			certificateCourseTO.setCourseName(certificateCourse.getCertificateCourseName());
-			certificateCourseTO.setCourseNameWithSemType(certificateCourse.getCertificateCourseName()+"("+certificateCourse.getSemType()+")");
+			/*certificateCourseTO.setCourseNameWithSemType(certificateCourse.getCertificateCourseName()+"("+certificateCourse.getSemType()+")");
 			certificateCourseTO.setSemType(certificateCourse.getSemType());
 			if(certificateCourse.getStartTime()!=null && !certificateCourse.getStartTime().isEmpty()){
 				certificateCourseTO.setStartTime(certificateCourse.getStartTime());
 			}
 			if(certificateCourse.getEndTime()!=null && !certificateCourse.getEndTime().isEmpty()){
 				certificateCourseTO.setEndTime(certificateCourse.getEndTime());
-			}
-			if(certificateCourse.getVenue()!=null && !certificateCourse.getVenue().isEmpty()){
+			}*/
+			/*if(certificateCourse.getVenue()!=null && !certificateCourse.getVenue().isEmpty()){
 				certificateCourseTO.setVenue(certificateCourse.getVenue());
-			}
-			if(certificateCourse.getUsers()!=null && certificateCourse.getUsers().getUserName()!=null && !certificateCourse.getUsers().getUserName().isEmpty()){
+			}*/
+			/*if(certificateCourse.getUsers()!=null && certificateCourse.getUsers().getUserName()!=null && !certificateCourse.getUsers().getUserName().isEmpty()){
 				certificateCourseTO.setTeacherName(certificateCourse.getUsers().getUserName());
 			}
 			Users users = new Users();
 			if(certificateCourse.getUsers()!=null && certificateCourse.getUsers().getId()!= 0){
 				users.setId(certificateCourse.getUsers().getId());
 				certificateCourseTO.setUsers(users);
-			}
+			}*/
 			if(certificateCourse.getYear()!=null){
 				certificateCourseTO.setYear(certificateCourse.getYear());
 			}
-			if(certificateCourse.getExtracurricular())
+			/*if(certificateCourse.getExtracurricular())
 			{
 				certificateCourseTO.setExtracurricular("Yes");
 			}
@@ -122,7 +122,7 @@ public class CertificateCourseEntryHelper {
 				certificateCourseTO.setExtracurricular("No");
 			}
 			if(certificateCourse.getDescription()!=null && !certificateCourse.getDescription().isEmpty())
-				certificateCourseTO.setDescription(certificateCourse.getDescription());
+				certificateCourseTO.setDescription(certificateCourse.getDescription());*/
 			courseToList.add(certificateCourseTO);
 			
 		}
@@ -137,7 +137,7 @@ public class CertificateCourseEntryHelper {
 		certificateCourseEntryForm.setCertificateCourseName(certificateCourse.getCertificateCourseName());
 		certificateCourseEntryForm.setId(certificateCourse.getId());
 		certificateCourseEntryForm.setMaxIntake(String.valueOf(certificateCourse.getMaxIntake()));
-		certificateCourseEntryForm.setTeacherId(Integer.toString(certificateCourse.getUsers().getId()));
+		//certificateCourseEntryForm.setTeacherId(Integer.toString(certificateCourse.getUsers().getId()));
 		certificateCourseEntryForm.setVenue(certificateCourse.getVenue());
 		if(certificateCourse.getStartTime()!=null && !certificateCourse.getStartTime().isEmpty()){
 			StringBuffer start = new StringBuffer(certificateCourse.getStartTime());
@@ -161,9 +161,9 @@ public class CertificateCourseEntryHelper {
 		if(certificateCourse.getSemType()!=null){
 			certificateCourseEntryForm.setSemType(certificateCourse.getSemType());
 		}
-		if(certificateCourse.getSubject()!=null){
+		/*if(certificateCourse.getSubject()!=null){
 			certificateCourseEntryForm.setSubjectId(String.valueOf(certificateCourse.getSubject().getId()));
-		}
+		}*/
 		if(certificateCourse.getExtracurricular()!=null){
 			String Value=String.valueOf(certificateCourse.getExtracurricular());
 			if(Value.equalsIgnoreCase("true"))

@@ -17,6 +17,27 @@
  	<script type="text/javascript">
 		setStartDate();
 		setInterval ( "checkSession()", 300000 );
+		
+		function showScholarshipDescription(){
+			console.log("inside show scholr");
+			document.getElementById("scholarship_desc").style.display = "block";
+		}
+
+		function hideScholarshipDescription(){
+			console.log("inside hid scholr");
+			document.getElementById("scholarship_desc").style.display = "none";
+			document.getElementById("scholarship_desc").value = "";
+		}
+		function showBreakStudyDescription(){
+			console.log("inside show break");
+			document.getElementById("brk_study_desc").style.display = "block";
+		}
+
+		function hideBreakStudyDescription(){
+			console.log("inside hide  break");
+			document.getElementById("brk_study_desc").style.display = "none";
+			document.getElementById("brk_study_desc").value = "";
+		}
 	</script>
 
  	<style type="text/css">
@@ -531,6 +552,48 @@
 							</td>
 					    </tr>
 	    			</logic:equal>
+	    			
+	    			<tr>
+	    			<td class="row-odd" valign="top" align="right" width="25%">Does the applicant receive any military or other concession or scholarship-Specify:<span class="Mandatory">*</span></td>
+	    			<%String dynaStyle1="display:none;"; %>
+						<logic:equal value="true" property="applicantDetails.personalData.hasScholarship" name="onlineApplicationForm">
+							<%dynaStyle1="display:block;"; %>
+						</logic:equal>
+							<td width="50%" class="row-odd">
+							<div align="left">
+                				<input type="hidden" id="hiddenScholarship" name="hiddenScholarship" value='<bean:write name="onlineApplicationForm" property="applicantDetails.personalData.hasScholarship"/>'/>
+             					<nested:radio property="applicantDetails.personalData.hasScholarship" styleId="handicappedYes" name="onlineApplicationForm" value="true" onclick="showScholarshipDescription()"></nested:radio>
+                           		<label for="handicappedYes"><span><span></span></span><bean:message key="knowledgepro.applicationform.yes.label"/></label> 
+			 					<nested:radio property="applicantDetails.personalData.hasScholarship" styleId="handicappedNo" name="onlineApplicationForm" value="false" onclick="hideScholarshipDescription()"></nested:radio>
+				           		<label for="handicappedNo"><span><span></span></span><bean:message key="knowledgepro.applicationform.No.label"/></label> 
+			 					<a href="#" title="Select if you are physically challenged person" class="tooltip"><span title="Help"><img alt="" src="images/admission/images/Tooltip_QIcon.png"/></span></a>
+							</div>
+								<div align="left">
+								<nested:text property="applicantDetails.personalData.scholarship" style="<%=dynaStyle1%>" styleId="scholarship_desc" styleClass="textboxmedium"  name="onlineApplicationForm"   maxlength="150"></nested:text>
+								</div>
+							</td>
+					    </tr>
+					    <tr>
+	    			<td class="row-odd" valign="top" align="right" width="25%">Reason for break of study, if any :</td>
+	    			<%String dynaStyle2="display:none;"; %>
+						<logic:equal value="true" property="applicantDetails.personalData.didBreakStudy" name="onlineApplicationForm">
+							<%dynaStyle2="display:block;"; %>
+						</logic:equal>
+							<td width="50%" class="row-odd">
+							<div align="left">
+                				<input type="hidden" id="hiddenBrkStudy" name="hiddenBrkStudy" value='<bean:write name="onlineApplicationForm" property="applicantDetails.personalData.didBreakStudy"/>'/>
+             					<nested:radio property="applicantDetails.personalData.didBreakStudy" styleId="handicappedYes" name="onlineApplicationForm" value="true" onclick="showBreakStudyDescription()"></nested:radio>
+                           		<label for="handicappedYes"><span><span></span></span><bean:message key="knowledgepro.applicationform.yes.label"/></label> 
+			 					<nested:radio property="applicantDetails.personalData.didBreakStudy" styleId="handicappedNo" name="onlineApplicationForm" value="false" onclick="hideBreakStudyDescription()"></nested:radio>
+				           		<label for="handicappedNo"><span><span></span></span><bean:message key="knowledgepro.applicationform.No.label"/></label> 
+			 					<a href="#" title="Select if you are physically challenged person" class="tooltip"><span title="Help"><img alt="" src="images/admission/images/Tooltip_QIcon.png"/></span></a>
+							</div>
+								<div align="left">
+								<nested:text style="<%=dynaStyle2%>" property="applicantDetails.personalData.reasonFrBreakStudy" styleId="brk_study_desc" styleClass="textboxmedium"  name="onlineApplicationForm"  maxlength="150"></nested:text>
+								</div>
+							</td>
+					    </tr>
+					    
 	    
 	    		</table>
 	    	</td>
@@ -668,4 +731,19 @@
 	  	<tr><td height="30"></td></tr>
 	
 	</table>	
-	<script language="JavaScript" src="js/admission/OnlineDetailsEducationInfo.js"></script>	
+	<script language="JavaScript" src="js/admission/OnlineDetailsEducationInfo.js">
+	var showScholar = document.getElementById("hiddenScholarship").value;
+	if(showScholar != null && showScholar.length != 0 && showScholar=='true') {
+		showScholarshipDescription();	
+	}else{
+		hideScholarshipDescription();
+	}
+	
+	var showBrkStudy = document.getElementById("hiddenBrkStudy").value;
+	if(showBrkStudy != null && showBrkStudy.length != 0 && showBrkStudy=='true') {
+		showBreakStudyDescription();	
+	}else{
+		hideBreakStudyDescription();
+	}
+	
+	</script>	

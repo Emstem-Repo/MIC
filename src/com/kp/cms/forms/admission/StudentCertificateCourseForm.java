@@ -42,8 +42,16 @@ public class StudentCertificateCourseForm extends BaseActionForm{
 	private Map<Integer,String> courseMap;
 	private Map<Integer, String> courseCodeName;
 	
-	//Mary code ends
+	private Map<Integer, String> certicateCourses;
+	private int certicateId;
+	private int[] certicateprefs;
+	List<CertificateCourseTO> prefList;
+	private int preCount;
+	List<CertificateCourseTO> certicateCoursesPrint;
+	private boolean certificationCourseDone;
 	
+	//Mary code ends
+	private String admApplnId;
 	
 	
 	
@@ -139,6 +147,12 @@ public class StudentCertificateCourseForm extends BaseActionForm{
 	
 	public void resetFields() {
 		this.registerNO=null;
+		this.certicateCourses=null;
+		this.certicateprefs=null;
+		this.prefList=null;
+		this.preCount=0;
+		this.certicateCoursesPrint=null;
+		this.certificationCourseDone=false;
 		this.semester=null;
 		this.printCourse="false";
 		this.searchItem=null;
@@ -218,6 +232,54 @@ public class StudentCertificateCourseForm extends BaseActionForm{
 	}
 	public void setCourseCodeName(Map<Integer, String> courseCodeName) {
 		this.courseCodeName = courseCodeName;
+	}
+	public Map<Integer, String> getCerticateCourses() {
+		return certicateCourses;
+	}
+	public void setCerticateCourses(Map<Integer, String> certicateCourses) {
+		this.certicateCourses = certicateCourses;
+	}
+	public int getCerticateId() {
+		return certicateId;
+	}
+	public void setCerticateId(int certicateId) {
+		this.certicateId = certicateId;
+	}
+	public int[] getCerticateprefs() {
+		return certicateprefs;
+	}
+	public void setCerticateprefs(int[] certicateprefs) {
+		this.certicateprefs = certicateprefs;
+	}
+	public List<CertificateCourseTO> getPrefList() {
+		return prefList;
+	}
+	public void setPrefList(List<CertificateCourseTO> prefList) {
+		this.prefList = prefList;
+	}
+	public int getPreCount() {
+		return preCount;
+	}
+	public void setPreCount(int preCount) {
+		this.preCount = preCount;
+	}
+	public List<CertificateCourseTO> getCerticateCoursesPrint() {
+		return certicateCoursesPrint;
+	}
+	public void setCerticateCoursesPrint(List<CertificateCourseTO> certicateCoursesPrint) {
+		this.certicateCoursesPrint = certicateCoursesPrint;
+	}
+	public boolean isCertificationCourseDone() {
+		return certificationCourseDone;
+	}
+	public void setCertificationCourseDone(boolean certificationCourseDone) {
+		this.certificationCourseDone = certificationCourseDone;
+	}
+	public String getAdmApplnId() {
+		return admApplnId;
+	}
+	public void setAdmApplnId(String admApplnId) {
+		this.admApplnId = admApplnId;
 	}
 	
 }

@@ -262,6 +262,7 @@ function showOtherOption(residentCategory) {
 	}
 }
 
+
 /*
  * 
  * 

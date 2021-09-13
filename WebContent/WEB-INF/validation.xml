@@ -1960,18 +1960,7 @@
                 <msg name="required" key="admissionFormForm.applicationNumber.required"/>
                 <arg0 key="admissionStatusForm.applicationNo"/>
             </field>
-			<field property="deptId" depends="required">
-                <msg name="required" key="knowledgepro.employee.course.required"/>
-                <arg0 key="admissionStatusForm.applicationNo"/>
-            </field>
-			<!-- <field property="categoryId" depends="required">
-                <msg name="required" key="knowledgepro.admin.FineCategory.required"/>
-                <arg0 key="admissionStatusForm.applicationNo"/>
-            </field> -->
-			<field property="year" depends="required">
-                <msg name="required" key="knowledgepro.admission.AppliedYear.required"/>
-                <arg0 key="admissionStatusForm.applicationNo"/>
-            </field>
+			
             
             
         </form>
@@ -8351,18 +8340,11 @@
             <field property="certificateCourseName" depends="required">
                 <msg name="required" key="knowledgepro.admin.course.coursename.required"/>
             </field>
-            <field property="teacherId" depends="required">
-                <msg name="required" key="knowledgepro.attendanceentry.teacher.required"/>
-            </field>
+            
             <field property="academicYear" depends="required">
                 <msg name="required" key="knowledgepro.admin.course.academicYear.required"/>
             </field>
-            <field property="maxIntake" depends="required">
-                <msg name="required" key="knowledgepro.admin.course.maxIntake.required"/>
-            </field>
-            <field property="subjectId" depends="required">
-                <arg key="knowledgepro.admin.selectedSubjects"/>
-            </field>
+            
         </form>
         <form name="approveleaveForm#8">
             
@@ -9164,11 +9146,11 @@
             </field>
         </form>
         <form name="studentCertificateCourseForm#1">
-            <field property="registerNO" depends="required">
-                <arg key="knowledgepro.certificate.course.regno"/>
+            <field property="appNo" depends="required">
+                <arg key="admissionFormForm.applicationNumber.required"/>
             </field>
-            <field property="semester" depends="required">
-                <arg key="knowledgepro.certificate.course.semester"/>
+            <field property="year" depends="required">
+                <arg key="knowledgepro.fee.appliedyear.required"/>
             </field>
         </form>
         <form name="assignCertificateCourseForm#1">
@@ -14107,6 +14089,20 @@
                     </var-value>
                 </var>
             </field>
+            
+            <field property="applicantDetails.personalData.motherTonge" depends="required">
+                <msg name="required" key="knowledgepro.admin.MotherTongue.required"/>
+            </field>
+             <field property="applicantDetails.personalData.district" depends="required">
+                <msg name="required" key="knowledgepro.district.activatefailure"/>
+            </field>
+            <field property="applicantDetails.personalData.thaluk" depends="required">
+                <msg name="required" key="admissionFormForm.taluk.required"/>
+            </field>
+            <field property="applicantDetails.personalData.placeOfBirth" depends="required">
+                <msg name="required" key="admissionFormForm.birthPlace.required"/>
+            </field>
+            
         </form>
 		
 		 <form name="uniqueIdRegistrationForm#1">

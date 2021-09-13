@@ -1,5 +1,6 @@
 package com.kp.cms.actions.admission;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
@@ -20,17 +21,24 @@ import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 
 import com.kp.cms.actions.BaseDispatchAction;
+import com.kp.cms.bo.admin.AdmAppln;
 import com.kp.cms.bo.admin.CertificateCourse;
 import com.kp.cms.bo.admin.Program;
 import com.kp.cms.constants.CMSConstants;
+import com.kp.cms.forms.admission.AdmissionStatusForm;
 import com.kp.cms.forms.admission.CertificateCourseEntryForm;
 import com.kp.cms.forms.admission.StudentCertificateCourseForm;
+import com.kp.cms.handlers.admission.AdmissionStatusHandler;
 import com.kp.cms.handlers.admission.StudentCertificateCourseHandler;
 import com.kp.cms.to.admin.StudentTO;
 import com.kp.cms.to.admission.CertificateCourseTO;
 import com.kp.cms.to.admission.CertificateCourseTeacherTO;
 import com.kp.cms.to.admission.StudentCertificateCourseTO;
+import com.kp.cms.transactions.admission.IAdmissionStatusTransaction;
+import com.kp.cms.transactions.admission.IApplicationEditTransaction;
 import com.kp.cms.transactions.admission.ICertificateCourseEntryTxn;
+import com.kp.cms.transactionsimpl.admission.AdmissionStatusTransactionImpl;
+import com.kp.cms.transactionsimpl.admission.ApplicationEditTransactionimpl;
 import com.kp.cms.transactionsimpl.admission.CertificateCourseEntryTxnImpl;
 import com.kp.cms.utilities.CurrentAcademicYear;
 
@@ -88,7 +96,7 @@ public class StudentCertificateCourseAction extends BaseDispatchAction {
 //				courseForm.setCertificateCourseTeacherTO(teacherList.get(0));
 //			}
 			CertificateCourseTeacherTO to=new CertificateCourseTeacherTO();
-			to.setTeacherName(bo.getUsers().getUserName());
+			//to.setTeacherName(bo.getUsers().getUserName());
 			courseForm.setCertificateCourseTeacherTO(to);
 			courseForm.setStudendId(null);
 			/* setting certificateCourseName to the form by sudhir */
@@ -297,31 +305,25 @@ public class StudentCertificateCourseAction extends BaseDispatchAction {
 			HttpServletResponse response) throws Exception {
 		StudentCertificateCourseForm courseForm = (StudentCertificateCourseForm) form;
 		 ActionErrors errors = courseForm.validate(mapping, request);
+		 IApplicationEditTransaction txn= ApplicationEditTransactionimpl.getInstance();
+		 IAdmissionStatusTransaction admissionStatusTransaction=new AdmissionStatusTransactionImpl();
 		try {
 			if(errors.isEmpty()){
-				courseForm.setStudendId(null);
-				String studentId=StudentCertificateCourseHandler.getInstance().getCertificateCourseStudentId(courseForm.getRegisterNO());
-				if(studentId!=null && !studentId.isEmpty()){
-					setCertificateCourses(studentId, courseForm);
-					courseForm.setStudendId(studentId);
-					String regNo= courseForm.getRegisterNO();
-					Integer schemeNo=Integer.parseInt(courseForm.getSemester());
-					Integer CurrentSchemeNo = StudentCertificateCourseHandler.getInstance().getSchemeNoByStudentId(Integer.parseInt(studentId));
+				courseForm.setAdmApplnId(null);
+				AdmAppln applicantDetails = txn.getApplicantDetails(courseForm.getAppNo(), Integer.parseInt(courseForm.getYear()));
+				String admApplnId=String.valueOf(applicantDetails.getId());
+				courseForm.setAdmApplnId(admApplnId);
+				if(admApplnId!=null && !admApplnId.isEmpty()){
+					setDiplomaCourses(courseForm);
+					List<CertificateCourseTO> toList=admissionStatusTransaction.getCertificateCoursesprint(Integer.parseInt(courseForm.getAdmApplnId()));
+					if (toList!=null && !toList.isEmpty()) {
+						courseForm.setCertificationCourseDone(true);
+						courseForm.setPrefList(toList);
+					}else{
+						courseForm.setPrefList(new ArrayList<CertificateCourseTO>());
+					}
 					
-					if(schemeNo< CurrentSchemeNo)
-				    {
-						errors.add("error", new ActionError("knowledgepro.admission.certificate.course.cannot.apply.previous",regNo));
-						saveErrors(request, errors);
-						setCertificateCourses(studentId, courseForm);
-						return mapping.findForward(CMSConstants.INIT_CERTIFICATE_COURSE_STUDENT);
-				     }
-					if(schemeNo>(CurrentSchemeNo+1))
-				    {
-						errors.add("error", new ActionError("knowledgepro.admission.certificate.course.cannot.apply",regNo));
-						saveErrors(request, errors);
-						setCertificateCourses(studentId, courseForm);
-						return mapping.findForward(CMSConstants.INIT_CERTIFICATE_COURSE_STUDENT);
-				     }
+					
 					
 				}else{
 					errors.add("errors",  new ActionError("knowledgepro.admin.regno.certificate.course.valid"));
@@ -595,5 +597,71 @@ public class StudentCertificateCourseAction extends BaseDispatchAction {
 			return mapping.findForward(CMSConstants.ERROR_PAGE);
 		}
 		return mapping.findForward(CMSConstants.Certificate_Subject_Group_Name_Inserted);
+	}
+	private void setDiplomaCourses(StudentCertificateCourseForm admissionStatusForm) throws Exception {
+		Map<Integer, String>  certificateMap = AdmissionStatusHandler.getInstance().getActiveCourses1(Integer.parseInt(admissionStatusForm.getYear()));
+		admissionStatusForm.setCerticateCourses(certificateMap);
+	}
+	public ActionForward submitAddMorePreferences(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		log.info("entered initAdmissionApproval..");
+		StudentCertificateCourseForm admForm = (StudentCertificateCourseForm) form;
+		List<CertificateCourseTO> prefList=admForm.getPrefList();
+		int count=1;
+		
+		List<CertificateCourseTO> current=admForm.getPrefList();
+		int dup=0;
+		for (CertificateCourseTO certificateCourseTO : current) {
+			count++;
+			if (certificateCourseTO.getId()==admForm.getCerticateId()) {
+				dup=1;
+			}
+		}
+		if (dup==0) {
+		for (Map.Entry<Integer,String> entry : admForm.getCerticateCourses().entrySet()){
+			CertificateCourseTO to=new CertificateCourseTO();
+			if (entry.getKey()==admForm.getCerticateId()) {
+				to.setId(admForm.getCerticateId());
+				to.setCourseName(entry.getValue());
+				prefList.add(to);
+			}
+           /* System.out.println("Key = " + entry.getKey() +
+                             ", Value = " + entry.getValue());*/
+		}
+		}
+		admForm.setPrefList(prefList);
+		admForm.setPreCount(count);
+		System.out.println(count);
+		return mapping.findForward(CMSConstants.INIT_CERTIFICATE_COURSE_PAGE1);
+		
+	}
+	public ActionForward removePreferences(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		log.info("entered initAdmissionApproval..");
+		StudentCertificateCourseForm admForm = (StudentCertificateCourseForm) form;
+		List<CertificateCourseTO> prefList=admForm.getPrefList();
+		if (!prefList.isEmpty()) {
+			 int indexOfLastElement = prefList.size() - 1;
+			 prefList.remove(indexOfLastElement);
+			admForm.setPrefList(prefList);
+			admForm.setPreCount(admForm.getPreCount()-1);
+		}
+		return mapping.findForward(CMSConstants.INIT_CERTIFICATE_COURSE_PAGE1);
+		
+	}
+	
+	public ActionForward submitcourse(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		log.info("entered initAdmissionApproval..");
+		StudentCertificateCourseForm admForm = (StudentCertificateCourseForm) form;
+		List<CertificateCourseTO> prefList=admForm.getPrefList();
+		StudentCertificateCourseHandler.getInstance().saveCertificateCourses(admForm);
+		admForm.setCertificationCourseDone(true);
+		
+		return mapping.findForward(CMSConstants.INIT_CERTIFICATE_COURSE_PAGE1);
+		
 	}
 }

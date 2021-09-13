@@ -46,7 +46,7 @@ public class CertificateCourseEntryHandler {
 		ICertificateCourseEntryTxn iCertificateCourseEntryTxn = CertificateCourseEntryTxnImpl.getInstance();
 		boolean isAdded = false;
 		
-		CertificateCourse duplCertificateCourse = CertificateCourseEntryHelper.getInstance().copyDataFromFormToBO(certificateCourseEntryForm); 
+		/*CertificateCourse duplCertificateCourse = CertificateCourseEntryHelper.getInstance().copyDataFromFormToBO(certificateCourseEntryForm); 
 		duplCertificateCourse = iCertificateCourseEntryTxn.isCertificateCourseNameDuplcated(duplCertificateCourse);
 		if (duplCertificateCourse != null && duplCertificateCourse.getIsActive()) {
 			throw new DuplicateException();
@@ -64,10 +64,10 @@ public class CertificateCourseEntryHandler {
 			certificateCourseEntryForm.setDuplId(duplCertificateCourse.getId());
 			throw new ReActivateException();
 		}
-				
+				*/
 		CertificateCourse certificateCourse = CertificateCourseEntryHelper.getInstance().copyDataFromFormToBO(certificateCourseEntryForm);
-		Set<CertificateCourseGroup> groups=new HashSet<CertificateCourseGroup>();
-		List<CCGroupTo> groupTos=certificateCourseEntryForm.getGroupList1();
+		//Set<CertificateCourseGroup> groups=new HashSet<CertificateCourseGroup>();
+		/*List<CCGroupTo> groupTos=certificateCourseEntryForm.getGroupList1();
 		if(groupTos!=null && !groupTos.isEmpty()){
 			Iterator<CCGroupTo> itr=groupTos.iterator();
 			while (itr.hasNext()) {
@@ -82,7 +82,7 @@ public class CertificateCourseEntryHandler {
 				}
 			}
 		}
-		certificateCourse.setGroups(groups);
+		certificateCourse.setGroups(groups);*/
 		isAdded = iCertificateCourseEntryTxn.addCertificateCourse(certificateCourse);
 		log.debug("leaving addCerticateCourse");
 		return isAdded;
@@ -160,16 +160,16 @@ public class CertificateCourseEntryHandler {
 			}
 		}	
 		duplCertificateCourse = CertificateCourseEntryHelper.getInstance().copyDataFromFormToBO(certificateCourseEntryForm);
-		duplCertificateCourse = iCertificateCourseEntryTxn.isSubjectDuplicate(duplCertificateCourse);
-		if (duplCertificateCourse != null && duplCertificateCourse.getIsActive()) {
+		//duplCertificateCourse = iCertificateCourseEntryTxn.isSubjectDuplicate(duplCertificateCourse);
+		/*if (duplCertificateCourse != null && duplCertificateCourse.getIsActive()) {
 			throw new DuplicateException();
 		}
 		else if(duplCertificateCourse != null && !duplCertificateCourse.getIsActive()){
 			certificateCourseEntryForm.setDuplId(duplCertificateCourse.getId());
 			throw new ReActivateException();
-		}		
+		}	*/	
 		 CertificateCourse certificateCourse = CertificateCourseEntryHelper.getInstance().copyDataFromFormToBO(certificateCourseEntryForm);
-		Map<Integer,Integer> groupMap= certificateCourseEntryForm.getGroupId();
+		/*Map<Integer,Integer> groupMap= certificateCourseEntryForm.getGroupId();
 		Set<CertificateCourseGroup> groups=new HashSet<CertificateCourseGroup>();
 		List<CCGroupTo> groupTos=certificateCourseEntryForm.getGroupList1();
 		if(groupTos!=null && !groupTos.isEmpty()){
@@ -188,7 +188,7 @@ public class CertificateCourseEntryHandler {
 				}
 			}
 		}
-		certificateCourse.setGroups(groups);
+		certificateCourse.setGroups(groups);*/
 		isUpdated = iCertificateCourseEntryTxn.updateCertificateCourse(certificateCourse);
 		return isUpdated;
 	}

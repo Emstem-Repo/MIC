@@ -2,6 +2,8 @@ package com.kp.cms.to.admission;
 
 import java.io.Serializable;
 
+import com.kp.cms.bo.admin.AdmAppln;
+
 public class StudentCertificateCourseTO implements Serializable {
 	/**
 	 * 

@@ -139,7 +139,7 @@
 											size="25" maxlength="100" /> <span class="star"></span>
 						 </td>
 									<td width="16%" class="row-odd">
-									<div align="right"><span class="Mandatory">*</span>Academic Year</div>
+									<div align="right"><span class="Mandatory">*</span>Applied Year</div>
 									</td>
 									<td width="16%" class="row-even">
 										<input type="hidden" id="tempyear" name="tempyear" value="<bean:write name="certificateCourseEntryForm" property="academicYear" />"/>
@@ -149,7 +149,7 @@
    			  								 </html:select>
 									</td>
 									</tr>
-									<tr>
+									<%-- <tr>
 									<td width="200" height="25" class="row-odd">
 									<div align="right"><span class="Mandatory">*</span>Teacher</div>
 									</td>
@@ -218,7 +218,7 @@
 	                  			<html:textarea property="description" styleClass="TextBox" cols="18" rows="2" style="width: 643px; height: 293px;" styleId="description">
 	                  			</html:textarea>
 								</td>
-								</tr>
+								</tr> --%>
 							</table>
 							</td>
 							<td width="5" height="29" background="images/right.gif"></td>
@@ -340,14 +340,14 @@
 									<div align="center"><bean:message key="knowledgepro.slno" /></div>
 									</td>
 									<td class="row-odd" align="center">Course Name</td>
-									<td class="row-odd" align="center">Teacher</td>
-									<td class="row-odd" align="center">Max Intake</td>
+									<!-- <td class="row-odd" align="center">Teacher</td> -->
+									<!-- <td class="row-odd" align="center">Max Intake</td> -->
 									<td class="row-odd" align="center"><bean:message key="knowledgepro.admin.year"/> </td>
-									<td class="row-odd" align="center">Sem Type</td>
+									<!-- <td class="row-odd" align="center">Sem Type</td>
 									<td class="row-odd" align="center">Venue</td>
 									<td class="row-odd" align="center">From Time:</td>
 									<td class="row-odd" align="center">To Time:</td>
-									<td class="row-odd" align="center">Extra Curricular:</td>
+									<td class="row-odd" align="center">Extra Curricular:</td> -->
 									<td class="row-odd" align="center">
 									<div align="center"><bean:message key="knowledgepro.edit" /></div>
 									</td>
@@ -372,13 +372,13 @@
 									</td>
 									<td  align="center"><bean:write
 										name="courseList" property="courseName" /></td>
-									<td  align="center"><bean:write
+									<%-- <td  align="center"><bean:write
 										name="courseList" property="teacherName" /></td>	
 									<td  align="center"><bean:write
-										name="courseList" property="maxIntake" /></td>	
+										name="courseList" property="maxIntake" /></td>	 --%>
 									<td  align="center"><bean:write
 										name="courseList" property="year"/></td>		
-									<td   align="center"><bean:write
+									<%-- <td   align="center"><bean:write
 										name="courseList" property="semType" /></td>
 										<td   align="center"><bean:write
 										name="courseList" property="venue" /></td>
@@ -387,7 +387,7 @@
 									<td   align="center"><bean:write
 										name="courseList" property="endTime" /></td>
 									<td   align="center"><bean:write
-										name="courseList" property="extracurricular" /></td>
+										name="courseList" property="extracurricular" /></td> --%>
 									<td  height="25" align="center">
 									<div align="center"><img src="images/edit_icon.gif"
 										width="16" height="18" style="cursor:pointer"

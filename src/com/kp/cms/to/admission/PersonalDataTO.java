@@ -253,6 +253,20 @@ public class PersonalDataTO {
 	private String familyAnnualIncome;
 	private String bonusType;
 	private String bonusMarks;
+	
+	private String nameWithInitial;
+	private String motherTonge;
+	private String parentOldStudent;
+	private String relativeOldStudent;
+	private String placeOfBirth;
+	private String district;
+	private String thaluk;
+	private String scholarship;
+	private String reasonFrBreakStudy;
+	private boolean hasScholarship;
+	private boolean didBreakStudy;
+	private boolean spc;
+	private boolean scouts;
 
 	public void setCurentEmployee(boolean isCurentEmployee) {
 		this.isCurentEmployee = isCurentEmployee;
@@ -2074,6 +2088,112 @@ public class PersonalDataTO {
 
 	public void setBonusMarks(String bonusMarks) {
 		this.bonusMarks = bonusMarks;
+	}
+
+	public String getNameWithInitial() {
+		return nameWithInitial;
+	}
+
+	public void setNameWithInitial(String nameWithInitial) {
+		this.nameWithInitial = nameWithInitial;
+	}
+
+	public String getMotherTonge() {
+		return motherTonge;
+	}
+
+	public void setMotherTonge(String motherTonge) {
+		this.motherTonge = motherTonge;
+	}
+
+	public String getParentOldStudent() {
+		return parentOldStudent;
+	}
+
+	public void setParentOldStudent(String parentOldStudent) {
+		this.parentOldStudent = parentOldStudent;
+	}
+
+	public String getRelativeOldStudent() {
+		return relativeOldStudent;
+	}
+
+	public void setRelativeOldStudent(String relativeOldStudent) {
+		this.relativeOldStudent = relativeOldStudent;
+	}
+
+	public String getPlaceOfBirth() {
+		return placeOfBirth;
+	}
+
+	public void setPlaceOfBirth(String placeOfBirth) {
+		this.placeOfBirth = placeOfBirth;
+	}
+
+	
+
+	public String getThaluk() {
+		return thaluk;
+	}
+
+	public void setThaluk(String thaluk) {
+		this.thaluk = thaluk;
+	}
+
+	public String getDistrict() {
+		return district;
+	}
+
+	public void setDistrict(String district) {
+		this.district = district;
+	}
+
+	public String getScholarship() {
+		return scholarship;
+	}
+
+	public void setScholarship(String scholarship) {
+		this.scholarship = scholarship;
+	}
+
+	public String getReasonFrBreakStudy() {
+		return reasonFrBreakStudy;
+	}
+
+	public void setReasonFrBreakStudy(String reasonFrBreakStudy) {
+		this.reasonFrBreakStudy = reasonFrBreakStudy;
+	}
+
+	public boolean isHasScholarship() {
+		return hasScholarship;
+	}
+
+	public void setHasScholarship(boolean hasScholarship) {
+		this.hasScholarship = hasScholarship;
+	}
+
+	public boolean isDidBreakStudy() {
+		return didBreakStudy;
+	}
+
+	public void setDidBreakStudy(boolean didBreakStudy) {
+		this.didBreakStudy = didBreakStudy;
+	}
+
+	public boolean isSpc() {
+		return spc;
+	}
+
+	public void setSpc(boolean spc) {
+		this.spc = spc;
+	}
+
+	public boolean isScouts() {
+		return scouts;
+	}
+
+	public void setScouts(boolean scouts) {
+		this.scouts = scouts;
 	}
 	
 }

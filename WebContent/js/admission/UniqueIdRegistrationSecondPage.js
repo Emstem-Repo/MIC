@@ -280,6 +280,12 @@
 		var url = "AdmissionStatus.do";
 		requestOperationProgram(url, args, result);
 	}
+	function printPage(p) {
+		var appno=document.getElementById('appNo').value; 
+		var year=document.getElementById('year').value; 
+		var url="uniqueIdRegistration.do?method=printAdmissionFormOnline&applicationNo="+appno+"&appliedYear="+year+"&pageNum="+p;
+		window.open(url,'PrintApplication','left=20,top=20,width=800,height=1000,toolbar=1,resizable=0,scrollbars=1');
+	}
 	var displayName = document.getElementById("displayName").value;
 	//document.getElementById("DashBoardMessage").style.display = "block";
 	//document.getElementById("displayApplyCourses").style.display = "block";

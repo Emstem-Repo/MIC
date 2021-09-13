@@ -508,5 +508,8 @@
                 <comment></comment>
             </column>
         </property>
+        
+        
+        
      </class>
 </hibernate-mapping>

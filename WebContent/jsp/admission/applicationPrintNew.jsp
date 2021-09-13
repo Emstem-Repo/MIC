@@ -310,8 +310,10 @@ table {
 	    <tr>
 	     <td><%=++num%></td><td>Certifiicates</td><td>: </td><td>
 	         <logic:equal value="true" name="uniqueIdRegistrationForm" property="applicantDetails.personalData.nsscertificate">NSS, </logic:equal>
-	         <logic:equal value="true" name="uniqueIdRegistrationForm" property="applicantDetails.personalData.ncccertificate">NCC (<bean:write name="uniqueIdRegistrationForm" property="applicantDetails.personalData.nccgrades"/> grade)</logic:equal> 
-			 <logic:equal value="true" name="uniqueIdRegistrationForm" property="applicantDetails.personalData.exservice">Service/Ex-Service </logic:equal>
+	         <logic:equal value="true" name="uniqueIdRegistrationForm" property="applicantDetails.personalData.ncccertificate">NCC, (<bean:write name="uniqueIdRegistrationForm" property="applicantDetails.personalData.nccgrades"/> grade)</logic:equal> 
+			 <logic:equal value="true" name="uniqueIdRegistrationForm" property="applicantDetails.personalData.exservice">Service/Ex-Service, </logic:equal>
+			 <logic:equal value="true" name="uniqueIdRegistrationForm" property="applicantDetails.personalData.spc">Spc, </logic:equal>
+			 <logic:equal value="true" name="uniqueIdRegistrationForm" property="applicantDetails.personalData.scouts">Scouts and Guides</logic:equal>
 	     </td>	     
 	   </tr>
 	   <logic:notEmpty name="uniqueIdRegistrationForm"  property="applicantDetails.personalData.aadharCardNumber">
@@ -425,8 +427,8 @@ table {
 			</td>
              <td  align="center" style="border:1px solid black; border-collapse: collapse "><bean:write name="ednQualList" property="previousRegNo" /></td>
              <td  align="center" style="border:1px solid black; border-collapse: collapse "><bean:write name="ednQualList" property="yearPassing" /></td>
-             <td  align="center" style="border:1px solid black; border-collapse: collapse "><bean:write name="ednQualList"property="universityName" /></td>
-             <td  align="center" style="border:1px solid black; border-collapse: collapse "><bean:write name="ednQualList"property="institutionName" /></td>
+             <td  align="center" style="border:1px solid black; border-collapse: collapse "><bean:write name="ednQualList" property="universityName" /></td>
+             <td  align="center" style="border:1px solid black; border-collapse: collapse "><bean:write name="ednQualList" property="institutionName" /></td>
              <td  align="center" style="border:1px solid black; border-collapse: collapse "><bean:write name="ednQualList" property="percentage" /></td>
              <td  align="center" style="border:1px solid black; border-collapse: collapse "><bean:write name="ednQualList" property="marksObtained" /></td>
              <td  align="center" style="border:1px solid black; border-collapse: collapse "><bean:write name="ednQualList" property="totalMarks" /></td>

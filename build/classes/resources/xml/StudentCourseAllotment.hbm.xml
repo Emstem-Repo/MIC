@@ -151,5 +151,10 @@
                 <comment></comment>
             </column>
          </property>
+         <property name="payonline" type="java.lang.Boolean">
+            <column name="pay_online">
+                <comment></comment>
+            </column>
+         </property>
     </class>
 </hibernate-mapping>

@@ -36,6 +36,7 @@ public class StudentCourseAllotment implements java.io.Serializable {
 	private boolean isAccept;
 	private boolean isDecline;
 	private boolean isUploaded;
+	private boolean payonline;
 	
 	
 	public boolean getIsSatisfied() {
@@ -334,6 +335,18 @@ public class StudentCourseAllotment implements java.io.Serializable {
 
 	public void setIsUploaded(Boolean isUploaded) {
 		this.isUploaded = isUploaded;
+	}
+
+
+
+	public Boolean getPayonline() {
+		return payonline;
+	}
+
+
+
+	public void setPayonline(Boolean payonline) {
+		this.payonline = payonline;
 	}
 	
 	

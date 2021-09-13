@@ -205,6 +205,6 @@ public interface IAdmissionFormTransaction {
 	boolean updateRevaluationScrutinyApplication(AdmissionFormForm admForm) throws Exception;
 	boolean updateStudentSemesterFee(StudentSemesterFeeCorrectionForm feeCorrectionForm) throws Exception;
 	boolean updateStudentSpecialFee(StudentSemesterFeeCorrectionForm feeCorrectionForm) throws Exception;
-	StudentCourseAllotment getallotmentdetails(int id, int mxal,AdmissionStatusForm admissionStatusForm) throws Exception;
+	StudentCourseAllotment getallotmentdetails(final int id, final int max) throws Exception;
 
 }

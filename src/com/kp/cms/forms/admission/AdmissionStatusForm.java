@@ -1,5 +1,7 @@
 package com.kp.cms.forms.admission;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -9,7 +11,9 @@ import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionMapping;
 
 import com.kp.cms.constants.CMSConstants;
+import com.kp.cms.to.admission.AdmApplnTO;
 import com.kp.cms.to.admission.AdmissionStatusTO;
+import com.kp.cms.to.admission.CertificateCourseTO;
 
 
 
@@ -47,10 +51,22 @@ public class AdmissionStatusForm extends AdmissionFormForm {
 	private String uniqueId;
 	private boolean isPaid;
 	private boolean payonline;
-	private Map<Integer, String> deptMap;
-	private Map<Integer, String> categoryMap;
-	private String deptId;
-	private String categoryId;
+	private String chancOrAllotment;
+	private String programTypeId;
+	private boolean specialCourse;
+	private AdmApplnTO applicantDetails;
+	private Map<Integer, String> certicateCourses;
+	private int certicateId;
+	private int[] certicateprefs;
+	List<CertificateCourseTO> prefList;
+	private int preCount;
+	List<CertificateCourseTO> certicateCoursesPrint;
+	private boolean certificationCourseDone;
+	public void  clearpref(){
+		prefList=new ArrayList<CertificateCourseTO>();
+		certicateCourses=new HashMap<Integer, String>();
+		preCount=1;
+	}
 
 	public String getServerDownMessage() {
 		return serverDownMessage;
@@ -134,6 +150,7 @@ public class AdmissionStatusForm extends AdmissionFormForm {
 		this.displaySemister=false;
 		this.serverDownMessage=null;
 	}
+	
 	public boolean getDisplaySemister() {
 		return displaySemister;
 	}
@@ -301,39 +318,95 @@ public class AdmissionStatusForm extends AdmissionFormForm {
 		this.payonline = payonline;
 	}
 
-	public Map<Integer, String> getDeptMap() {
-		return deptMap;
+	public String getChancOrAllotment() {
+		return chancOrAllotment;
 	}
 
-	public void setDeptMap(Map<Integer, String> deptMap) {
-		this.deptMap = deptMap;
+	public void setChancOrAllotment(String chancOrAllotment) {
+		this.chancOrAllotment = chancOrAllotment;
 	}
 
-	public Map<Integer, String> getCategoryMap() {
-		return categoryMap;
+	public String getProgramTypeId() {
+		return programTypeId;
 	}
 
-	public void setCategoryMap(Map<Integer, String> categoryMap) {
-		this.categoryMap = categoryMap;
+	public void setProgramTypeId(String programTypeId) {
+		this.programTypeId = programTypeId;
 	}
 
-	public String getDeptId() {
-		return deptId;
+	public Boolean getSpecialCourse() {
+		return specialCourse;
 	}
 
-	public void setDeptId(String deptId) {
-		this.deptId = deptId;
+	public void setSpecialCourse(Boolean specialCourse) {
+		this.specialCourse = specialCourse;
 	}
 
-	public String getCategoryId() {
-		return categoryId;
+	public AdmApplnTO getApplicantDetails() {
+		return applicantDetails;
 	}
 
-	public void setCategoryId(String categoryId) {
-		this.categoryId = categoryId;
+	public void setApplicantDetails(AdmApplnTO applicantDetails) {
+		this.applicantDetails = applicantDetails;
 	}
 
-		
+	public Map<Integer, String> getCerticateCourses() {
+		return certicateCourses;
+	}
+
+	public void setCerticateCourses(Map<Integer, String> certicateCourses) {
+		this.certicateCourses = certicateCourses;
+	}
+
+	public int[] getCerticateprefs() {
+		return certicateprefs;
+	}
+
+	public void setCerticateprefs(int[] certicateprefs) {
+		this.certicateprefs = certicateprefs;
+	}
+
+	public int getCerticateId() {
+		return certicateId;
+	}
+
+	public void setCerticateId(int certicateId) {
+		this.certicateId = certicateId;
+	}
+
+	public List<CertificateCourseTO> getPrefList() {
+		return prefList;
+	}
+
+	public void setPrefList(List<CertificateCourseTO> prefList) {
+		this.prefList = prefList;
+	}
+
+	public int getPreCount() {
+		return preCount;
+	}
+
+	public void setPreCount(int preCount) {
+		this.preCount = preCount;
+	}
+
+	public List<CertificateCourseTO> getCerticateCoursesPrint() {
+		return certicateCoursesPrint;
+	}
+
+	public void setCerticateCoursesPrint(List<CertificateCourseTO> certicateCoursesPrint) {
+		this.certicateCoursesPrint = certicateCoursesPrint;
+	}
+
+	public boolean isCertificationCourseDone() {
+		return certificationCourseDone;
+	}
+
+	public void setCertificationCourseDone(boolean certificationCourseDone) {
+		this.certificationCourseDone = certificationCourseDone;
+	}
+
+	
 	
 	
 	

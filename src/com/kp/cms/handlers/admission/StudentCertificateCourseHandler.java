@@ -28,9 +28,11 @@ import com.kp.cms.bo.admin.StudentCertificateCourse;
 import com.kp.cms.bo.admin.Subject;
 import com.kp.cms.bo.admin.SubjectGroup;
 import com.kp.cms.bo.admin.SubjectGroupSubjects;
+import com.kp.cms.forms.admission.AdmissionStatusForm;
 import com.kp.cms.forms.admission.CertificateCourseEntryForm;
 import com.kp.cms.forms.admission.StudentCertificateCourseForm;
 import com.kp.cms.handlers.exam.NewSecuredMarksEntryHandler;
+import com.kp.cms.helpers.admission.AdmissionStatusHelper;
 import com.kp.cms.helpers.admission.CertificateCourseEntryHelper;
 import com.kp.cms.helpers.admission.StudentCertificateCourseHelper;
 import com.kp.cms.to.admin.StudentTO;
@@ -39,10 +41,12 @@ import com.kp.cms.to.admission.CertificateCourseTeacherTO;
 import com.kp.cms.to.admission.StudentCertificateCourseTO;
 import com.kp.cms.to.exam.MarksDetailsTO;
 import com.kp.cms.to.exam.StudentMarkDetailsTO;
+import com.kp.cms.transactions.admission.IAdmissionStatusTransaction;
 import com.kp.cms.transactions.admission.ICertificateCourseEntryTxn;
 import com.kp.cms.transactions.admission.IStudentCertificateCourseTxn;
 import com.kp.cms.transactions.exam.IDownloadHallTicketTransaction;
 import com.kp.cms.transactions.exam.INewExamMarksEntryTransaction;
+import com.kp.cms.transactionsimpl.admission.AdmissionStatusTransactionImpl;
 import com.kp.cms.transactionsimpl.admission.CertificateCourseEntryTxnImpl;
 import com.kp.cms.transactionsimpl.admission.StudentCertificateCourseTxnImpl;
 import com.kp.cms.transactionsimpl.exam.DownloadHallTicketTransactionImpl;
@@ -1642,5 +1646,12 @@ public List<StudentMarkDetailsTO> getCompletedCourseCount111(int studentId, int 
 	//end by giri
 	request.setAttribute("NoOfCompletedCourses", count);
 	return totalList;
+}
+
+public boolean saveCertificateCourses(StudentCertificateCourseForm admForm) throws Exception {
+	List<StudentCertificateCourse> studCertCourse=StudentCertificateCourseHelper.getInstance().copyBoTo(admForm.getPrefList(),admForm);
+	IAdmissionStatusTransaction admissionStatusTransaction=new AdmissionStatusTransactionImpl();
+	boolean result=admissionStatusTransaction.saveStudentCertificateCourse(studCertCourse);
+	return result;
 }
 }

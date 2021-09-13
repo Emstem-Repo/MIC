@@ -3909,8 +3909,8 @@ public class AdmissionFormHelper {
 			preferenceTO = copyPropertiesValue(admApplnBo.getCandidatePreferences());
 			adminAppTO.setPreference(preferenceTO);
 	
-			//editDocuments = copyPropertiesEditDocValue(admApplnBo.getApplnDocs(),adminAppTO.getSelectedCourse().getId(),adminAppTO,admApplnBo.getAppliedYear());
-			//adminAppTO.setEditDocuments(editDocuments);
+			editDocuments = copyPropertiesEditDocValue(admApplnBo.getApplnDocs(),adminAppTO.getSelectedCourse().getId(),adminAppTO,admApplnBo.getAppliedYear());
+			adminAppTO.setEditDocuments(editDocuments);
 			
 			prereqList=copyPrerequisiteDetails(admApplnBo.getCandidatePrerequisiteMarks());
 			adminAppTO.setPrerequisiteTos(prereqList);
@@ -4638,6 +4638,9 @@ public class AdmissionFormHelper {
 				personalDataTO.setFatherIncomeId(String.valueOf(personalData.getIncomeByFatherIncomeId().getId()));
 				
 			}
+			if (personalData.getFamilyAnnualIncome()!=null) {
+				personalDataTO.setFamilyAnnualIncome(personalData.getFamilyAnnualIncome());
+			}
 			if (personalData.getOccupationByFatherOccupationId() != null) {
 				personalDataTO.setFatherOccupation(personalData.getOccupationByFatherOccupationId().getName());
 				personalDataTO.setFatherOccupationId(String.valueOf(personalData.getOccupationByFatherOccupationId().getId()));
@@ -4726,7 +4729,7 @@ public class AdmissionFormHelper {
 			personalDataTO.setParentPh1(personalData.getParentPh1());
 			personalDataTO.setParentPh2(personalData.getParentPh2());
 			personalDataTO.setParentPh3(personalData.getParentPh3());
-			personalDataTO.setParentMobile(personalData.getParentMob1() + " "+ personalData.getParentMob2() + " "+ personalData.getParentMob3());
+			personalDataTO.setParentMobile(/*personalData.getParentMob1() + " "+*/ personalData.getParentMob2() /*+ " "+ personalData.getParentMob3()*/);
 			personalDataTO.setParentMob1(personalData.getParentMob1());
 			personalDataTO.setParentMob2(personalData.getParentMob2());
 			personalDataTO.setParentMob3(personalData.getParentMob3());
@@ -4832,6 +4835,33 @@ public class AdmissionFormHelper {
 				personalDataTO.setBonusType(bonusType.toString().trim().substring(0, bonusType.length()-1));
 			}
 			personalDataTO.setBonusMarks(String.valueOf(bonusMark));
+			if (personalData.getThaluk()!=null &&  !personalData.getThaluk().isEmpty()) {
+				personalDataTO.setThaluk(personalData.getThaluk());
+			}
+			if (personalData.getPlaceOfBirth()!=null && !personalData.getPlaceOfBirth().isEmpty()) {
+				personalDataTO.setPlaceOfBirth(personalData.getPlaceOfBirth());
+			}
+			if (personalData.getDistrict()!=null && !personalData.getDistrict().isEmpty()) {
+				personalDataTO.setDistrict(personalData.getDistrict());
+			}
+			if (personalData.getScholarship()!=null && !personalData.getScholarship().isEmpty()) {
+				personalDataTO.setScholarship(personalData.getScholarship());
+				personalDataTO.setHasScholarship(true);
+			}else{personalDataTO.setHasScholarship(false);}
+			
+			if (personalData.getReasonFrBreakStudy()!=null && !personalData.getReasonFrBreakStudy().isEmpty()) {
+				personalDataTO.setReasonFrBreakStudy(personalData.getReasonFrBreakStudy());
+				personalDataTO.setDidBreakStudy(true);
+			}else{personalDataTO.setDidBreakStudy(false);}
+			if (personalData.getIsSpc()) {
+				personalDataTO.setSpc(true);
+			}else{personalDataTO.setSpc(false);}
+			if (personalData.getIsScouts()) {
+				personalDataTO.setScouts(true);
+			}else{personalDataTO.setScouts(false);}
+			if (personalData.getStream()!=null) {
+				personalDataTO.setStream(personalData.getStream().getName());
+			}
 			
 		}		
 		log.info("exit copyPropertiesValue personal data" );

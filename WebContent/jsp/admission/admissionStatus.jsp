@@ -26,15 +26,34 @@
 		var url = "AdmissionStatus.do?method=downloadApplication&applicationNo="+applnNo +"&appliedYear="+appliedYear+"&displaySemister="+true+"&memo="+false;
 		window.open(url,'PrintApplication','left=20,top=20,width=800,height=1000,toolbar=1,resizable=0,scrollbars=1');
 	}
-	function downloadmemo(applnNo, appliedYear) {
+	/* function downloadmemo(applnNo, appliedYear) {
 		var url = "AdmissionStatus.do?method=downloadApplication&applicationNo="+applnNo +"&appliedYear="+appliedYear+"&displaySemister="+true+"&memo="+true;
 		window.open(url,'PrintApplication','left=20,top=20,width=800,height=1000,toolbar=1,resizable=0,scrollbars=1');
+	}	 */
+	function downloadmemo() {
+		var appno=document.getElementById('appNo').value; 
+		var year="2021";
+		var url = "AdmissionStatus.do?method=downloadApplication&applicationNo="+appno +"&appliedYear="+year+"&displaySemister="+true+"&memo="+true+"&chanceMemo="+false;
+		myRef = window
+		.open(url, "viewDescription",
+				"left=200,top=200,width=3000,height=1500,toolbar=1,resizable=0,scrollbars=1");
+	}
+	function downloadChanceMemo() {
+		var chanceCourseId=document.getElementById("courseId").value;
+		var appno=document.getElementById('appNo').value; 
+		var year="2021";
+		var url = "AdmissionStatus.do?method=downloadApplication&applicationNo="+appno +"&appliedYear="+year+"&displaySemister="+true+"&memo="+false+"&chanceMemo="+true+"&chanceCourseId="+chanceCourseId;
+		myRef = window
+		.open(url, "viewDescription",
+				"left=200,top=200,width=3000,height=1500,toolbar=1,resizable=0,scrollbars=1");
 	}	
 </script>
 <html:form action="/AdmissionStatus" method="post">
 	<html:hidden property="method" value="getAdmissionStatus" />
 	<html:hidden property="formName" value="admissionStatusForm" />
 	<html:hidden property="pageType" value="1" />
+	<html:hidden property="courseId" styleId="courseId"
+		name="admissionStatusForm" />
 	<table width="100%" border="0">
 		<tr>
 			<td><span class="heading"><bean:message
@@ -76,48 +95,39 @@
 									</td>
 								</tr>
 								<%
-									String dateofBirth = "datePick";
-								%>
-								<tr>
-									<td width="27%" class="row-odd">
-									<div align="right"><span class="Mandatory">*</span>&nbsp;<bean:message
-										key="knowledgepro.admission.appNo" /></div>
-									</td>
-									<td width="20%" class="row-even"><html:text
-										property="applicationNo" styleId="appNo" size="17"
-										maxlength="30" styleClass="body"></html:text></td>
-									<td class="row-odd">
-									<div align="right"><span class="Mandatory">*</span>&nbsp; Department</div>
-									</td>
-									<td class="row-odd">
-										<html:select property="deptId" name="admissionStatusForm">
-										<html:option value="">Select</html:option>
-											<html:optionsCollection name="admissionStatusForm" property="deptMap" label="value" value="key"/>
-										</html:select>
-									</td>
-								</tr>
-								<tr>
-									<td width="27%" class="row-odd">
-									<div align="right"><span class="Mandatory">*</span>&nbsp;Applied Year</div>
-									</td>
-									<td width="20%" class="row-even"><html:select
-										property="year" styleId="year" styleClass="combo">
-										
-										<html:option value=" ">
-											<bean:message key="knowledgepro.admin.select" />
-										</html:option>
-										<cms:renderYear></cms:renderYear>
-									</html:select></td>
-									<td class="row-odd">
-									<!-- <div align="right"><span class="Mandatory">*</span>&nbsp; Category</div> -->
-									</td>
-									<td class="row-odd">
-										<%-- <html:select property="categoryId" name="admissionStatusForm">
-											<html:option value="">Select</html:option>
-											<html:optionsCollection name="admissionStatusForm" property="categoryMap" label="value" value="key"/>
-										</html:select> --%>
-									</td>
-								</tr>
+												String dateofBirth = "datePick";
+											%>
+											<tr>
+												<td width="27%" class="row-odd">
+													<div align="right">
+														<span class="Mandatory">*</span>&nbsp;
+														<bean:message key="knowledgepro.admission.appNo" />
+													</div>
+												</td>
+												<td width="20%" class="row-even"><html:text
+														property="applicationNo" styleId="appNo" size="17"
+														maxlength="30" styleClass="body"></html:text></td>
+												<td class="row-odd">
+													<div align="right">
+														<span class="Mandatory">*</span> &nbsp;
+														<bean:message key="knowledgepro.admission.dob" />
+														<bean:message
+															key="admissionForm.application.dateformat.label" />
+													</div>
+												</td>
+												<td class="row-odd"><html:text property="dateOfBirth"
+														readonly="false" size="10" maxlength="10"
+														styleId='<%=dateofBirth%>'></html:text> <script
+														language="JavaScript">
+													new tcal ({
+														// form name
+														'formname': 'admissionStatusForm',
+														// input name
+														'controlname': '<%=dateofBirth%>
+															'
+																	});
+														</script></td>
+											</tr>
 								<tr>
 									<td height="45" colspan="4">
 									<table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -242,10 +252,16 @@
 													property="statusTO.isInterviewSelected"
 													value="viewapplication">
 													<td  align="center">
-													<div align="center"><a href="javascript:void(0)"
+													<%-- <div align="center"><a href="javascript:void(0)"
 														class="menuLink"
 														onclick="downloadApplication('<bean:write name="admissionStatusForm" property="statusTO.applicationNo" />', '<bean:write name="admissionStatusForm" property="statusTO.appliedYear" />')">
-													<br></br><bean:message key="knowledgepro.admission.applicationstatus.viewapp"/></a></div>
+													<br></br><bean:message key="knowledgepro.admission.applicationstatus.viewapp"/></a></div> --%>
+													
+													
+													<div align="center"><a href="javascript:void(0)"
+														class="menuLink"
+														onclick="downloadChanceMemo()">
+													<br></br> Click Here To Print Your Chance memo</a></div>
 													</td>
 													
 													
@@ -256,7 +272,7 @@
 													<td  align="center">
 													<div align="center"><a href="javascript:void(0)"
 														class="menuLink"
-														onclick="downloadmemo('<bean:write name="admissionStatusForm" property="statusTO.applicationNo" />', '<bean:write name="admissionStatusForm" property="statusTO.appliedYear" />')">
+														onclick="downloadmemo()">
 													<br></br><bean:message key="knowledgepro.admission.applicationstatus.memo"/></a></div>
 													</td>
 													</logic:equal>
@@ -302,3 +318,9 @@
 		</tr>
 	</table>
 </html:form>
+<script type="text/javascript">
+	var year = document.getElementById("tempyear").value;
+	if (year.length != 0) {
+		document.getElementById("year").value = year;
+	}
+</script>

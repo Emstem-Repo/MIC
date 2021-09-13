@@ -812,7 +812,7 @@ public class StudentLoginTransactionImpl implements IStudentLoginTransaction{
 		CandidatePGIForSpecialFees bo = new CandidatePGIForSpecialFees();
 		try{
 			session = HibernateUtil.getSession();
-			String str = "from CandidatePGIForSpecialFees b where b.student.id = :studentId and b.txnStatus = 'success'";
+			String str = "from CandidatePGIForSpecialFees b where b.student.id = :studentId and b.classes.id="+loginForm.getClassId()+" and b.txnStatus = 'success'";
 			Query query = session.createQuery(str).setInteger("studentId", loginForm.getStudentId());
 			bo = (CandidatePGIForSpecialFees)query.uniqueResult();
 			if(bo != null){

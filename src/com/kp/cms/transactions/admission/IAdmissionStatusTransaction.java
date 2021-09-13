@@ -4,13 +4,16 @@ import java.util.List;
 
 import com.kp.cms.bo.admin.AdmAppln;
 import com.kp.cms.bo.admin.CandidatePGIDetails;
+import com.kp.cms.bo.admin.CertificateCourse;
 import com.kp.cms.bo.admin.InterviewCard;
 import com.kp.cms.bo.admin.InterviewCardHistory;
+import com.kp.cms.bo.admin.StudentCertificateCourse;
 import com.kp.cms.bo.admin.StudentCourseAllotment;
 import com.kp.cms.bo.admin.StudentCourseChanceMemo;
 import com.kp.cms.bo.admission.PublishForAllotment;
 import com.kp.cms.bo.admission.StudentAllotmentPGIDetails;
 import com.kp.cms.forms.admission.AdmissionStatusForm;
+import com.kp.cms.to.admission.CertificateCourseTO;
 
 
 
@@ -64,6 +67,39 @@ public interface IAdmissionStatusTransaction {
 	public List<PublishForAllotment> getPublishAllotment()throws Exception;
 
 
-	public List<AdmAppln> getDetailsAdmAppln(String applicationNo, String year) throws Exception;
+	public List<StudentCourseAllotment> getBolistForAllotment(String applicationNo, String dateOfBirth)throws Exception;
+
+
+	public boolean isUpdatedForPg(List<StudentCourseAllotment> courseAllotments)throws Exception;
+
+
+	public int getProgramTypeId(String applicationNo, String dateOfBirth)throws Exception;
+
+
+	public boolean isUpdateForBoth(List<StudentCourseChanceMemo> allotments,
+			List<StudentCourseAllotment> courseAllotments, AdmissionStatusForm admissionStatusForm)throws Exception;
+
+
+	public List<StudentCourseChanceMemo> getBolistForPG(String applicationNo, String dateOfBirth)throws Exception;
+
+
+	public int getSelectedCourseId(String applicationNo, String dateOfBirth)throws Exception;
+
+
+	public List<StudentCourseChanceMemo> getBolistForUg(String applicationNo, String dateOfBirth)throws Exception;
+
+
+	public List<StudentCourseAllotment> getBolistForAllotmentUg(String applicationNo, String dateOfBirth)throws Exception;
+
+
+	public boolean isUpdateForBothForUg(List<StudentCourseChanceMemo> chanceMemosForUg,
+			List<StudentCourseAllotment> courseAllotmentsForUg, AdmissionStatusForm admissionStatusForm)throws Exception;
+	public List<CertificateCourse> getActiveCertificateCourses(int year)throws Exception;
+
+
+	public boolean saveStudentCertificateCourse(List<StudentCertificateCourse> studCertCourse)throws Exception;
+
+
+	List<CertificateCourseTO> getCertificateCoursesprint(int id) throws Exception;
 
 }
