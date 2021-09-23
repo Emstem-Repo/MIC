@@ -56,6 +56,10 @@ div {
 		value='<bean:write name="admissionStatusForm" property="applicantDetails.applicationId" />' />
 	<input type="hidden" name="courseId"
 		value='<bean:write	name="admissionStatusForm" property="applicantDetails.course.id" />' />
+		<logic:iterate id="chncList" name="admissionStatusForm"
+								property="admissionStatusTO.chanceList">
+	<table>
+	<tr><td>
 	<table width="100%" border="0" cellpadding="3" cellspacing="0"
 		bordercolor="#E0DFDB">
 		<tr>
@@ -139,14 +143,13 @@ div {
 						</tr>
 						<logic:notEmpty name="admissionStatusForm"
 							property="admissionStatusTO.chanceList">
-							<logic:iterate id="chncList" name="admissionStatusForm"
-								property="admissionStatusTO.chanceList">
+							
 								<%
 									String chanceCourseId = request.getAttribute(
 														"chanceCourseId").toString();
 								%>
-								<logic:equal value="<%=chanceCourseId%>" name="chncList"
-									property="chanceCurrentcourseid">
+								<%-- <logic:equal value="<%=chanceCourseId%>" name="chncList"
+									property="chanceCurrentcourseid"> --%>
 									<logic:equal value="true" name="chncList"
 										property="chanceAlmntgeneral">
 										<tr>
@@ -197,8 +200,8 @@ div {
 												name="chncList" property="chncListcommunityDateTime" /></td>
 										</tr>
 									</logic:equal>
-								</logic:equal>
-							</logic:iterate>
+							<%-- 	</logic:equal> --%>
+							
 						</logic:notEmpty>
 					</table>
 					</td>
@@ -928,9 +931,11 @@ the medical certificate with 5 year validity</td>
 							</b>							
 						</span>
 					</div>
+					
 				</td>
 			</tr>
 		</table>
+		
 	 </td>
 	</tr>
 				</table>
@@ -941,6 +946,11 @@ the medical certificate with 5 year validity</td>
 	<table width="100%">
 		
 	</table>
+	<p style="page-break-before: always"></p>
+	</td>
+	</tr>
+	</table>
+	</logic:iterate>
 </html:form>
 <script type="text/javascript">
 	window.print();

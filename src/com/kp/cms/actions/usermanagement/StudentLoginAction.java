@@ -863,7 +863,18 @@ public class StudentLoginAction extends BaseDispatchAction {
 					   previousClassId==664 ||
 					   previousClassId==663 ||
 					   previousClassId==662 ||
-					   previousClassId==661){
+					   previousClassId==661 ||
+					   previousClassId == 699 ||
+					   previousClassId == 700 ||
+					   previousClassId == 701 ||
+					   previousClassId == 702 ||
+					   previousClassId == 703 ||
+					   previousClassId == 704 ||
+					   previousClassId == 705 ||
+					   previousClassId == 706 ||
+					   previousClassId == 707 ||
+					   previousClassId == 711 ||
+					   previousClassId == 716){
 						
 						classId = previousClassId;
 						examId = DownloadHallTicketHandler.getInstance().getExamIdByClassId(classId, loginForm, "Hall Ticket");

@@ -62,11 +62,11 @@ public class AdmissionStatusForm extends AdmissionFormForm {
 	private int preCount;
 	List<CertificateCourseTO> certicateCoursesPrint;
 	private boolean certificationCourseDone;
-	public void  clearpref(){
-		prefList=new ArrayList<CertificateCourseTO>();
-		certicateCourses=new HashMap<Integer, String>();
-		preCount=1;
-	}
+	public void  clearpref(){ this.prefList = new ArrayList<CertificateCourseTO>();
+    this.certicateCourses = new HashMap<Integer, String>();
+    this.preCount = 1;
+    this.isPaid = false;
+    }
 
 	public String getServerDownMessage() {
 		return serverDownMessage;

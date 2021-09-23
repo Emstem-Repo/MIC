@@ -266,243 +266,177 @@ public class AdmissionStatusAction extends BaseDispatchAction {
 	public ActionForward getAdmissionStatus(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
-		log.info("Inside of getOnlineApplicationStatus of AdmissionStatusAction");
-		AdmissionStatusForm admissionStatusForm = (AdmissionStatusForm) form;
-		IAdmissionStatusTransaction admissionStatusTransaction=new AdmissionStatusTransactionImpl();
-		admissionStatusForm.clearadmissionStatusTO();
-		admissionStatusForm.clearstatusTO();
-		admissionStatusForm.clearpref();
-		 ActionErrors errors = admissionStatusForm.validate(mapping, request);
-		admissionStatusForm.setOnlineAcknowledgement(false);
-		if (admissionStatusForm.getDateOfBirth() != null && !StringUtils.isEmpty(admissionStatusForm.getDateOfBirth())) {
-			if (CommonUtil.isValidDate(admissionStatusForm.getDateOfBirth())) {
-				boolean isValid = validatefutureDate(admissionStatusForm.getDateOfBirth());
-				if (!isValid) {
-					if (errors.get(CMSConstants.ADMISSIONFORM_DOB_LARGE) != null && !errors.get(CMSConstants.ADMISSIONFORM_DOB_LARGE).hasNext()) {
-						errors.add(CMSConstants.ADMISSIONFORM_DOB_LARGE, new ActionError(CMSConstants.ADMISSIONFORM_DOB_LARGE));
-					}
-					admissionStatusForm.clearadmissionStatusTO();
-					admissionStatusForm.clearstatusTO();
-				}
-			}	
-		}
-		try {
-			if (errors.isEmpty() && errors != null) {
-				String applicationNo = admissionStatusForm.getApplicationNo().trim();
-				/**
-				 * Calling the getDateOfBirth() by passing the applicationNo
-				 * taken from UI and getting the record (date of birth along with all the fiels of AdmAppln)
-				 */
-				List<AdmissionStatusTO> AdmAppln = AdmissionStatusHandler.getInstance().getDetailsAdmAppln(applicationNo,admissionStatusForm);
-				
-				/**
-				 * Checks If user enters wrong application no. then add appropriate error message 
-				 */
-				if (AdmAppln.isEmpty()) {
-					/* Check if application no is available in Appln Acknowledgement table if available then appropriate msg is displayed  */
-					boolean availableInApplnAcknowledgement=AdmissionStatusHandler.getInstance().checkApplnAvailableInAck(applicationNo,admissionStatusForm.getDateOfBirth());
-					if(availableInApplnAcknowledgement){
-						AdmissionStatusTO admissionStatusTO=new AdmissionStatusTO();
-						admissionStatusForm.setAdmStatus(CMSConstants.ADM_STATUS_OFFLINE_APPLN);
-						admissionStatusTO.setApplicationNo(Integer.parseInt(admissionStatusForm.getApplicationNo()));
-						admissionStatusTO.setDateOfBirth(CommonUtil.ConvertStringToDateFormat(admissionStatusForm.getDateOfBirth(), CMSConstants.DEST_DATE,CMSConstants.SOURCE_DATE));						
-						admissionStatusTO.setEmail("");
-						admissionStatusForm.setAdmissionStatusTO(admissionStatusTO);
-						admissionStatusForm.clear();
-						admissionStatusForm.clearstatusTO();
-						return mapping.findForward(CMSConstants.ADMISSION_STATUS);
-					}
-					else{
-					errors.add(CMSConstants.ERROR,new ActionError(CMSConstants.ADMISSION_ADMISSIONSTATUS_APPNO_INVALID));
-					saveErrors(request, errors);
-					admissionStatusForm.clearadmissionStatusTO();
-					admissionStatusForm.clearstatusTO();
-					return mapping.findForward(CMSConstants.ADMISSION_INIT_APPLICATIONSTATUS);
-					}
-				}
-				/**
-				 * Checks if multiple records exists in DB based on the entered application no. from UI then add the error message
-				 */
-				
-				if(AdmAppln.size()>1){
-					errors.add(CMSConstants.ERROR,new ActionError(CMSConstants.ADMISSION_ADMISSIONSTATUS_INVALID_DATA));
-					saveErrors(request, errors);
-					admissionStatusForm.clear();
-					admissionStatusForm.clearadmissionStatusTO();
-					admissionStatusForm.clearstatusTO();
-					return mapping.findForward(CMSConstants.ADMISSION_STATUS);			
-				}
-				
-					
-				/**
-				 * Iterating the list of data getting based on the application no. entered from UI 
-				 */
-				
-				Iterator<AdmissionStatusTO> it=AdmAppln.iterator();
-				setDiplomaCourses(admissionStatusForm);
-				
-				while (it.hasNext()) {
-					
-					AdmissionStatusTO admissionStatusTO = (AdmissionStatusTO) it.next();
-					if(admissionStatusTO.isCancelled()){
-						errors.add(CMSConstants.ERROR,new ActionError(CMSConstants.ADMISSION_ADMISSIONSTATUS_IS_CANCELLED));
-						saveErrors(request, errors);
-						admissionStatusForm.clear();
-						admissionStatusForm.clearadmissionStatusTO();
-						admissionStatusForm.clearstatusTO();
-						return mapping.findForward(CMSConstants.ADMISSION_INIT_APPLICATIONSTATUS);	
-					}
-					if(admissionStatusTO.isAdmitted()){
-						errors.add(CMSConstants.ERROR,new ActionError(CMSConstants.ADMISSION_ADMISSIONSTATUS_ADMITTED));
-						saveErrors(request, errors);
-						admissionStatusForm.clear();
-						admissionStatusForm.clearadmissionStatusTO();
-						admissionStatusForm.clearstatusTO();
-						return mapping.findForward(CMSConstants.ADMISSION_STATUS);	
-					}				
-
-				/**
-				 * Checks if any of the column (Isselected/PersonalDataId/DateofBirth) is null in DB then add the appropriate error message & show the status
-				 */
-				admissionStatusForm.setAdmStatus(null);
-				if(admissionStatusTO.getAdmStatus()!= null && !admissionStatusTO.getAdmStatus().trim().isEmpty()){
-					admissionStatusForm.setAdmStatus(admissionStatusTO.getAdmStatus());
-				}				
-				if (admissionStatusTO.getIsSelected() == null || admissionStatusTO.getIsSelected().isEmpty())
-				{
-					admissionStatusTO.setIsSelected(CMSConstants.ADMISSION_ADMISSIONSTATUS_UNDER_PROCESS);
-					admissionStatusTO.setApplicationNo(Integer.parseInt(admissionStatusForm.getApplicationNo()));
-					admissionStatusTO.setDateOfBirth(CommonUtil.ConvertStringToDateFormat(admissionStatusForm.getDateOfBirth(), CMSConstants.DEST_DATE,CMSConstants.SOURCE_DATE));						
-					admissionStatusForm.setAdmissionStatusTO(admissionStatusTO);
-					admissionStatusForm.clear();
-					admissionStatusForm.clearstatusTO();
-					return mapping.findForward(CMSConstants.ADMISSION_STATUS);
-				}
-				if (admissionStatusTO.getDateOfBirth()==null || admissionStatusTO.getPersonalDataId()==0) {
-					errors.add(CMSConstants.ERROR, new ActionError(CMSConstants.ADMISSION_ADMISSIONSTATUS_NULL));
-					saveErrors(request, errors);
-					admissionStatusForm.clear();
-					admissionStatusForm.clearadmissionStatusTO();
-					admissionStatusForm.clearstatusTO();
-					return mapping.findForward(CMSConstants.ADMISSION_STATUS);
-				}
-				/**
-				 * Checks whether the date of birth retrieved from DB (if
-				 * correct application no is entered) is same with the date of
-				 * birth entered by user or not. If same then adding to formbean and displays the admission status in UI
-				 */
-				if(admissionStatusTO.getApplicationNo()!=0 && admissionStatusTO.getIsSelected()!=null && admissionStatusTO.getDateOfBirth() !=null)
-				{     
-			        String uiDob=admissionStatusForm.getDateOfBirth();
-			        String toDateofBirth=CommonUtil.ConvertStringToDateFormat(admissionStatusTO.getDateOfBirth(), CMSConstants.SOURCE_DATE,CMSConstants.DEST_DATE);
-				if (uiDob.equals(toDateofBirth)) {
-					
-					//Check for the cacelled admission status
-					if(!admissionStatusTO.getIsSelected().equalsIgnoreCase(CMSConstants.SELECTED_FOR_ADMISSION) && admissionStatusTO.isCancelled())
-					{
-						admissionStatusTO.setIsSelected(CMSConstants.ADMISSION_ADMISSIONSTATUS_APPLICATION_CANCELLED);
-						admissionStatusTO.setApplicationNo(Integer.parseInt(admissionStatusForm.getApplicationNo()));
-						admissionStatusTO.setDateOfBirth(CommonUtil.ConvertStringToDateFormat(admissionStatusForm.getDateOfBirth(), CMSConstants.DEST_DATE,CMSConstants.SOURCE_DATE));	
-						admissionStatusForm.setAdmissionStatusTO(admissionStatusTO);
-						admissionStatusForm.clear();
-						admissionStatusForm.clearstatusTO();
-						return mapping.findForward(CMSConstants.ADMISSION_STATUS);
-					}
-					
-					/**
-					 * If the candidate is not selected for admission then check for the interview status and display the last interview round status in UI
-				
-					 */
-				if(!admissionStatusTO.getIsSelected().equalsIgnoreCase(CMSConstants.SELECTED_FOR_ADMISSION) && admissionStatusTO.getInterviewSelectionSchedule()!=null )
-					{
-						AdmissionStatusTO admTO = AdmissionStatusHandler.getInstance().getInterviewResult(applicationNo, admissionStatusTO.getAppliedYear());
-						admissionStatusForm.setStatusTO(admTO);
-						//vibin
-						admissionStatusForm.setAdmissionStatusTO(admissionStatusTO);
-						
-						
-						return mapping.findForward(CMSConstants.ADMISSION_STATUS);	
-					}
-				else if(!admissionStatusTO.getIsSelected().equalsIgnoreCase(CMSConstants.SELECTED_FOR_ADMISSION))
-				{
-					//Used to get the interview status of the application					
-					AdmissionStatusTO admTO = AdmissionStatusHandler.getInstance().getInterviewResult(applicationNo, admissionStatusTO.getAppliedYear());
-					admissionStatusForm.setStatusTO(admTO);
-					//vibin
-					admissionStatusForm.setAdmissionStatusTO(admissionStatusTO);
-					
-					
-					admissionStatusForm.setIsChecked(false);
-					if(admissionStatusForm.getSelectedCourseId() > 0 && admissionStatusForm.getSelectedValue()!=null 
-							&& !admissionStatusForm.getSelectedValue().isEmpty()){
-						boolean isUpdate=AdmissionStatusHandler.getInstance().updateCourseAllotment(applicationNo,admissionStatusForm);
-					}
-					if(admissionStatusForm.getUploadDetail()!=null && !admissionStatusForm.getUploadDetail().isEmpty()){
-						boolean isUpload=AdmissionStatusHandler.getInstance().uploadDetail(applicationNo,admissionStatusForm);
-					}
-					List<AdmissionStatusTO> statusTOs = AdmissionStatusHandler.getInstance().getToListForStatus(applicationNo,admissionStatusForm);
-					admissionStatusForm.setStatusTOs(statusTOs);
-					List<CertificateCourseTO> toList=admissionStatusTransaction.getCertificateCoursesprint(Integer.parseInt(admissionStatusForm.getAdmApplnId()));
-					if (toList!=null && !toList.isEmpty()) {
-						admissionStatusForm.setCertificationCourseDone(true);
-						admissionStatusForm.setPrefList(toList);
-					}
-					return mapping.findForward(CMSConstants.ADMISSION_STATUS);					
-				}
-				
-					if(admissionStatusForm.getApplicationNo()!=null){
-						List interviewCardTOList = AdmissionStatusHandler.getInstance().getStudentsList(admissionStatusForm.getApplicationNo());
-						if(interviewCardTOList!=null && !interviewCardTOList.isEmpty()){
-							if(admissionStatusTO.getIsSelected()!= null){		
-									if(admissionStatusTO.getIsSelected().equalsIgnoreCase(CMSConstants.SELECTED_FOR_ADMISSION)){
-										admissionStatusTO.setIsInterviewSelected(CMSConstants.ADMISSION);
-									}
-							}				
-						}
-						else{
-							if(admissionStatusTO.getIsSelected().equalsIgnoreCase(CMSConstants.SELECTED_FOR_ADMISSION))
-								admissionStatusTO.setIsInterviewSelected(CMSConstants.ADMISSION);
-							else admissionStatusTO.setIsInterviewSelected("false");						
-						}
-					}					
-						admissionStatusForm.setAppliedYear(admissionStatusTO.getAppliedYear());
-						admissionStatusTO.setDateOfBirth(CommonUtil.ConvertStringToDateFormat(admissionStatusTO.getDateOfBirth(), CMSConstants.SOURCE_DATE,CMSConstants.SOURCE_DATE));
-						//--------added for bypass
-						if(admissionStatusTO.isByPassed()){
-							admissionStatusTO.setIsInterviewSelected(CMSConstants.ADMISSION);
-						}
-						//-------
-						
-						admissionStatusForm.setAdmissionStatusTO(admissionStatusTO);
-						admissionStatusForm.clear();
-						admissionStatusForm.clearstatusTO();
-						return mapping.findForward(CMSConstants.ADMISSION_STATUS);
-				}
-				/**
-				 * Else Add appropriate error message if date of birth entered is
-				 * wrong
-				 */
-				else {					
-						errors.add(CMSConstants.ERROR,new ActionError(CMSConstants.ADMISSION_ADMISSIONSTATUS_INVALID_DOB));
-						saveErrors(request, errors);
-						admissionStatusForm.clearadmissionStatusTO();
-						admissionStatusForm.clearstatusTO();
-						return mapping.findForward(CMSConstants.ADMISSION_STATUS);
-				}
-				}
-				}
-			}
-		} catch (Exception e) {
-			log.error("Error occured at getOnlineApplicationStatus of Admission StatusAction",e);
-			String msg = super.handleApplicationException(e);
-			admissionStatusForm.setErrorMessage(msg);
-			admissionStatusForm.setErrorStack(e.getMessage());
-			//return mapping.findForward(CMSConstants.ERROR_PAGE);
-			return mapping.findForward("newerrorpage");
-		}
-		saveErrors(request, errors);
-		log.info("Leaving from getOnlineApplicationStatus of AdmissionStatusAction");
-		return mapping.findForward(CMSConstants.ADMISSION_STATUS);
+        AdmissionStatusAction.log.info((Object)"Inside of getOnlineApplicationStatus of AdmissionStatusAction");
+        final AdmissionStatusForm admissionStatusForm = (AdmissionStatusForm)form;
+        final IAdmissionStatusTransaction admissionStatusTransaction = (IAdmissionStatusTransaction)new AdmissionStatusTransactionImpl();
+        admissionStatusForm.clearadmissionStatusTO();
+        admissionStatusForm.clearstatusTO();
+        admissionStatusForm.clearpref();
+        final ActionErrors errors = admissionStatusForm.validate(mapping, request);
+        admissionStatusForm.setOnlineAcknowledgement(false);
+        if (admissionStatusForm.getDateOfBirth() != null && !StringUtils.isEmpty(admissionStatusForm.getDateOfBirth()) && CommonUtil.isValidDate(admissionStatusForm.getDateOfBirth())) {
+            final boolean isValid = this.validatefutureDate(admissionStatusForm.getDateOfBirth());
+            if (!isValid) {
+                if (errors.get("admissionFormForm.dob.large") != null && !errors.get("admissionFormForm.dob.large").hasNext()) {
+                    errors.add("admissionFormForm.dob.large", new ActionError("admissionFormForm.dob.large"));
+                }
+                admissionStatusForm.clearadmissionStatusTO();
+                admissionStatusForm.clearstatusTO();
+            }
+        }
+        try {
+            if (errors.isEmpty() && errors != null) {
+                final String applicationNo = admissionStatusForm.getApplicationNo().trim();
+                final List<AdmissionStatusTO> AdmAppln = (List<AdmissionStatusTO>)AdmissionStatusHandler.getInstance().getDetailsAdmAppln(applicationNo, admissionStatusForm);
+                if (AdmAppln.isEmpty()) {
+                    final boolean availableInApplnAcknowledgement = AdmissionStatusHandler.getInstance().checkApplnAvailableInAck(applicationNo, admissionStatusForm.getDateOfBirth());
+                    if (availableInApplnAcknowledgement) {
+                        final AdmissionStatusTO admissionStatusTO = new AdmissionStatusTO();
+                        admissionStatusForm.setAdmStatus(CMSConstants.ADM_STATUS_OFFLINE_APPLN);
+                        admissionStatusTO.setApplicationNo(Integer.parseInt(admissionStatusForm.getApplicationNo()));
+                        admissionStatusTO.setDateOfBirth(CommonUtil.ConvertStringToDateFormat(admissionStatusForm.getDateOfBirth(), "dd/MM/yyyy", "dd-MMM-yyyy"));
+                        admissionStatusTO.setEmail("");
+                        admissionStatusForm.setAdmissionStatusTO(admissionStatusTO);
+                        admissionStatusForm.clear();
+                        admissionStatusForm.clearstatusTO();
+                        return mapping.findForward("getAdmissionStatus");
+                    }
+                    errors.add("error", new ActionError("knowledgepro.admission.admissionstatus.invalidappno"));
+                    this.saveErrors(request, errors);
+                    admissionStatusForm.clearadmissionStatusTO();
+                    admissionStatusForm.clearstatusTO();
+                    return mapping.findForward("initapplicationstatus");
+                }
+                else {
+                    if (AdmAppln.size() > 1) {
+                        errors.add("error", new ActionError("knowledgepro.admission.admissionstatus.invaliddata"));
+                        this.saveErrors(request, errors);
+                        admissionStatusForm.clear();
+                        admissionStatusForm.clearadmissionStatusTO();
+                        admissionStatusForm.clearstatusTO();
+                        return mapping.findForward("getAdmissionStatus");
+                    }
+                    final Iterator<AdmissionStatusTO> it = AdmAppln.iterator();
+                    this.setDiplomaCourses(admissionStatusForm);
+                    while (it.hasNext()) {
+                        final AdmissionStatusTO admissionStatusTO = it.next();
+                        if (admissionStatusTO.isCancelled()) {
+                            errors.add("error", new ActionError("knowledgepro.admission.admissionstatus.is.cancelled"));
+                            this.saveErrors(request, errors);
+                            admissionStatusForm.clear();
+                            admissionStatusForm.clearadmissionStatusTO();
+                            admissionStatusForm.clearstatusTO();
+                            return mapping.findForward("initapplicationstatus");
+                        }
+                        if (admissionStatusTO.isAdmitted()) {
+                            errors.add("error", new ActionError("knowledgepro.admission.admissionstatus.is.admitted"));
+                            this.saveErrors(request, errors);
+                            admissionStatusForm.clear();
+                            admissionStatusForm.clearadmissionStatusTO();
+                            admissionStatusForm.clearstatusTO();
+                            return mapping.findForward("getAdmissionStatus");
+                        }
+                        admissionStatusForm.setAdmStatus(null);
+                        if (admissionStatusTO.getAdmStatus() != null && !admissionStatusTO.getAdmStatus().trim().isEmpty()) {
+                            admissionStatusForm.setAdmStatus(admissionStatusTO.getAdmStatus());
+                        }
+                        if (admissionStatusTO.getIsSelected() == null || admissionStatusTO.getIsSelected().isEmpty()) {
+                            admissionStatusTO.setIsSelected("Application Submitted Online - Send the Application and Supporting Documents to Office of Admissions");
+                            admissionStatusTO.setApplicationNo(Integer.parseInt(admissionStatusForm.getApplicationNo()));
+                            admissionStatusTO.setDateOfBirth(CommonUtil.ConvertStringToDateFormat(admissionStatusForm.getDateOfBirth(), "dd/MM/yyyy", "dd-MMM-yyyy"));
+                            admissionStatusForm.setAdmissionStatusTO(admissionStatusTO);
+                            admissionStatusForm.clear();
+                            admissionStatusForm.clearstatusTO();
+                            return mapping.findForward("getAdmissionStatus");
+                        }
+                        if (admissionStatusTO.getDateOfBirth() == null || admissionStatusTO.getPersonalDataId() == 0) {
+                            errors.add("error", new ActionError("knowledgepro.admission.admissionstatus.nullfields"));
+                            this.saveErrors(request, errors);
+                            admissionStatusForm.clear();
+                            admissionStatusForm.clearadmissionStatusTO();
+                            admissionStatusForm.clearstatusTO();
+                            return mapping.findForward("getAdmissionStatus");
+                        }
+                        if (admissionStatusTO.getApplicationNo() == 0 || admissionStatusTO.getIsSelected() == null || admissionStatusTO.getDateOfBirth() == null) {
+                            continue;
+                        }
+                        final String uiDob = admissionStatusForm.getDateOfBirth();
+                        final String toDateofBirth = CommonUtil.ConvertStringToDateFormat(admissionStatusTO.getDateOfBirth(), "dd-MMM-yyyy", "dd/MM/yyyy");
+                        if (!uiDob.equals(toDateofBirth)) {
+                            errors.add("error", new ActionError("knowledgepro.admission.admissionstatus.invaliddob"));
+                            this.saveErrors(request, errors);
+                            admissionStatusForm.clearadmissionStatusTO();
+                            admissionStatusForm.clearstatusTO();
+                            return mapping.findForward("getAdmissionStatus");
+                        }
+                        if (!admissionStatusTO.getIsSelected().equalsIgnoreCase("You are Selected for Admission") && admissionStatusTO.isCancelled()) {
+                            admissionStatusTO.setIsSelected("Application Cancelled");
+                            admissionStatusTO.setApplicationNo(Integer.parseInt(admissionStatusForm.getApplicationNo()));
+                            admissionStatusTO.setDateOfBirth(CommonUtil.ConvertStringToDateFormat(admissionStatusForm.getDateOfBirth(), "dd/MM/yyyy", "dd-MMM-yyyy"));
+                            admissionStatusForm.setAdmissionStatusTO(admissionStatusTO);
+                            admissionStatusForm.clear();
+                            admissionStatusForm.clearstatusTO();
+                            return mapping.findForward("getAdmissionStatus");
+                        }
+                        if (!admissionStatusTO.getIsSelected().equalsIgnoreCase("You are Selected for Admission") && admissionStatusTO.getInterviewSelectionSchedule() != null) {
+                            final AdmissionStatusTO admTO = AdmissionStatusHandler.getInstance().getInterviewResult(applicationNo, admissionStatusTO.getAppliedYear());
+                            admissionStatusForm.setStatusTO(admTO);
+                            admissionStatusForm.setAdmissionStatusTO(admissionStatusTO);
+                            return mapping.findForward("getAdmissionStatus");
+                        }
+                        if (!admissionStatusTO.getIsSelected().equalsIgnoreCase("You are Selected for Admission")) {
+                            final AdmissionStatusTO admTO = AdmissionStatusHandler.getInstance().getInterviewResult(applicationNo, admissionStatusTO.getAppliedYear());
+                            admissionStatusForm.setStatusTO(admTO);
+                            admissionStatusForm.setAdmissionStatusTO(admissionStatusTO);
+                            admissionStatusForm.setIsChecked(false);
+                            if (admissionStatusForm.getSelectedCourseId() > 0 && admissionStatusForm.getSelectedValue() != null && !admissionStatusForm.getSelectedValue().isEmpty()) {
+                                AdmissionStatusHandler.getInstance().updateCourseAllotment(applicationNo, admissionStatusForm);
+                            }
+                            if (admissionStatusForm.getUploadDetail() != null && !admissionStatusForm.getUploadDetail().isEmpty()) {
+                                AdmissionStatusHandler.getInstance().uploadDetail(applicationNo, admissionStatusForm);
+                            }
+                            final List<AdmissionStatusTO> statusTOs = (List<AdmissionStatusTO>)AdmissionStatusHandler.getInstance().getToListForStatus(applicationNo, admissionStatusForm);
+                            admissionStatusForm.setStatusTOs(statusTOs);
+                            return mapping.findForward("getAdmissionStatus");
+                        }
+                        if (admissionStatusForm.getApplicationNo() != null) {
+                            final List interviewCardTOList = AdmissionStatusHandler.getInstance().getStudentsList(admissionStatusForm.getApplicationNo());
+                            if (interviewCardTOList != null && !interviewCardTOList.isEmpty()) {
+                                if (admissionStatusTO.getIsSelected() != null && admissionStatusTO.getIsSelected().equalsIgnoreCase("You are Selected for Admission")) {
+                                    admissionStatusTO.setIsInterviewSelected("admission");
+                                }
+                            }
+                            else if (admissionStatusTO.getIsSelected().equalsIgnoreCase("You are Selected for Admission")) {
+                                admissionStatusTO.setIsInterviewSelected("admission");
+                            }
+                            else {
+                                admissionStatusTO.setIsInterviewSelected("false");
+                            }
+                        }
+                        admissionStatusForm.setAppliedYear(admissionStatusTO.getAppliedYear());
+                        admissionStatusTO.setDateOfBirth(CommonUtil.ConvertStringToDateFormat(admissionStatusTO.getDateOfBirth(), "dd-MMM-yyyy", "dd-MMM-yyyy"));
+                        if (admissionStatusTO.isByPassed()) {
+                            admissionStatusTO.setIsInterviewSelected("admission");
+                        }
+                        admissionStatusForm.setAdmissionStatusTO(admissionStatusTO);
+                        admissionStatusForm.clear();
+                        admissionStatusForm.clearstatusTO();
+                        return mapping.findForward("getAdmissionStatus");
+                    }
+                }
+            }
+        }
+        catch (Exception e) {
+            AdmissionStatusAction.log.error((Object)"Error occured at getOnlineApplicationStatus of Admission StatusAction", (Throwable)e);
+            final String msg = super.handleApplicationException(e);
+            admissionStatusForm.setErrorMessage(msg);
+            admissionStatusForm.setErrorStack(e.getMessage());
+            return mapping.findForward("newerrorpage");
+        }
+        this.saveErrors(request, errors);
+        AdmissionStatusAction.log.info((Object)"Leaving from getOnlineApplicationStatus of AdmissionStatusAction");
+        return mapping.findForward("getAdmissionStatus");
+        
 	}
 	private void setDiplomaCourses(AdmissionStatusForm admissionStatusForm) throws Exception {
 		Map<Integer, String>  certificateMap = AdmissionStatusHandler.getInstance().getActiveCourses1(admissionStatusForm.getAppliedYear());
@@ -873,6 +807,7 @@ public class AdmissionStatusAction extends BaseDispatchAction {
 		admissionStatusForm.clearadmissionStatusTO();
 		admissionStatusForm.clearstatusTO();
 		admissionStatusForm.clearpref();
+		 admissionStatusForm.setCourseId(null);
 		 ActionErrors errors = admissionStatusForm.validate(mapping, request);
 		admissionStatusForm.setOnlineAcknowledgement(false);
 		if (admissionStatusForm.getDateOfBirth() != null && !StringUtils.isEmpty(admissionStatusForm.getDateOfBirth())) {

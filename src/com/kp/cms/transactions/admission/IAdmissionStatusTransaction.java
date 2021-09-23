@@ -101,5 +101,6 @@ public interface IAdmissionStatusTransaction {
 
 
 	List<CertificateCourseTO> getCertificateCoursesprint(int id) throws Exception;
+	List<StudentCourseChanceMemo> getChanceListForStudentMemo(int p0, int p1, int p2, boolean p3, boolean p4) throws Exception;
 
 }

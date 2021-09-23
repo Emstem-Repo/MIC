@@ -364,7 +364,7 @@ public class ApplicationRankHelperforPg {
 			while(iter.hasNext()){
 			AdmAppln admAppln=(AdmAppln)iter.next();
 			
-			if(admAppln.getId()==33490) {
+			if(admAppln.getId()==45238) {
 			System.out.println("before"+admAppln.getId());
 			}
 			int penalty=0;
@@ -450,12 +450,12 @@ public class ApplicationRankHelperforPg {
 					if(admAppln.getPersonalData().getIsNcccertificate()){
 						
 							bonus=bonus+5;
-							if(admAppln.getPersonalData().getNccgrade()!=null && admAppln.getPersonalData().getNccgrade().equalsIgnoreCase("B")){
-								bonus=bonus+5;	
-							}
-							if(admAppln.getPersonalData().getNccgrade()!=null && admAppln.getPersonalData().getNccgrade().equalsIgnoreCase("C")){
-								bonus=bonus+10;	
-							}
+//							if(admAppln.getPersonalData().getNccgrade()!=null && admAppln.getPersonalData().getNccgrade().equalsIgnoreCase("B")){
+//								bonus=bonus+5;	
+//							}
+//							if(admAppln.getPersonalData().getNccgrade()!=null && admAppln.getPersonalData().getNccgrade().equalsIgnoreCase("C")){
+//								bonus=bonus+10;	
+//							}
 					}
 					else if(admAppln.getPersonalData().getIsNsscertificate()){
 						bonus=bonus+5;
@@ -637,657 +637,555 @@ public class ApplicationRankHelperforPg {
 						//MA ENGLISH
                            //else if(candidatePreference.getCourse().getName().equalsIgnoreCase("MA ENGLISH")){
  								else  if(candidatePreference.getCourse().getId()==10){
- 									Session session=null;
-	 	                               Map<Integer,String> eligMap=new HashMap<Integer, String>();
-	 	                               session = HibernateUtil.getSession();
-	 	                       		String str="select p.uGCoursesBO.id, p.uGCoursesBO.name from PgAdmSubjectForRank p where p.course.id="+candidatePreference.getCourse().getId();
-	 	                       		Query query =session.createQuery(str);
-	 	                       		List<Object[]> list=query.list();
-	 	                       		Iterator<Object[]> it=list.iterator();
-	 	                       		while (it.hasNext()) {
-	 	                       			Object[] objects = (Object[]) it.next();
-	 	                       			eligMap.put(Integer.parseInt(objects[0].toString()),(objects[1].toString()));
-	 	                       		}
-	 	                       		session.flush();
-                                 double maxmark=0;
-		                        	   double language1Mark=0;                          
-		                        	   double language2Mark=0;
-		                        	   double groupMarks=0;
-		                        	   double electiveSubjectMark=0;
-		                        	   double cgpamarks=0;
-		                        	   double extramark=0;
-		                        	   double cgpa=0;
-		                        	   double credit=0;
-		                        	   double mult=0;
-		                        	   double totalcredit=0;
-		                        	   double totalcgpa=0;
-		                        	   double langperc=0;
-		                        	   double coremarks=0;
-		                        	   eligibility=false;
-		                        	   double maxcoremark=0;
-		                        	   double convmark1=0;
-		                        	   double convmark2=0;
-		                        	   double conversionmark=0;
-		                        	   double complmark=0;
-		                        	   double totalmark1=0;
-		                        	   double eligiblemark=0;
-		                        	   remark="not Eligible";
-		                        	   double totalmarklanguage=0;
-		                        	   double language1MarkforStore=0; 
-		                        	   double extraPrecenttotal = 0;
-		                        	   double comparisonMark = 0;
-		                        	   boolean outOfFour = false;
-		                        	   boolean outOfSix = false;
-		                        	  
-		                        	if(ugPattern.equalsIgnoreCase("CBCSS")){		                        				                        		
-		                        		
-		                        		 Iterator<AdmSubjectMarkForRank> markItr=detailMarks.iterator();
-			                        	   while (markItr.hasNext()) {
-												detailMarkBO= (AdmSubjectMarkForRank) markItr.next();
-												if(Double.parseDouble(detailMarkBO.getMaxmark()) == 4) {
-													outOfFour = true;
-												}
-												else if(Double.parseDouble(detailMarkBO.getMaxmark()) == 6) {
-													outOfSix = true;
-												}
-												if(CMSConstants.ENGLISHELIGIBLECOURSEIDS.contains(ugcourseid) &&
-												   (detailMarkBO.getAdmSubjectForRank().getGroupName().equalsIgnoreCase("Core") || 
-												    detailMarkBO.getAdmSubjectForRank().getGroupName().equalsIgnoreCase("Complementary") )){
-														
-													cgpa=Double.parseDouble(detailMarkBO.getConversionmark());
-													credit=Double.parseDouble(detailMarkBO.getCredit());
-													mult=cgpa*credit;
-													totalcgpa=totalcgpa+mult;
-													totalcredit=totalcredit+credit;
-												}
-												
-												if(CMSConstants.ENGLISHMAINCOURSEIDS.contains(ugcourseid)){
-													if(detailMarkBO.getAdmSubjectForRank().getGroupName().equalsIgnoreCase("Core") && (detailMarkBO.getAdmSubjectForRank().getId()==240 || detailMarkBO.getAdmSubjectForRank().getId()==443)){
-													language1Mark=Double.parseDouble(detailMarkBO.getObtainedmark());
-													credit=Double.parseDouble(detailMarkBO.getMaxmark());
-												}
-												}else{
-													//lang1 mark
-													if(detailMarkBO.getAdmSubjectForRank().getGroupName().equalsIgnoreCase("Common") && detailMarkBO.getAdmSubjectForRank().getName().equalsIgnoreCase("English")){
-														language1Mark=Double.parseDouble(detailMarkBO.getConversionmark());
-														credit=Double.parseDouble(detailMarkBO.getCredit());
-														language1MarkforStore=Double.parseDouble(detailMarkBO.getConversionmark());
-														totalmarklanguage = Double.parseDouble("4");
-													}
-												}
-												
-												//lang1 mark
-												if(detailMarkBO.getAdmSubjectForRank().getGroupName().equalsIgnoreCase("Common") && detailMarkBO.getAdmSubjectForRank().getName().equalsIgnoreCase("English")){
-													language1MarkforStore=Double.parseDouble(detailMarkBO.getConversionmark());
-												}
-												//lang2 mark
-												if(detailMarkBO.getAdmSubjectForRank().getGroupName().equalsIgnoreCase("Common") && !detailMarkBO.getAdmSubjectForRank().getName().equalsIgnoreCase("English")){
-													language2Mark=Double.parseDouble(detailMarkBO.getObtainedmark());
-												}
-												
-			                        	   }
-			                        	   		
-			                        	   
-			                        	   		if(CMSConstants.ENGLISHVOCCOURSEIDS.contains(ugcourseid)){
-			                        	   			eligiblemark=obtainedCGPA_MARK;
-			                        	   			credit=totalCGPA_MARK;
-			                        	   		}
-			                        	   		else if(CMSConstants.ENGLISHMAINCOURSEIDS.contains(ugcourseid) && language1Mark!=0){
-												eligiblemark=language1Mark;
-			                        	   		}
-			                        	   		else if(CMSConstants.ENGLISHELIGIBLECOURSEIDS.contains(ugcourseid)){
-													
-													if(!iskerala) {
-														if(isCalicut) {
-															comparisonMark = (totalcgpa/totalcredit);
-															if(comparisonMark >= language1MarkforStore) {
-																eligiblemark = comparisonMark;
-															}
-															else {
-																eligiblemark = language1MarkforStore;
-															}
-														}
-														else {
-															comparisonMark = (totalcgpa/totalcredit)*25;
-															if(comparisonMark<((language1Mark/totalmarklanguage)*100)) {
-																eligiblemark = (language1Mark/totalmarklanguage)*100;
-															}
-															else {
-																eligiblemark = comparisonMark;
-															}
-														}
-													}
-													else {
-														if(obtainedCGPA_MARK<language1Mark){
-															eligiblemark=language1Mark;
-														}else{
-															eligiblemark=obtainedCGPA_MARK;
-														}
-													}
-												}
-			                        	   		else if(ugcourseid == 20 || ugcourseid == 173) {
-			                        	   			eligiblemark = obtainedCGPA_MARK;
-			                        	   		}
-			                        	   		else{
-													eligiblemark=language1Mark;
-												}
-												
-												if(CMSConstants.ENGLISHALLCOURSEIDS.contains(ugcourseid)){
-													
-													if(admAppln.getPersonalData().getReligionSection()!=null && (admAppln.getPersonalData().getReligionSection().getId()==2 || admAppln.getPersonalData().getReligionSection().getId()==3)){
-														if(totalmark>=1.5){
-															eligibility=true;
-														}
-													}else if(admAppln.getPersonalData().getIsHandicapped()!=null && admAppln.getPersonalData().getIsHandicapped()){
-														if(totalmark>=(1.8-((4*5)/100))){
-															eligibility=true;
-														}
-													}else if(admAppln.getPersonalData().getCaste()!=null && admAppln.getPersonalData().getCaste().getId()==2){
-														if(totalmark>=(1.8-((4*2)/100))){
-															eligibility=true;
-														}
-													}else if(totalmark>=1.8){
-														eligibility=true;
-													}
-													
-												}else{
-													if(credit>=19){
-														eligibility=true;
-													}
-												}
-												
-												
-												if(eligibility){
-													remark="Eligible";
-														if(CMSConstants.ENGLISHVOCCOURSEIDS.contains(ugcourseid)){
-														 total=(eligiblemark/totalCGPA_MARK)*100;
-														 total=total+((total*5)/100);
-														}
-													 	else if(CMSConstants.ENGLISHMAINCOURSEIDS.contains(ugcourseid) && language1Mark!=0){
-					                        			   total=(eligiblemark/credit)*100;
-					                        			   total=total+((total*5)/100);
-														}
-													 	else if(ugcourseid == 173) {
-													 		if(iskerala){
-													 			total = ((obtainedCGPA_MARK+5)/100)*5;
-													 			extraPrecenttotal = (total * 0.05);
-													 			if(extraPrecenttotal > 40) {
-													 				extraPrecenttotal = 40;
-														 		}
-													 			total += extraPrecenttotal;
-													 		}
-													 		else {
-													 			if(isCalicut) {
-													 				if(outOfFour) 
-													 					total = eligiblemark * 25;
-													 				else if(outOfSix)
-													 					total = (eligiblemark * 100) / 4;
-													 				total += (total * 5) / 100;
-													 			}
-													 			else {
-													 				total = ((obtainedCGPA_MARK)/100)*5;
-													 			}
-													 		}
-													 		if(total > 40) {
-													 			total = 40;
-													 		}
-													 	}
-													 	else {
-													 		if(!iskerala){
-													 			if(isCalicut) {
-													 				if(outOfFour) 
-													 					total = eligiblemark * 25;
-													 				else if(outOfSix)
-													 					total = (eligiblemark * 100) / 4;
-													 				total = (total / 10) * 100;
-													 				total += (total * 5) / 100;
-													 			}
-													 			else {
-													 				total=(eligiblemark/totalCGPA_MARK)*10;
-													 			}
-													 		}
-													 		else {
-													 			total=(eligiblemark/totalCGPA_MARK)*100;
-													 		}
-														}
-														
-														if(!isCalicut && CMSConstants.ENGLISHELIGIBLECOURSEIDS.contains(ugcourseid)){
-															total=total+((total*5)/100);
-														}
-													
-														if(!isCalicut && ugcourseid == 20) {
-															
-															if(iskerala)
-																total += total * 0.05;
-															else
-																total += total * 0.5;
-														}
-														
-														
-														
-														total=(total*1000)/100;
-														
-														if(iskerala && ugcourseid != 173){
-															 total=total+50;
-														}
-														total=total+bonus-penalty;
-												}
-												
-			                        	   
-		                        	
-		                        	}
-	                        	  
-	                        	   
-		                        	   else if(ugPattern.equalsIgnoreCase("CBCSS NEW")){
-		                        		   
-		                        		   totalmark=(Double.parseDouble(ednQualificationBO.getMarksObtained().toString())/Double.parseDouble(ednQualificationBO.getTotalMarks().toString()))*10;
-		              					 
-		                        		   Iterator<AdmSubjectMarkForRank> markItr=detailMarks.iterator();
-		                        		   while (markItr.hasNext()) {
-												detailMarkBO= (AdmSubjectMarkForRank) markItr.next();
-												if(Double.parseDouble(detailMarkBO.getMaxmark()) == 4) {
-													outOfFour = true;
-												}
-												else if(Double.parseDouble(detailMarkBO.getMaxmark()) == 6) {
-													outOfSix = true;
-												}
-												if(CMSConstants.ENGLISHELIGIBLECOURSEIDS.contains(ugcourseid) &&
-												   (detailMarkBO.getAdmSubjectForRank().getGroupName().equalsIgnoreCase("Core") || 
-													detailMarkBO.getAdmSubjectForRank().getGroupName().equalsIgnoreCase("Complementary") )){
-																
-													cgpa=Double.parseDouble(detailMarkBO.getConversionmark());
-													credit=Double.parseDouble(detailMarkBO.getCredit());
-													mult=cgpa*credit;
-													totalcgpa=totalcgpa+mult;
-													totalcredit=totalcredit+credit;
-												}
-												
-												if(CMSConstants.ENGLISHMAINCOURSEIDS.contains(ugcourseid)){
-													if(detailMarkBO.getAdmSubjectForRank().getGroupName().equalsIgnoreCase("Core") && (detailMarkBO.getAdmSubjectForRank().getId()==240 || detailMarkBO.getAdmSubjectForRank().getId()==443)){
-													language1Mark=Double.parseDouble(detailMarkBO.getObtainedmark());
-													credit=Double.parseDouble(detailMarkBO.getMaxmark());
-												}
-												}else{
-													//lang1 mark
-													if(detailMarkBO.getAdmSubjectForRank().getGroupName().equalsIgnoreCase("Common") && detailMarkBO.getAdmSubjectForRank().getName().equalsIgnoreCase("English")){
-														language1Mark=Double.parseDouble(detailMarkBO.getConversionmark());
-														credit=Double.parseDouble(detailMarkBO.getCredit());
-														language1MarkforStore=Double.parseDouble(detailMarkBO.getConversionmark());
-														totalmarklanguage = Double.parseDouble("4");
-													}
-												}
-												
-												//lang1 mark
-												if(detailMarkBO.getAdmSubjectForRank().getGroupName().equalsIgnoreCase("Common") && detailMarkBO.getAdmSubjectForRank().getName().equalsIgnoreCase("English")){
-													language1MarkforStore=Double.parseDouble(detailMarkBO.getConversionmark());
-												}
-												//lang2 mark
-												if(detailMarkBO.getAdmSubjectForRank().getGroupName().equalsIgnoreCase("Common") && !detailMarkBO.getAdmSubjectForRank().getName().equalsIgnoreCase("English")){
-													language2Mark=Double.parseDouble(detailMarkBO.getObtainedmark());
-												}
-												
-			                        	   }
-		                        		   
-		                        		   if(CMSConstants.ENGLISHVOCCOURSEIDS.contains(ugcourseid)){
-		                        			   eligiblemark=obtainedCGPA_MARK;
-		                        			   credit=totalCGPA_MARK;
-											}
-		                        		   else if(CMSConstants.ENGLISHMAINCOURSEIDS.contains(ugcourseid) && language1Mark!=0){
-												eligiblemark=language1Mark;
-											}
-		                        		   else if(CMSConstants.ENGLISHELIGIBLECOURSEIDS.contains(ugcourseid)){
-		                        			   
-		                        			   if(!iskerala) {
-		                        				   if(isCalicut) {
-		                        					   comparisonMark = (totalcgpa/totalcredit);
-		                        					   if(comparisonMark >= language1MarkforStore) {
-		                        						   eligiblemark = comparisonMark;
-		                        					   }
-		                        					   else {
-		                        						   eligiblemark = language1MarkforStore;
-		                        					   }
-		                        				   }
-		                        				   else {
-		                        					   comparisonMark = (totalcgpa/totalcredit)*25;
-		                        					   if(comparisonMark<((language1Mark/totalmarklanguage)*100)) {
-		                        						   eligiblemark = (language1Mark/totalmarklanguage)*100;
-		                        					   }
-		                        					   else {
-		                        						   eligiblemark = comparisonMark;
-		                        					   }
-		                        				   }
-		                        			   }
-		                        			   else {
-		                        				   if(obtainedCGPA_MARK<((language1Mark/totalmarklanguage)*10)){
-														eligiblemark=(language1Mark/totalmarklanguage)*10;
-													}else{
-														eligiblemark=obtainedCGPA_MARK;
-													}
-		                        			   }
-												
-											}
-		                        		   else if(ugcourseid == 20 || ugcourseid == 173) {
-		                        	   			eligiblemark = obtainedCGPA_MARK;
-		                        	   		}
-		                        		   else{
-												eligiblemark=language1Mark;
-											}
-											
-											
-											if(CMSConstants.ENGLISHALLCOURSEIDS.contains(ugcourseid)){
-												
-											if(admAppln.getPersonalData().getReligionSection()!=null && (admAppln.getPersonalData().getReligionSection().getId()==2 || admAppln.getPersonalData().getReligionSection().getId()==3)){
-												if(totalmark>=4){
-													eligibility=true;
-												}
-											}else if(admAppln.getPersonalData().getIsHandicapped()!=null && admAppln.getPersonalData().getIsHandicapped()){
-												if(totalmark>=4){
-													eligibility=true;
-												}
-											}else if(admAppln.getPersonalData().getCaste()!=null && admAppln.getPersonalData().getCaste().getId()==2){
-												if(totalmark>=4.3){
-													eligibility=true;
-												}
-											}else if(totalmark>=4.5){
-												eligibility=true;
-											}
-											}else{
-												if(credit>=19){
-													eligibility=true;
-												}
-											}
-											
-											
-											if(eligibility){
-												remark="Eligible";
-												 	if(CMSConstants.ENGLISHVOCCOURSEIDS.contains(ugcourseid)){
-													 total=(eligiblemark/totalCGPA_MARK)*100;
-													 total=total+((total*5)/100);
-													}
-												 	else if(CMSConstants.ENGLISHMAINCOURSEIDS.contains(ugcourseid) && language1Mark!=0){
-				                        			   total=(eligiblemark/credit)*100;
-				                        			   total=total+((total*5)/100);
-													}
-												 	else if(ugcourseid == 173) {
-												 		if(iskerala){
-												 			total = ((obtainedCGPA_MARK+5)/100)*5;
-												 			extraPrecenttotal = (total * 0.05);
-												 			if(extraPrecenttotal > 40) {
-												 				extraPrecenttotal = 40;
-													 		}
-												 			total += extraPrecenttotal;
-												 		}
-												 		else {
-												 			if(isCalicut) {
-												 				if(outOfFour) 
-												 					total = eligiblemark * 25;
-												 				else if(outOfSix)
-												 					total = (eligiblemark * 100) / 4;
-												 				total += (total * 5) / 100;
-												 			}
-												 			else {
-												 				total = ((obtainedCGPA_MARK)/100)*5;
-												 			}
-												 		}
-												 		if(total > 40) {
-												 			total = 40;
-												 		}
-												 	}
-												 	else {
-												 		if(!iskerala){
-												 			if(isCalicut) {
-												 				if(outOfFour)
-												 					total = eligiblemark * 25;
-												 				else if(outOfSix)
-												 					total = (eligiblemark * 100) / 4;
-												 				total += (total * 5) / 100;
-												 			}
-												 			else {
-												 				total=(eligiblemark/totalCGPA_MARK)*10;
-												 				if(ugcourseid==160){
-												 					total=(eligiblemark/totalCGPA_MARK)*100;	
-												 				}
-												 			}
-												 		}
-												 		else {
-												 			total=(eligiblemark/totalCGPA_MARK)*100;
-												 		}
-												 	}
-													
-													
-													if(!isCalicut && CMSConstants.ENGLISHELIGIBLECOURSEIDS.contains(ugcourseid)){
-													total=total+((total*5)/100);
-													}
-													
-													if(!isCalicut && ugcourseid == 20) {
-														
-														if(iskerala)
-															total += total * 0.05;
-														else
-															total += total * 0.5;
-													}
-												
-													
-													
-													total=(total*1000)/100;
-													
-													if(iskerala && ugcourseid != 173){
-														total=total+50;
-													}
-													total=total+bonus-penalty;
-											}
-											
-		                        	   
-		                        	   
-		                        	   
-		                        	   }
-			                        	  
-		                        	   else if(ugPattern.equalsIgnoreCase("OTHER")){
-		                        		   		                        	  
-		                        		   
-		                        		   Iterator<AdmSubjectMarkForRank> markItr=detailMarks.iterator();
-		                        		   while (markItr.hasNext()) {
-												detailMarkBO= (AdmSubjectMarkForRank) markItr.next();
-												
-												if(CMSConstants.ENGLISHELIGIBLECOURSEIDS.contains(ugcourseid) &&
-												   (detailMarkBO.getAdmSubjectForRank().getGroupName().equalsIgnoreCase("Core") || 
-													detailMarkBO.getAdmSubjectForRank().getGroupName().equalsIgnoreCase("Complementary") )){
-																		
-														cgpa=Double.parseDouble(detailMarkBO.getObtainedmark());
-														credit=Double.parseDouble(detailMarkBO.getMaxmark());														
-														totalcgpa=totalcgpa+cgpa;
-														totalcredit=totalcredit+credit;
-												}
-												
-												if(CMSConstants.ENGLISHMAINCOURSEIDS.contains(ugcourseid)){
-													if(detailMarkBO.getAdmSubjectForRank().getGroupName().equalsIgnoreCase("Core") && (detailMarkBO.getAdmSubjectForRank().getId()==240 || detailMarkBO.getAdmSubjectForRank().getId()==443)){
-														language1Mark=Double.parseDouble(detailMarkBO.getObtainedmark());
-														credit=Double.parseDouble(detailMarkBO.getMaxmark());
-												}
-												}
-												
-												else{
-													//lang1 mark
-													if(detailMarkBO.getAdmSubjectForRank().getGroupName().equalsIgnoreCase("Common") && detailMarkBO.getAdmSubjectForRank().getName().equalsIgnoreCase("English")){
-														language1Mark=Double.parseDouble(detailMarkBO.getObtainedmark());
-														totalmarklanguage=Double.parseDouble(detailMarkBO.getMaxmark());
-														language1MarkforStore=Double.parseDouble(detailMarkBO.getObtainedmark());
-														totalmarklanguage = Double.parseDouble(detailMarkBO.getMaxmark());
-													}
-												}
-												
-												//lang1 mark
-												if(detailMarkBO.getAdmSubjectForRank().getGroupName().equalsIgnoreCase("Common") && detailMarkBO.getAdmSubjectForRank().getName().equalsIgnoreCase("English")){
-													language1MarkforStore=Double.parseDouble(detailMarkBO.getObtainedmark());
-												}
-												//lang2 mark
-												if(detailMarkBO.getAdmSubjectForRank().getGroupName().equalsIgnoreCase("Common") && !detailMarkBO.getAdmSubjectForRank().getName().equalsIgnoreCase("English")){
-													language2Mark=Double.parseDouble(detailMarkBO.getObtainedmark());
-												}
-												
-			                        	   }
-		                        		   
-		                        		   if(CMSConstants.ENGLISHVOCCOURSEIDS.contains(ugcourseid)){
-		                        			   eligiblemark=obtainedCGPA_MARK;
-		                        			   credit=totalCGPA_MARK;
-											}
-		                        		   else if(CMSConstants.ENGLISHMAINCOURSEIDS.contains(ugcourseid) && language1Mark!=0){
-												eligiblemark=language1Mark;
-											}
-		                        		   else if(CMSConstants.ENGLISHELIGIBLECOURSEIDS.contains(ugcourseid) && language1Mark!=0){
-												
-		                        			   if(!iskerala) {
-		                        				   comparisonMark = (totalcgpa/totalcredit)*100;
-		                        				   if(comparisonMark < (language1Mark/totalmarklanguage)*100) {
-		                        					   eligiblemark = (language1Mark/totalmarklanguage)*100;
-		                        				   }
-		                        				   else {
-		                        					   eligiblemark = comparisonMark;
-		                        				   }
-		                        			   }
-		                        			   else {
-		                        				   language1Mark=(language1Mark*100)/totalmarklanguage;
-													obtainedCGPA_MARK=(obtainedCGPA_MARK*100)/totalCGPA_MARK;
-													if(obtainedCGPA_MARK<language1Mark){
-														eligiblemark=language1Mark;
-													}else{
-														eligiblemark=obtainedCGPA_MARK;
-													}   
-		                        			   }
-												
-											}
-		                        		   else if(ugcourseid == 20 || ugcourseid == 173) {
-		                        	   			eligiblemark = obtainedCGPA_MARK;
-		                        	   		}
-		                        		   else{
-												if(totalmarklanguage >= 300) {
-													if(language1Mark!=0){
-														eligiblemark=language1Mark/totalmarklanguage;
-													}else{
-														eligiblemark=obtainedCGPA_MARK;
-													}
-												}												
-											}
-											
-											
-											if(CMSConstants.ENGLISHALLCOURSEIDS.contains(ugcourseid)){
-												
-												if(admAppln.getPersonalData().getReligionSection()!=null && (admAppln.getPersonalData().getReligionSection().getId()==2 || admAppln.getPersonalData().getReligionSection().getId()==3)){
-													if(percentage>=35){
-														eligibility=true;
-													}
-												}else if(admAppln.getPersonalData().getIsHandicapped()!=null && admAppln.getPersonalData().getIsHandicapped()){
-													if(percentage>=(45-((100*5)/100))){
-														eligibility=true;
-													}
-												}else if(admAppln.getPersonalData().getCaste()!=null && admAppln.getPersonalData().getCaste().getId()==2){
-													if(percentage>=(45-((100*2)/100))){
-														eligibility=true;
-													}
-												}else if(percentage>=45){
-													eligibility=true;
-												}
-												
-											}else{
-												if((totalmarklanguage >= 300) && (((language1Mark/totalmarklanguage)*100)>=50)){
-													eligibility=true;
-												}
-											}
-												
-											
-											
-											if(eligibility){
-												
-													
-												remark="Eligible";
-												
-												if(CMSConstants.ENGLISHVOCCOURSEIDS.contains(ugcourseid)){
-													 total=(eligiblemark/totalCGPA_MARK)*100;
-													 total=total+((total*5)/100);
-												}
-				                        		else if(CMSConstants.ENGLISHMAINCOURSEIDS.contains(ugcourseid) && language1Mark!=0){
-				                        			   total=(eligiblemark/credit)*100;
-				                        			   total=total+((total*5)/100);
-												}
-				                        		else if(CMSConstants.ENGLISHELIGIBLECOURSEIDS.contains(ugcourseid)){
-														total=(eligiblemark/100)*100;
-														total=total+((total*5)/100);
-												}
-				                        		else if(ugcourseid == 173) {
-											 		if(iskerala){
-											 			total = ((eligiblemark+5)/totalCGPA_MARK)*1000;
-											 			extraPrecenttotal = (total * 0.05);
-											 			if(extraPrecenttotal > 40) {
-											 				extraPrecenttotal = 40;
-												 		}
-											 			total += extraPrecenttotal;
-											 		}
-											 		else {
-											 			total = ((eligiblemark)/100)*5;
-											 		}											 		
-											 	}
-				                        		else{
-													if(language1Mark!=0){
-														total=(eligiblemark)*100;
-													}
-													else{
-														total=(eligiblemark/totalCGPA_MARK)*100;
-													}														
-												}
-												
-												if(ugcourseid == 20) {
-													
-													//	code needs to be added
-												}
-													
-													if(ugcourseid != 173) {
-														total = (total*1000)/100;
-													}
-													
-													if(iskerala && ugcourseid != 173){
-														 total=total+50;
-													}
-													
-													total=total+bonus-penalty;
-											}
-											
-		                        	   
-		                        	   
-		                        	   
-		                        	   
-		                        	   
-		                        	   
-		                        	   }
-		                        	   
-	                        	   // adding indexmark object
-	                        	   StudentIndexMark si=new StudentIndexMark();
-									
-									AdmAppln appln=new AdmAppln();
-									appln.setId(admAppln.getId());
-									si.setAdmAppln(appln);
-									Course course=new Course();
-									course.setId(candidatePreference.getCourse().getId());
-									si.setCourse(course);
-									
-									si.setIndexMark(Double.parseDouble(twoDForm.format(total)));
-									si.setRemark(remark);
-									si.setCreatedDate(new Date());
-									si.setLastModifiedDate(new Date());
-									si.setCreatedBy(form.getUserId());
-									si.setModifiedBy(form.getUserId());		
-
-									si.setLanguage1Marks(language1MarkforStore);
-									si.setLanguage2Marks(language2Mark);
-									si.setGroupMarks(groupMarks);
-									si.setElectivesubmark(electiveSubjectMark);
-									si.setActive(true);
-									si.setPrefNo(candidatePreference.getPrefNo());
-									si.setGenerateCourseId(Integer.parseInt(form.getCourseId()));
-									
-									indexmarkList.add(si);
-								
-	                        	   
-						}
+ 									Session session = null;
+                                final Map<Integer, String> eligMap = new HashMap<Integer, String>();
+                                session = HibernateUtil.getSession();
+                                final String str = "select p.uGCoursesBO.id, p.uGCoursesBO.name from PgAdmSubjectForRank p where p.course.id=" + candidatePreference.getCourse().getId();
+                                final Query query = session.createQuery(str);
+                                final List<Object[]> list = (List<Object[]>)query.list();
+                                for (final Object[] objects : list) {
+                                    eligMap.put(Integer.parseInt(objects[0].toString()), objects[1].toString());
+                                }
+                                session.flush();
+                                final double maxmark = 0.0;
+                                double language1Mark = 0.0;
+                                double language2Mark = 0.0;
+                                final double groupMarks = 0.0;
+                                final double electiveSubjectMark = 0.0;
+                                final double cgpamarks = 0.0;
+                                final double extramark = 0.0;
+                                double cgpa = 0.0;
+                                double credit = 0.0;
+                                double mult = 0.0;
+                                double totalcredit = 0.0;
+                                double totalcgpa = 0.0;
+                                final double langperc = 0.0;
+                                final double coremarks = 0.0;
+                                eligibility = false;
+                                final double maxcoremark = 0.0;
+                                final double convmark1 = 0.0;
+                                final double convmark2 = 0.0;
+                                final double conversionmark = 0.0;
+                                final double complmark = 0.0;
+                                final double totalmark2 = 0.0;
+                                double eligiblemark = 0.0;
+                                remark = "not Eligible";
+                                double totalmarklanguage = 0.0;
+                                double language1MarkforStore = 0.0;
+                                double extraPrecenttotal = 0.0;
+                                double comparisonMark = 0.0;
+                                boolean outOfFour = false;
+                                boolean outOfSix = false;
+                                if (ugPattern.equalsIgnoreCase("CBCSS")) {
+                                    final Iterator<AdmSubjectMarkForRank> markItr2 = detailMarks.iterator();
+                                    while (markItr2.hasNext()) {
+                                        detailMarkBO = markItr2.next();
+                                        if (Double.parseDouble(detailMarkBO.getMaxmark()) == 4.0) {
+                                            outOfFour = true;
+                                        }
+                                        else if (Double.parseDouble(detailMarkBO.getMaxmark()) == 6.0) {
+                                            outOfSix = true;
+                                        }
+                                        if (CMSConstants.ENGLISHELIGIBLECOURSEIDS.contains(ugcourseid) && (detailMarkBO.getAdmSubjectForRank().getGroupName().equalsIgnoreCase("Core") || detailMarkBO.getAdmSubjectForRank().getGroupName().equalsIgnoreCase("Complementary"))) {
+                                            cgpa = Double.parseDouble(detailMarkBO.getConversionmark());
+                                            credit = Double.parseDouble(detailMarkBO.getCredit());
+                                            mult = cgpa * credit;
+                                            totalcgpa += mult;
+                                            totalcredit += credit;
+                                        }
+                                        if (CMSConstants.ENGLISHMAINCOURSEIDS.contains(ugcourseid)) {
+                                            if (detailMarkBO.getAdmSubjectForRank().getGroupName().equalsIgnoreCase("Core") && (detailMarkBO.getAdmSubjectForRank().getId() == 240 || detailMarkBO.getAdmSubjectForRank().getId() == 443)) {
+                                                language1Mark = Double.parseDouble(detailMarkBO.getObtainedmark());
+                                                credit = Double.parseDouble(detailMarkBO.getMaxmark());
+                                            }
+                                        }
+                                        else if (detailMarkBO.getAdmSubjectForRank().getGroupName().equalsIgnoreCase("Common") && detailMarkBO.getAdmSubjectForRank().getName().equalsIgnoreCase("English")) {
+                                            language1Mark = Double.parseDouble(detailMarkBO.getConversionmark());
+                                            credit = Double.parseDouble(detailMarkBO.getCredit());
+                                            language1MarkforStore = Double.parseDouble(detailMarkBO.getConversionmark());
+                                            totalmarklanguage = Double.parseDouble("4");
+                                        }
+                                        if (detailMarkBO.getAdmSubjectForRank().getGroupName().equalsIgnoreCase("Common") && detailMarkBO.getAdmSubjectForRank().getName().equalsIgnoreCase("English")) {
+                                            language1MarkforStore = Double.parseDouble(detailMarkBO.getConversionmark());
+                                        }
+                                        if (detailMarkBO.getAdmSubjectForRank().getGroupName().equalsIgnoreCase("Common") && !detailMarkBO.getAdmSubjectForRank().getName().equalsIgnoreCase("English")) {
+                                            language2Mark = Double.parseDouble(detailMarkBO.getObtainedmark());
+                                        }
+                                    }
+                                    if (CMSConstants.ENGLISHVOCCOURSEIDS.contains(ugcourseid)) {
+                                        eligiblemark = obtainedCGPA_MARK;
+                                        credit = totalCGPA_MARK;
+                                    }
+                                    else if (CMSConstants.ENGLISHMAINCOURSEIDS.contains(ugcourseid) && language1Mark != 0.0) {
+                                        eligiblemark = language1Mark;
+                                    }
+                                    else if (CMSConstants.ENGLISHELIGIBLECOURSEIDS.contains(ugcourseid)) {
+                                        if (!iskerala) {
+                                            if (isCalicut) {
+                                                comparisonMark = totalcgpa / totalcredit;
+                                                if (comparisonMark >= language1MarkforStore) {
+                                                    eligiblemark = comparisonMark;
+                                                }
+                                                else {
+                                                    eligiblemark = language1MarkforStore;
+                                                }
+                                            }
+                                            else {
+                                                comparisonMark = totalcgpa / totalcredit * 25.0;
+                                                if (comparisonMark < language1Mark / totalmarklanguage * 100.0) {
+                                                    eligiblemark = language1Mark / totalmarklanguage * 100.0;
+                                                }
+                                                else {
+                                                    eligiblemark = comparisonMark;
+                                                }
+                                            }
+                                        }
+                                        else if (obtainedCGPA_MARK < language1Mark) {
+                                            eligiblemark = language1Mark;
+                                        }
+                                        else {
+                                            eligiblemark = obtainedCGPA_MARK;
+                                        }
+                                    }
+                                    else if (ugcourseid == 20 || ugcourseid == 173) {
+                                        eligiblemark = obtainedCGPA_MARK;
+                                    }
+                                    else {
+                                        eligiblemark = language1Mark;
+                                    }
+                                    if (CMSConstants.ENGLISHALLCOURSEIDS.contains(ugcourseid)) {
+                                        if (admAppln.getPersonalData().getReligionSection() != null && (admAppln.getPersonalData().getReligionSection().getId() == 2 || admAppln.getPersonalData().getReligionSection().getId() == 3)) {
+                                            if (totalmark >= 1.5) {
+                                                eligibility = true;
+                                            }
+                                        }
+                                        else if (admAppln.getPersonalData().getIsHandicapped() != null && admAppln.getPersonalData().getIsHandicapped()) {
+                                            if (totalmark >= 1.8) {
+                                                eligibility = true;
+                                            }
+                                        }
+                                        else if (admAppln.getPersonalData().getCaste() != null && admAppln.getPersonalData().getCaste().getId() == 2) {
+                                            if (totalmark >= 1.8) {
+                                                eligibility = true;
+                                            }
+                                        }
+                                        else if (totalmark >= 1.8) {
+                                            eligibility = true;
+                                        }
+                                    }
+                                    else if (credit >= 19.0) {
+                                        eligibility = true;
+                                    }
+                                    if (eligibility) {
+                                        remark = "Eligible";
+                                        if (CMSConstants.ENGLISHVOCCOURSEIDS.contains(ugcourseid)) {
+                                            total = eligiblemark / totalCGPA_MARK * 100.0;
+                                            total += total * 5.0 / 100.0;
+                                        }
+                                        else if (CMSConstants.ENGLISHMAINCOURSEIDS.contains(ugcourseid) && language1Mark != 0.0) {
+                                            total = eligiblemark / credit * 100.0;
+                                            total += total * 5.0 / 100.0;
+                                        }
+                                        else if (ugcourseid == 173) {
+                                            if (iskerala) {
+                                                total = (obtainedCGPA_MARK + 5.0) / 100.0 * 5.0;
+                                                extraPrecenttotal = total * 0.05;
+                                                if (extraPrecenttotal > 40.0) {
+                                                    extraPrecenttotal = 40.0;
+                                                }
+                                                total += extraPrecenttotal;
+                                            }
+                                            else if (isCalicut) {
+                                                if (outOfFour) {
+                                                    total = eligiblemark * 25.0;
+                                                }
+                                                else if (outOfSix) {
+                                                    total = eligiblemark * 100.0 / 4.0;
+                                                }
+                                                total += total * 5.0 / 100.0;
+                                            }
+                                            else {
+                                                total = obtainedCGPA_MARK / 100.0 * 5.0;
+                                            }
+                                            if (total > 40.0) {
+                                                total = 40.0;
+                                            }
+                                        }
+                                        else if (!iskerala) {
+                                            if (isCalicut) {
+                                                if (outOfFour) {
+                                                    total = eligiblemark * 25.0;
+                                                }
+                                                else if (outOfSix) {
+                                                    total = eligiblemark * 100.0 / 4.0;
+                                                }
+                                                total = total / 10.0 * 100.0;
+                                                total += total * 5.0 / 100.0;
+                                            }
+                                            else {
+                                                total = eligiblemark / totalCGPA_MARK * 10.0;
+                                            }
+                                        }
+                                        else {
+                                            total = eligiblemark / totalCGPA_MARK * 100.0;
+                                        }
+                                        if (!isCalicut && CMSConstants.ENGLISHELIGIBLECOURSEIDS.contains(ugcourseid)) {
+                                            total += total * 5.0 / 100.0;
+                                        }
+                                        if (!isCalicut && ugcourseid == 20) {
+                                            if (iskerala) {
+                                                total += total * 0.05;
+                                            }
+                                            else {
+                                                total += total * 0.5;
+                                            }
+                                        }
+                                        total = total * 1000.0 / 100.0;
+                                        if (iskerala && ugcourseid != 173) {
+                                            total += 50.0;
+                                        }
+                                        total = total + bonus - penalty;
+                                    }
+                                }
+                                else if (ugPattern.equalsIgnoreCase("CBCSS NEW")) {
+                                    totalmark = Double.parseDouble(ednQualificationBO.getMarksObtained().toString()) / Double.parseDouble(ednQualificationBO.getTotalMarks().toString()) * 10.0;
+                                    final Iterator<AdmSubjectMarkForRank> markItr2 = detailMarks.iterator();
+                                    while (markItr2.hasNext()) {
+                                        detailMarkBO = markItr2.next();
+                                        if (Double.parseDouble(detailMarkBO.getMaxmark()) == 4.0) {
+                                            outOfFour = true;
+                                        }
+                                        else if (Double.parseDouble(detailMarkBO.getMaxmark()) == 6.0) {
+                                            outOfSix = true;
+                                        }
+                                        if (CMSConstants.ENGLISHELIGIBLECOURSEIDS.contains(ugcourseid) && (detailMarkBO.getAdmSubjectForRank().getGroupName().equalsIgnoreCase("Core") || detailMarkBO.getAdmSubjectForRank().getGroupName().equalsIgnoreCase("Complementary"))) {
+                                            cgpa = Double.parseDouble(detailMarkBO.getConversionmark());
+                                            credit = Double.parseDouble(detailMarkBO.getCredit());
+                                            mult = cgpa * credit;
+                                            totalcgpa += mult;
+                                            totalcredit += credit;
+                                        }
+                                        if (CMSConstants.ENGLISHMAINCOURSEIDS.contains(ugcourseid)) {
+                                            if (detailMarkBO.getAdmSubjectForRank().getGroupName().equalsIgnoreCase("Core") && (detailMarkBO.getAdmSubjectForRank().getId() == 240 || detailMarkBO.getAdmSubjectForRank().getId() == 443)) {
+                                                language1Mark = Double.parseDouble(detailMarkBO.getObtainedmark());
+                                                credit = Double.parseDouble(detailMarkBO.getMaxmark());
+                                            }
+                                        }
+                                        else if (detailMarkBO.getAdmSubjectForRank().getGroupName().equalsIgnoreCase("Common") && detailMarkBO.getAdmSubjectForRank().getName().equalsIgnoreCase("English")) {
+                                            language1Mark = Double.parseDouble(detailMarkBO.getConversionmark());
+                                            credit = Double.parseDouble(detailMarkBO.getCredit());
+                                            language1MarkforStore = Double.parseDouble(detailMarkBO.getConversionmark());
+                                            totalmarklanguage = Double.parseDouble("4");
+                                        }
+                                        if (detailMarkBO.getAdmSubjectForRank().getGroupName().equalsIgnoreCase("Common") && detailMarkBO.getAdmSubjectForRank().getName().equalsIgnoreCase("English")) {
+                                            language1MarkforStore = Double.parseDouble(detailMarkBO.getConversionmark());
+                                        }
+                                        if (detailMarkBO.getAdmSubjectForRank().getGroupName().equalsIgnoreCase("Common") && !detailMarkBO.getAdmSubjectForRank().getName().equalsIgnoreCase("English")) {
+                                            language2Mark = Double.parseDouble(detailMarkBO.getObtainedmark());
+                                        }
+                                    }
+                                    if (CMSConstants.ENGLISHVOCCOURSEIDS.contains(ugcourseid)) {
+                                        eligiblemark = obtainedCGPA_MARK;
+                                        credit = totalCGPA_MARK;
+                                    }
+                                    else if (CMSConstants.ENGLISHMAINCOURSEIDS.contains(ugcourseid) && language1Mark != 0.0) {
+                                        eligiblemark = language1Mark;
+                                    }
+                                    else if (CMSConstants.ENGLISHELIGIBLECOURSEIDS.contains(ugcourseid)) {
+                                        if (!iskerala) {
+                                            if (isCalicut) {
+                                                comparisonMark = totalcgpa / totalcredit;
+                                                if (comparisonMark >= language1MarkforStore) {
+                                                    eligiblemark = comparisonMark;
+                                                }
+                                                else {
+                                                    eligiblemark = language1MarkforStore;
+                                                }
+                                            }
+                                            else {
+                                                comparisonMark = totalcgpa / totalcredit * 25.0;
+                                                if (comparisonMark < language1Mark / totalmarklanguage * 100.0) {
+                                                    eligiblemark = language1Mark / totalmarklanguage * 100.0;
+                                                }
+                                                else {
+                                                    eligiblemark = comparisonMark;
+                                                }
+                                            }
+                                        }
+                                        else if (obtainedCGPA_MARK < language1Mark / totalmarklanguage * 10.0) {
+                                            eligiblemark = language1Mark / totalmarklanguage * 10.0;
+                                        }
+                                        else {
+                                            eligiblemark = obtainedCGPA_MARK;
+                                        }
+                                    }
+                                    else if (ugcourseid == 20 || ugcourseid == 173) {
+                                        eligiblemark = obtainedCGPA_MARK;
+                                    }
+                                    else {
+                                        eligiblemark = language1Mark;
+                                    }
+                                    if (CMSConstants.ENGLISHALLCOURSEIDS.contains(ugcourseid)) {
+                                        if (admAppln.getPersonalData().getReligionSection() != null && (admAppln.getPersonalData().getReligionSection().getId() == 2 || admAppln.getPersonalData().getReligionSection().getId() == 3)) {
+                                            if (totalmark >= 4.0) {
+                                                eligibility = true;
+                                            }
+                                        }
+                                        else if (admAppln.getPersonalData().getIsHandicapped() != null && admAppln.getPersonalData().getIsHandicapped()) {
+                                            if (totalmark >= 4.0) {
+                                                eligibility = true;
+                                            }
+                                        }
+                                        else if (admAppln.getPersonalData().getCaste() != null && admAppln.getPersonalData().getCaste().getId() == 2) {
+                                            if (totalmark >= 4.3) {
+                                                eligibility = true;
+                                            }
+                                        }
+                                        else if (totalmark >= 4.5) {
+                                            eligibility = true;
+                                        }
+                                    }
+                                    else if (credit >= 19.0) {
+                                        eligibility = true;
+                                    }
+                                    if (eligibility) {
+                                        remark = "Eligible";
+                                        if (CMSConstants.ENGLISHVOCCOURSEIDS.contains(ugcourseid)) {
+                                            total = eligiblemark / totalCGPA_MARK * 100.0;
+                                            total += total * 5.0 / 100.0;
+                                        }
+                                        else if (CMSConstants.ENGLISHMAINCOURSEIDS.contains(ugcourseid) && language1Mark != 0.0) {
+                                            total = eligiblemark / credit * 100.0;
+                                            total += total * 5.0 / 100.0;
+                                        }
+                                        else if (ugcourseid == 173) {
+                                            if (iskerala) {
+                                                total = (obtainedCGPA_MARK + 5.0) / 100.0 * 5.0;
+                                                extraPrecenttotal = total * 0.05;
+                                                if (extraPrecenttotal > 40.0) {
+                                                    extraPrecenttotal = 40.0;
+                                                }
+                                                total += extraPrecenttotal;
+                                            }
+                                            else if (isCalicut) {
+                                                if (outOfFour) {
+                                                    total = eligiblemark * 25.0;
+                                                }
+                                                else if (outOfSix) {
+                                                    total = eligiblemark * 100.0 / 4.0;
+                                                }
+                                                total += total * 5.0 / 100.0;
+                                            }
+                                            else {
+                                                total = obtainedCGPA_MARK / 100.0 * 5.0;
+                                            }
+                                            if (total > 40.0) {
+                                                total = 40.0;
+                                            }
+                                        }
+                                        else if (!iskerala) {
+                                            if (isCalicut) {
+                                                if (outOfFour) {
+                                                    total = eligiblemark * 25.0;
+                                                }
+                                                else if (outOfSix) {
+                                                    total = eligiblemark * 100.0 / 4.0;
+                                                }
+                                                total += total * 5.0 / 100.0;
+                                            }
+                                            else {
+                                                total = eligiblemark / totalCGPA_MARK * 10.0;
+                                                if (ugcourseid == 160) {
+                                                    total = eligiblemark / totalCGPA_MARK * 100.0;
+                                                }
+                                            }
+                                        }
+                                        else {
+                                            total = eligiblemark / totalCGPA_MARK * 100.0;
+                                        }
+                                        if (!isCalicut && CMSConstants.ENGLISHELIGIBLECOURSEIDS.contains(ugcourseid)) {
+                                        	if(ugcourseid==20){
+                                        		if (iskerala) {
+                                                 total += total * 0.05;
+	                                             }
+	                                             else {
+	                                                  total += total * 0.5;
+	                                             }
+                                        	}else{
+                                        		total += total * 5.0 / 100.0;
+                                        	}
+                                        }
+//                                        if (!isCalicut && ugcourseid == 20) {
+//                                            if (iskerala) {
+//                                                total += total * 0.05;
+//                                            }
+//                                            else {
+//                                                total += total * 0.5;
+//                                            }
+//                                        }
+                                        total = total * 1000.0 / 100.0;
+                                        if (iskerala && ugcourseid != 173) {
+                                            total += 50.0;
+                                        }
+                                        total = total + bonus - penalty;
+                                    }
+                                }
+                                else if (ugPattern.equalsIgnoreCase("OTHER")) {
+                                    final Iterator<AdmSubjectMarkForRank> markItr2 = detailMarks.iterator();
+                                    while (markItr2.hasNext()) {
+                                        detailMarkBO = markItr2.next();
+                                        if (CMSConstants.ENGLISHELIGIBLECOURSEIDS.contains(ugcourseid) && (detailMarkBO.getAdmSubjectForRank().getGroupName().equalsIgnoreCase("Core") || detailMarkBO.getAdmSubjectForRank().getGroupName().equalsIgnoreCase("Complementary"))) {
+                                            cgpa = Double.parseDouble(detailMarkBO.getObtainedmark());
+                                            credit = Double.parseDouble(detailMarkBO.getMaxmark());
+                                            totalcgpa += cgpa;
+                                            totalcredit += credit;
+                                        }
+                                        if (CMSConstants.ENGLISHMAINCOURSEIDS.contains(ugcourseid)) {
+                                            if (detailMarkBO.getAdmSubjectForRank().getGroupName().equalsIgnoreCase("Core") && (detailMarkBO.getAdmSubjectForRank().getId() == 240 || detailMarkBO.getAdmSubjectForRank().getId() == 443)) {
+                                                language1Mark = Double.parseDouble(detailMarkBO.getObtainedmark());
+                                                credit = Double.parseDouble(detailMarkBO.getMaxmark());
+                                            }
+                                        }
+                                        else if (detailMarkBO.getAdmSubjectForRank().getGroupName().equalsIgnoreCase("Common") && detailMarkBO.getAdmSubjectForRank().getName().equalsIgnoreCase("English")) {
+                                            language1Mark = Double.parseDouble(detailMarkBO.getObtainedmark());
+                                            totalmarklanguage = Double.parseDouble(detailMarkBO.getMaxmark());
+                                            language1MarkforStore = Double.parseDouble(detailMarkBO.getObtainedmark());
+                                            totalmarklanguage = Double.parseDouble(detailMarkBO.getMaxmark());
+                                        }
+                                        if (detailMarkBO.getAdmSubjectForRank().getGroupName().equalsIgnoreCase("Common") && detailMarkBO.getAdmSubjectForRank().getName().equalsIgnoreCase("English")) {
+                                            language1MarkforStore = Double.parseDouble(detailMarkBO.getObtainedmark());
+                                        }
+                                        if (detailMarkBO.getAdmSubjectForRank().getGroupName().equalsIgnoreCase("Common") && !detailMarkBO.getAdmSubjectForRank().getName().equalsIgnoreCase("English")) {
+                                            language2Mark = Double.parseDouble(detailMarkBO.getObtainedmark());
+                                        }
+                                    }
+                                    if (CMSConstants.ENGLISHVOCCOURSEIDS.contains(ugcourseid)) {
+                                        eligiblemark = obtainedCGPA_MARK;
+                                        credit = totalCGPA_MARK;
+                                    }
+                                    else if (CMSConstants.ENGLISHMAINCOURSEIDS.contains(ugcourseid) && language1Mark != 0.0) {
+                                        eligiblemark = language1Mark;
+                                    }
+                                    else if (CMSConstants.ENGLISHELIGIBLECOURSEIDS.contains(ugcourseid) && language1Mark != 0.0) {
+                                        if (!iskerala) {
+                                            comparisonMark = totalcgpa / totalcredit * 100.0;
+                                            if (comparisonMark < language1Mark / totalmarklanguage * 100.0) {
+                                                eligiblemark = language1Mark / totalmarklanguage * 100.0;
+                                            }
+                                            else {
+                                                eligiblemark = comparisonMark;
+                                            }
+                                        }
+                                        else {
+                                            language1Mark = language1Mark * 100.0 / totalmarklanguage;
+                                            obtainedCGPA_MARK = obtainedCGPA_MARK * 100.0 / totalCGPA_MARK;
+                                            if (obtainedCGPA_MARK < language1Mark) {
+                                                eligiblemark = language1Mark;
+                                            }
+                                            else {
+                                                eligiblemark = obtainedCGPA_MARK;
+                                            }
+                                        }
+                                    }
+                                    else if (ugcourseid == 20 || ugcourseid == 173) {
+                                        eligiblemark = obtainedCGPA_MARK;
+                                    }
+                                    else if (totalmarklanguage >= 300.0) {
+                                        if (language1Mark != 0.0) {
+                                            eligiblemark = language1Mark / totalmarklanguage;
+                                        }
+                                        else {
+                                            eligiblemark = obtainedCGPA_MARK;
+                                        }
+                                    }
+                                    if (CMSConstants.ENGLISHALLCOURSEIDS.contains(ugcourseid)) {
+                                        if (admAppln.getPersonalData().getReligionSection() != null && (admAppln.getPersonalData().getReligionSection().getId() == 2 || admAppln.getPersonalData().getReligionSection().getId() == 3)) {
+                                            if (percentage >= 35.0) {
+                                                eligibility = true;
+                                            }
+                                        }
+                                        else if (admAppln.getPersonalData().getIsHandicapped() != null && admAppln.getPersonalData().getIsHandicapped()) {
+                                            if (percentage >= 40.0) {
+                                                eligibility = true;
+                                            }
+                                        }
+                                        else if (admAppln.getPersonalData().getCaste() != null && admAppln.getPersonalData().getCaste().getId() == 2) {
+                                            if (percentage >= 43.0) {
+                                                eligibility = true;
+                                            }
+                                        }
+                                        else if (percentage >= 45.0) {
+                                            eligibility = true;
+                                        }
+                                    }
+                                    else if (totalmarklanguage >= 300.0 && language1Mark / totalmarklanguage * 100.0 >= 50.0) {
+                                        eligibility = true;
+                                    }
+                                    if (eligibility) {
+                                        remark = "Eligible";
+                                        if (CMSConstants.ENGLISHVOCCOURSEIDS.contains(ugcourseid)) {
+                                            total = eligiblemark / totalCGPA_MARK * 100.0;
+                                            total += total * 5.0 / 100.0;
+                                        }
+                                        else if (CMSConstants.ENGLISHMAINCOURSEIDS.contains(ugcourseid) && language1Mark != 0.0) {
+                                            total = eligiblemark / credit * 100.0;
+                                            total += total * 5.0 / 100.0;
+                                        }
+                                        else if (CMSConstants.ENGLISHELIGIBLECOURSEIDS.contains(ugcourseid)) {
+                                            total = eligiblemark / 100.0 * 100.0;
+                                            total += total * 5.0 / 100.0;
+                                        }
+                                        else if (ugcourseid == 173) {
+                                            if (iskerala) {
+                                                total = (eligiblemark + 5.0) / totalCGPA_MARK * 1000.0;
+                                                extraPrecenttotal = total * 0.05;
+                                                if (extraPrecenttotal > 40.0) {
+                                                    extraPrecenttotal = 40.0;
+                                                }
+                                                total += extraPrecenttotal;
+                                            }
+                                            else {
+                                                total = eligiblemark / 100.0 * 5.0;
+                                            }
+                                        }
+                                        else if (language1Mark != 0.0) {
+                                            total = eligiblemark * 100.0;
+                                        }
+                                        else {
+                                            total = eligiblemark / totalCGPA_MARK * 100.0;
+                                        }
+                                        if (ugcourseid != 173) {
+                                            total = total * 1000.0 / 100.0;
+                                        }
+                                        if (iskerala && ugcourseid != 173) {
+                                            total += 50.0;
+                                        }
+                                        total = total + bonus - penalty;
+                                    }
+                                }
+                                final StudentIndexMark si2 = new StudentIndexMark();
+                                final AdmAppln appln2 = new AdmAppln();
+                                appln2.setId(admAppln.getId());
+                                si2.setAdmAppln(appln2);
+                                final Course course2 = new Course();
+                                course2.setId(candidatePreference.getCourse().getId());
+                                si2.setCourse(course2);
+                                si2.setIndexMark(Double.valueOf(Double.parseDouble(twoDForm.format(total))));
+                                si2.setRemark(remark);
+                                si2.setCreatedDate(new Date());
+                                si2.setLastModifiedDate(new Date());
+                                si2.setCreatedBy(form.getUserId());
+                                si2.setModifiedBy(form.getUserId());
+                                si2.setLanguage1Marks(Double.valueOf(language1MarkforStore));
+                                si2.setLanguage2Marks(Double.valueOf(language2Mark));
+                                si2.setGroupMarks(Double.valueOf(groupMarks));
+                                si2.setElectivesubmark(Double.valueOf(electiveSubjectMark));
+                                si2.setActive(true);
+                                si2.setPrefNo(candidatePreference.getPrefNo());
+                                si2.setGenerateCourseId(Integer.valueOf(Integer.parseInt(form.getCourseId())));
+                                indexmarkList.add(si2);
+                                
+ 								}
                         
 							//MA Malayalam
 	                           //else if(candidatePreference.getCourse().getName().equalsIgnoreCase("MA Malayalam")){
@@ -1420,14 +1318,31 @@ public class ApplicationRankHelperforPg {
 				                        		   if(hasCoreMalayalam) {
 				                        			   coreMalayalamExtra += 10;
 				                        		   }
-				                        		   total = ((eligiblemark + coreMalayalamExtra) * 10);
-				                        		   if(hasCommonMalayalam) {
-				                        			   commonMalayalamExtra = (eligiblemark * 10) / 100;
-				                        		   }
-				                        		   
-				                        		   total += commonMalayalamExtra;
-				                        		  
-				                        		   total=total+bonus-penalty;
+//				                        		   total = ((eligiblemark + coreMalayalamExtra) * 10);
+//				                        		   if(hasCommonMalayalam) {
+//				                        			   commonMalayalamExtra = (eligiblemark * 10) / 100;
+//				                        		   }
+//				                        		   
+//				                        		   total += commonMalayalamExtra;
+//				                        		  
+//				                        		   total=total+bonus-penalty;
+//				                        		   
+				                        		   if(Double.parseDouble(ednQualificationBO.getTotalMarks().toString())==1000){
+					                       				total=Double.parseDouble(ednQualificationBO.getMarksObtained().toString());
+					                       			}else{
+					                       				total = (Double.parseDouble(ednQualificationBO.getMarksObtained().toString())/Double.parseDouble(ednQualificationBO.getTotalMarks().toString()))*1000;
+					                       			}
+				                        		   if(ugcourseid==176 || 
+				    			                      	   ugcourseid == 37 ||
+				    			                      		ugcourseid == 38 ||
+				    			                      		ugcourseid == 39 ||
+				    			                      		ugcourseid == 40 ||
+				    			                      		ugcourseid == 161 ||
+				    			                      		ugcourseid == 171 || 			                      	    
+				    			                      	   ugcourseid ==5){
+				    			                      		total=total+10;
+				    			                    }
+				                        		   total=total+bonus;
 				                        	   }
 			                        	   }
 			                        	   else if( ugPattern.equalsIgnoreCase("CBCSS NEW")){
@@ -1514,13 +1429,29 @@ public class ApplicationRankHelperforPg {
 				                        		   if(hasCoreMalayalam) {
 				                        			   coreMalayalamExtra += 10;
 				                        		   }
-				                        		   total = ((eligiblemark + coreMalayalamExtra) * 10);
-				                        		   if(hasCommonMalayalam) {
-				                        			   commonMalayalamExtra = (eligiblemark * 10) / 100;
-				                        		   }
-				                        		   
-				                        		   total += commonMalayalamExtra;
-				                        		   total=total+bonus-penalty;
+//				                        		   total = ((eligiblemark + coreMalayalamExtra) * 10);
+//				                        		   if(hasCommonMalayalam) {
+//				                        			   commonMalayalamExtra = (eligiblemark * 10) / 100;
+//				                        		   }
+//				                        		   
+//				                        		   total += commonMalayalamExtra;
+//				                        		   total=total+bonus-penalty;
+				                        		   if(Double.parseDouble(ednQualificationBO.getTotalMarks().toString())==1000){
+					                       				total=Double.parseDouble(ednQualificationBO.getMarksObtained().toString());
+					                       			}else{
+					                       				total = (Double.parseDouble(ednQualificationBO.getMarksObtained().toString())/Double.parseDouble(ednQualificationBO.getTotalMarks().toString()))*1000;
+					                       			}
+				                        		   if(ugcourseid==176 || 
+				    			                      	   ugcourseid == 37 ||
+				    			                      		ugcourseid == 38 ||
+				    			                      		ugcourseid == 39 ||
+				    			                      		ugcourseid == 40 ||
+				    			                      		ugcourseid == 161 ||
+				    			                      		ugcourseid == 171 || 			                      	    
+				    			                      	   ugcourseid ==5){
+				    			                      		total=total+10;
+				    			                    }
+				                        		   total=total+bonus;
 			                        		   }
 			                        		    
 			                        	   }
@@ -1568,20 +1499,35 @@ public class ApplicationRankHelperforPg {
 				                        	   }else if((ugcourseid==5 && percentage>=35) || (language2Mark!=0 && percentage>=35)){
 				                        		   eligibility=true;
 				                        	   }
-				                        	   if(eligibility){
-				                        		   remark="Eligible";
-				                        		   if(CMSConstants.MALAYALAMELIGIBLECOURSEIDS.contains(ugcourseid)){
-				                        			   total=total+((total*10)/100);
-				                        		   }
-				                        		   if(CMSConstants.MALAYALAMALLCOURSEIDS.contains(ugcourseid)){
-				                        			   total=(eligiblemark/100)*100;
-				                        			   total=total+10;
-				                        		   }else{
-				                        			   total=(eligiblemark/100)*100;
-				                        		   }
-				                        		   total=(total*1000)/100;
-				                        	   }
-				                        	   total=total+bonus-penalty; 
+//				                        	   if(eligibility){
+//				                        		   remark="Eligible";
+//				                        		   if(CMSConstants.MALAYALAMELIGIBLECOURSEIDS.contains(ugcourseid)){
+//				                        			   total=total+((total*10)/100);
+//				                        		   }
+//				                        		   if(CMSConstants.MALAYALAMALLCOURSEIDS.contains(ugcourseid)){
+//				                        			   total=(eligiblemark/100)*100;
+//				                        			   total=total+10;
+//				                        		   }else{
+//				                        			   total=(eligiblemark/100)*100;
+//				                        		   }
+//				                        		   total=(total*1000)/100;
+//				                        	   }
+				                        	   if(Double.parseDouble(ednQualificationBO.getTotalMarks().toString())==1000){
+				                       				total=Double.parseDouble(ednQualificationBO.getMarksObtained().toString());
+				                       			}else{
+				                       				total = (Double.parseDouble(ednQualificationBO.getMarksObtained().toString())/Double.parseDouble(ednQualificationBO.getTotalMarks().toString()))*1000;
+				                       			}
+				                        	   if(ugcourseid==176 || 
+			    			                      	   ugcourseid == 37 ||
+			    			                      		ugcourseid == 38 ||
+			    			                      		ugcourseid == 39 ||
+			    			                      		ugcourseid == 40 ||
+			    			                      		ugcourseid == 161 ||
+			    			                      		ugcourseid == 171 || 			                      	    
+			    			                      	   ugcourseid ==5){
+			    			                      		total=total+10;
+			    			                    }
+				                        	   total=total+bonus; 
 			                        	   } 
 			                        	   
 		                        	  
@@ -1707,8 +1653,31 @@ public class ApplicationRankHelperforPg {
 		                        						   electivecredit=Double.parseDouble(detailMarkBO.getCredit());
 		                        						   electiveSubjectMark=Double.parseDouble(detailMarkBO.getConversionmark());
 		                        					   }
+		                        					   
 		                        				   }
-
+		                        				   if((detailMarkBO.getAdmSubjectForRank().getGroupName().equalsIgnoreCase("Core")) || (candidatePreference.getCourse().getId()==32 &&
+		                        						   detailMarkBO.getAdmSubjectForRank().getGroupName().equalsIgnoreCase("Complementary"))){
+		                        					   if(candidatePreference.getCourse().getId()==32){
+		                        						   if((ugcourseid==76 || ugcourseid==139) && detailMarkBO.getAdmSubjectForRank().getId()==252){
+		                        							   eligibility=true;
+			                        						   coreelectiveSubjectMark=Double.parseDouble(detailMarkBO.getConversionmark())*Double.parseDouble(detailMarkBO.getCredit());
+			                        						   electivecredit=Double.parseDouble(detailMarkBO.getCredit());
+			                        						   electiveSubjectMark=Double.parseDouble(detailMarkBO.getConversionmark());
+		                        						   }else if(ugcourseid==116 || ugcourseid==127 || ugcourseid==117 || ugcourseid==128){
+		                        							   if(detailMarkBO.getAdmSubjectForRank().getGroupName().equalsIgnoreCase("Core")){
+		                        								   coreelectiveSubjectMark=Double.parseDouble(detailMarkBO.getConversionmark())*Double.parseDouble(detailMarkBO.getCredit());
+				                        						   electivecredit=Double.parseDouble(detailMarkBO.getCredit());
+				                        						   electiveSubjectMark=Double.parseDouble(detailMarkBO.getConversionmark());
+		                        							   }
+		                        							   if(detailMarkBO.getAdmSubjectForRank().getGroupName().equalsIgnoreCase("Complementary")){
+		                        								   if(detailMarkBO.getAdmSubjectForRank().getName().equalsIgnoreCase("Statistics")){
+				                        							   eligibility=true;
+				                        						   }
+		                        							   }
+		                        						   }
+		                        						   
+		                        					   }
+		                        				   }
 		                        				   //lang1 mark
 		                        				   if(detailMarkBO.getAdmSubjectForRank().getGroupName().equalsIgnoreCase("Common") && detailMarkBO.getAdmSubjectForRank().getName().equalsIgnoreCase("English")){
 		                        					   language1Mark=Double.parseDouble(detailMarkBO.getConversionmark());
@@ -1787,6 +1756,26 @@ public class ApplicationRankHelperforPg {
 		                        						   electivecredit=Double.parseDouble(detailMarkBO.getCredit());
 		                        						   electiveSubjectMark=Double.parseDouble(detailMarkBO.getConversionmark());
 		                        					   }
+		                        					   if(candidatePreference.getCourse().getId()==32){
+		                        						   if((ugcourseid==76 || ugcourseid==139) && detailMarkBO.getAdmSubjectForRank().getId()==252){
+		                        							   eligibility=true;
+			                        						   coreelectiveSubjectMark=Double.parseDouble(detailMarkBO.getConversionmark())*Double.parseDouble(detailMarkBO.getCredit());
+			                        						   electivecredit=Double.parseDouble(detailMarkBO.getCredit());
+			                        						   electiveSubjectMark=Double.parseDouble(detailMarkBO.getConversionmark());
+		                        						   }else if(ugcourseid==116 || ugcourseid==127 || ugcourseid==117 || ugcourseid==128){
+		                        							   if(detailMarkBO.getAdmSubjectForRank().getGroupName().equalsIgnoreCase("Core")){
+		                        								   coreelectiveSubjectMark=Double.parseDouble(detailMarkBO.getConversionmark())*Double.parseDouble(detailMarkBO.getCredit());
+				                        						   electivecredit=Double.parseDouble(detailMarkBO.getCredit());
+				                        						   electiveSubjectMark=Double.parseDouble(detailMarkBO.getConversionmark());
+		                        							   }
+		                        							   if(detailMarkBO.getAdmSubjectForRank().getGroupName().equalsIgnoreCase("Complementary")){
+		                        								   if(detailMarkBO.getAdmSubjectForRank().getName().equalsIgnoreCase("Statistics")){
+				                        							   eligibility=true;
+				                        						   }
+		                        							   }
+		                        						   }
+		                        						   
+		                        					   }
 		                        				   }
 
 		                        				   //lang1 mark
@@ -1850,6 +1839,24 @@ public class ApplicationRankHelperforPg {
 			                        			   coreelectiveSubjectMark=(Double.parseDouble(detailMarkBO.getObtainedmark())/Double.parseDouble(detailMarkBO.getMaxmark()))*600;
 			                        			   electiveSubjectMark=Double.parseDouble(detailMarkBO.getConversionmark());
 			                        		   }
+			                        		   if(candidatePreference.getCourse().getId()==32){
+                        						   if((ugcourseid==76 || ugcourseid==139) && detailMarkBO.getAdmSubjectForRank().getId()==252){
+    			                        			   eligibility=true;
+    			                        			   coreelectiveSubjectMark=(Double.parseDouble(detailMarkBO.getObtainedmark())/Double.parseDouble(detailMarkBO.getMaxmark()))*600;
+    			                        			   electiveSubjectMark=Double.parseDouble(detailMarkBO.getConversionmark());
+    			                        		   }else if(ugcourseid==116 || ugcourseid==127 || ugcourseid==117 || ugcourseid==128){
+    			                        			   if(detailMarkBO.getAdmSubjectForRank().getGroupName().equalsIgnoreCase("Core")){
+            			                        			   coreelectiveSubjectMark=(Double.parseDouble(detailMarkBO.getObtainedmark())/Double.parseDouble(detailMarkBO.getMaxmark()))*600;
+            			                        			   electiveSubjectMark=Double.parseDouble(detailMarkBO.getConversionmark());
+                        							   }
+                        							   if(detailMarkBO.getAdmSubjectForRank().getGroupName().equalsIgnoreCase("Complementary")){
+                        								   if(detailMarkBO.getAdmSubjectForRank().getName().equalsIgnoreCase("Statistics")){
+            			                        			   eligibility=true;
+            			                        		   }
+                        							   }
+                        						   }
+                        						   
+                        					   }
 			                        		   //lang1 mark
 			                        		   if(detailMarkBO.getAdmSubjectForRank().getGroupName().equalsIgnoreCase("Common") && detailMarkBO.getAdmSubjectForRank().getName().equalsIgnoreCase("English")){
 			                        			   language1Mark=Double.parseDouble(detailMarkBO.getConversionmark());
@@ -2122,12 +2129,17 @@ public class ApplicationRankHelperforPg {
 											language2Mark=Double.parseDouble(detailMarkBO.getConversionmark());
 										}
 	                      			}
-	                       			if(!iskerala) {
-	                       				total = ((totalcgpa/totalcredit) * 25) / 2;
+	                       			if((Double.parseDouble(ednQualificationBO.getTotalMarks().toString())<100) || (Double.parseDouble(ednQualificationBO.getTotalMarks().toString())>100)){
+	                       				total = (Double.parseDouble(ednQualificationBO.getMarksObtained().toString())/Double.parseDouble(ednQualificationBO.getTotalMarks().toString()))*100;
+	                       			}else if(Double.parseDouble(ednQualificationBO.getTotalMarks().toString())==100){
+	                       				total=Double.parseDouble(ednQualificationBO.getMarksObtained().toString());
 	                       			}
-	                       			else {
-	                       				total=(totalmark*25)/2;
-	                       			}
+//	                       			if(!iskerala) {
+//	                       				total = ((totalcgpa/totalcredit) * 25) / 2;
+//	                       			}
+//	                       			else {
+//	                       				total=(totalmark*25)/2;
+//	                       			}
 			                      	
 			                      	Iterator<CandidatePreferenceEntranceDetails> itere =admAppln.getCandidatePreferenceEntranceDetailses().iterator();
                       	   
@@ -2140,7 +2152,6 @@ public class ApplicationRankHelperforPg {
 				                        }
 			                      	}
 			                      	if(ugcourseid==7 || 
-			                      	   ugcourseid==74 || 
 			                      	   ugcourseid == 111 || 			                      	    
 			                      	   ugcourseid ==153 ||
 			                      	   ugcourseid == 169 ||
@@ -2150,10 +2161,11 @@ public class ApplicationRankHelperforPg {
 			                      	}
 			                      	else if(CMSConstants.UG_ELIGIBLE_COURSE_LIST_FOR_BCOMMODI.contains(ugcourseid)){
 			                      		total=total+5;
-			                      	} 
-			                      	total = total - 
-			                      			(penalty > 0 ? (penalty*0.5)/10 : 0) + 
-			                      			(bonus > 0 ? 0.25 : 0);
+			                      	}
+			                      	total=total+bonus;
+//			                      	total = total - 
+//			                      			(penalty > 0 ? (penalty*0.5)/10 : 0) + 
+//			                      			(bonus > 0 ? 0.25 : 0);
 	                       		}
 	                       	}
 							 
@@ -2193,13 +2205,17 @@ public class ApplicationRankHelperforPg {
 											}
 			                        			
 			                       		}
-
-	                       				if(!iskerala) {
-		                       				total = (totalcgpa/totalcredit) * 50;
+	                       				if((Double.parseDouble(ednQualificationBO.getTotalMarks().toString())<100) || (Double.parseDouble(ednQualificationBO.getTotalMarks().toString()) > 100)){
+		                       				total = (Double.parseDouble(ednQualificationBO.getMarksObtained().toString())/Double.parseDouble(ednQualificationBO.getTotalMarks().toString()))*100;
+		                       			}else if(Double.parseDouble(ednQualificationBO.getTotalMarks().toString())==100){
+		                       				total=Double.parseDouble(ednQualificationBO.getMarksObtained().toString());
 		                       			}
-		                       			else {
-		                       				total=(totalmark*25)/2;
-		                       			}
+//	                       				if(!iskerala) {
+//		                       				total = (totalcgpa/totalcredit) * 50;
+//		                       			}
+//		                       			else {
+//		                       				total=(totalmark*25)/2;
+//		                       			}
 	                       				
 			  	                      	Iterator<CandidatePreferenceEntranceDetails> itere =admAppln.getCandidatePreferenceEntranceDetailses().iterator();
 			                        	   
@@ -2213,7 +2229,6 @@ public class ApplicationRankHelperforPg {
 			  	                        	}
 			                        	 }
 			                        	if(ugcourseid==7 || 
-						                   ugcourseid==74 || 
 						                   ugcourseid == 111 || 			                      	    
 						                   ugcourseid ==153 ||
 						                   ugcourseid == 169 ||
@@ -2223,10 +2238,11 @@ public class ApplicationRankHelperforPg {
 			                        	 }
 			                        	 else if(CMSConstants.UG_ELIGIBLE_COURSE_LIST_FOR_BCOMMODI.contains(ugcourseid)){
 			                         		total=total+5;
-			                         	 } 
-			                        	total = total - 
-				                      			(penalty > 0 ? (penalty*0.5)/10 : 0) + 
-				                      			(bonus > 0 ? 0.25 : 0);
+			                         	 }
+			                        	total = total +bonus;
+//			                        	total = total - 
+//				                      			(penalty > 0 ? (penalty*0.5)/10 : 0) + 
+//				                      			(bonus > 0 ? 0.25 : 0);
 	                       			}
 	                       		}
 
@@ -2259,6 +2275,10 @@ public class ApplicationRankHelperforPg {
 	                     	    
 	                           
 							   
+							  }
+							 
+							  else if(candidatePreference.getCourse().getId()==32){
+								  
 							  }//over
 							 
 							}
@@ -2302,7 +2322,7 @@ public class ApplicationRankHelperforPg {
 					
 					indexmarkList.add(si);
 				}
-			 
+	            
 			}// main adm while close
 			
 		}
