@@ -687,46 +687,25 @@ public class AdmissionStatusAction extends BaseDispatchAction {
 			}
 			
 		if(admForm.getChanceMemo()!=null && admForm.getChanceMemo()){
-			AdmissionStatusTO to2=null;
-			AdmissionStatusTO to = admForm.getAdmissionStatusTO();
-			for (AdmissionStatusTO name : admForm.getAdmissionStatusTO().getChanceMemoMap().values()){
-				System.out.println(name.getChanceCurrentcourseid());
-				if (name.getChanceCurrentcourseid()==admForm.getChanceCourseId()) {
-					to2=name;
-				}
-			}
-			//AdmissionStatusTO to2 = admForm.getAdmissionStatusTO().getChanceMemoMap().get(admForm.getCourseId());
-     	       to.setChanceIndexmark(to2.getChanceIndexmark());
-		       to.setChanceCurrentcourse(to2.getChanceCurrentcourse());
-		       to.setChanceCurrentcourseid(to2.getChanceCurrentcourseid());
-		      /* if(to2.getDateTime()!=null)
-		    	   to.setDateTime(to2.getDateTime());*/
-		       if(to2.getChanceGeneralFee()!=null)
-		    	   to.setChanceGeneralFee(to2.getChanceGeneralFee());
-		       if(to2.getChanceCasteFee()!=null)
-		    	   to.setChanceCasteFee(to2.getChanceCasteFee());
-               if(to2.getCommunityDateTime()!=null)
-            	   to.setCommunityDateTime(to2.getCommunityDateTime());
-		       if(to2.getCasteRank()!=null)
-		    	   to.setCasteRank(to2.getCasteRank());
-		       if(to2.getGenRank()!=null)
-		    	   to.setGenRank(to2.getGenRank());
-		       to.setChancePref(to2.getChancePref());
-		       to.setChanceAllotmentno(to2.getChanceAllotmentno());
-		       if(to2.getChanceCategory()!=null)
-		    	   to.setChanceCategory(to2.getChanceCategory());
-		       to.setChanceflag(true);
-		       to.setChanceAlmntcaste(to2.isChanceAlmntcaste());
-		       to.setChanceAlmntgeneral(to2.isChanceAlmntgeneral());
-		       to.setChanceAlmntCommunity(to2.isChanceAlmntCommunity());
-		       admForm.setAdmissionStatusTO(to);
-		       request.setAttribute("chanceCourseId", admForm.getChanceCourseId());
-			return mapping.findForward("adminChanceMemo");
-		}
-		if(admForm.isMemo()){
-			return mapping.findForward(CMSConstants.VIEW_ALLOTMENT_MEMO);
-		}
-		return mapping.findForward(CMSConstants.VIEW_APPLICATION);
+			final IAdmissionStatusTransaction admissionStatusTransaction = (IAdmissionStatusTransaction)new AdmissionStatusTransactionImpl();
+	        final List<AdmAppln> newList = (List<AdmAppln>)admissionStatusTransaction.getDetailsAdmAppln(admForm.getApplicationNo().trim());
+	        final List<AdmissionStatusTO> list = (List<AdmissionStatusTO>)AdmissionStatusHandler.getInstance().getchanceList((List)newList, admForm);
+	        admForm.getAdmissionStatusTO().setChanceList((List)list);
+	        if (admForm.getChanceMemo() != null && admForm.getChanceMemo()) {
+	            final AdmissionStatusTO to2 = null;
+	            final AdmissionStatusTO to3 = admForm.getAdmissionStatusTO();
+	            for (final AdmissionStatusTO name : admForm.getAdmissionStatusTO().getChanceList()) {
+	                System.out.println(name.getChanceCurrentcourse());
+	            }
+	            request.setAttribute("chanceCourseId", (Object)admForm.getChanceCourseId());
+	            return mapping.findForward("adminChanceMemo");
+	        }	
+	        }
+	        if (admForm.isMemo()) {
+	            return mapping.findForward("viewallotmentmemo");
+	        }
+		
+		return mapping.findForward("viewapplication");
 	}
 	
 	
@@ -978,7 +957,11 @@ public class AdmissionStatusAction extends BaseDispatchAction {
 					}
 					List<AdmissionStatusTO> statusTOs = AdmissionStatusHandler.getInstance().getToListForStatus(applicationNo,admissionStatusForm);
 					admissionStatusForm.setStatusTOs(statusTOs);
-					List<CertificateCourseTO> toList=admissionStatusTransaction.getCertificateCoursesprint(Integer.parseInt(admissionStatusForm.getAdmApplnId()));
+					List<CertificateCourseTO> toList=null;
+					if (admissionStatusForm.getAdmApplnId()!=null) {
+						toList=admissionStatusTransaction.getCertificateCoursesprint(Integer.parseInt(admissionStatusForm.getAdmApplnId()));
+					}
+					
 					if (toList!=null && !toList.isEmpty()) {
 						admissionStatusForm.setCertificationCourseDone(true);
 						admissionStatusForm.setPrefList(toList);

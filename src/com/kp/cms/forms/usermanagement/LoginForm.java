@@ -23,6 +23,7 @@ import com.kp.cms.to.exam.ExamInternalRetestApplicationSubjectsTO;
 import com.kp.cms.to.exam.ExamMidsemRepeatTO;
 import com.kp.cms.to.exam.HallTicketTo;
 import com.kp.cms.to.exam.MarksCardTO;
+import com.kp.cms.to.exam.RevaluationMarksUpdateTo;
 import com.kp.cms.to.exam.StudentMarkDetailsTO;
 import com.kp.cms.to.exam.StudentMarksTO;
 import com.kp.cms.to.fee.FeePaymentTO;
@@ -263,7 +264,7 @@ public class LoginForm extends BaseActionForm {
 	private boolean paymentSuccess;
 	private String lateFineFees;
 	private List<ExamInternalRetestApplicationSubjectsTO> examInternalRetestApplicationSubjectsTO;
-	
+	private List<RevaluationMarksUpdateTo> revaluationMemoList;
 	
 	
 
@@ -2110,6 +2111,14 @@ public class LoginForm extends BaseActionForm {
 	public void setExamInternalRetestApplicationSubjectsTO(
 			List<ExamInternalRetestApplicationSubjectsTO> examInternalRetestApplicationSubjectsTO) {
 		this.examInternalRetestApplicationSubjectsTO = examInternalRetestApplicationSubjectsTO;
+	}
+
+	public List<RevaluationMarksUpdateTo> getRevaluationMemoList() {
+		return revaluationMemoList;
+	}
+
+	public void setRevaluationMemoList(List<RevaluationMarksUpdateTo> revaluationMemoList) {
+		this.revaluationMemoList = revaluationMemoList;
 	}
 	
 	

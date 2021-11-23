@@ -250,6 +250,9 @@ div.selected {
                     <c:if test="${linkForCjc==false}">
 		                   <a href="StudentLoginAction.do?method=initMarksCard" class="menuLink"><img src="images/smallArrow.gif" width="13" height="11" border="0"  >ESE Marks Card</a>
 		            </c:if>
+		            <c:if test="${linkForCjc==false}">
+		                   <a href="StudentLoginAction.do?method=initRevaluationMarksCardMemo" class="menuLink"><img src="images/smallArrow.gif" width="13" height="11" border="0"  >Revaluation memo</a>
+		            </c:if>
 		         <!--   <a href="downloadForms/Leave Application Form.pdf" class="menuLink" download="Leave Application Form"><img src="images/smallArrow.gif" width="13" height="11" border="0"  >Leave Application Form</a> -->
 <a href="downloadForms/internal application.pdf" class="menuLink" download="internal application"><img src="images/smallArrow.gif" width="13" height="11" border="0"  >Internal Examination Application Form</a>
 		            

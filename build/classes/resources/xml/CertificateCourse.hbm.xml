@@ -45,8 +45,8 @@
                 <comment></comment>
             </column>
         </property>
-		 <property name="maxIntake" type="int">
-			<column name="max_intake">
+		 <property name="amount" type="int">
+			<column name="amount">
 				<comment></comment>
 			</column>
 		</property>
@@ -69,8 +69,8 @@
                 <comment></comment>
             </column>
         </property>
-        <property name="extracurricular" type="java.lang.Boolean">
-            <column name="extra_curricular">
+        <property name="isSelected" type="java.lang.Boolean">
+            <column name="is_selected">
                 <comment></comment>
             </column>
         </property>

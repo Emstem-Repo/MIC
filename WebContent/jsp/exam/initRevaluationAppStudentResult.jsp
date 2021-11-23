@@ -121,6 +121,7 @@ function viewTotalPoint(){
 	<html:hidden property="pageType" value="3" />
 	<html:hidden property="method" styleId="method" value="addRevaluationApplicationForStudentLogin"/>
 	<html:hidden property="totalRevaluationPaymentFees" styleId="totalRevaluationPaymentFees"/>
+	<input type="hidden" name="hmount" id="hmount" value=""/>
 
 	<table width="100%" border="0">
 		<tr>
@@ -420,18 +421,53 @@ function viewTotalPoint(){
 										%>
 										
 												<td class='<%=dynamicStyle%>'>
-												<nested:equal value="false" property="tempChecked">
+												<nested:equal value="no" property="pgiId">
 												
 												<input	type="hidden"  name="mainList[<c:out value='${count2}'/>].examList[<c:out value='${count1}'/>].toList[<c:out value='${count}'/>].tempChecked"
 														id="hidden_<c:out value='${count2}'/>_<c:out value='${count1}'/>_<c:out value='${count}'/>"	 value="<nested:write property='tempChecked'/>" />
 												
-												<input id="checked"	type="checkbox" class="checkId"	 name="mainList[<c:out value='${count2}'/>].examList[<c:out value='${count1}'/>].toList[<c:out value='${count}'/>].isApplied"
+												<input type="checkbox" class="checkId"	 name="mainList[<c:out value='${count2}'/>].examList[<c:out value='${count1}'/>].toList[<c:out value='${count}'/>].isApplied"
 														id="<c:out value='${count2}'/>_<c:out value='${count1}'/>_<c:out value='${count}'/>"  onclick="viewTotalPoint()"/>
 																	
 																	<script type="text/javascript">
 																		var studentId = document.getElementById("hidden_<c:out value='${count2}'/>_<c:out value='${count1}'/>_<c:out value='${count}'/>").value;
 																		if(studentId == "true") {
 																			document.getElementById("<c:out value='${count2}'/>_<c:out value='${count1}'/>_<c:out value='${count}'/>").checked = true;
+																			 document.getElementById("<c:out value='${count2}'/>_<c:out value='${count1}'/>_<c:out value='${count}'/>").value=true;
+																			var rev = document.getElementById("isRevaluation");
+																			var scr = document.getElementById("isScrutiny");
+																			var pgtype = "<c:out value='${newSupplementaryImpApplicationForm.programTypeId}'/>";
+																		  	var checkedCount =  $(".checkId:checked").length;
+																		  if(checkedCount != 0){
+																			 /*  document.getElementById("amountTab").style.display="table-row"; */
+																		  }
+
+																		  if(pgtype != 2){
+																		  if(rev.checked){
+																		 
+																		  if(checkedCount >= 1){
+																			 var amount = (500* checkedCount) + 30;
+																		  }else {
+																			  amount = 0;
+																		  }
+																		 }else if(scr.checked){
+																			 if(checkedCount >= 1){
+																				 var amount = (100* checkedCount) + 30;
+																			  }else {
+																				  amount = 0;
+																			  }
+																		 }
+																		  }else {
+																			  if(scr.checked){
+																				  if(checkedCount >= 1){
+																						 var amount = (100* checkedCount) + 30;
+																					  }else {
+																						  amount = 0;
+																					  }  
+																				  
+																			  }
+																		  }
+																		  document.getElementById("hmount").value = amount;
 																		}	
 
 																		
@@ -441,7 +477,11 @@ function viewTotalPoint(){
 												
 												</nested:equal>
 												
-												<nested:equal value="true" property="tempChecked">Applied</nested:equal>
+												<nested:equal value="yes" property="pgiId">
+												<nested:equal value="yes" property="isApplied">
+												Applied
+												</nested:equal>
+												</nested:equal>
 											</td>
 										<%-- 	
 										<td class='<%=dynamicStyle%>'>
@@ -516,6 +556,16 @@ function viewTotalPoint(){
 					</td>
 					<td width="5" background="images/right.gif"></td>
 				</tr>
+				<script type="text/javascript">
+				var am= document.getElementById("hmount").value;
+				console.log(am);
+				if (am!="") {
+					document.getElementById("amountTab").style.display="table-row";
+					document.getElementById("totalAmount").innerHTML = am;
+					 document.getElementById("totalRevaluationPaymentFees").value = am;
+					
+				}
+				</script>
 						<tr>
 							<td height="5"><img src="images/04.gif" width="5" height="5" /></td>
 							<td background="images/05.gif"></td>
@@ -554,10 +604,12 @@ function viewTotalPoint(){
 							
 							
 							<nested:equal value="true" name="newSupplementaryImpApplicationForm" property="printApplication">
+							<nested:equal value="true" name="newSupplementaryImpApplicationForm" property="paymentDone">
 							<html:button property="" 
 								styleClass="btnbg" value="Print Application"
 								onclick="printApplication()">
 								</html:button>
+								</nested:equal>
 								</nested:equal>
 							<html:button property=""
 								styleClass="btnbg" value="Close"

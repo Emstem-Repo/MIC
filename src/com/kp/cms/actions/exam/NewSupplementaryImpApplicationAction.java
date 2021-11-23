@@ -4302,7 +4302,7 @@ public class NewSupplementaryImpApplicationAction extends BaseDispatchAction {
 						List<ExamSupplementaryImpApplicationSubjectTO> listSubject = cto
 						.getToList();
 						for (ExamSupplementaryImpApplicationSubjectTO to : listSubject) {
-							if (!to.isTempChecked())
+							if (to.getPgiId()!="no" || to.getPgiId().equalsIgnoreCase("no"))
 								if (to.getIsApplied())
 									select++;
 

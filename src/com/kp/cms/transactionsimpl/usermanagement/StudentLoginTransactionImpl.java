@@ -13,6 +13,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.exception.ConstraintViolationException;
 
@@ -31,10 +32,15 @@ import com.kp.cms.bo.admin.PersonalData;
 import com.kp.cms.bo.admin.PublishSpecialFees;
 import com.kp.cms.bo.admin.Student;
 import com.kp.cms.bo.exam.CandidatePGIForSpecialFees;
+import com.kp.cms.bo.exam.ExamMarksEntryDetailsBO;
 import com.kp.cms.bo.exam.ExamRegularApplication;
+import com.kp.cms.bo.exam.ExamRevaluationApp;
+import com.kp.cms.bo.exam.ExamRevaluationApplicationNew;
 import com.kp.cms.bo.exam.ExamSpecializationBO;
 import com.kp.cms.bo.exam.ExamStudentBioDataBO;
+import com.kp.cms.bo.exam.ExamStudentFinalMarkDetailsBO;
 import com.kp.cms.bo.exam.ExamSupplementaryImprovementApplicationBO;
+import com.kp.cms.bo.exam.ModerationMarksEntryBo;
 import com.kp.cms.bo.exam.RevaluationApplicationPGIDetails;
 import com.kp.cms.bo.exam.SpecialFeesBO;
 import com.kp.cms.bo.sap.UploadSAPMarksBo;
@@ -44,6 +50,7 @@ import com.kp.cms.bo.studentExtentionActivity.StudentInstructions;
 import com.kp.cms.constants.CMSConstants;
 import com.kp.cms.exceptions.ApplicationException;
 import com.kp.cms.exceptions.BusinessException;
+import com.kp.cms.forms.exam.NewSupplementaryImpApplicationForm;
 import com.kp.cms.forms.usermanagement.LoginForm;
 import com.kp.cms.to.admin.EvaStudentFeedbackOpenConnectionTo;
 import com.kp.cms.transactions.usermanagement.IStudentLoginTransaction;
@@ -824,5 +831,75 @@ public class StudentLoginTransactionImpl implements IStudentLoginTransaction{
 			throw new ApplicationException(e);
 		}
 		return paymentDone;
+	}
+	public List<ExamRevaluationApplicationNew> revaluationDetails(LoginForm form)throws Exception {
+		Session session = null;
+		List<ExamRevaluationApplicationNew> subject = null;
+		boolean dup=false;
+		try {
+			SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+			session = sessionFactory.openSession();
+			String subQuery ="from ExamRevaluationApplicationNew er where er.student.id="+form.getStudentId()+" and er.exam.id="+form.getExamid() +"  and er.isRevaluation=1 and er.isApplied=1"; 
+			
+			Query subjectQuery = session.createQuery(subQuery);
+			subject = subjectQuery.list();
+		
+		} catch (Exception e) {
+			throw new ApplicationException(e);
+		} finally {
+			if (session != null) {
+				session.flush();
+				//session.close();
+			}
+		}
+		return subject;
+	}
+	public List<ModerationMarksEntryBo> examMarkDetails(LoginForm form)throws Exception {
+		Session session = null;
+		List<ModerationMarksEntryBo> subject = null;
+		boolean dup=false;
+		try {
+			SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+			session = sessionFactory.openSession();
+			String subQuery ="from ModerationMarksEntryBo em where em.examDefinitionBO.id="+form.getExamid()+" and em.studentId="+form.getStudentId(); 
+			
+			Query subjectQuery = session.createQuery(subQuery);
+			subject = subjectQuery.list();
+		
+		} catch (Exception e) {
+			throw new ApplicationException(e);
+		} finally {
+			if (session != null) {
+				session.flush();
+				//session.close();
+			}
+		}
+		return subject;
+	}
+	public List<Integer> getexamidInrevaluationApp(LoginForm loginForm) throws ApplicationException {
+		Session session = null;
+		List<ExamRevaluationApplicationNew> subject = null;
+		List<Integer> numList=new ArrayList<Integer>();
+		boolean dup=false;
+		try {
+			SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+			session = sessionFactory.openSession();
+			String subQuery ="from ExamRevaluationApplicationNew er where er.student.id="+loginForm.getStudentId()+"  and er.isRevaluation=1 and er.isApplied=1 and er.exam.id in(select pb.examDefinitionBO.id  from ExamPublishHallTicketMarksCardBO pb where pb.publishFor='Revaluattion Memo')"; 
+			
+			Query subjectQuery = session.createQuery(subQuery);
+			subject = subjectQuery.list();
+			for (ExamRevaluationApplicationNew bo : subject) {
+				numList.add(bo.getExam().getId());
+			}
+		
+		} catch (Exception e) {
+			throw new ApplicationException(e);
+		} finally {
+			if (session != null) {
+				session.flush();
+				//session.close();
+			}
+		}
+		return numList;
 	}
 }

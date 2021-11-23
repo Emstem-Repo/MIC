@@ -34,8 +34,13 @@ import com.kp.cms.bo.admin.PublishSpecialFees;
 import com.kp.cms.bo.admin.Student;
 import com.kp.cms.bo.admin.StudentLogin;
 import com.kp.cms.bo.exam.CandidatePGIForSpecialFees;
+import com.kp.cms.bo.exam.ExamMarksEntryDetailsBO;
 import com.kp.cms.bo.exam.ExamRegularApplication;
+import com.kp.cms.bo.exam.ExamRevaluationApp;
+import com.kp.cms.bo.exam.ExamRevaluationApplicationNew;
+import com.kp.cms.bo.exam.ExamStudentFinalMarkDetailsBO;
 import com.kp.cms.bo.exam.ExamSupplementaryImprovementApplicationBO;
+import com.kp.cms.bo.exam.ModerationMarksEntryBo;
 import com.kp.cms.bo.exam.OnlinePaymentReciepts;
 import com.kp.cms.bo.exam.RevaluationApplicationPGIDetails;
 import com.kp.cms.bo.exam.SpecialFeesBO;
@@ -56,6 +61,7 @@ import com.kp.cms.helpers.usermanagement.StudentLoginHelper;
 import com.kp.cms.to.admin.EvaStudentFeedbackOpenConnectionTo;
 import com.kp.cms.to.admin.PublishSpecialFeesTO;
 import com.kp.cms.to.admission.OnlinePaymentRecieptsTo;
+import com.kp.cms.to.exam.RevaluationMarksUpdateTo;
 import com.kp.cms.to.fee.FeePaymentTO;
 import com.kp.cms.to.studentExtentionActivity.StudentExtentionTO;
 import com.kp.cms.to.studentExtentionActivity.StudentGroupTO;
@@ -702,6 +708,12 @@ public class StudentLoginHandler {
 		IStudentLoginTransaction txn = new StudentLoginTransactionImpl();
 		paymentDone = txn.paymentDoneForSpecial(loginForm);
 		return paymentDone;
+	}
+	public void getrevaluationMarkCardMemo(LoginForm loginForm) throws Exception {
+		List<ExamRevaluationApplicationNew> revalList=StudentLoginTransactionImpl.getInstance().revaluationDetails(loginForm);
+		List<ModerationMarksEntryBo> markList=StudentLoginTransactionImpl.getInstance().examMarkDetails(loginForm);
+		List<RevaluationMarksUpdateTo> revalResult=StudentLoginHelper.getInstance().convertToRevalTO(revalList,markList,loginForm);
+		loginForm.setRevaluationMemoList(revalResult);
 	}
 }
 

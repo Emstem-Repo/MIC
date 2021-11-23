@@ -1659,6 +1659,8 @@ public class AdmissionStatusHelper
                 }
                 if (allotment.getIsAccept()) {
                     final IAdmissionFormTransaction tx = AdmissionFormTransactionImpl.getInstance();
+                    to.setIsAccept(Boolean.valueOf(true));
+                    admissionStatusForm.setIsOnceAccept(true);
                     final StudentAllotmentPGIDetails details = tx.getBoObj(allotment.getAdmAppln().getStudentOnlineApplication().getId());
                     if (details != null) {
                         admissionStatusForm.setIsPaid(true);

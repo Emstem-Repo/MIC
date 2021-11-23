@@ -384,7 +384,7 @@ a:hover {
 																<logic:equal value="2" name="admissionStatusForm"
 																	property="programTypeId">
 																	<c:choose>
-																		<c:when test="${admissionStatusForm.maxallotment==2}">
+																		<c:when test="${admissionStatusForm.maxallotment==1}">
 																			<td align="center" height="25" class="row-even">
 																				<font color="red">PG Allotment Published.</font>
 																			</td>
@@ -458,9 +458,7 @@ a:hover {
 																						candidates will be given a chance number according
 																						to their rank from which their admission will be
 																						confirmed as and when the vacancy arises.<br>
-																					<br> If a candidate receives more than one
-																						allotment he/she should opt for one allotment
-																						only, of his choice.
+																					
 																						</p>
 
 																					</td>
@@ -472,6 +470,16 @@ a:hover {
 																						particular subject under that particular quota.
 																					</td>
 																				</tr>
+
+<tr align = "center"><td colspan="2" align = "center">
+<font color="blue" size="3px">
+If a candidate receives more than one allotment
+<br><br>1. He/She should opt for one allotment only, of his/her choice.
+<br><br>2. After verification the payment window will be opened for those whose admission is confirmed (on 08-10-2021).
+<br><br>3. The remaining candidates will be given a chance number according to the rank from which their admission will be confirmed as and when the vacancy arises.
+</font><br>
+<!-- <p align ="center"><font color="red"> The last date for Accepting/ Declining the allotment is 15th September 2021.</font></p> -->
+</td></tr>
 																			</table>
 																		</td>
 																	</tr>
@@ -509,6 +517,15 @@ a:hover {
 																						particular subject under that particular quota.
 																					</td>
 																				</tr>
+
+<tr align = "center"><td colspan="2" align = "center">
+<font color="blue" size="3px">
+If a candidate receives more than one allotment
+<br><br>1. He/She should opt for one allotment only, of his/her choice.
+<br><br>2. After verification the payment window will be opened for those whose admission is confirmed (on 08-10-2021).
+<br><br>3. The remaining candidates will be given a chance number according to the rank from which their admission will be confirmed as and when the vacancy arises.
+</font><br>
+
 																			</table>
 																		</td>
 																	</tr>
@@ -546,18 +563,24 @@ a:hover {
 																						particular subject under that particular quota.
 																					</td>
 																				</tr>
+
 																			</table>
+																		
 																		</td>
 																	</tr>
-																</logic:notEmpty>
-															</logic:equal>
+
+																</logic:notEmpty>   
+															</logic:equal> 
 
 														</logic:notEmpty>
 
 
 													</table>
-												</td>
+
+          												</td>  
 											</tr>
+ 
+
 											<logic:notEmpty name="admissionStatusForm"
 												property="statusTOs">
 												<logic:iterate id="to" name="admissionStatusForm"
@@ -577,13 +600,13 @@ a:hover {
 																			value="false" name="to" property="isAccept">
 																			<logic:equal value="false" name="to"
 																				property="isDecline">
-																				<!--				<img src="images/accept.png" width="25" height="25" style="cursor:pointer" id="accept"
+																							<!--	<img src="images/accept.png" width="25" height="25" style="cursor:pointer" id="accept"
                    											onclick="acceptEntry('<bean:write name="to" property="courseId"/>',<%=count + 1%>,'<bean:write name="to" property="chanceAllotment"/>')"><b>Accept</b>
 																&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 															<img src="images/cross.png" width="25" height="25" style="cursor:pointer" id="decline"
-                   											onclick="declineEntry('<bean:write name="to" property="courseId"/>',<%=count + 1%>,'<bean:write name="to" property="chanceAllotment"/>')">	<b>Decline</b>  -->
-																				<font color="red"><b>The last date for
-																						accepting the allotment was 26th August 2021. </b></font>
+                   											onclick="declineEntry('<bean:write name="to" property="courseId"/>',<%=count + 1%>,'<bean:write name="to" property="chanceAllotment"/>')">	<b>Decline</b>   -->
+																				<font color="red"><b> The last date for
+																						 accepting the allotment was 07th October 2021.  </b></font>
 																			</logic:equal>
 																		</logic:equal> <logic:equal value="true" name="to"
 																			property="isAccept">
@@ -592,7 +615,7 @@ a:hover {
 																			<font color="blue"> <br>After
 																				verification the payment window will be opened for
 																				those whose admission <br> is confirmed (on
-																				28-08-2021).
+																				08-10-2021).
 																			</font>
 																			<br>The remaining candidates will be given a chance number according to the rank from which their admission will be confirmed as and when the vacancy arises. 
 														</logic:equal> <logic:equal value="true" name="to" property="isDecline">
@@ -790,8 +813,8 @@ a:hover {
 																				height="25" class="row-even">
 																					<div align="center">
 																						<logic:equal value="false" name="admissionStatusForm" property="payonline">
-																 <b> <font color="blue"><b>You are in the waiting list.</b><br>  
-																To know your new chance number check the admission link of the college website (www.mic.ac.in).<br><b>As an when the vacancy arises you will be informed by SMS/Email/Mobile. </b></font> 
+																 <b> <font color="blue" size="3px" ><b>You are in the waiting list.</b><br>  
+																To know your new chance number check the admission link of the college website (www.mic.ac.in).<br><b>As an when the vacancy arises you will be informed by SMS/Email/Mobile. </b></font>
 															</logic:equal> 
 															</div>
 															</td>
@@ -835,81 +858,22 @@ a:hover {
 																											<thead>
 																												<tr>
 																													<th>Date</th>
-																													<th>09:30am to 12:30pm</th>
-																													<th>01:00pm to 04:00pm</th>
+																													<th>09:30am to 12:30pm</th>																							
 																												</tr>
 																											</thead>
 																											<tbody>
 																												<tr>
-																													<td>02 September 2021</td>
-																													<td>B.Sc. Physics</td>
-																													<td>B.Sc. Physics with Machine
-																														Learning <br /> B.Sc. Botany &amp;
-																														Biotechnology
-																													</td>
-																												</tr>
-																												<tr>
-																													<td>03 September 2021</td>
-																													<td>B.A. English Language and
-																														Literature</td>
-																													<td>B.A. Economics</td>
-																												</tr>
-																												<tr>
-																													<td>06 September 2021</td>
-																													<td>B.Com</td>
-																													<td>B.A. Journalism and Mass
-																														Communication</td>
-																												</tr>
-																												<tr>
-																													<td>07 September 2021</td>
-																													<td>B.Sc. Mathematics</td>
-																													<td>B.Sc. Chemistry</td>
-																												</tr>
-																												<tr>
-																													<td>08 September 2021</td>
-																													<td>B.Sc. Zoology</td>
-																													<td>B.Sc. Botany<br /> B.Sc. Computer
-																														Science (Self-Financing)
-																													</td>
-																												</tr>
-																												<tr>
-																													<td>09 September 2021</td>
-																													<td><em>No Interview</em></td>
-																													<td>B.Com (Self-Financing)<br />
-																														B.Com (Accounts &amp; Audit)
+																													<td>22 September 2021</td>
+																													<td>B.A. Economics<br />
+																													B.A. English Language and
+																														Literature<br /> B.A. Journalism and Mass
+																														Communication<br />B.Sc. Mathematics<br />Botany &amp; Biotechnology<br />B.Sc. Statistics
+																														(Self-Financing)<br />B.A. English &amp; Communicative English
 																														(Self-Financing)
+
 																													</td>
-																												</tr>
-																												<tr>
-																													<td>10 September 2021</td>
-																													<td>B.A. English Language and
-																														Literature Science (Self-Financing)<br />
-																														B.A. English &amp; Communicative English
-																														(Self-Financing)
-																													</td>
-																													<td>B.A. Analytical Economics
-																														(Self-Financing)<br /> B.Sc. Statistics
-																														(Self-Financing)
-																													</td>
-																												</tr>
-																												<tr>
-																													<td>13 September 2021</td>
-																													<td colspan="2">Reservation
-																														Quota - SC/ST</td>
 																												</tr>
 																												
-																												<tr>
-																													<td>14 September 2021</td>
-																													<td colspan="2">Community Quota -
-																														(Malankara Syrian Catholic)</td>
-																												</tr>
-																												<tr>
-																													<td>15 September 2021</td>
-																													<td colspan="2">Reservation
-																														Quota - SC/ST</td>
-																												</tr>
-
-
 																											</tbody>
 																										</table>
 <table>
@@ -921,7 +885,7 @@ The admission process will be conducted under strict COVID protocol restrictions
 </table>
 																								</c:when>
 																								<c:otherwise>
-																								<!--	<div align="center">
+																									<div align="center">
 																										<font color="red">*Payment Gateway
 																											service charges*<br> &nbsp;&nbsp;<br>
 																											Credit Card - 1.95%+gst <br>
@@ -935,10 +899,10 @@ The admission process will be conducted under strict COVID protocol restrictions
 																									<br>			
 																			&nbsp;&nbsp;<br>
 
-																									<html:button property="" styleId="payFees"
+																								<!--	<html:button property="" styleId="payFees"
 																										styleClass="formbutton" value="Pay Fees"
-																										onclick="payment()"></html:button>   -->
-                                                                                                                                                                                                               <div align="center"> <font color="red">The last date for paying the fees was 31st August 2021.</font></div>
+																										onclick="payment()"></html:button>   --> 
+                                                                                                                                                                                                              <!-- <div align="center"> <font color="red">The last date for paying the fees was 31st August 2021.</font></div>  -->
 																								</c:otherwise>
 																							</c:choose>
 																						</logic:equal>
@@ -1003,11 +967,11 @@ The admission process will be conducted under strict COVID protocol restrictions
 												</logic:equal>
 											</logic:equal>
 											<c:if
-												test="${admissionStatusForm.specialCourse==true || admissionStatusForm.programTypeId==2}">
+												test="${admissionStatusForm.programTypeId==2}">
 												<logic:equal value="true" name="admissionStatusForm"
 													property="isOnceAccept">
 
-													<!--	<tr id="sixth">
+														<tr id="sixth">
 											<td height="25" colspan="4">
 												<table width="100%" height="53" border="0" cellpadding="0" cellspacing="1">
 													<tr class="row-even" id="seven">
@@ -1049,7 +1013,56 @@ The admission process will be conducted under strict COVID protocol restrictions
 													</tr>  
 												</table>
 											</td>
-										</tr>   -->
+										</tr>  
+										<c:if test="${admissionStatusForm.isPaid==true}">
+																	<tr>
+																		<td style="text-align: center" colspan="5"><br>
+																		<br>
+																		<br>
+																		<br> <html:hidden property="applicationNo"
+																				name="admissionStatusForm" styleId="appNo"></html:hidden>
+																			<html:hidden property="appliedYear"
+																				name="admissionStatusForm" styleId="year"></html:hidden>
+																			<table width="100%">
+																				<tr>
+																					<td><a href="javascript:void(0)"
+																						style="color: color:blue; font-size: 15px; text-decoration: none"
+																						href="" onclick="printPage(4);">Application Form
+																							 &nbsp; </a></td>
+																					<td><a href="javascript:void(0)"
+																						style="color: color:blue; font-size: 15px; text-decoration: none"
+																						href="" onclick="printPage(3);">Bio Data Form
+																							(Original & Duplicate) &nbsp; </a></td>
+																					
+																					<td><a href="javascript:void(0)"
+																						style="color: color:blue; font-size: 15px; text-decoration: none"
+																						href="" onclick="printPage(1);">Anti-Ragging
+																							&nbsp; </a></td>
+																					<td><a href="javascript:void(0)"
+																						style="color: color:blue; font-size: 15px; text-decoration: none"
+																						href="" onclick="printPage(2);">
+																							PTA Membership Form &nbsp; </a></td>
+																					
+																					
+
+																					
+																				</tr>
+																				<tr height="30px"></tr>
+																				<tr>
+																					<td colspan="2"
+																						align="center"><a href="javascript:void(0)"
+																						style="color: color:blue; font-size: 15px; text-decoration: none"
+																						href="" onclick="downloadmemo();">Download Memo</a>
+																						</td>
+																						<td colspan="2"
+																						align="center"><a  href="javascript:void(0)"
+																						style="color: color:blue; font-size: 15px; text-decoration: none"
+																						href="" onclick="downloadChanceMemo();">Download Chance Memo</a></td>
+																						
+																				</tr>
+																			</table></td>
+																	</tr>
+																</c:if>
 												</logic:equal>
 											</c:if>
 										</table>

@@ -167,6 +167,11 @@ public class ExamPublishHallTicketHandler extends ExamGenHandler {
 						}
 					}
 
+					if(publishFor.equalsIgnoreCase("Revaluattion Memo")){
+						if(className==null || className.isEmpty()){
+							impl.insert(objBO);
+						}
+					}
 				}
 			}
 			if(classNames.length()>0){

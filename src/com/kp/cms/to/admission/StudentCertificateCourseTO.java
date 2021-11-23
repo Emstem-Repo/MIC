@@ -3,8 +3,9 @@ package com.kp.cms.to.admission;
 import java.io.Serializable;
 
 import com.kp.cms.bo.admin.AdmAppln;
+import com.kp.cms.to.attendance.SubjectGroupDetailsTo;
 
-public class StudentCertificateCourseTO implements Serializable {
+public class StudentCertificateCourseTO implements Serializable,Comparable<StudentCertificateCourseTO> {
 	/**
 	 * 
 	 */
@@ -23,6 +24,8 @@ public class StudentCertificateCourseTO implements Serializable {
 	private String curriculumSchemeDurationId;
 	private String admApplnId;
 	private String semester;
+	private String tempChecked;
+	private int addOnSelectedCourseId;
 	
 	//Mary code ends
 	
@@ -86,6 +89,26 @@ public class StudentCertificateCourseTO implements Serializable {
 	}
 	public void setSemester(String semester) {
 		this.semester = semester;
+	}
+	@Override
+	public int compareTo(StudentCertificateCourseTO temp) {
+		if(temp!=null && this!=null && temp.getRegisterNo()!=null
+				 && this.getRegisterNo()!=null){
+				return this.getRegisterNo().compareTo(temp.getRegisterNo());
+		}else
+		return 0;
+	}
+	public String getTempChecked() {
+		return tempChecked;
+	}
+	public void setTempChecked(String tempChecked) {
+		this.tempChecked = tempChecked;
+	}
+	public int getAddOnSelectedCourseId() {
+		return addOnSelectedCourseId;
+	}
+	public void setAddOnSelectedCourseId(int addOnSelectedCourseId) {
+		this.addOnSelectedCourseId = addOnSelectedCourseId;
 	}
 	
 }

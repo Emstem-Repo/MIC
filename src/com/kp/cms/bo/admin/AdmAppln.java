@@ -132,6 +132,10 @@ public class AdmAppln implements java.io.Serializable {
 	private Boolean isDraftCancelled;
 	private String currentPageName;
 	
+	private Set<StudentCertificateCourse> studentCertificateCourse = new HashSet<StudentCertificateCourse>(
+			0);
+	
+	
 	public AdmAppln() {
 	}
 
@@ -1028,6 +1032,14 @@ public class AdmAppln implements java.io.Serializable {
 
 	public void setCurrentPageName(String currentPageName) {
 		this.currentPageName = currentPageName;
+	}
+
+	public Set<StudentCertificateCourse> getStudentCertificateCourse() {
+		return studentCertificateCourse;
+	}
+
+	public void setStudentCertificateCourse(Set<StudentCertificateCourse> studentCertificateCourse) {
+		this.studentCertificateCourse = studentCertificateCourse;
 	}
 
 	    

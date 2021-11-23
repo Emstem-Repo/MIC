@@ -102,6 +102,7 @@ import com.kp.cms.transactions.pettycash.ICashCollectionTransaction;
 import com.kp.cms.transactionsimpl.exam.DownloadHallTicketTransactionImpl;
 import com.kp.cms.transactionsimpl.exam.NewExamMarksEntryTransactionImpl;
 import com.kp.cms.transactionsimpl.pettycash.CashCollectionTransactionImpl;
+import com.kp.cms.transactionsimpl.usermanagement.StudentLoginTransactionImpl;
 import com.kp.cms.utilities.CommonUtil;
 import com.kp.cms.utilities.EncryptUtil;
 import com.kp.cms.utilities.MarkComparator;
@@ -876,8 +877,8 @@ public class StudentLoginAction extends BaseDispatchAction {
 					   previousClassId == 711 ||
 					   previousClassId == 716){
 						
-						classId = previousClassId;
-						examId = DownloadHallTicketHandler.getInstance().getExamIdByClassId(classId, loginForm, "Hall Ticket");
+						//classId = previousClassId;
+						//examId = DownloadHallTicketHandler.getInstance().getExamIdByClassId(classId, loginForm, "Hall Ticket");
 						session.setAttribute("examID", examId);
 						session.setAttribute("stuRegNo", loginForm.getRegNo());
 						loginForm.setExamId(examId);
@@ -4354,5 +4355,141 @@ return mapping.findForward(CMSConstants.STUDENT_LOGIN_MARKSCARD);
 		}
 		return mapping.findForward("init_internal_retst");
 		
+	}
+	public ActionForward initRevaluationMarksCardMemo(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+		log.debug("Entering the initOnlineRecieptsForStudentLogin");
+		LoginForm loginForm = (LoginForm) form;
+		ActionMessages messages = new ActionMessages();
+		ActionMessage message = null;
+		 ActionErrors errors = loginForm.validate(mapping, request);
+		cleanUpPageData(loginForm);
+		
+		if (errors.isEmpty()) {
+			try {
+		StudentLogin studentLogin = LoginHandler.getInstance().isValiedStudentUser(loginForm) ;
+		
+		if (studentLogin == null) {
+			message = new ActionMessage("knowledgepro.admin.validusername");
+			messages.add("messages", message);
+			addErrors(request, messages);
+			loginForm.resetFields();
+			if(CMSConstants.LINK_FOR_CJC)
+			{ 
+				return mapping.findForward(CMSConstants.STUDENT_LOGIN_FAILURE_CJC);
+			}else
+			{
+				return mapping.findForward(CMSConstants.STUDENTLOGIN_FAILURE);
+			}
+		} else {		
+			@SuppressWarnings("unused")
+			List<Integer> listOfDetainedStudents =ExamMarksEntryHandler.getInstance().getDetainedOrDiscontinuedStudents();
+		// no need to excute this code if student is detained
+		//if(!listOfDetainedStudents.contains(loginForm.getStudentId())){
+			loginForm.setExamType("Regular");
+			 List<MarksCardTO> SemExamListTo=(DownloadHallTicketHandler.getInstance().getExamSemList(loginForm));
+			 List<Integer> numList=StudentLoginTransactionImpl.getInstance().getexamidInrevaluationApp(loginForm);
+			 if(SemExamListTo!=null)	
+			{
+			Collections.sort(SemExamListTo,new MarkComparator());
+			
+			List<MarksCardTO> SemExamListToFinal=new ArrayList<MarksCardTO>();
+			for (MarksCardTO marksCardTO : SemExamListTo) {
+				if(numList.contains(Integer.parseInt(marksCardTO.getNewExamId().substring(0, marksCardTO.getNewExamId().indexOf('_'))))){
+					SemExamListToFinal.add(marksCardTO);
+				}
+			}
+			loginForm.setRegularExamList(SemExamListToFinal);
+			}
+		//}
+		//Sup Marks Card
+             List<MarksCardTO> SupSemList=(DownloadHallTicketHandler.getInstance().getSupExamSemList(loginForm));
+			if(SupSemList!= null)
+			Collections.sort(SupSemList,new MarkComparator());
+			List<MarksCardTO> SupSemListFinal=new ArrayList<MarksCardTO>();
+			for (MarksCardTO marksCardTO : SupSemList) {
+				if(numList.contains(Integer.parseInt(marksCardTO.getNewExamId().substring(0, marksCardTO.getNewExamId().indexOf('-'))))){
+					SupSemListFinal.add(marksCardTO);
+				}
+			}
+			loginForm.setSuppExamList(SupSemListFinal);
+		
+		log.debug("Exit  from initOnlineRecieptsForStudentLogin");
+		return mapping.findForward("initRevaluationMarksCard");
+	}	
+	} catch (ApplicationException e) {
+		log.debug("leaving the studentLoginAction with exception");
+		String msg = super.handleApplicationException(e);
+		loginForm.setErrorMessage(msg);
+		loginForm.setErrorStack(e.getMessage());
+		return mapping.findForward(CMSConstants.STUDENT_ERROR_PAGE);
+	} catch(Exception e) {
+		log.debug("leaving the studentLoginAction with exception");
+		String msg = super.handleApplicationException(e);
+		loginForm.setErrorMessage(msg);
+		loginForm.setErrorStack(e.getMessage());
+		return mapping.findForward(CMSConstants.STUDENT_ERROR_PAGE);
+		//throw e;
+	}
+} else {
+	log.debug("leaving the studentLoginAction with errors");
+	addErrors(request, errors);	
+	if(CMSConstants.LINK_FOR_CJC)
+	{ 
+		return mapping.findForward(CMSConstants.STUDENT_LOGIN_FAILURE_CJC);
+	}else
+	{
+		return mapping.findForward(CMSConstants.STUDENTLOGIN_FAILURE);
+	}
+}
+}
+	public ActionForward revaluationMemoDisplay(ActionMapping mapping, 
+			ActionForm form, 
+			HttpServletRequest request, 
+			HttpServletResponse response) throws Exception {
+		LoginForm loginForm = (LoginForm) form;
+		ActionErrors errors = loginForm.validate(mapping, request);
+		HttpSession session = request.getSession(true);
+		session.setAttribute("USERNAME", loginForm.getUserName());
+		if (errors.isEmpty()) {
+			try {
+				LoginHandler.getInstance().isValiedStudentUser(loginForm) ;
+				String studentid = String.valueOf(loginForm.getStudentId());
+				loginForm.setRevaluationRegClassId(null);
+				int examId = 0;
+				List<ShowMarksCardTO> regMarksCard=new ArrayList<ShowMarksCardTO>();
+				List<MarksCardTO> regularList = loginForm.getRegularExamList();
+				String examNam=loginForm.getRegularExamId();
+				if (examNam.contains("_")) {
+					examId = Integer.parseInt(examNam.substring(0, examNam.indexOf('_')));
+				}else if (examNam.contains("-")) {
+					examId = Integer.parseInt(examNam.substring(0, examNam.indexOf('-')));
+					
+				}
+				
+				loginForm.setExamid(examId);
+				StudentLoginHandler.getInstance().getrevaluationMarkCardMemo(loginForm);
+				return mapping.findForward("revaluationMemo");	
+			} catch (ApplicationException e) {
+				e.printStackTrace();
+				log.debug("leaving the studentLoginAction with exception");
+				String msg = super.handleApplicationException(e);
+				loginForm.setErrorMessage(msg);
+				loginForm.setErrorStack(e.getMessage());
+				return mapping.findForward(CMSConstants.STUDENT_ERROR_PAGE);
+			} catch(Exception e) {
+				e.printStackTrace();
+				log.debug("leaving the studentLoginAction with exception");
+				String msg = super.handleApplicationException(e);
+				loginForm.setErrorMessage(msg);
+				loginForm.setErrorStack(e.getMessage());
+				return mapping.findForward(CMSConstants.STUDENT_ERROR_PAGE);
+				//throw e;
+			}
+		} else {
+			log.debug("leaving the studentLoginAction with errors");
+			cleanUpPageData(loginForm);
+			//addErrors(request, errors);
+			return mapping.findForward(CMSConstants.STUDENT_LOGIN_MARKSCARD);
+		}
 	}
 }

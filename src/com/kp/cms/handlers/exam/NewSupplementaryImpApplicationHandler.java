@@ -2997,6 +2997,7 @@ public void getApplicationFormsForRevaluation(List<Integer> examIds, NewSuppleme
 			if (!classNotRequiredList.contains(newSupplementaryImpApplicationForm.getStudentObj().getClassSchemewise().getClasses().getId())) {
 				ExamSupplementaryImpApplicationSubjectTO sto = new ExamSupplementaryImpApplicationSubjectTO();
 				//sto.setId(bo.getId());
+				sto.setPgiId("no");
 				if(obj[10]!=null)
 					sto.setSubjectId(Integer.parseInt(obj[10].toString()));
 				if(obj[11]!=null)
@@ -3231,8 +3232,10 @@ public void getApplicationFormsForRevaluationChooseType(List<Integer> examIds, N
 		int countApp = 0;
 		while(iterator.hasNext()){
 			ExamRevaluationApplicationNew new1 = iterator.next();
-			if(new1.getRevaluationPgiDetails().getId() != 0){
-				countApp++;
+			if(new1.getRevaluationPgiDetails()!=null && new1.getRevaluationPgiDetails().getId() != 0){
+				if (new1.getRevaluationPgiDetails().getTxnStatus()=="success" || new1.getRevaluationPgiDetails().getTxnStatus().equalsIgnoreCase("success")) {
+					countApp++;
+				}
 			}
 		}
 		if(countApp++ >0){
@@ -3293,6 +3296,11 @@ public void getApplicationFormsForRevaluationChooseType(List<Integer> examIds, N
 					sto.setSubjectId(bo.getSubject().getId());
 					sto.setSubjectCode(bo.getSubject().getCode());
 					sto.setSubjectName(bo.getSubject().getName());
+					if (bo.getRevaluationPgiDetails()!=null && (bo.getRevaluationPgiDetails().getTxnStatus()=="success" || bo.getRevaluationPgiDetails().getTxnStatus().equalsIgnoreCase("success" ))) {
+						sto.setPgiId("yes");
+					}else{
+						sto.setPgiId("no");
+					}
 					
 					//raghu new 
 					sto.setSubjectType(bo.getSubject().getIsTheoryPractical());

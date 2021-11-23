@@ -153,7 +153,7 @@ public class NewExamMarksEntryHelper {
 		if(newExamMarksEntryForm.getSection()!=null && !newExamMarksEntryForm.getSection().isEmpty() && !newExamMarksEntryForm.getSection().equalsIgnoreCase("0")){
 			query=query+" and s.classSchemewise.classes.id="+newExamMarksEntryForm.getSection();
 		}
-		if (newExamMarksEntryForm.getRetest().equalsIgnoreCase("yes")) {
+		if (newExamMarksEntryForm.getRetest()!=null && newExamMarksEntryForm.getRetest().equalsIgnoreCase("yes")) {
 			query=query+" and s.id in(select rt.studentId from ExamInternalRetestApplicationBO rt where rt.classId="+newExamMarksEntryForm.getSection()+")";
 		}
 		return query;
@@ -177,7 +177,7 @@ public class NewExamMarksEntryHelper {
 					StudentMarksTO to=new StudentMarksTO();
 					to.setStudentId(student.getId());
 					to.setName(student.getAdmAppln().getPersonalData().getFirstName());
-					if (newExamMarksEntryForm.getRetest().equalsIgnoreCase("yes")) {
+					if (newExamMarksEntryForm.getRetest()!=null && newExamMarksEntryForm.getRetest().equalsIgnoreCase("yes")) {
 						to.setRetests(true);
 					}else{
 						to.setRetests(false);
@@ -267,7 +267,7 @@ public class NewExamMarksEntryHelper {
 		if(newExamMarksEntryForm.getSection()!=null && !newExamMarksEntryForm.getSection().isEmpty() && !newExamMarksEntryForm.getSection().equalsIgnoreCase("0")){
 			query=query+" and classSchemewise.classes.id="+newExamMarksEntryForm.getSection();
 		}
-		if (newExamMarksEntryForm.getRetest().equalsIgnoreCase("yes")) {
+		if (newExamMarksEntryForm.getRetest()!=null && newExamMarksEntryForm.getRetest().equalsIgnoreCase("yes")) {
 			query=query+" and s.id in(select rt.studentId from ExamInternalRetestApplicationBO rt where rt.classId=521)";
 		}
 		query=query+" and subjHist.schemeNo="+newExamMarksEntryForm.getSchemeNo();
@@ -290,7 +290,7 @@ public class NewExamMarksEntryHelper {
 			Object[] objects = (Object[]) itr.next();
 			if(objects[0]!=null){
 				Student student=(Student)objects[0];
-				if (newExamMarksEntryForm.getRetest().equalsIgnoreCase("yes")) {
+				if (newExamMarksEntryForm.getRetest()!=null && newExamMarksEntryForm.getRetest().equalsIgnoreCase("yes")) {
 					int result=txn.checkSubjectInRetestForm(newExamMarksEntryForm,student.getId());
 					if (result==0) {
 						continue;
@@ -302,7 +302,7 @@ public class NewExamMarksEntryHelper {
 					to.setStudentId(student.getId());
 					to.setName(student.getAdmAppln().getPersonalData().getFirstName());
 					to.setName(student.getAdmAppln().getPersonalData().getFirstName());
-					if (newExamMarksEntryForm.getRetest().equalsIgnoreCase("yes")) {
+					if (newExamMarksEntryForm.getRetest()!=null && newExamMarksEntryForm.getRetest().equalsIgnoreCase("yes")) {
 						to.setRetests(true);
 					}else{
 						to.setRetests(false);
@@ -1118,6 +1118,7 @@ public class NewExamMarksEntryHelper {
 					}
 					if(maxMarkMap.containsKey(examId))
 						to.setMaxMarks(maxMarkMap.get(examId));
+					to.compareTo(to);;
 					studentMarksList.add(to);
 				}//exam set
 					

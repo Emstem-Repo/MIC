@@ -133,11 +133,15 @@
 												<td align="right" height="25" class="row-odd">
 													<span class="Mandatory">*</span>
 													<bean:message key="knowledgepro.admission.student.tcDetails.subjectPassed.label1" />
-													<%--
-														<div align="right">
-															<bean:message key="knowledgepro.admission.tc.details.reasonofLeaving"/>
+														<div align="right" style="vertical-align: bottom;">
+														<br>
+															Optional subject
 														</div>
-													 --%>
+														<div align="right" style="vertical-align: bottom;">
+														<br>
+															Complementary subject
+														</div>
+													
 												</td>
 												<td class="row-even">
 													<nested:textarea property="tcDetailsTO.subjectsPassedCore" styleId="subjectsPassedCore" cols="22" rows="1" style="width:200px;"/>

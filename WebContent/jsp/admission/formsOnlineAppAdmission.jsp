@@ -82,7 +82,12 @@ table tr{
 					<tr><td align="left" colspan="2">Re-accredited (Fourth Cycle) with 'A+' Grade by NAAC| DST-FIST College | NIRF 2020 - 48th Rank</td>
 					<tr><td align="left" colspan="2">CPE (College with Potential for Excellence) Status conferred by UGC| UGC PARAMARSH Mentor College</td>
 					<tr><td align="left" colspan="2">(Affiliated to the University of Kerala)<hr></td>
-					<tr><td align="center" class="title2" colspan="2">APPLICATION FOR ADMISSION TO THE B.A./B.Sc./B.Com.<br> FIRST DEGREE PROGRAMMES 2021-2022<hr></td>
+					<logic:equal value="1" name="admissionFormForm" property="applicantDetails.programType">
+					<tr><td align="center" class="title2" colspan="2">APPLICATION FOR ADMISSION TO THE B.A./B.Sc./B.Com.<br> FIRST DEGREE PROGRAMMES 2021-2022<hr></td></tr>
+					</logic:equal>
+					<logic:equal value="2" name="admissionFormForm" property="applicantDetails.programType">
+					<tr><td align="center" class="title2" colspan="2">APPLICATION FOR ADMISSION TO THE M.A./M.Sc./M.Com./MTTM PG DEGREE PROGRAMMES 2021-2022<hr></td></tr>
+					</logic:equal>
 					<!-- <tr><td align="center" colspan="2">(Make all entries in block letters; tick () appropriate boxes)<hr></td> -->
 				</table>
 			</td>
@@ -105,6 +110,7 @@ table tr{
 					<tr><td><%=++num%>.</td><td>Category to which applicant belongs</td><td>
 						<bean:write name="admissionFormForm" property="applicantDetails.personalData.subregligionName"/>
 					</td></tr>
+					<logic:equal value="1" name="admissionFormForm" property="applicantDetails.programType">
 					<tr><td><%=++num%>.</td><td>Whether child of Ex-service Personnel or Jawan </td><td>
 						<logic:equal value="true" name="admissionFormForm" property="applicantDetails.personalData.exservice">
 							YES
@@ -113,6 +119,7 @@ table tr{
 							No
 						</logic:equal>
 					</td></tr>
+					</logic:equal>
 					<tr><td><%=++num%>.</td><td>a) If Member of N.C.C., details of Certificate holding<br>
 												b) Whether Certificate holder of N.S.S<br>
 												c)Whether certificate holder of SPC<br>
@@ -151,11 +158,16 @@ table tr{
 					<tr><td><%=++num%>.</td><td>Name of qualifying Examination passed</td><td>
 					
 						<logic:equal value="Class 12" name="ednQualList" property="docName">Plus Two</logic:equal>
+						<logic:equal value="DEG" name="ednQualList" property="docName">
+							<bean:write name="admissionFormForm" property="applicantDetails.personalData.ugcourse" />
+						</logic:equal>
 					</td></tr>
+					<logic:equal value="1" name="admissionFormForm" property="applicantDetails.programType">
 					<tr><td><%=++num%>.</td><td>Group selected for Plus Two Course/CBSE/ISC</td><td>
 						 <bean:write name="admissionFormForm" property="applicantDetails.personalData.stream" />
 						
 					</td></tr>
+					</logic:equal>
 					<tr><td><%=++num%>.</td><td>Number of times appeared for qualifying examination</td><td>
 						<bean:write  name="ednQualList" property="noOfAttempts"></bean:write>
 					</td></tr>
@@ -178,6 +190,7 @@ table tr{
 						<bean:write name="preflist" property="prefNo"/>.&nbsp;&nbsp;&nbsp; <bean:write name="preflist" property="coursName"/><br>
 						</logic:iterate>
 					</td></tr>
+					<logic:equal value="1" name="admissionFormForm" property="applicantDetails.programType">
 					<tr><td><%=++num%>.</td><td>Choice of Diploma/Certificate Courses</td><td>
 					<!-- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
 					<!-- <b>Core course (Main Subject)</b><br> -->
@@ -185,6 +198,7 @@ table tr{
 						<c:out value="${count + 1}"/>&nbsp;&nbsp;.<bean:write name="preflist" property="courseName"/>.&nbsp;&nbsp;&nbsp;<br>
 						</logic:iterate>
 					</td></tr>
+					</logic:equal>
 					</table>
 					</td></tr>
 					
@@ -343,9 +357,11 @@ table tr{
 					<%=++num%>.</td><td width="35%">Additional Language selected (for degree)</td><td>
 						<bean:write name="admissionFormForm" property="applicantDetails.personalData.secondLanguage"/>
 					</td></tr>
+					<logic:equal value="1" name="admissionFormForm" property="applicantDetails.programType">
 					<tr><td><%=++num%>.</td><td>Name of Institution last attended</td><td>
 						<bean:write name="ednQualList" property="institutionName" /></td>
 					</tr>
+					</logic:equal>
 					<tr><td><%=++num%>.</td><td>Register No. and Year</td><td> 
 						<bean:write name="ednQualList" property="previousRegNo" />
 					</td></tr>

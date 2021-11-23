@@ -1265,6 +1265,8 @@
 			 <forward name="publishSpecialFeeList" path="publishSpecialFeeList"/>
 			 <forward name="paymentSuccessfullDetailsForStudent" path="/jsp/studentlogin/PaymentSuccessStudentInfo.jsp"/>
 			 <forward name="init_internal_retst" path="init_internal_retst"/>
+			  <forward name="initRevaluationMarksCard" path="initRevaluationMarksCard"/>
+			  <forward name="revaluationMemo" path="/jsp/exam/revaluationMemoPrint.jsp"/>
         </action>
         <action path="/forwardException" type="org.apache.struts.actions.ForwardAction"
          name="baseActionForm" parameter="errorpage"/>
@@ -6512,6 +6514,10 @@
             <forward name="onlineAnnexure" path="/jsp/admission/formsOnlineOnlineAnnexure.jsp"/>
             <forward name="onlineAPPAdmission" path="/jsp/admission/formsOnlineAppAdmission.jsp"/>
             </action>
+            
+            <action path="/addOnCourseDetails" type="com.kp.cms.actions.admission.AddOnCourseDetailsAction" name="subjectGroupDetailsForm" scope="session" parameter="method" validate="false">
+            <forward name="addOnCourseDetailsInit" path="addOnCourseDetailsInit"/>
+        </action>
 		
 	</action-mappings>
 

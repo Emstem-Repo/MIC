@@ -132,10 +132,27 @@
 									<td height="35" class="row-odd" align="center">Reg No.</td>
 									
 									<logic:iterate  property="examList" name="newExamMarksEntryForm" id="examid">
+									<logic:equal value="402" name="examid" property="examId">
 									<td height="35" class="row-odd" align="center">
 									<bean:write name="examid" property="examName"/>
 									</td>
+									</logic:equal>
 									</logic:iterate>
+									<logic:iterate  property="examList" name="newExamMarksEntryForm" id="examid">
+									<logic:equal value="401" name="examid" property="examId">
+									<td height="35" class="row-odd" align="center">
+									<bean:write name="examid" property="examName"/>
+									</td>
+									</logic:equal>
+									</logic:iterate>
+									<logic:iterate  property="examList" name="newExamMarksEntryForm" id="examid">
+									<logic:equal value="400" name="examid" property="examId">
+									<td height="35" class="row-odd" align="center">
+									<bean:write name="examid" property="examName"/>
+									</td>
+									</logic:equal>
+									</logic:iterate>
+									
 									<td height="35" class="row-odd" align="center">Total Marks</td>
 									<td height="35" class="row-odd" align="center">Sign</td>
 									

@@ -8,9 +8,12 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionMapping;
 
+import com.kp.cms.bo.admin.CertificateCourse;
 import com.kp.cms.constants.CMSConstants;
 import com.kp.cms.forms.BaseActionForm;
 import com.kp.cms.to.admin.StudentTO;
+import com.kp.cms.to.admission.CertificateCourseTO;
+import com.kp.cms.to.admission.StudentCertificateCourseTO;
 import com.kp.cms.to.attendance.CreatePracticalBatchTO;
 import com.kp.cms.to.attendance.SubjectGroupDetailsTo;
 import com.kp.cms.to.exam.ExamSpecializationTO;
@@ -49,6 +52,10 @@ public class SubjectGroupDetailsForm extends BaseActionForm {
 	private List<String> specializationStuList;
 	private String specializationMessage;
 	private Map<Integer,String> specializationMap1;
+	private Map<Integer,String> certificateMap;
+	private List<StudentCertificateCourseTO> addOnCourseList;
+	private List<CertificateCourse> certificateCourseList;
+	private List<CertificateCourseTO> certificateCourseListTo;
 	
 	public String getOldBatchName() {
 		return oldBatchName;
@@ -238,6 +245,30 @@ public class SubjectGroupDetailsForm extends BaseActionForm {
 	}
 	public Map<Integer,String> getSpecializationMap1() {
 		return specializationMap1;
+	}
+	public Map<Integer, String> getCertificateMap() {
+		return certificateMap;
+	}
+	public void setCertificateMap(Map<Integer, String> certificateMap) {
+		this.certificateMap = certificateMap;
+	}
+	public List<StudentCertificateCourseTO> getAddOnCourseList() {
+		return addOnCourseList;
+	}
+	public void setAddOnCourseList(List<StudentCertificateCourseTO> addOnCourseList) {
+		this.addOnCourseList = addOnCourseList;
+	}
+	public List<CertificateCourse> getCertificateCourseList() {
+		return certificateCourseList;
+	}
+	public void setCertificateCourseList(List<CertificateCourse> certificateCourseList) {
+		this.certificateCourseList = certificateCourseList;
+	}
+	public List<CertificateCourseTO> getCertificateCourseListTo() {
+		return certificateCourseListTo;
+	}
+	public void setCertificateCourseListTo(List<CertificateCourseTO> certificateCourseListTo) {
+		this.certificateCourseListTo = certificateCourseListTo;
 	}
 	
 

@@ -508,7 +508,14 @@
                 <comment></comment>
             </column>
         </property>
-        
+        <set name="studentCertificateCourse" cascade="save-update,persist,merge" >
+            <key>
+                <column name="adm_appln_id">
+                    <comment></comment>
+                </column>
+            </key>
+            <one-to-many class="com.kp.cms.bo.admin.StudentCertificateCourse" />
+        </set>
         
         
      </class>

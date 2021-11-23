@@ -12180,5 +12180,16 @@ This is a blank Tiles definition file with a commented example.
         <put name="page" value="Admission Form "/>
         <put name="body" value="/jsp/admission/init_formsOnline.jsp"/>
     </definition>
+    <definition name="addOnCourseDetailsInit" extends=".cmsLayout">
+        <put name="title" value="Attendance"/>
+        <put name="module" value="Attandance"/>
+        <put name="page" value="Attendance Entry"/>
+        <put name="body" value="/jsp/admission/AddOnCourseDetails.jsp"/>
+    </definition>
+    <definition name="initRevaluationMarksCard" extends=".cmsStudentLayoutHome">
+        <put name="title" value="Marks Card"/>
+        <put name="module" value="Exam"/>
+        <put name="body" value="/jsp/studentlogin/initRevaluationMarkscardStudLogin.jsp"/>
+    </definition>
 	 
 </tiles-definitions>

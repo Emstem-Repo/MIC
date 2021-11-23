@@ -23,8 +23,6 @@
 	<input type="hidden" name="phone" value="<%= request.getAttribute("phone") %>" />
 	<input type="hidden" name="surl" value="<%= request.getAttribute("surl") %>" />
     <input type="hidden" name="furl" value="<%= request.getAttribute("furl") %>" />
-	<%--<input type="hidden" name="test" value="<%= request.getAttribute("test") %>" />
-	--%>
     
 </form>
 <script type="text/javascript">

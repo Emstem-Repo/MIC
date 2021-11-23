@@ -65,7 +65,7 @@
 									 					of Mar Ivanios College, Thiruvananthapuram 
 									 					doing the <font face="verdana" size="1"><b><bean:write name="studentList" property="course"/></b></font> course,
 									 					during the academic
-									 					years <font face="verdana" size="1"><b><bean:write name="studentList" property="leavingAcademicYear"/></b></font> his/ her subjects of study
+									 					years <font face="verdana" size="1"><b><bean:write name="studentList" property="duration"/></b></font> his/ her subjects of study
 									 					being <font face="verdana" size="1"><b><bean:write name="studentList" property="subjectPassedCore"/></b></font> Main and 
 									 					<font face="verdana" size="1"><b><bean:write name="studentList" property="subjectsPassedComplimentary"/></b></font>
 									 					subsidiaries, his/her Optional Subjects

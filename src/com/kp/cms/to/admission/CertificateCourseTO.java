@@ -13,7 +13,7 @@ public class CertificateCourseTO implements Serializable,Comparable<CertificateC
 	private String courseCheck;
 	private String stream;
 	private String subjectName;
-	private String maxIntake;
+	private String amount;
 	private Users users;
 	private String startTime;
 	private String endTime;
@@ -21,7 +21,7 @@ public class CertificateCourseTO implements Serializable,Comparable<CertificateC
 	private String teacherName;
 	private int year;
 	private String courseNameWithSemType;
-	private String extracurricular;
+	private String isSelected;
 	private String description;
 	private String groupMaxIntake;
 	private boolean display=false;
@@ -78,12 +78,7 @@ public class CertificateCourseTO implements Serializable,Comparable<CertificateC
 	public void setSubjectName(String subjectName) {
 		this.subjectName = subjectName;
 	}
-	public String getMaxIntake() {
-		return maxIntake;
-	}
-	public void setMaxIntake(String maxIntake) {
-		this.maxIntake = maxIntake;
-	}
+	
 	public Users getUsers() {
 		return users;
 	}
@@ -126,12 +121,7 @@ public class CertificateCourseTO implements Serializable,Comparable<CertificateC
 	public void setCourseNameWithSemType(String courseNameWithSemType) {
 		this.courseNameWithSemType = courseNameWithSemType;
 	}
-	public String getExtracurricular() {
-		return extracurricular;
-	}
-	public void setExtracurricular(String extracurricular) {
-		this.extracurricular = extracurricular;
-	}
+	
 	public String getDescription() {
 		return description;
 	}
@@ -182,6 +172,18 @@ public class CertificateCourseTO implements Serializable,Comparable<CertificateC
 			return this.getCourseName().toUpperCase().compareTo(to1.getCourseName().toUpperCase());
 		}
 		return 0;
+	}
+	public String getAmount() {
+		return amount;
+	}
+	public void setAmount(String amount) {
+		this.amount = amount;
+	}
+	public String getIsSelected() {
+		return isSelected;
+	}
+	public void setIsSelected(String isSelected) {
+		this.isSelected = isSelected;
 	}
 	
 }

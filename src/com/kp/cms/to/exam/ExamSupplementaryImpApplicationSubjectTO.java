@@ -59,6 +59,7 @@ public class ExamSupplementaryImpApplicationSubjectTO {
 	private boolean isApplied;
 	private boolean disableCheckBox;
 	private String maxMarks;
+	private String pgiId;
 	
 	public ExamSupplementaryImpApplicationSubjectTO() {
 		super();
@@ -435,6 +436,16 @@ public class ExamSupplementaryImpApplicationSubjectTO {
 
 	public void setMaxMarks(String maxMarks) {
 		this.maxMarks = maxMarks;
+	}
+
+
+	public String getPgiId() {
+		return pgiId;
+	}
+
+
+	public void setPgiId(String pgiId) {
+		this.pgiId = pgiId;
 	}
 	
 

@@ -558,8 +558,6 @@
     <description id="Description_1611142999229">NO Access</description>
     <role-name>restricted</role-name>
   </security-role>
-  <session-config>
-  <tracking-mode>COOKIE</tracking-mode>
-</session-config>
+  
   
 </web-app>

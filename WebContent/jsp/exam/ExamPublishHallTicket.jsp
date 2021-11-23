@@ -424,6 +424,7 @@
 										<html:option value="Consolidate Marks Card">Consolidate Marks Card</html:option>
 										<html:option value="revaluation/scrutiny">Revaluation/Scrutiny</html:option>
 										<html:option value="Internal Marks Card">Internal Marks Card</html:option>
+										<html:option value="Revaluattion Memo">Revaluattion Memo</html:option>
 									</html:select></td>
 							</tr>
 								<tr>

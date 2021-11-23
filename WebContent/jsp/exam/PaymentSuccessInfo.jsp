@@ -140,7 +140,7 @@ response.setHeader("Expires", "0"); // Proxies.
             
      <logic:equal value="false" name="newSupplementaryImpApplicationForm" property="paymentSuccess">
             
-     <logic:equal value="Online" name="newSupplementaryImpApplicationForm" property="mode">
+     <logic:equal value="Online" name="newSupplementaryImpApplicationForm" property="mode1">
      
       <tr>
         <td>

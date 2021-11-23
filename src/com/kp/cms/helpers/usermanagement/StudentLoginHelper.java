@@ -28,6 +28,11 @@ import com.kp.cms.bo.admin.PersonalData;
 import com.kp.cms.bo.admin.PublishSpecialFees;
 import com.kp.cms.bo.admin.Student;
 import com.kp.cms.bo.exam.CandidatePGIForSpecialFees;
+import com.kp.cms.bo.exam.ExamMarksEntryDetailsBO;
+import com.kp.cms.bo.exam.ExamRevaluationApp;
+import com.kp.cms.bo.exam.ExamRevaluationApplicationNew;
+import com.kp.cms.bo.exam.ExamStudentFinalMarkDetailsBO;
+import com.kp.cms.bo.exam.ModerationMarksEntryBo;
 import com.kp.cms.bo.exam.OnlinePaymentReciepts;
 import com.kp.cms.bo.studentExtentionActivity.StudentExtention;
 import com.kp.cms.bo.studentExtentionActivity.StudentExtentionActivityDetails;
@@ -43,6 +48,7 @@ import com.kp.cms.handlers.usermanagement.StudentLoginHandler;
 import com.kp.cms.helpers.exam.NewSupplementaryImpApplicationHelper;
 import com.kp.cms.to.admin.PublishSpecialFeesTO;
 import com.kp.cms.to.admission.OnlinePaymentRecieptsTo;
+import com.kp.cms.to.exam.RevaluationMarksUpdateTo;
 import com.kp.cms.to.fee.FeePaymentDetailFeeGroupTO;
 import com.kp.cms.to.fee.FeePaymentTO;
 import com.kp.cms.to.fee.PrintChalanTO;
@@ -51,6 +57,7 @@ import com.kp.cms.to.studentExtentionActivity.StudentGroupTO;
 import com.kp.cms.transactions.exam.INewExamMarksEntryTransaction;
 import com.kp.cms.transactionsimpl.exam.NewExamMarksEntryTransactionImpl;
 import com.kp.cms.utilities.CommonUtil;
+import com.kp.cms.utilities.NumberToWordConvertor;
 
 public class StudentLoginHelper {
 	private static volatile StudentLoginHelper studentLoginHelper = null;
@@ -719,5 +726,68 @@ public class StudentLoginHelper {
 	//}
 	
 	return bo;
+	}
+	public List<RevaluationMarksUpdateTo> convertToRevalTO(List<ExamRevaluationApplicationNew> revalList,
+			List<ModerationMarksEntryBo> markList, LoginForm loginForm) {
+		List<RevaluationMarksUpdateTo> updatedToList=new ArrayList<RevaluationMarksUpdateTo>();
+		for (ExamRevaluationApplicationNew revalBo : revalList) {
+			RevaluationMarksUpdateTo updatedTo=new RevaluationMarksUpdateTo();
+			for (ModerationMarksEntryBo markBo : markList) {
+				if (revalBo.getSubject().getId()==markBo.getSubjectId()) {
+					updatedTo.setSubjectCode(revalBo.getSubject().getCode());
+					updatedTo.setClassName(revalBo.getSubject().getName());
+					String mon=monthInWords(markBo.getExamDefinitionBO().getMonth());
+					loginForm.setMonth(mon +" , "+ revalBo.getExam().getYear());
+					loginForm.setSchemeNo(String.valueOf(revalBo.getClasses().getTermNumber()));
+					loginForm.setProgramName(revalBo.getClasses().getCourse().getName());
+					if (markBo.getExamDefinitionBO().getIsImprovement()) {
+						loginForm.setExamType("IMPROVEMENT");
+					}else if (markBo.getExamDefinitionBO().getIsReappearance()) {
+						loginForm.setExamType("REAPPEARANCE");
+					}
+					updatedTo.setOldMarks(markBo.getPreviousTheoryMarks());
+					updatedTo.setNewMarks(markBo.getTheoryMarks());
+					String words=NumberToWordConvertor.convertNumber(markBo.getTheoryMarks());
+					updatedTo.setNewMark1(words);
+					if (new Double(markBo.getTheoryMarks())>new Double(markBo.getPreviousTheoryMarks())) {
+						updatedTo.setComment("CHANGE");
+					}else{
+						updatedTo.setComment("NO CHANGE");
+					}
+					updatedToList.add(updatedTo);
+				}
+			}
+		}
+		return updatedToList;
+	}
+	public String monthInWords(String month1)
+	{
+		String month = Integer.parseInt(month1)+"";
+		
+		if(month.equalsIgnoreCase("0"))
+		return "Jan";
+		if(month.equalsIgnoreCase("1"))
+			return "Feb";
+		if(month.equalsIgnoreCase("2"))
+			return "Mar";
+		if(month.equalsIgnoreCase("3"))
+			return "Apr";
+		if(month.equalsIgnoreCase("4"))
+			return "May";
+		if(month.equalsIgnoreCase("5"))
+			return "Jun";
+		if(month.equalsIgnoreCase("6"))
+			return "Jul";
+		if(month.equalsIgnoreCase("7"))
+			return "Aug";
+		if(month.equalsIgnoreCase("8"))
+			return "Sep";
+		if(month.equalsIgnoreCase("9"))
+			return "Oct";
+		if(month.equalsIgnoreCase("10"))
+			return "Nov";
+		if(month.equalsIgnoreCase("11"))
+			return "Dec";
+		return month;
 	}
 }

@@ -8,7 +8,7 @@ import java.util.Set;
 public class CertificateCourse implements Serializable{
 	private int id;
 	private String certificateCourseName;
-	private Integer maxIntake;
+	private Integer amount;
 	//private Users users;
 	private String startTime;
 	private String endTime;
@@ -23,7 +23,7 @@ public class CertificateCourse implements Serializable{
 	private Set<StudentCertificateCourse> studentCertificateCourses = new HashSet<StudentCertificateCourse>(0);
 //	private Set<Subject> subject=new HashSet<Subject>(0);
 	//private Subject subject=new Subject();
-	private Boolean extracurricular;
+	private Boolean isSelected;
 	private Set<CertificateCourseGroup> groups;
 	private String description;
 	
@@ -32,20 +32,13 @@ public class CertificateCourse implements Serializable{
 	}
 
 
-	public Boolean getExtracurricular() {
-		return extracurricular;
-	}
-
-
-	public void setExtracurricular(Boolean extracurricular) {
-		this.extracurricular = extracurricular;
-	}
+	
 
 
 	public CertificateCourse(int id, String certificateCourseName, Users users,
 			String startTime, String endTime, String venue, String createdBy,
 			String modifiedBy, Date createdDate, Date lastModifiedDate,
-			Boolean isActive, Integer maxIntake,Integer year,String semType,Boolean extracurricular,String description) {
+			Boolean isActive, Integer maxIntake,Integer year,String semType,Boolean isSelected,String description) {
 		super();
 		this.id = id;
 		this.certificateCourseName = certificateCourseName;
@@ -58,10 +51,10 @@ public class CertificateCourse implements Serializable{
 		this.createdDate = createdDate;
 		this.lastModifiedDate = lastModifiedDate;
 		this.isActive = isActive;
-		this.maxIntake = maxIntake;
+		this.amount = amount;
 		this.year=year;
 		this.semType=semType;
-		this.extracurricular=extracurricular;
+		this.isSelected=isSelected;
 		this.description=description;
 	}
 
@@ -174,17 +167,6 @@ public class CertificateCourse implements Serializable{
 	public void setIsActive(Boolean isActive) {
 		this.isActive = isActive;
 	}
-
-
-	public Integer getMaxIntake() {
-		return maxIntake;
-	}
-
-
-	public void setMaxIntake(Integer maxIntake) {
-		this.maxIntake = maxIntake;
-	}
-
 	public Integer getYear() {
 		return year;
 	}
@@ -242,6 +224,25 @@ public class CertificateCourse implements Serializable{
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+
+
+
+
+	public Integer getAmount() {
+		return amount;
+	}
+
+	public void setAmount(Integer amount) {
+		this.amount = amount;
+	}
+
+	public Boolean getIsSelected() {
+		return isSelected;
+	}
+	public void setIsSelected(Boolean isSelected) {
+		this.isSelected = isSelected;
 	}
 
 

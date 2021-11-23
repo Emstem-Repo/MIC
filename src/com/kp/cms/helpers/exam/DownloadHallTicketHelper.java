@@ -24672,7 +24672,7 @@ if(ugMarksCardData!=null && !ugMarksCardData.isEmpty()){
 		/*"       ifnull((SELECT EXAM_sub_coursewise_grade_defn.grade" +
 		"  FROM EXAM_sub_coursewise_grade_defn EXAM_sub_coursewise_grade_defn where theoryPer between start_prcntg_grade and end_prcntg_grade and EXAM_sub_coursewise_grade_defn.course_id = classes.course_id and subject_id=subject.id), " +*/
 		"   ifnull( (SELECT EXAM_grade_class_definition_frombatch.grade " +
-		"     FROM EXAM_grade_class_definition_frombatch EXAM_grade_class_definition_frombatch where theoryPer between EXAM_grade_class_definition_frombatch.start_percentage and EXAM_grade_class_definition_frombatch.end_percentage and EXAM_grade_class_definition_frombatch.course_id = classes.course_id and from_batch <= adm_appln.applied_year limit 1),null)  as thegra, " +
+		"     FROM EXAM_grade_class_definition_frombatch EXAM_grade_class_definition_frombatch where theoryPer between EXAM_grade_class_definition_frombatch.start_percentage and EXAM_grade_class_definition_frombatch.end_percentage and EXAM_grade_class_definition_frombatch.course_id = classes.course_id and from_batch = adm_appln.applied_year limit 1),null)  as thegra, " +
 		/*" (SELECT  EXAM_grade_class_definition.grade   FROM EXAM_grade_class_definition EXAM_grade_class_definition where theoryPer between start_percentage and EXAM_grade_class_definition.end_percentage and EXAM_grade_class_definition.course_id = classes.course_id limit 1)))) as thegra, " +
 		" ifnull( (SELECT  EXAM_sub_coursewise_grade_defn.grade " +
 		" FROM EXAM_sub_coursewise_grade_defn EXAM_sub_coursewise_grade_defn where practicalper between start_prcntg_grade and end_prcntg_grade and EXAM_sub_coursewise_grade_defn.course_id = classes.course_id and subject_id=subject.id), " +*/
@@ -24985,7 +24985,7 @@ if(ugMarksCardData!=null && !ugMarksCardData.isEmpty()){
 		/*"       ifnull((SELECT EXAM_sub_coursewise_grade_defn.grade" +
 		"  FROM EXAM_sub_coursewise_grade_defn EXAM_sub_coursewise_grade_defn where theoryPer between start_prcntg_grade and end_prcntg_grade and EXAM_sub_coursewise_grade_defn.course_id = classes.course_id and subject_id=subject.id), " +*/
 		"   ifnull( (SELECT EXAM_grade_class_definition_frombatch.grade " +
-		"     FROM EXAM_grade_class_definition_frombatch EXAM_grade_class_definition_frombatch where theoryPer between EXAM_grade_class_definition_frombatch.start_percentage and EXAM_grade_class_definition_frombatch.end_percentage and EXAM_grade_class_definition_frombatch.course_id = classes.course_id and from_batch <= adm_appln.applied_year limit 1),null)  as thegra, " +
+		"     FROM EXAM_grade_class_definition_frombatch EXAM_grade_class_definition_frombatch where theoryPer between EXAM_grade_class_definition_frombatch.start_percentage and EXAM_grade_class_definition_frombatch.end_percentage and EXAM_grade_class_definition_frombatch.course_id = classes.course_id and from_batch = adm_appln.applied_year limit 1),null)  as thegra, " +
 		/*" (SELECT  EXAM_grade_class_definition.grade   FROM EXAM_grade_class_definition EXAM_grade_class_definition where theoryPer between start_percentage and EXAM_grade_class_definition.end_percentage and EXAM_grade_class_definition.course_id = classes.course_id limit 1)))) as thegra, " +
 		" ifnull( (SELECT  EXAM_sub_coursewise_grade_defn.grade " +
 		" FROM EXAM_sub_coursewise_grade_defn EXAM_sub_coursewise_grade_defn where practicalper between start_prcntg_grade and end_prcntg_grade and EXAM_sub_coursewise_grade_defn.course_id = classes.course_id and subject_id=subject.id), " +*/

@@ -364,9 +364,7 @@ public class ApplicationRankHelperforPg {
 			while(iter.hasNext()){
 			AdmAppln admAppln=(AdmAppln)iter.next();
 			
-			if(admAppln.getId()==45238) {
-			System.out.println("before"+admAppln.getId());
-			}
+			
 			int penalty=0;
 			int bonus=0;
 			boolean feepaid=false;
@@ -637,6 +635,7 @@ public class ApplicationRankHelperforPg {
 						//MA ENGLISH
                            //else if(candidatePreference.getCourse().getName().equalsIgnoreCase("MA ENGLISH")){
  								else  if(candidatePreference.getCourse().getId()==10){
+ 									
  									Session session = null;
                                 final Map<Integer, String> eligMap = new HashMap<Integer, String>();
                                 session = HibernateUtil.getSession();
@@ -650,7 +649,7 @@ public class ApplicationRankHelperforPg {
                                 final double maxmark = 0.0;
                                 double language1Mark = 0.0;
                                 double language2Mark = 0.0;
-                                final double groupMarks = 0.0;
+                                double groupMarks = 0.0;
                                 final double electiveSubjectMark = 0.0;
                                 final double cgpamarks = 0.0;
                                 final double extramark = 0.0;
@@ -676,6 +675,9 @@ public class ApplicationRankHelperforPg {
                                 double comparisonMark = 0.0;
                                 boolean outOfFour = false;
                                 boolean outOfSix = false;
+                                if (admAppln.getId()==53995 || admAppln.getId()==54086) {
+									System.out.println("");
+								}
                                 if (ugPattern.equalsIgnoreCase("CBCSS")) {
                                     final Iterator<AdmSubjectMarkForRank> markItr2 = detailMarks.iterator();
                                     while (markItr2.hasNext()) {
@@ -840,10 +842,14 @@ public class ApplicationRankHelperforPg {
                                                 total += total * 0.5;
                                             }
                                         }
+                                        if (ugcourseid == 20) {
+                                        	total =total+( total / 100.0 * 5.0);
+                                        }
                                         total = total * 1000.0 / 100.0;
-                                        if (iskerala && ugcourseid != 173) {
+                                        if (iskerala && ugcourseid != 173 && ugcourseid != 20) {
                                             total += 50.0;
                                         }
+                                        groupMarks=obtainedCGPA_MARK;
                                         total = total + bonus - penalty;
                                     }
                                 }
@@ -1001,7 +1007,7 @@ public class ApplicationRankHelperforPg {
                                             }
                                         }
                                         else {
-                                            total = eligiblemark / totalCGPA_MARK * 100.0;
+                                            total = eligiblemark / totalCGPA_MARK * 100;
                                         }
                                         if (!isCalicut && CMSConstants.ENGLISHELIGIBLECOURSEIDS.contains(ugcourseid)) {
                                         	if(ugcourseid==20){
@@ -1015,18 +1021,26 @@ public class ApplicationRankHelperforPg {
                                         		total += total * 5.0 / 100.0;
                                         	}
                                         }
-//                                        if (!isCalicut && ugcourseid == 20) {
-//                                            if (iskerala) {
-//                                                total += total * 0.05;
-//                                            }
-//                                            else {
-//                                                total += total * 0.5;
-//                                            }
-//                                        }
+                                        /*if (!isCalicut && ugcourseid == 20) {
+                                            if (iskerala) {
+                                                total += total * 0.05;
+                                            }
+                                            
+                                        }*/
+                                        if (ugcourseid == 20) {
+                                        	total =total+( total / 100.0 * 5.0);
+                                        }
                                         total = total * 1000.0 / 100.0;
                                         if (iskerala && ugcourseid != 173) {
                                             total += 50.0;
                                         }
+                                        groupMarks=obtainedCGPA_MARK;
+                                       /* if (!isCalicut && ugcourseid == 20) {
+                                            if (iskerala) {
+                                                total +=10 ;
+                                            }
+                                            
+                                        }*/
                                         total = total + bonus - penalty;
                                     }
                                 }
@@ -1161,6 +1175,7 @@ public class ApplicationRankHelperforPg {
                                             total += 50.0;
                                         }
                                         total = total + bonus - penalty;
+                                        groupMarks=obtainedCGPA_MARK;
                                     }
                                 }
                                 final StudentIndexMark si2 = new StudentIndexMark();
@@ -1190,6 +1205,8 @@ public class ApplicationRankHelperforPg {
 							//MA Malayalam
 	                           //else if(candidatePreference.getCourse().getName().equalsIgnoreCase("MA Malayalam")){
 	 								else  if(candidatePreference.getCourse().getId()==11){
+	 									
+	 									
 	 									Session session=null;
 	 	                               Map<Integer,String> eligMap=new HashMap<Integer, String>();
 	 	                               session = HibernateUtil.getSession();
@@ -1233,7 +1250,9 @@ public class ApplicationRankHelperforPg {
 			                        	   boolean outOfFour = false;
 			                        	   boolean outOfSix = false;
 			                        	   double commonCredit = 0;
-			                        	   
+			                        	   if (admAppln.getId()==52605) {
+												System.out.println("");
+											}
 			                        	   if(ugPattern.equalsIgnoreCase("CBCSS")){   
 			                        		   Iterator<AdmSubjectMarkForRank> markItr=detailMarks.iterator();
 				                        	   while (markItr.hasNext()) {
@@ -1268,7 +1287,7 @@ public class ApplicationRankHelperforPg {
 				                        	   double comparisionMark = obtainedCCPA / obtainedCredit;
 				                        	   
 				                        	   if(iskerala) {
-				                        		   if(obtainedCGPA_MARK<language2Mark){
+				                        		   if(comparisionMark<language2Mark){
 				                        			   eligiblemark=language2Mark;
 				                        		   }else{
 				                        			   eligiblemark=obtainedCGPA_MARK;
@@ -1281,6 +1300,7 @@ public class ApplicationRankHelperforPg {
 				                        			   eligiblemark=comparisionMark;
 				                        		   }
 				                        	   }
+				                        	   
 				                        	   /*if(CMSConstants.MALAYALAMALLCOURSEIDS.contains(ugcourseid) && language2Mark!=0){
 				                        		   if(obtainedCGPA_MARK<language2Mark){
 				                        			   eligiblemark=language2Mark;
@@ -1327,11 +1347,18 @@ public class ApplicationRankHelperforPg {
 //				                        		  
 //				                        		   total=total+bonus-penalty;
 //				                        		   
+				                        		   if (ugcourseid==37 || ugcourseid==5 || ugcourseid==171 ) {
+				                        			   total = (Double.parseDouble(ednQualificationBO.getMarksObtained().toString())/Double.parseDouble(ednQualificationBO.getTotalMarks().toString()))*1000;
+				                        		   }
+				                        		   else if(obtainedCGPA_MARK<language2Mark){
+				                        			   total = (language2Mark/Double.parseDouble(ednQualificationBO.getTotalMarks().toString()))*1000+coreMalayalamExtra;
+				                        		   }else{
 				                        		   if(Double.parseDouble(ednQualificationBO.getTotalMarks().toString())==1000){
 					                       				total=Double.parseDouble(ednQualificationBO.getMarksObtained().toString());
 					                       			}else{
 					                       				total = (Double.parseDouble(ednQualificationBO.getMarksObtained().toString())/Double.parseDouble(ednQualificationBO.getTotalMarks().toString()))*1000;
 					                       			}
+				                        		   }
 				                        		   if(ugcourseid==176 || 
 				    			                      	   ugcourseid == 37 ||
 				    			                      		ugcourseid == 38 ||
@@ -1348,6 +1375,7 @@ public class ApplicationRankHelperforPg {
 			                        	   else if( ugPattern.equalsIgnoreCase("CBCSS NEW")){
 			                        		   totalmark=(Double.parseDouble(ednQualificationBO.getMarksObtained().toString())/Double.parseDouble(ednQualificationBO.getTotalMarks().toString()))*10;
 			                        		   Iterator<AdmSubjectMarkForRank> markItr=detailMarks.iterator();
+			                        		   
 			                        		   while (markItr.hasNext()) {
 			                        			   detailMarkBO= (AdmSubjectMarkForRank) markItr.next();
 			                        			   if(Double.parseDouble(detailMarkBO.getMaxmark()) == 4) {
@@ -1379,14 +1407,17 @@ public class ApplicationRankHelperforPg {
 			                        		   double comparisionMark = obtainedCCPA / obtainedCredit;
 				                        	   
 				                        	   if(iskerala) {
-				                        		   if(obtainedCGPA_MARK<language2Mark){
+				                        		   if(!hasCoreMalayalam){
 				                        			   eligiblemark=language2Mark;
-				                        		   }else{
+				                        		   }else if(obtainedCGPA_MARK<language2Mark){
+				                        			   eligiblemark=language2Mark;
+				                        		   }
+				                        		   else{
 				                        			   eligiblemark=obtainedCGPA_MARK;
 				                        		   }
 				                        	   }
 				                        	   else {
-				                        		   if(comparisionMark<language2Mark){
+				                        		   if(comparisionMark<language2Mark && hasCoreMalayalam){
 				                        			   eligiblemark=language2Mark;
 				                        		   }else{
 				                        			   eligiblemark=comparisionMark;
@@ -1436,11 +1467,18 @@ public class ApplicationRankHelperforPg {
 //				                        		   
 //				                        		   total += commonMalayalamExtra;
 //				                        		   total=total+bonus-penalty;
+				                        		   if (ugcourseid==37 || ugcourseid==5 || ugcourseid==171 ) {
+				                        			   total = (Double.parseDouble(ednQualificationBO.getMarksObtained().toString())/Double.parseDouble(ednQualificationBO.getTotalMarks().toString()))*1000;
+				                        		   }
+				                        		   else if(obtainedCGPA_MARK<language2Mark || !hasCoreMalayalam){
+				                        			   total = (language2Mark/Double.parseDouble(ednQualificationBO.getTotalMarks().toString()))*1000;
+				                        		   }else{
 				                        		   if(Double.parseDouble(ednQualificationBO.getTotalMarks().toString())==1000){
 					                       				total=Double.parseDouble(ednQualificationBO.getMarksObtained().toString());
 					                       			}else{
 					                       				total = (Double.parseDouble(ednQualificationBO.getMarksObtained().toString())/Double.parseDouble(ednQualificationBO.getTotalMarks().toString()))*1000;
 					                       			}
+				                        		   }
 				                        		   if(ugcourseid==176 || 
 				    			                      	   ugcourseid == 37 ||
 				    			                      		ugcourseid == 38 ||
@@ -1512,11 +1550,20 @@ public class ApplicationRankHelperforPg {
 //				                        		   }
 //				                        		   total=(total*1000)/100;
 //				                        	   }
+				                        	   if (ugcourseid==37 || ugcourseid==5 || ugcourseid==171 ) {
+				                        		   total = (Double.parseDouble(ednQualificationBO.getMarksObtained().toString())/Double.parseDouble(ednQualificationBO.getTotalMarks().toString()))*1000;
+			                        		   }
+				                        	   else if(!hasCoreMalayalam){
+			                        			   total = (language2Mark/totalmarklanguage)*1000;
+			                        		   }else if(obtainedCGPA_MARK<language2Mark){
+			                        			   total = (language2Mark/totalmarklanguage)*1000;
+			                        		   }else{
 				                        	   if(Double.parseDouble(ednQualificationBO.getTotalMarks().toString())==1000){
 				                       				total=Double.parseDouble(ednQualificationBO.getMarksObtained().toString());
 				                       			}else{
 				                       				total = (Double.parseDouble(ednQualificationBO.getMarksObtained().toString())/Double.parseDouble(ednQualificationBO.getTotalMarks().toString()))*1000;
 				                       			}
+			                        		   }
 				                        	   if(ugcourseid==176 || 
 			    			                      	   ugcourseid == 37 ||
 			    			                      		ugcourseid == 38 ||
@@ -2094,7 +2141,9 @@ public class ApplicationRankHelperforPg {
 	                      	   double maxcorecredit=0;
 	                      	   double product=0;
 	                      	   double totalcorecredit=0;
-	                      	   
+	                      	 if (admAppln.getId()==52973) {
+									System.out.println("");
+								}
 	                       	if(eligMap.containsKey(ugcourseid) && (ugPattern.equalsIgnoreCase("CBCSS") || ugPattern.equalsIgnoreCase("CBCSS NEW"))){
 	                       		
 	                       		if((CMSConstants.UG_ELIGIBLE_COURSE_LIST_FOR_BSC.contains(ugcourseid) && totalmark>=2.2) || 
@@ -2105,19 +2154,26 @@ public class ApplicationRankHelperforPg {
 	                       		   (!CMSConstants.UG_ELIGIBLE_COURSE_LIST_FOR_BSC.contains(ugcourseid) && totalmark>=1.92 && (admAppln.getPersonalData().getReligionSection().getId()==1) && totalmark>=1.92)) {
 	                       			
 	                       			Iterator<AdmSubjectMarkForRank> markItr=detailMarks.iterator();
+                          	   boolean outOfFour = false;
+                          	   boolean outOfSix = false;
 	                       			while (markItr.hasNext()) {
 	                       				
 										detailMarkBO= (AdmSubjectMarkForRank) markItr.next();
+										if(Double.parseDouble(detailMarkBO.getMaxmark()) == 4) {
+	                            			   outOfFour = true;
+	                            		   }
+	                            		   else if(Double.parseDouble(detailMarkBO.getMaxmark()) == 6) {
+	                            			   outOfSix = true;
+	                            		   }
 										
 										if(detailMarkBO.getAdmSubjectForRank().getGroupName().equalsIgnoreCase("Core") || 
 										   detailMarkBO.getAdmSubjectForRank().getGroupName().equalsIgnoreCase("Complementary")) {
-																
-											cgpa=Double.parseDouble(detailMarkBO.getConversionmark());
-											credit=Double.parseDouble(detailMarkBO.getCredit());
-											mult=cgpa*credit;
-											totalcgpa=totalcgpa+mult;
-											totalcredit=totalcredit+credit;
-										}
+	                            			   cgpa=Double.parseDouble(detailMarkBO.getObtainedmark());
+	                            			   credit=Double.parseDouble(detailMarkBO.getCredit());
+	                            			   mult=cgpa*credit;
+	                            			   totalcgpa=totalcgpa+mult;
+	                            			   totalcredit=totalcredit+credit;
+	                            		   }
 										
 										if(detailMarkBO.getAdmSubjectForRank().getGroupName().equalsIgnoreCase("Common") && 
 										   detailMarkBO.getAdmSubjectForRank().getName().equalsIgnoreCase("English")){
@@ -2129,18 +2185,24 @@ public class ApplicationRankHelperforPg {
 											language2Mark=Double.parseDouble(detailMarkBO.getConversionmark());
 										}
 	                      			}
-	                       			if((Double.parseDouble(ednQualificationBO.getTotalMarks().toString())<100) || (Double.parseDouble(ednQualificationBO.getTotalMarks().toString())>100)){
-	                       				total = (Double.parseDouble(ednQualificationBO.getMarksObtained().toString())/Double.parseDouble(ednQualificationBO.getTotalMarks().toString()))*100;
-	                       			}else if(Double.parseDouble(ednQualificationBO.getTotalMarks().toString())==100){
-	                       				total=Double.parseDouble(ednQualificationBO.getMarksObtained().toString());
-	                       			}
-//	                       			if(!iskerala) {
-//	                       				total = ((totalcgpa/totalcredit) * 25) / 2;
-//	                       			}
-//	                       			else {
-//	                       				total=(totalmark*25)/2;
-//	                       			}
-			                      	
+	                       			
+	                       		 if(!iskerala) {
+		                      		 if(outOfFour) {
+		                      			total = (totalcgpa/totalcredit) * 250;
+		                      		   }
+		                      		   else if(outOfSix) {
+		                      			 total = ((totalcgpa/totalcredit) * 1000) / 6;
+		                      		   }
+		                      		   else {
+		                      			 total = (totalcgpa/totalcredit) * 100;
+		                      		   }
+		                      	   }
+		                      	   else {
+		                      		   total=totalmark*250;
+		                      	   }
+			                      	if (ednQualificationBO.getPercentage().doubleValue() > 50) {
+			                      		remark="Eligible";
+									}
 			                      	Iterator<CandidatePreferenceEntranceDetails> itere =admAppln.getCandidatePreferenceEntranceDetailses().iterator();
                       	   
 			                      	while(itere.hasNext()){
@@ -2156,7 +2218,10 @@ public class ApplicationRankHelperforPg {
 			                      	   ugcourseid ==153 ||
 			                      	   ugcourseid == 169 ||
 			                      	   ugcourseid == 174 ||
-			                      	   ugcourseid == 175){
+			                      	   ugcourseid == 175 ||
+			                      	   ugcourseid == 187 ||
+			                      	   ugcourseid == 189 ||
+			                      	   ugcourseid == 188){
 			                      		total=total+10;
 			                      	}
 			                      	else if(CMSConstants.UG_ELIGIBLE_COURSE_LIST_FOR_BCOMMODI.contains(ugcourseid)){
@@ -2185,12 +2250,11 @@ public class ApplicationRankHelperforPg {
 
 	                       					if(detailMarkBO.getAdmSubjectForRank().getGroupName().equalsIgnoreCase("Core") || 
 											   detailMarkBO.getAdmSubjectForRank().getGroupName().equalsIgnoreCase("Complementary")){
-																			
-												cgpa=Double.parseDouble(detailMarkBO.getObtainedmark());
-												credit=Double.parseDouble(detailMarkBO.getMaxmark());														
-												totalcgpa=totalcgpa+cgpa;
-												totalcredit=totalcredit+credit;
-											}
+	                        					   marks=Double.parseDouble(detailMarkBO.getObtainedmark());
+	                           					   totalcore=totalcore+marks;
+	                           					   maxcorecredit=Double.parseDouble(detailMarkBO.getMaxmark());
+	                           					   totalcorecredit=totalcorecredit+maxcorecredit;
+	                           				   }
 	                       					
 	                       					//lang1 mark 
 											if(detailMarkBO.getAdmSubjectForRank().getGroupName().equalsIgnoreCase("Common") && 
@@ -2205,17 +2269,19 @@ public class ApplicationRankHelperforPg {
 											}
 			                        			
 			                       		}
-	                       				if((Double.parseDouble(ednQualificationBO.getTotalMarks().toString())<100) || (Double.parseDouble(ednQualificationBO.getTotalMarks().toString()) > 100)){
+	                       				/*if((Double.parseDouble(ednQualificationBO.getTotalMarks().toString())<100) || (Double.parseDouble(ednQualificationBO.getTotalMarks().toString()) > 100)){
 		                       				total = (Double.parseDouble(ednQualificationBO.getMarksObtained().toString())/Double.parseDouble(ednQualificationBO.getTotalMarks().toString()))*100;
 		                       			}else if(Double.parseDouble(ednQualificationBO.getTotalMarks().toString())==100){
 		                       				total=Double.parseDouble(ednQualificationBO.getMarksObtained().toString());
 		                       			}
-//	                       				if(!iskerala) {
-//		                       				total = (totalcgpa/totalcredit) * 50;
-//		                       			}
-//		                       			else {
-//		                       				total=(totalmark*25)/2;
-//		                       			}
+	                       				if ((Double.parseDouble(ednQualificationBO.getMarksObtained().toString())/Double.parseDouble(ednQualificationBO.getTotalMarks().toString()))*100>45) {
+	                       					remark="Eligible";
+										}*/
+	                       				if(iskerala)
+	                        				   total=totalmarkother*1000;
+	                        			   else {
+	                        				   total = (totalcore/totalcorecredit) * 1000;
+	                        			   }
 	                       				
 			  	                      	Iterator<CandidatePreferenceEntranceDetails> itere =admAppln.getCandidatePreferenceEntranceDetailses().iterator();
 			                        	   

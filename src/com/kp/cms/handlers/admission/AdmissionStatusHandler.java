@@ -22,6 +22,8 @@ import java.math.BigDecimal;
 import com.kp.cms.bo.admin.Course;
 import com.kp.cms.utilities.CommonUtil;
 import com.kp.cms.bo.admission.StudentAllotmentPGIDetails;
+import com.kp.cms.constants.CMSConstants;
+
 import java.util.Date;
 import com.kp.cms.bo.admin.StudentCourseAllotment;
 import com.kp.cms.bo.admin.StudentCourseChanceMemo;
@@ -130,12 +132,12 @@ public class AdmissionStatusHandler
         List<AdmissionStatusTO> statusTOs = null;
         if (programTypeId == 2) {
             statusTOs = (List<AdmissionStatusTO>)AdmissionStatusHelper.getInstance().setTOPGList((List)chanceMemos, admissionStatusForm, (List)courseAllotments);
-            if (selectedCourseId == 32) {
+            /*if (selectedCourseId == 32) {
                 admissionStatusForm.setSpecialCourse(true);
-            }
+            }*/
         }
         else {
-            statusTOs = (List<AdmissionStatusTO>)AdmissionStatusHelper.getInstance().setTOPGList((List)chanceMemos, admissionStatusForm, (List)courseAllotments);
+            statusTOs = (List<AdmissionStatusTO>)AdmissionStatusHelper.getInstance().setTOPGList((List)chanceMemosForUg, admissionStatusForm, (List)courseAllotmentsForUg);
         }
         return statusTOs;
     }
@@ -166,9 +168,9 @@ public class AdmissionStatusHandler
             }
         }
         else {
-            if (selectedCourseId == 32) {
+          /*  if (selectedCourseId == 32) {
                 admissionStatusForm.setSpecialCourse(true);
-            }
+            }*/
             if (chanceMemos.isEmpty()) {
                 courseAllotments = (List<StudentCourseAllotment>)AdmissionStatusHelper.getInstance().getUpdatedBoPG((List)courseAllotments, admissionStatusForm);
                 isUpdated = tx.isUpdatedForPg((List)courseAllotments);
@@ -238,10 +240,9 @@ public class AdmissionStatusHandler
         final String productinfo = "productinfo";
         admForm.setRefNo(candidateRefNo);
         admForm.setProductinfo(productinfo);
-        if (candidateRefNo != null && !candidateRefNo.isEmpty()) {
-            temp.append("F0meUOlq").append("|").append(candidateRefNo).append("|").append(bo.getTxnAmount()).append("|").append(productinfo).append("|").append(bo.getCandidateName()).append("|").append(bo.getEmail()).append("|||||||||||").append("fQmaRSFBHb");
-        }
-        final String hash = this.hashCal("SHA-512", temp.toString());
+        if(candidateRefNo!=null && !candidateRefNo.isEmpty())
+			temp.append(CMSConstants.PGI_MERCHANT_ID).append("|").append(candidateRefNo).append("|").append(bo.getTxnAmount()).append("|").append(productinfo).append("|").append(bo.getCandidateName()).append("|").append(bo.getEmail()).append("|||||||||||").append(CMSConstants.PGI_SECURITY_ID);
+		String hash=hashCal("SHA-512",temp.toString());
         admForm.setTest(temp.toString());
         return hash;
     }
