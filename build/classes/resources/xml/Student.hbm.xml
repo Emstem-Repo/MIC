@@ -328,5 +328,10 @@
                 <comment></comment>
             </column>
         </property>
+        <property name="recognitionDetails" type="string">
+            <column name="recognition_details" length="50">
+                <comment></comment>
+            </column>
+        </property>
     </class>
 </hibernate-mapping>

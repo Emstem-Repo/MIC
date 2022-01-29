@@ -62,9 +62,11 @@ import com.kp.cms.to.exam.ExamValidationDetailsTO;
 import com.kp.cms.to.exam.ValuationScheduleTO;
 import com.kp.cms.to.hostel.LeaveTypeTo;
 import com.kp.cms.transactions.ajax.ICommonAjax;
+import com.kp.cms.transactions.exam.IFalseNumSiNoTransaction;
 import com.kp.cms.transactions.hostel.IHlStudentCheckInTransaction;
 import com.kp.cms.transactionsimpl.admin.StudentSupportRequestTransImpl;
 import com.kp.cms.transactionsimpl.ajax.CommonAjaxImpl;
+import com.kp.cms.transactionsimpl.exam.FalseNumSiNoTransactionImpl;
 import com.kp.cms.transactionsimpl.hostel.HlAdmissionImpl;
 import com.kp.cms.transactionsimpl.hostel.HlStudentCheckInImpl;
 import com.kp.cms.transactionsimpl.pettycash.CashCollectionTransactionImpl;
@@ -6079,5 +6081,34 @@ public ActionForward duplicateCheckingOfOrderNoByLocationId(ActionMapping mappin
 			request.setAttribute(CMSConstants.OPTION_MAP, classMap);
 			return mapping.findForward("ajaxResponseForOptions");
 		}
+	
+	public ActionForward getTeacherBySubID(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+			
+		BaseActionForm baseActionForm = (BaseActionForm) form;
+		FalseNumSiNoTransactionImpl transaction = new FalseNumSiNoTransactionImpl();
+		Map<Integer, String> teacherMap = new HashMap<Integer, String>();
+		try {
+			int subId = 0;
+			int year = 0;
+			if(baseActionForm.getSubjectId()!= null && baseActionForm.getYear()!= null){
+				subId = Integer.parseInt(baseActionForm.getSubjectId());
+				year = Integer.parseInt(baseActionForm.getYear());
+			}
+			teacherMap =transaction.getTeachers(subId, year);
+			//rejoinClassMap = CommonAjaxHandler.getInstance().getClassesBySelectedCourse1(courseId, year);
+			} catch (Exception e) {
+				log.debug(e.getMessage());
+			}
+			
+		if (baseActionForm.getPropertyName() != null) {
+			baseActionForm.getCollectionMap().put(
+					baseActionForm.getPropertyName(), teacherMap);
+		}
+		request.setAttribute(CMSConstants.OPTION_MAP, teacherMap);
+		return mapping.findForward("ajaxResponseForOptions");
+	}
+	
 	
 }

@@ -90,6 +90,20 @@ public class AdmissionStatusHelper
                 admissionStatusTO.setId(appln.getId());
                 if (appln.getIsBypassed() != null && appln.getIsBypassed()) {
                     admissionStatusTO.setByPassed((boolean)appln.getIsBypassed());
+                    
+                    //approved code start
+                    admissionStatusTO.setApplicationNo(appln.getApplnNo());
+                    admissionStatusTO.setAppliedYear((int)appln.getAppliedYear());
+                    admissionStatusTO.setDateOfBirth(CommonUtil.getStringDate(appln.getPersonalData().getDateOfBirth()));
+                    admissionStatusTO.setPersonalDataId(appln.getPersonalData().getId());
+                    boolean FinalMeritApproved = false;
+                    if (appln.getIsFinalMeritApproved() != null) {
+                        FinalMeritApproved = appln.getIsFinalMeritApproved();
+                    }
+                    if (appln.getIsSelected() != null && appln.getPersonalData() != null && appln.getPersonalData().getDateOfBirth() != null && appln.getPersonalData().getId() != 0 && appln.getIsCancelled() != null){
+                    	 admissionStatusTO.setIsSelected(convertBoolValueIsSelected(appln.getIsSelected(), FinalMeritApproved));
+                    }
+                  //approved code end
                 }
                 else if (appln.getIsSelected() != null && appln.getPersonalData() != null && appln.getPersonalData().getDateOfBirth() != null && appln.getPersonalData().getId() != 0 && appln.getIsCancelled() != null) {
                     admissionStatusTO.setApplicationNo(appln.getApplnNo());

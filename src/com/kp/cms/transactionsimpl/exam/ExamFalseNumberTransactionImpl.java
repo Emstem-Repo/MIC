@@ -8,19 +8,21 @@ import java.util.List;
 import java.util.Map;
 
 import org.hibernate.Query;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.classic.Session;
+
 
 import com.kp.cms.bo.admin.Classes;
 import com.kp.cms.bo.admin.EligibilityCriteria;
 import com.kp.cms.bo.admin.Student;
 import com.kp.cms.bo.exam.ExamDefinition;
 import com.kp.cms.bo.exam.ExamFalseNumberGen;
+import com.kp.cms.bo.exam.FalseNumSiNo;
 import com.kp.cms.bo.exam.StudentFinalMarkDetails;
 import com.kp.cms.exceptions.ApplicationException;
 import com.kp.cms.forms.exam.ConsolidatedMarksCardForm;
-import com.kp.cms.forms.exam.ExamFalseNumberForm;
+import com.kp.cms.forms.exam.NewExamMarksEntryForm;
 //import com.kp.cms.transactions.exam.IMarksCardTransaction;
 import com.kp.cms.to.admin.StudentTO;
 import com.kp.cms.transactions.exam.IExamFalseNumberTransaction;
@@ -29,9 +31,16 @@ import com.kp.cms.utilities.InitSessionFactory;
 
 public class ExamFalseNumberTransactionImpl implements IExamFalseNumberTransaction{
 	
-
+	private static volatile ExamFalseNumberTransactionImpl obj;
+	
+	public static ExamFalseNumberTransactionImpl getInstance() {
+		if(obj == null) {
+			obj = new ExamFalseNumberTransactionImpl();
+		}
+		return obj;
+	}
 	@Override
-	public List<Student> getQueryForCurrentClass(ExamFalseNumberForm marksCardForm)
+	public List<Student> getQueryForCurrentClass(NewExamMarksEntryForm marksCardForm)
 			throws Exception {
 		// TODO Auto-generated method stub
 		Session session=null;
@@ -52,7 +61,7 @@ public class ExamFalseNumberTransactionImpl implements IExamFalseNumberTransacti
 
 
 	@Override
-	public void getcourseansScheme(ExamFalseNumberForm marksCardForm)
+	public void getcourseansScheme(NewExamMarksEntryForm marksCardForm)
 			throws Exception {
 		// TODO Auto-generated method stub
 		Session session=null;
@@ -73,7 +82,7 @@ public class ExamFalseNumberTransactionImpl implements IExamFalseNumberTransacti
 	}
 
 	@Override
-	public boolean savedata(ExamFalseNumberGen bo) throws Exception {
+	public boolean savedata(List<ExamFalseNumberGen> bo) throws Exception {
 		// TODO Auto-generated method stub
 		Session session=null;
 		Transaction txn=null;
@@ -82,8 +91,12 @@ public class ExamFalseNumberTransactionImpl implements IExamFalseNumberTransacti
 		session=(Session)HibernateUtil.getSession();
 		txn=session.beginTransaction();
 		txn.begin();
-		session.saveOrUpdate(bo);	
+		for (ExamFalseNumberGen examFalseNumberGen : bo) {
+			session.save(examFalseNumberGen);	
+		}
+		
 		txn.commit();
+		session.flush();
 		return true;
 		}
 		catch (Exception exception) {
@@ -103,19 +116,106 @@ public class ExamFalseNumberTransactionImpl implements IExamFalseNumberTransacti
 
 	@Override
 	public List<ExamFalseNumberGen> getfalsenos(
-			ExamFalseNumberForm marksCardForm) throws Exception {
+			NewExamMarksEntryForm marksCardForm) throws Exception {
 		// TODO Auto-generated method stub
 		Session session=null;
 		Transaction txn=null;
 		List<ExamFalseNumberGen> list=null;
 		session=(Session)HibernateUtil.getSession();
 		txn=session.beginTransaction();
-		String query="from ExamFalseNumberGen e where e.classId.id="+marksCardForm.getClassId()+" and e.examId.id="+marksCardForm.getExamName();
+		String query="from ExamFalseNumberGen e where e.classId.termNumber="+marksCardForm.getSchemeNo()+" and e.course.id="+marksCardForm.getCourseId()+
+				" and e.examId.id="+marksCardForm.getExamId()/*+" and e.subject.id="+marksCardForm.getSubjectId()*/;
 		Query query1=session.createQuery(query);
 		list=query1.list();
 		
 		return list;
 	}
+	public boolean updateFalseSiNo(NewExamMarksEntryForm form) throws Exception{
 
+		Session session = null;
+		try {
+			 SessionFactory sessionFactory = InitSessionFactory.getInstance();
+			 session =sessionFactory.openSession();
+			 Transaction tran = session.beginTransaction();
+			 String query="";
+				 query="select bo from FalseNumSiNo bo inner join bo.courseId.classes cls inner join cls.classSchemewises sch  where bo.isActive=1 and bo.courseId.id ="+form.getCourseId()+" and sch.curriculumSchemeDuration.academicYear = bo.academicYear and cls.termNumber = bo.semister and bo.examId.id="+form.getExamId();
+			 Query qr = session.createQuery(query);
+			 
+			 FalseNumSiNo obj=(FalseNumSiNo)qr.uniqueResult();
+			 
+			 if(obj!=null){
+				 obj.setCurrentNo(form.getTotalCount()+"");
+				 session.merge(obj);
+				 tran.commit();
+				 return true;
+			 }
+		 }catch (Exception e) {
+			 throw e; 
+		 }finally {
+			if (session != null) {
+				session.flush();
+				session.close();
+			}
+		}
+		return false;
+	
+	}
+	public String getMaxFalseNo(NewExamMarksEntryForm marksCardForm) throws Exception{
+
+		String currentNo = null;
+		Session session = null;
+		try {
+			//SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+			//session = sessionFactory.openSession();
+			session = HibernateUtil.getSession();
+			currentNo = (String)session.createQuery("select bo.currentNo from FalseNumSiNo bo where bo.isActive=1 and bo.academicYear="+Integer.parseInt(marksCardForm.getYear())+" and bo.courseId.id="+Integer.parseInt(marksCardForm.getCourseId())+" and bo.semister="+Integer.parseInt(marksCardForm.getSchemeNo())+" and bo.examId.id="+Integer.parseInt(marksCardForm.getExamId())).uniqueResult();
+			
+//			session.flush();
+//			session.close();
+		} catch (Exception e) {
+			if (session != null){
+				session.flush();
+				//session.close();
+			}
+		}
+		return currentNo;
+	
+	}
+	
+	public boolean DuplicateFalseNo(NewExamMarksEntryForm marksCardForm,String randomNo) throws Exception{
+
+		String currentNo = null;
+		Session session = null;
+		boolean flag=false;
+		try {
+			//SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+			//session = sessionFactory.openSession();
+			session = HibernateUtil.getSession();
+			currentNo = (String)session.createQuery("select bo.currentNo from FalseNumSiNo bo where bo.isActive=1 and bo.currentNo="+Integer.parseInt(randomNo)).uniqueResult();
+			if(currentNo!=null){
+				flag=true;
+			}
+//			session.flush();
+//			session.close();
+		} catch (Exception e) {
+			if (session != null){
+				session.flush();
+				//session.close();
+			}
+		}
+		return flag;
+	
+	}
+	@Override
+	public Object getData(NewExamMarksEntryForm marksCardForm, String quer)
+			throws Exception {
+		// TODO Auto-generated method stub
+		Session session=null;
+		Transaction txn=null;
+		session=(Session)HibernateUtil.getSession();
+		Query query1=session.createQuery(quer);
+		Object obj=query1.uniqueResult();
+		return obj;
+	}
 
 }

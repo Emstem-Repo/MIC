@@ -29,6 +29,7 @@ import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 
 import com.kp.cms.actions.BaseDispatchAction;
+import com.kp.cms.bo.exam.ExamFalseNumberGen;
 import com.kp.cms.constants.CMSConstants;
 import com.kp.cms.forms.exam.NewExamMarksEntryForm;
 import com.kp.cms.handlers.ajax.CommonAjaxExamHandler;
@@ -631,32 +632,114 @@ public class NewExamMarksEntryAction extends BaseDispatchAction {
 		
 		log.info("Entered initExamMarksEntry input");
 		boolean isFalsenoscreen=true;
+		HttpSession session = request.getSession();
 		NewExamMarksEntryForm newExamMarksEntryForm = (NewExamMarksEntryForm) form;// Type casting the Action form to Required Form
 		newExamMarksEntryForm.resetFields();//Reseting the fields for input jsp
+		newExamMarksEntryForm.setRoleId(session.getAttribute("rid").toString());
 		setRequiredDatatoForm(newExamMarksEntryForm, request);// setting the requested data to form
-		newExamMarksEntryForm.setFalsenoscreen(isFalsenoscreen);
-		Map<String, String> schemeMap=new HashMap<String, String>();
+		//newExamMarksEntryForm.setFalsenoscreen(isFalsenoscreen);
 		log.info("Exit initExamMarksEntry input");
-		if(newExamMarksEntryForm.getExamId()!=null){
-		Map<Integer, String>  course=CommonAjaxExamHandler.getInstance().getCourseByExamName(newExamMarksEntryForm.getExamId()) ;
-		course = (Map<Integer, String>) CommonUtil.sortMapByValue(course);
-		newExamMarksEntryForm.setCourseMap(course);}
-		if(newExamMarksEntryForm.getExamId()!=null && newExamMarksEntryForm.getCourseId()!=null){
-		schemeMap = CommonAjaxHandler.getInstance()
-		.getSchemeNoByExamIdCourseId(Integer.parseInt( newExamMarksEntryForm.getExamId()), Integer.parseInt(newExamMarksEntryForm.getCourseId()));
-		newExamMarksEntryForm.setSchemeMap(schemeMap);
-		}
-		if(newExamMarksEntryForm.getCourseId()!=null && newExamMarksEntryForm.getSchemeNo()!=null && newExamMarksEntryForm.getExamId()!=null ){
-		Map<Integer, String> subMap=CommonAjaxHandler.getInstance()
-		.getSubjectsByCourseSchemeExamId(Integer.parseInt(newExamMarksEntryForm.getCourseId()), 7,
-				Integer.parseInt(newExamMarksEntryForm.getSchemeNo()), Integer.parseInt(newExamMarksEntryForm.getExamId()));
-		newExamMarksEntryForm.setSubjectCodeNameMap(subMap);
-		}
-		for (Map.Entry<String, String> entry : schemeMap.entrySet()) {
-			newExamMarksEntryForm.setSchemeNo(entry.getKey());
-		}
+		
 		return mapping.findForward(CMSConstants.EXAM_FALSE_ENTRY_INPUT);
 	}
+	
+	public ActionForward initFalseNoEntryForEdit(ActionMapping mapping, ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		
+		log.info("Entered initExamMarksEntry input");
+		boolean isFalsenoscreen=true;
+		NewExamMarksEntryForm newExamMarksEntryForm = (NewExamMarksEntryForm) form;// Type casting the Action form to Required Form
+		if(newExamMarksEntryForm.getYear()==null)
+		newExamMarksEntryForm.resetFields();//Reseting the fields for input jsp
+		setRequiredDatatoForm(newExamMarksEntryForm, request);// setting the requested data to form
+		//newExamMarksEntryForm.setFalsenoscreen(isFalsenoscreen);
+		log.info("Exit initExamMarksEntry input");
+		
+		return mapping.findForward("initFalseEntryForEdit");
+	}
+
+	public ActionForward saveFalseNumber(ActionMapping mapping,ActionForm form,HttpServletRequest request,HttpServletResponse response) throws Exception{
+		
+		boolean isadded=false;
+		boolean isduplicated=false;
+		NewExamMarksEntryForm newExamMarksEntryForm = (NewExamMarksEntryForm) form;// Type casting the Action form to Required Form
+		ActionErrors errors = newExamMarksEntryForm.validate(mapping, request);
+		ActionMessages messages=new ActionMessages();
+		validateExamMarksEntry(newExamMarksEntryForm,errors);
+		String schemeNo = null;
+		if (errors.isEmpty()) {
+			try {
+				String[] semArr=newExamMarksEntryForm.getSchemeNo().split("_");
+				newExamMarksEntryForm.setSemister(semArr[1]);
+				int currentNO = NewExamMarksEntryHandler.getInstance().getCurrentNO(newExamMarksEntryForm);
+				
+				if(currentNO != -1){
+					schemeNo=newExamMarksEntryForm.getSchemeNo();// If no record comes to put the value to form
+					String schemes[] = newExamMarksEntryForm.getSchemeNo().split("_");
+					newExamMarksEntryForm.setSchemeNo(schemes[1]);
+					newExamMarksEntryForm.setSubjectId(null);
+					//Set<StudentMarksTO> studentList=NewExamMarksEntryHandler.getInstance().getStudentForInput(newExamMarksEntryForm);// getting the student list for input search
+					/*if(studentList==null || studentList.isEmpty()){// if student list is empty display no record found in the input screen
+						errors.add(CMSConstants.ERROR, new ActionError(CMSConstants.KNOWLEDGEPRO_ADMISSION_NORECORDSFOUND));
+						saveErrors(request, errors);
+						newExamMarksEntryForm.setSchemeNo(schemeNo);//setting back the previous value
+						setRequiredDatatoForm(newExamMarksEntryForm, request);			
+						return mapping.findForward(CMSConstants.EXAM_FALSE_ENTRY_INPUT);
+					}else{*/
+						//duplicate check
+						ExamFalseNumberHandler.getInstance().getcourseansScheme(newExamMarksEntryForm);
+						isduplicated=ExamFalseNumberHandler.getInstance().duplicatecheck(newExamMarksEntryForm);
+						if(isduplicated){
+							errors.add("error", new ActionError("knowledgepro.exam.FalseNo.exists"));
+							saveErrors(request, errors);
+							newExamMarksEntryForm.setSchemeNo(schemeNo);
+							newExamMarksEntryForm.setSubjectId(null);
+							setRequiredDatatoForm(newExamMarksEntryForm, request);	
+							return mapping.findForward(CMSConstants.EXAM_FALSE_ENTRY_INPUT);
+						}else{
+							/*List<StudentMarksTO> list = new ArrayList<StudentMarksTO>(studentList);*/
+							/*Collections.sort(list);
+							newExamMarksEntryForm.setStudentList(list);*/
+							isadded=ExamFalseNumberHandler.getInstance().saveFalseNumbers(newExamMarksEntryForm);
+							
+							if(isadded){
+								boolean isUpdate=ExamFalseNumberHandler.getInstance().updateFalseSiNo(newExamMarksEntryForm);
+								messages.add(CMSConstants.MESSAGES, new ActionError("knowledgepro.admin.FalseNo.addsuccess"));
+								saveMessages(request, messages);
+							}
+						}
+					//}
+					newExamMarksEntryForm.setSchemeNo(schemeNo);
+					setNamesToForm(newExamMarksEntryForm);
+				}
+				else {
+					//errors.add("errors", new ActionError(CMSConstants.FALSE_SI_NOT_AVAILABLE));
+					saveErrors(request, errors);
+					newExamMarksEntryForm.setSchemeNo(schemeNo);
+					newExamMarksEntryForm.setSubjectId(null);
+					setRequiredDatatoForm(newExamMarksEntryForm, request);
+					return mapping.findForward(CMSConstants.EXAM_FALSE_ENTRY_INPUT);
+				}
+			}  catch (Exception exception) {
+				String msg = super.handleApplicationException(exception);
+				exception.printStackTrace();
+				newExamMarksEntryForm.setErrorMessage(msg);
+				newExamMarksEntryForm.setErrorStack(exception.getMessage());
+				return mapping.findForward(CMSConstants.ERROR_PAGE);
+			}
+		} else {
+			addErrors(request, errors);
+			newExamMarksEntryForm.setSchemeNo(schemeNo);
+			newExamMarksEntryForm.setSubjectId(null);
+			setRequiredDatatoForm(newExamMarksEntryForm, request);			
+			return mapping.findForward(CMSConstants.EXAM_FALSE_ENTRY_INPUT);
+		}
+		newExamMarksEntryForm.setSubjectId(null);
+		setRequiredDatatoForm(newExamMarksEntryForm, request);
+		newExamMarksEntryForm.setSchemeNo(schemeNo);
+		return mapping.findForward(CMSConstants.EXAM_FALSE_ENTRY_INPUT);
+	}
+	
 	
 	public ActionForward getCandidatesForFalseNumber(ActionMapping mapping, ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
@@ -664,11 +747,10 @@ public class NewExamMarksEntryAction extends BaseDispatchAction {
 		log.info("Entered NewExamMarksEntryAction - getCandidates");
 		
 		NewExamMarksEntryForm newExamMarksEntryForm = (NewExamMarksEntryForm) form;// Type casting the Action form to Required Form
-		 ActionErrors errors = newExamMarksEntryForm.validate(mapping, request);
-		//validateExamMarksEntry(newExamMarksEntryForm,errors);
+		ActionErrors errors = newExamMarksEntryForm.validate(mapping, request);
 		if (errors.isEmpty()) {
 			try {
-				
+				request.getSession().setAttribute("schemeNo", newExamMarksEntryForm.getSchemeNo());
 				String schemeNo=newExamMarksEntryForm.getSchemeNo();// If no record comes to put the value to form
 				String schemes[] = newExamMarksEntryForm.getSchemeNo().split("_");
 				newExamMarksEntryForm.setSchemeNo(schemes[1]);
@@ -679,45 +761,55 @@ public class NewExamMarksEntryAction extends BaseDispatchAction {
 					saveErrors(request, errors);
 					newExamMarksEntryForm.setSchemeNo(schemeNo);//setting back the previous value
 					setRequiredDatatoForm(newExamMarksEntryForm, request);			
-					return mapping.findForward(CMSConstants.EXAM_FALSE_ENTRY_INPUT);
+					return mapping.findForward("initFalseEntryForEdit");
 				}
 				List<StudentMarksTO> list = new ArrayList<StudentMarksTO>(studentList);
 				List<StudentMarksTO1> list1=new ArrayList<StudentMarksTO1> ();
-				
+				Map<String, ExamFalseNumberGen> falseNumberMap = ExamFalseNumberHandler.getInstance().getFlaseNumberMap(newExamMarksEntryForm);
 				for(StudentMarksTO student : list) {
 					StudentMarksTO1 bo=new StudentMarksTO1();
 				    bo.setClassId(student.getClassId());
 					bo.setStudentId(student.getStudentId());
 					bo.setName(student.getName());
 					if(student.getFalseNoId()!=null)
-					bo.setFalseNoId(student.getFalseNoId());
+						bo.setFalseNoId(student.getFalseNoId());
 					bo.setRegisterNo(student.getRegisterNo());
 					if(student.getFalseNo()!=null)
-					bo.setFalseNo(String.valueOf(student.getFalseNo()));
+						bo.setFalseNo(student.getFalseNo());
+					
+					String key = newExamMarksEntryForm.getExamId() + "_" + newExamMarksEntryForm.getCourseId() + "_" + student.getStudentId() + "_" + newExamMarksEntryForm.getSubjectId();
+					ExamFalseNumberGen falseNum = falseNumberMap.get(key);
+					if(falseNum != null) {
+						bo.setFalseNumberGenId(falseNum.getId());
+						bo.setFalseNo(falseNum.getFalseNo());
+					}
 					
 					list1.add(bo);
-					}
+				}
 				
 				Collections.sort(list1);
 				newExamMarksEntryForm.setStudentlist1(list1);
 				setNamesToForm(newExamMarksEntryForm);
 			}  catch (Exception exception) {
+				exception.printStackTrace();
 				String msg = super.handleApplicationException(exception);
 				newExamMarksEntryForm.setErrorMessage(msg);
 				newExamMarksEntryForm.setErrorStack(exception.getMessage());
 				return mapping.findForward(CMSConstants.ERROR_PAGE);
 			}
 		} else {
- 			addErrors(request, errors);
+			addErrors(request, errors);
 			setRequiredDatatoForm(newExamMarksEntryForm, request);			
 			log.info("Exit NewExamMarksEntryAction - getSelectedCandidates errors not empty ");
-			return mapping.findForward(CMSConstants.EXAM_FALSE_ENTRY_INPUT);
+			return mapping.findForward("initFalseEntryForEdit");
 		}
 		log.info("Entered NewExamMarksEntryAction - getCandidates");
 		return mapping.findForward(CMSConstants.EXAM_FALSE_ENTRY_RESULT);
 	}
 	
-	public ActionForward saveFalseNumber(ActionMapping mapping,ActionForm form,HttpServletRequest request,HttpServletResponse response){
+
+	
+	public ActionForward saveFalseNumberForEdit(ActionMapping mapping,ActionForm form,HttpServletRequest request,HttpServletResponse response)throws Exception {
 
 		log.debug("Enter into MArks Card Generate Screen");
 		NewExamMarksEntryForm newExamMarksEntryForm = (NewExamMarksEntryForm) form;
@@ -742,41 +834,26 @@ public class NewExamMarksEntryAction extends BaseDispatchAction {
 			//return mapping.findForward(CMSConstants.ExamFalseNumber_GENERATE);
 			//}
 		
-			
-				isadded=ExamFalseNumberHandler.getInstance().saveFalseNumbers(newExamMarksEntryForm);
+				setUserId(request, newExamMarksEntryForm);
+				isadded=ExamFalseNumberHandler.getInstance().saveFalseNumbersForEdit(newExamMarksEntryForm);
 			
 			if(isadded){
 				ActionMessage message = new ActionError("knowledgepro.admin.FalseNo.addsuccess");
 				messages.add("messages", message);
 				saveMessages(request, messages);
-				Map<Integer, String>  course=CommonAjaxExamHandler.getInstance().getCourseByExamName(newExamMarksEntryForm.getExamId()) ;
-				course = (Map<Integer, String>) CommonUtil.sortMapByValue(course);
-				newExamMarksEntryForm.setCourseMap(course);
-				Map<String, String> schemeMap = CommonAjaxHandler.getInstance()
-				.getSchemeNoByExamIdCourseId(Integer.parseInt( newExamMarksEntryForm.getExamId()), Integer.parseInt(newExamMarksEntryForm.getCourseId()));
-				newExamMarksEntryForm.setSchemeMap(schemeMap);
-				Map<Integer, String> subMap=CommonAjaxHandler.getInstance()
-				.getSubjectsByCourseSchemeExamId(Integer.parseInt(newExamMarksEntryForm.getCourseId()), 7,
-						Integer.parseInt(newExamMarksEntryForm.getSchemeNo()), Integer.parseInt(newExamMarksEntryForm.getExamId()));
-				subMap= CommonUtil.sortMapByValue(subMap);
-				newExamMarksEntryForm.setSubjectCodeNameMap(subMap);
-				for (Map.Entry<String, String> entry : schemeMap.entrySet()) {
-					newExamMarksEntryForm.setSchemeNo(entry.getKey());
-				}
-				
+
 			}
 			}else{
 				saveErrors(request,errors);
 			}
+			setRequiredDatatoForm(newExamMarksEntryForm, request);
 		}
 		catch(Exception e){
-		
-				System.out.println("e.printStackTrace()");
-		
+			e.printStackTrace();
 		}
 		
 		
-		return mapping.findForward(CMSConstants.EXAM_FALSE_ENTRY_INPUT);
+		return mapping.findForward("initFalseEntryForEdit");
 	
 	}
 	
@@ -1296,6 +1373,12 @@ public class NewExamMarksEntryAction extends BaseDispatchAction {
 		NewExamMarksEntryForm newExamMarksEntryForm = (NewExamMarksEntryForm) form;
 		setRequiredDatatoFormAllInternals(newExamMarksEntryForm, request);
 		getCandidatesForAllInternals(mapping, newExamMarksEntryForm, request, response);	
+		return mapping.findForward("examMarksEntryResultInternalAllPrintMarks");
+	}
+	public ActionForward BarcodeGenerator(ActionMapping mapping, ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {	
+		NewExamMarksEntryForm newExamMarksEntryForm = (NewExamMarksEntryForm) form;
+		ExamFalseNumberHandler.getInstance().BarcodeGeneration(newExamMarksEntryForm);
 		return mapping.findForward("examMarksEntryResultInternalAllPrintMarks");
 	}
 

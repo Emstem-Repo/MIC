@@ -9015,6 +9015,7 @@ public class ApplicationRankHelper {
 		Map<Integer,List<StudentRank>> casteMURankMap=new HashMap<Integer,List<StudentRank>>();
 		Map<Integer,List<StudentRank>> casteLCRankMap=new HashMap<Integer,List<StudentRank>>();
 		Map<Integer,List<StudentRank>> casteCOMMUNITYRankMap=new HashMap<Integer,List<StudentRank>>();
+		Map<Integer,List<StudentRank>> sebc=new HashMap<Integer,List<StudentRank>>();
 		
 		IApplicationEditTransaction txn=ApplicationEditTransactionimpl.getInstance();
 		//get all courses
@@ -9031,6 +9032,23 @@ public class ApplicationRankHelper {
 		{
 		CourseTO courseTO=courseIterator1.next();
 		
+		if (courseTO.getId()==27) {
+			System.out.println("maths");
+		}
+		//getting rank list on Course and SEBC rank
+				List<StudentRank> rankListOnCourseSEBC=txn.getAdmApplonStudentOnCourseCategory(courseTO.getId(), Integer.parseInt(form.getAcademicYear()),"SEBC");
+				if(rankListOnCourseSEBC.size()!=0)
+				{
+					//setting genmap as key course id , value gen rank list
+					sebc.put(courseTO.getId(), rankListOnCourseSEBC);
+					int genSize=rankListOnCourseSEBC.size();
+					StudentRank sr=rankListOnCourseSEBC.get(genSize-1);
+					courseTO.setHighsebcrank(sr.getRank());	
+				}
+				else
+				{
+					courseTO.setHighsebcrank(0);
+				}
 		
 		//getting rank list on Course and General rank
 		List<StudentRank> rankListOnCourseGeneral=txn.getAdmApplonStudentOnCourseCategory(courseTO.getId(), Integer.parseInt(form.getAcademicYear()),"GENERAL");
@@ -9203,6 +9221,7 @@ public class ApplicationRankHelper {
 		courseTO.setMucurrank(0);
 		courseTO.setLctacurrank(0);
 		courseTO.setCommunitycurrank(0);
+		courseTO.setSebccurrank(0);
 		
 		courseMap.put(courseTO.getId(), courseTO);
 		}
@@ -9220,6 +9239,9 @@ public class ApplicationRankHelper {
 			
 		CourseTO courseTO=courseIterator.next();
 		
+		if (courseTO.getId()==30) {
+			System.out.println("maths");
+		}
 		// check Course and caste SC rank list size is empty
 		 List<StudentRank> rankListOnCourseCasteSC=casteSCRankMap.get(courseTO.getId());
 		 
@@ -9483,6 +9505,35 @@ public class ApplicationRankHelper {
 			courseMap.put(courseTO.getId(), courseTO);
 		}
 		// community caste allot over
+		
+		// check SEBC
+				 List<StudentRank> rankListOnCourseCasteSEBC=sebc.get(courseTO.getId());
+				 
+				 // check lc setas zero or not, if zero stop course
+				if(courseTO.getSebcremain()==null || courseTO.getSebcremain()==0){
+					//course over
+					courseTO.setSebcover(true);
+					courseTO.setSebcremain(0);
+					
+					//update course map
+					courseMap.put(courseTO.getId(), courseTO);
+				}
+				else if(rankListOnCourseCasteSEBC!=null && rankListOnCourseCasteSEBC.size()!=0)
+				{	 
+					// add lc allotment list and map
+					addAllotmentlist(rankListOnCourseCasteSEBC, "SEBC",allotmentMap,courseMap,courseTO,form.getAllotedNo(),form);
+				}// caste ranklist size close
+				else
+				{
+					//course over
+					courseTO.setSebcover(true);
+					courseTO.setSebcremain(0);
+					
+				
+					
+					//update course map
+					courseMap.put(courseTO.getId(), courseTO);
+				}
 		 
 		
 		
@@ -9618,7 +9669,7 @@ public class ApplicationRankHelper {
 		txn.savePrevCourseAllotment(prevAllotmentList);
 		
 	
-		}// try close
+		}// try close	
 		catch(Exception e)
 		{
 		isAdded=false;
@@ -10702,6 +10753,99 @@ public class ApplicationRankHelper {
 					
 					}
 					//COMMUNITY Over
+				 
+				//SEBC start
+				 if(category.equalsIgnoreCase("SEBC"))
+					{	
+					if(currank.getAdmAppln().getPersonalData().getReligionSection().getId()==9 || currank.getAdmAppln().getPersonalData().getReligionSection().getId()==9)		
+					{
+					// check student rank is more than gencurcommon rank
+					 if(currank.getRank() > courseTO.getGencurrank() && currank.getRank() > courseTO.getSebccurrank()){
+						 
+						// check gencurcommon rank less than highest lc caste rank and lc caste seats not equal zero
+						 if(courseTO.getGencurrank() < courseTO.getHighsebcrank() && courseTO.getSebcremain() != 0)
+							{
+								// check map contains student or not
+								if(allotmentMap.containsKey(currank.getAdmAppln().getId()))
+								{
+									StudentCourseAllotment allotment=allotmentMap.get(currank.getAdmAppln().getId());
+									
+									// check map contain student pre less than with student rank pre
+									if(allotment.getPrefNo() < currank.getPrefNo() )
+									{
+										// update-- course general details
+										courseTO.setLccurrank( currank.getRank());
+										
+										//update course map
+										courseMap.put(courseTO.getId(), courseTO);
+									}
+									
+									// check map contain student pre is greater more than equal with student rank pre
+									if(allotment.getPrefNo() > currank.getPrefNo() )
+									{
+										//update old course general details
+										CourseTO oldCourseTO=courseMap.get(allotment.getCourse().getId());
+										//check map contain student seat is caste or not and add caste Lcremain seat
+										if(allotment.getIsCaste())
+										{
+											//update old course of caste seats
+											updateCourseMapOnOldCourse(allotment, courseMap, oldCourseTO);
+											
+										}
+										//check map contain student seat is gen or not and add genremain seat
+										else if(allotment.getIsGeneral())
+										{
+											updateCourseMapOnOldCourseGeneral(courseMap, oldCourseTO);
+										}
+												
+										allotment.setIsCaste(true);
+										allotment.setIsGeneral(false);
+										allotment.setIsCommunity(false);
+										// update--map details
+										allotment.setPrefNo(currank.getPrefNo());
+										allotment.setRank(currank.getRank());
+										allotment.setIndexMark(currank.getIndexMark());
+										
+										Course course=new Course();
+										course.setId(courseTO.getId());
+										allotment.setCourse(course);
+										
+										courseTO.setSebcremain(courseTO.getSebcremain()-1);
+										courseTO.setSebccurrank( currank.getRank());
+										
+										//update allotment map
+										allotmentMap.put(allotment.getAdmAppln().getId(), allotment);
+										
+										//update course map
+										courseMap.put(courseTO.getId(), courseTO);
+										
+										System.out.println(allotment.getIsCaste()+" modified data in caste id=="+currank.getAdmAppln().getId()+" pre=="+currank.getPrefNo()+" rank=="+currank.getRank());
+										
+									}	
+								}
+								//add new student if map does contains
+								else
+								{
+									  //get allotment object seat to store db
+									   StudentCourseAllotment allotment =getStudetCourseAllotmentBO(currank,"CASTE",allotmentNo,form);
+										
+									   //genrankList.add(studentRank);
+									   allotmentMap.put(currank.getAdmAppln().getId(), allotment);
+									  
+									   // update-- course general details
+									   courseTO.setSebcremain(courseTO.getSebcremain()-1);
+										courseTO.setSebccurrank( currank.getRank());
+									   
+									   //update course map
+									   courseMap.put(courseTO.getId(), courseTO);
+								   
+									   System.out.println("fresh data in caste id=="+currank.getAdmAppln().getId()+" pre=="+currank.getPrefNo()+" rank=="+currank.getRank());
+								}	
+							}// main if over 
+					 	}	  
+					}
+					
+					}
 					
 
 			 
@@ -10832,6 +10976,12 @@ public class ApplicationRankHelper {
 					courseMap.put(courseTO.getId(), courseTO);
 			 }
 			
+			 if(courseTO.getGencurrank() >= courseTO.getHighsebcrank() || courseTO.getSebcremain() == 0 || courseTO.getSebccurrank() >= courseTO.getHighsebcrank())
+			 {
+					courseTO.setScover(true);
+					//update course map
+					courseMap.put(courseTO.getId(), courseTO);
+			 }
 			
 			 
 		 }
@@ -11028,7 +11178,14 @@ public class ApplicationRankHelper {
 				//System.out.println(oldCourseTO.getName()+"old--------general in add casterem=="+oldCourseTO.getScremain());
 						
 			}
-					 
+		else if(allotment.getAdmAppln().getPersonalData().getReligionSection().getId()==9 || allotment.getAdmAppln().getPersonalData().getReligionSection().getId()==9)
+		{
+			 oldCourseTO.setSebcremain(oldCourseTO.getSebcremain()+1);
+			 oldCourseTO.setLcover(false);
+					
+			//System.out.println(oldCourseTO.getName()+"old--------general in add casterem=="+oldCourseTO.getScremain());
+					
+		}		 
 					 
 			 
 			
@@ -11224,6 +11381,9 @@ public class ApplicationRankHelper {
 				int totcount=0;
 				
 				Course course=it.next();
+				if (course.getId()==27) {
+					System.out.println("maths");
+				}
 				Set<SeatAllocation> seatAllocation= course.getSeatAllocations();
 				Iterator<SeatAllocation> seatIterator=seatAllocation.iterator();
 				
@@ -11296,6 +11456,12 @@ public class ApplicationRankHelper {
 						courseTo.setLctaseat(0);
 						courseTo.setLctaremain(0);
 					}
+					 else if(seat.getAdmittedThrough().getId()==20)
+						{
+							courseTo.setSebcseat(seat.getNoOfSeats());
+							courseTo.setSebcremain(seat.getNoOfSeats());
+							totcount=totcount+seat.getNoOfSeats();
+						}
 							
 					 
 					  
@@ -11353,6 +11519,7 @@ public class ApplicationRankHelper {
 		Map<Integer,List<StudentRank>> casteMURankMap=new HashMap<Integer,List<StudentRank>>();
 		Map<Integer,List<StudentRank>> casteLCRankMap=new HashMap<Integer,List<StudentRank>>();
 		Map<Integer,List<StudentRank>> casteCOMMUNITYRankMap=new HashMap<Integer,List<StudentRank>>();
+		Map<Integer,List<StudentRank>> sebc=new HashMap<Integer,List<StudentRank>>();
 		
 		//get all courses
 		List<Course> courseList=CourseTransactionImpl.getInstance().getCourses(Integer.parseInt(form.getProgramTypeId()));
@@ -11556,6 +11723,23 @@ public class ApplicationRankHelper {
 		{
 			courseTO.setHighobxrank(0);
 		}
+		
+		//SEBC
+		List<StudentRank> rankListOnCourseCasteSEBC=txn.getAdmApplonStudentOnCourseCategoryForMultipleAllotment(courseTO.getId(), Integer.parseInt(form.getAcademicYear()),"SEBC");
+
+		if(rankListOnCourseCasteSEBC.size()!=0)
+		{
+			//setting castemap as key course id , value caste rank list
+			sebc.put(courseTO.getId(), rankListOnCourseCasteSEBC);
+			 int casteSize=rankListOnCourseCasteSEBC.size();
+			 StudentRank sr=rankListOnCourseCasteSEBC.get(casteSize-1);
+			 courseTO.setHighsebcrank(sr.getRank());
+			 	
+		}
+		else
+		{
+			courseTO.setHighsebcrank(0);
+		}
 
 		
 		courseTO.setGencurrank(0);
@@ -11568,6 +11752,7 @@ public class ApplicationRankHelper {
 		courseTO.setMucurrank(0);
 		courseTO.setLctacurrank(0);
 		courseTO.setCommunitycurrank(0);
+		courseTO.setSebccurrank(0);
 		
 		courseMap.put(courseTO.getId(), courseTO);
 		}
@@ -12373,6 +12558,19 @@ public class ApplicationRankHelper {
 						courseTo.setCommunityremain(seat.getNoOfSeats()-list.size());
 						
 					}	
+					//SEBC
+					else if(seat.getAdmittedThrough().getId()==20)
+					{
+						courseTo.setSebcseat(seat.getNoOfSeats());
+						courseTo.setSebcChance(seat.getChanceMemoLimit());
+						//getting alloted seats
+						hqlQuery = session.createQuery("from StudentCourseAllotment s where s.admAppln.personalData.religionSection.id=:casteId and s.course.id=:courseId and s.isCaste=1 and (s.isAssigned=1 or s.isSatisfied=1)  and s.admAppln.appliedYear="+Integer.parseInt(admForm.getAcademicYear()));
+						hqlQuery.setInteger("courseId",course.getId());
+						hqlQuery.setInteger("casteId",9);
+						list=hqlQuery.list();
+						courseTo.setSebcremain(seat.getNoOfSeats()-list.size());
+						totcount=totcount+courseTo.getStremain();
+					}
 					 
 					  
 					 	
@@ -13769,6 +13967,12 @@ public class ApplicationRankHelper {
 					//update course map
 					courseMap.put(courseTO.getId(), courseTO);
 			 } 
+			 if(courseTO.getGencurrank() >= courseTO.getHighsebcrank() || courseTO.getSebcremain() == 0 || courseTO.getSebccurrank() >= courseTO.getHighsebcrank())
+			 {
+					courseTO.setScover(true);
+					//update course map
+					courseMap.put(courseTO.getId(), courseTO);
+			 }
 		 
 		
 		
@@ -13886,7 +14090,7 @@ public class ApplicationRankHelper {
 			while(courseIterator.hasNext())
 			{				
 				CourseTO courseTO=courseIterator.next();
-				if(courseTO.getId()==5){
+				if(courseTO.getId()==27){
 					System.out.println("");
 				}
 
@@ -13922,6 +14126,18 @@ public class ApplicationRankHelper {
 					// add st allotment list and map
 					firstChanceMemo(rankListOnCourseCasteST, "ST",allotmentMap,memoList,courseTO,form.getChanceNo(),form,courseTO.getStChance(),courseTO.getStcurrank());
 				}// caste ranklist size close
+				
+				// check Course and caste ST rank list size is empty
+				List<StudentRank> rankListOnCourseCasteSEBC=txn.getAdmApplonStudentOnCourseCategoryForChanceMemo(courseTO.getId(), Integer.parseInt(form.getAcademicYear()),"SEBC");
+
+				// check st setas zero or not, if zero stop course
+				if(rankListOnCourseCasteSEBC!=null && rankListOnCourseCasteSEBC.size()!=0 && courseTO.getStChance()!=null)
+				{	 
+					// add st allotment list and map
+					firstChanceMemo(rankListOnCourseCasteSEBC, "SEBC",allotmentMap,memoList,courseTO,form.getChanceNo(),form,courseTO.getSebcChance(),courseTO.getSebccurrank());
+				}// caste ranklist size close
+				
+				
 
 
 				if(courseTO.getId()==12 || courseTO.getId()==13 || courseTO.getId()==14 || courseTO.getId()==15 || courseTO.getId()==16 || courseTO.getId()==29 || courseTO.getId()==30 || courseTO.getId()==31)
@@ -14441,6 +14657,24 @@ public class ApplicationRankHelper {
 							courseTo.setCommunitycurrank(0);   	
 						}	
 					}	
+					
+					//SEBC
+					else if(seat.getAdmittedThrough().getId()==20)
+					{
+						courseTo.setSebcseat(seat.getNoOfSeats());
+						courseTo.setSebcChance(seat.getChanceMemoLimit());
+						//getting alloted seats
+						hqlQuery = session.createQuery("from StudentCourseChanceMemo s where s.admAppln.personalData.religionSection.id=:casteId and s.course.id=:courseId and s.isCaste=1 and s.admAppln.appliedYear="+Integer.parseInt(admForm.getAcademicYear())+"order by rank asc");
+						hqlQuery.setInteger("courseId",course.getId());
+						hqlQuery.setInteger("casteId",9);
+						list=hqlQuery.list();
+						if(list!=null && list.size()>0){
+							StudentCourseChanceMemo altm = (StudentCourseChanceMemo) list.get(list.size()-1);
+						    courseTo.setSebccurrank(altm.getRank());
+						}else{
+							courseTo.setSebccurrank(0);   	
+						}
+					}
 						 
 						  
 						 	
@@ -14835,6 +15069,24 @@ public class ApplicationRankHelper {
 							}
 
 						}	
+						
+						//SEBC
+						else if(seat.getAdmittedThrough().getId()==20)
+						{
+							courseTo.setSebcseat(seat.getNoOfSeats());
+							courseTo.setSebcChance(seat.getChanceMemoLimit());
+							//getting alloted seats
+							hqlQuery = session.createQuery("from StudentCourseAllotment s where s.admAppln.personalData.religionSection.id=:casteId and s.course.id=:courseId and s.isCaste=1 and s.admAppln.appliedYear="+Integer.parseInt(admForm.getAcademicYear())+"order by rank asc");
+							hqlQuery.setInteger("courseId",course.getId());
+							hqlQuery.setInteger("casteId",9);
+							list=hqlQuery.list();
+							if(list!=null && list.size()>0){
+								StudentCourseAllotment altm = (StudentCourseAllotment) list.get(list.size()-1);
+								courseTo.setSebccurrank(altm.getRank());
+							}else{
+								courseTo.setSebccurrank(0);   	
+							}
+						}
 
 
 

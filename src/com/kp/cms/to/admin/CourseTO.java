@@ -90,6 +90,8 @@ public class CourseTO implements java.io.Serializable,Comparable<CourseTO> {
 	private Integer rankcutoff;
 	private Integer lctaseat;
 	private Integer communityseat;
+	private Integer sebcseat;
+	private Integer sebctaseat;
 	
 	//OBC		SC		ST		MU		OBX		OBH		LC
 
@@ -104,6 +106,7 @@ public class CourseTO implements java.io.Serializable,Comparable<CourseTO> {
 	private Integer gencount;
 	private Integer totcount;
 	private Integer lctacount;
+	private Integer sebccount;
 	
 	private Integer scremain;
 	private Integer stremain;
@@ -116,6 +119,8 @@ public class CourseTO implements java.io.Serializable,Comparable<CourseTO> {
 	private Integer genremain;
 	private Integer lctaremain;
 	private Integer communityremain;
+	private Integer sebcremain;	
+	
 	
 	private Integer highscrank;
 	private Integer highstrank;
@@ -128,6 +133,7 @@ public class CourseTO implements java.io.Serializable,Comparable<CourseTO> {
 	private Integer highgenrank;
 	private Integer highlctarank;
 	private Integer highcommunityrank;
+	private Integer highsebcrank;
 	
 	private boolean scover;
 	private boolean stover;
@@ -140,6 +146,7 @@ public class CourseTO implements java.io.Serializable,Comparable<CourseTO> {
 	private boolean genover;
 	private boolean lctaover;
 	private boolean communityover;
+	private boolean sebcover;
 	
 	private Integer gencurrank;
 	private Integer sccurrank;
@@ -152,6 +159,7 @@ public class CourseTO implements java.io.Serializable,Comparable<CourseTO> {
 	private Integer oeccurrank;
 	private Integer lctacurrank;
 	private Integer communitycurrank;
+	private Integer sebccurrank;
 	
 	
 	//new admission
@@ -204,6 +212,8 @@ public class CourseTO implements java.io.Serializable,Comparable<CourseTO> {
 	private String chanceCasteDateTime;
 	private boolean isSelfFinancing;
 	private String order;
+	private Integer sebcChance;
+	private String chancesebcDateTime;
 	public String getDateTime() {
 		return dateTime;
 	}
@@ -1626,6 +1636,78 @@ public class CourseTO implements java.io.Serializable,Comparable<CourseTO> {
 
 	public void setOrder(String order) {
 		this.order = order;
+	}
+
+	public Integer getHighsebcrank() {
+		return highsebcrank;
+	}
+
+	public void setHighsebcrank(Integer highsebcrank) {
+		this.highsebcrank = highsebcrank;
+	}
+
+	public Integer getSebcseat() {
+		return sebcseat;
+	}
+
+	public void setSebcseat(Integer sebcseat) {
+		this.sebcseat = sebcseat;
+	}
+
+	public Integer getSebccount() {
+		return sebccount;
+	}
+
+	public void setSebccount(Integer sebccount) {
+		this.sebccount = sebccount;
+	}
+
+	public Integer getSebcremain() {
+		return sebcremain;
+	}
+
+	public void setSebcremain(Integer sebcremain) {
+		this.sebcremain = sebcremain;
+	}
+
+	public boolean isSebcover() {
+		return sebcover;
+	}
+
+	public void setSebcover(boolean sebcover) {
+		this.sebcover = sebcover;
+	}
+
+	public Integer getSebccurrank() {
+		return sebccurrank;
+	}
+
+	public void setSebccurrank(Integer sebccurrank) {
+		this.sebccurrank = sebccurrank;
+	}
+
+	public Integer getSebctaseat() {
+		return sebctaseat;
+	}
+
+	public void setSebctaseat(Integer sebctaseat) {
+		this.sebctaseat = sebctaseat;
+	}
+
+	public Integer getSebcChance() {
+		return sebcChance;
+	}
+
+	public void setSebcChance(Integer sebcChance) {
+		this.sebcChance = sebcChance;
+	}
+
+	public String getChancesebcDateTime() {
+		return chancesebcDateTime;
+	}
+
+	public void setChancesebcDateTime(String chancesebcDateTime) {
+		this.chancesebcDateTime = chancesebcDateTime;
 	}
 	
 	

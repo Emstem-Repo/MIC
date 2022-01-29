@@ -34,6 +34,7 @@ public class StudentMarksTO1  implements Serializable,Comparable<StudentMarksTO1
 	private Boolean isGracing;
 	private String falseNo;
 	private String falseNoId;
+	private int falseNumberGenId;
 
 	
 
@@ -239,5 +240,11 @@ public class StudentMarksTO1  implements Serializable,Comparable<StudentMarksTO1
 	}
 	public void setFalseNoId(String falseNoId) {
 		this.falseNoId = falseNoId;
+	}
+	public int getFalseNumberGenId() {
+		return falseNumberGenId;
+	}
+	public void setFalseNumberGenId(int falseNumberGenId) {
+		this.falseNumberGenId = falseNumberGenId;
 	}
 }

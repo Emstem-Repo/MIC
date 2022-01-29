@@ -83,6 +83,7 @@ public class Student implements java.io.Serializable,Comparable<Student> {
 	private String subjectsPassedComplimentary;
 	private String examRegNo;	
 	private String studentPhoto;
+	private String recognitionDetails;
 	
 	private boolean isEgrand;
 
@@ -645,6 +646,14 @@ public class Student implements java.io.Serializable,Comparable<Student> {
 
 	public void setIsEgrand(boolean isEgrand) {
 		this.isEgrand = isEgrand;
+	}
+
+	public String getRecognitionDetails() {
+		return recognitionDetails;
+	}
+
+	public void setRecognitionDetails(String recognitionDetails) {
+		this.recognitionDetails = recognitionDetails;
 	}
 
 }

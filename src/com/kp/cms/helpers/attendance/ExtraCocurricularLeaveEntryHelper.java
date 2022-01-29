@@ -87,7 +87,7 @@ public class ExtraCocurricularLeaveEntryHelper {
 				" and (attendance_student.is_on_leave=0 " +
 				" and period.class_schemewise_id="+classId+
 				" or attendance_student.is_on_leave is null) and attendance.is_canceled=0" +
-				" and attendance.attendance_date BETWEEN DATE_SUB(extra_co_curr_leave_publish.start_date, INTERVAL 60 DAY)  AND extra_co_curr_leave_publish.start_date "+
+				//" and attendance.attendance_date BETWEEN DATE_SUB(extra_co_curr_leave_publish.start_date, INTERVAL 1200 DAY)  AND extra_co_curr_leave_publish.start_date "+
 				" and attendance_student.student_id="+studentId+ "  order by attendance.attendance_date desc ";
 		
 		log.debug("end of getAttendanceQuery method in ExtraCocurricularLeaveEntryHelper.class");

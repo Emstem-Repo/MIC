@@ -12191,5 +12191,34 @@ This is a blank Tiles definition file with a commented example.
         <put name="module" value="Exam"/>
         <put name="body" value="/jsp/studentlogin/initRevaluationMarkscardStudLogin.jsp"/>
     </definition>
-	 
+    
+	 <definition name="initSINO" extends=".cmsLayout">
+        <put name="title" value="Exam Home"/>
+        <put name="module" value="Exam"/>
+        <put name="page" value="BarCode Type">
+        </put>
+        <put name="body" value="/jsp/exam/FalseNumSiNo.jsp"/>
+    </definition>
+    <definition name="initFalseNoEntryForEdit" extends=".cmsLayout">
+        <put name="title" value="Exam Home"/>
+        <put name="module" value="Exam"/>
+        <put name="page" value="BarCode Type">
+        </put>
+        <put name="body" value="/jsp/exam/ExamFalseNumberGenEdit.jsp"/>
+    </definition>
+    <definition name="initBOX" extends=".cmsLayout">
+        <put name="title" value="Exam Home"/>
+        <put name="module" value="Exam"/>
+        <put name="page" value="BarCode Type">
+        </put>
+        <put name="body" value="/jsp/exam/ExamFalseNumberBox.jsp"/>
+	</definition>
+	
+	<definition name="initBOXSecond" extends=".cmsLayout">
+        <put name="title" value="Exam Home"/>
+        <put name="module" value="Exam"/>
+        <put name="page" value="BarCode Type">
+        </put>
+        <put name="body" value="/jsp/exam/ExamFalseNumberBoxSecondPage.jsp"/>
+	</definition>
 </tiles-definitions>

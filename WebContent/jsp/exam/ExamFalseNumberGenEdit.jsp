@@ -9,7 +9,7 @@
 <%@taglib uri="/WEB-INF/cmsTags.tld" prefix="cms"%>
 <head>
 <title>:: CMS ::</title>
-<SCRIPT>
+<SCRIPT><!--
 	function cancelAction() {
 		document.location.href = "marksEntry.do?method=initFalseNoEntry";
 	}
@@ -66,6 +66,12 @@
 	}
 	function updateClass(req) {
 		updateSubjectsTypeBySubjectIdForMarks(req, "subjectType");
+		var subjectId = document.getElementById("subject").value;
+		var subjectType = document.getElementById("subjectType").value;
+	    var courseId = document.getElementById("course").value;
+		var schemeId = document.getElementById("scheme").value;
+		getAnswerScript(subjectId, subjectType, courseId, schemeId);
+		getEvaluatorType(subjectId, subjectType, courseId, schemeId);
 	}
 
 	function getEvaluatorType(subjectId, subjectType, courseId, schemeId) {
@@ -120,6 +126,7 @@
 		}
 	}
 	function getSectionByScheme(schemeId) {
+		//document.getElementById("sCodeName_1").checked = true;
 		var ScodeName="sCode";
 		getSCodeName(ScodeName);
 		var courseId = document.getElementById("course").value;
@@ -151,9 +158,12 @@
 	function getSCodeName(sCName) {
 
 		var courseId = document.getElementById("course").value;
+		//getAnswerScript("", "", courseId, schemeId);
+		//getEvaluatorType("", "", courseId, schemeId);
 		var examId = document.getElementById("examNameId").value;
 		var schemeId = document.getElementById("scheme").value;
-		getSubjectsCodeNameByCourseSchemeExamId("schemeMap", sCName, courseId, "subject", updateToSubject, schemeId,examId);
+		getSubjectsCodeNameByCourseSchemeExamId("schemeMap", sCName, courseId, "subject",
+				updateToSubject, schemeId,examId);
 	}
 	function updateToSubject(req) {
 		var subco ="subco";
@@ -166,32 +176,36 @@
 
 
 <html:form action="/marksEntry" method="POST" enctype="multipart/form-data">
-	<html:hidden property="method" styleId="method" value="saveFalseNumber" />
+	<html:hidden property="method" styleId="method" value="getCandidatesForFalseNumber" />
 	<html:hidden property="formName" value="newExamMarksEntryForm" styleId="formName" />
 	<html:hidden property="pageType" value="2" styleId="pageType" />
 	<html:hidden property="validationAST" styleId="validationAST" />
 	<html:hidden property="validationET" styleId="validationET"/>
 	<html:hidden property="displayAST" styleId="displayAST"/>
 	<html:hidden property="displayET" styleId="displayET"/>
-	<html:hidden property="displaySubType" styleId="sCodeName_2" value="sName" />
-									
+	<html:hidden property="subjectType" styleId="subjectType"/>
 	<table width="99%" border="0">
 
 		<tr>
 			<td><span class="heading"><span class="Bredcrumbs">Exam
 			&gt;&gt; Exam False Number Entry&gt;&gt;</span></span></td>
+
 		</tr>
 		<tr>
 			<td>
 			<table width="100%" border="0" cellpadding="0" cellspacing="0">
 				<tr>
-					<td width="9"><img src="images/Tright_03_01.gif" width="9" height="29"></td>
-					<td background="images/Tcenter.gif" class="heading_white">Student False Number Entry</td>
-					<td width="10"><img src="images/Tright_1_01.gif" width="9" height="29"></td>
+					<td width="9"><img src="images/Tright_03_01.gif" width="9"
+						height="29"></td>
+					<td background="images/Tcenter.gif" class="heading_white">Student
+					False Number Entry</td>
+					<td width="10"><img src="images/Tright_1_01.gif" width="9"
+						height="29"></td>
 				</tr>
 				<tr>
 					<td height="19" valign="top" background="images/Tright_03_03.gif"></td>
 					<td height="20" class="news">
+
 					<div id="errorMessage"><FONT color="red"><html:errors /></FONT>
 					<FONT color="green"> <html:messages id="msg"
 						property="messages" message="true">
@@ -307,7 +321,7 @@
 									</td>
 									<td width="26%" class="row-even"><html:select
 										property="schemeNo" styleClass="body" styleId="scheme"
-										onchange="getSectionByScheme(this.value)" > 
+										onchange="getSubject(this.value), getSectionByScheme(this.value)" > 
 										<html:option value="">
 											<bean:message key="knowledgepro.select" />
 										</html:option>
@@ -318,7 +332,7 @@
 										</logic:notEmpty>
 									</html:select></td>
 								</tr>
-								<%-- <tr>
+								<tr>
 									<td height="25" class="row-odd">
 									<div align="right"><span class="Mandatory"></span>Subject
 									:</div>
@@ -335,79 +349,8 @@
 												name="newExamMarksEntryForm" label="value" value="key" />
 										</logic:notEmpty>
 									</html:select></td>
-									 <td height="25" class="row-odd">
-									<div align="right">Subject Type:</div>
-									</td>
-
-									<td height="25" class="row-even"><html:select
-										property="subjectType" styleId="subjectType" onchange="displayEvaluAndAnswerScript(this.value)">
-										<html:option value="">
-											<bean:message key="knowledgepro.select" />
-										</html:option>
-										<logic:notEmpty name="newExamMarksEntryForm"
-											property="subjectTypeMap">
-											<html:optionsCollection property="subjectTypeMap"
-												name="newExamMarksEntryForm" label="value" value="key" />
-										</logic:notEmpty>
-									</html:select></td>
-
-								</tr> --%>
-							 	<tr style="display: none">
-									<td height="25" class="row-odd">
-									<div align="right" id="et"><span class="Mandatory">*</span>Evaluator
-									Type :</div>
-									</td>
-									<td height="25" class="row-even"><html:select
-										property="evaluatorType" styleClass="combo"
-										styleId="evaluatorType" name="newExamMarksEntryForm"
-										style="width:200px">
-										<html:option value="">
-											<bean:message key="knowledgepro.admin.select" />
-										</html:option>
-										<logic:notEmpty name="newExamMarksEntryForm"
-											property="evaluatorList">
-											<html:optionsCollection property="evaluatorList"
-												name="newExamMarksEntryForm" label="value" value="key" />
-										</logic:notEmpty>
-									</html:select></td>
-
-									<td height="25" class="row-odd">
-									<div align="right" id="ast"><span class="Mandatory">*</span>Answer
-									Script Type :</div>
-									</td>
-
-									<td height="25" class="row-even" colspan="1"><html:select
-										property="answerScriptType" styleClass="combo"
-										styleId="answerScriptType" name="newExamMarksEntryForm"
-										style="width:200px">
-										<html:option value="">
-											<bean:message key="knowledgepro.admin.select" />
-										</html:option>
-										<logic:notEmpty name="newExamMarksEntryForm" property="answerScriptTypeList">
-											<html:optionsCollection property="answerScriptTypeList"
-												name="newExamMarksEntryForm" label="value" value="key" />
-										</logic:notEmpty>
-									</html:select></td>
 
 								</tr>
-								<tr style="display: none">
-									<td class="row-odd">
-									
-									</td>
-									<td class="row-even"></td>
-									<td width="22%" class="row-odd">
-									<div align="right">&nbsp;<bean:message
-										key="admissionForm.studentinfo.castcatg.label" /></div>
-									</td>
-									<td width="34%" class="row-even"><html:select
-										property="section" styleClass="combo" styleId="section">
-										<html:option value="">
-											<bean:message key="knowledgepro.select" />
-										</html:option>
-										<logic:notEmpty name="newExamMarksEntryForm" property="sectionMap">
-										<html:optionsCollection name="newExamMarksEntryForm" property="sectionMap" label="value" value="key" />
-										</logic:notEmpty>
-									</html:select></td>
 							</table>
 							</td>
 
@@ -460,20 +403,35 @@
 <script type="text/javascript">
 var showET = document.getElementById("displayET").value;
 if(showET.length != 0 && showET == "yes") {
-	document.getElementById("et").style.display = "block";
-	document.getElementById("evaluatorType").style.display = "block";
+	if(document.getElementById("et") != null) {
+		document.getElementById("et").style.display = "block";
+	}
+	if(document.getElementById("evaluatorType") != null) {
+		document.getElementById("evaluatorType").style.display = "block";
+	}
 }else{
-	document.getElementById("et").style.display = "none";
-	document.getElementById("evaluatorType").style.display = "none";
-	
+	if(document.getElementById("et") != null) {
+		document.getElementById("et").style.display = "none";
+	}
+	if(document.getElementById("evaluatorType") != null) {
+		document.getElementById("evaluatorType").style.display = "none";
+	}
 }
 var showAT = document.getElementById("displayAST").value;
 if(showAT.length != 0 && showAT == "yes") {
-	document.getElementById("ast").style.display = "block";
-	document.getElementById("answerScriptType").style.display = "block";
+	if(document.getElementById("ast") != null) {
+		document.getElementById("ast").style.display = "block";
+	}
+	if(document.getElementById("answerScriptType") != null) {
+		document.getElementById("answerScriptType").style.display = "block";
+	}
 }else{
-	document.getElementById("ast").style.display = "none";
-	document.getElementById("answerScriptType").style.display = "none";
+	if(document.getElementById("ast") != null) {
+		document.getElementById("ast").style.display = "none";
+	}
+	if(document.getElementById("answerScriptType") != null) {
+		document.getElementById("answerScriptType").style.display = "none";
+	}
 }
 var year = document.getElementById("tempyear").value;
 if(year.length != 0) {

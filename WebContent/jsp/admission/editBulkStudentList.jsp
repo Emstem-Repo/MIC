@@ -64,6 +64,7 @@
                             <td class="row-odd">Admission Number</td>
                             <td class="row-odd">Admission Date</td>
                             <td class="row-odd">Class</td>
+                            <td class="row-odd">Recognition Details</td>
                            
                           </tr>
                           <c:set var="temp" value="0" />
@@ -103,6 +104,8 @@
 													</logic:notEmpty>
 											</nested:select>
 							</td>
+							
+							 <td width="12%" class="row-even" >&nbsp; <nested:text property="recognitionDetails"  styleClass="TextBox" ></nested:text></td>
                            
                            
                           </tr>

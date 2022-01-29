@@ -2823,6 +2823,10 @@ try {
 			{
 				s="from StudentRank s where   s.course.id="+courseId+" and s.admAppln.appliedYear="+year+" and s.admAppln.personalData.isCommunity=1 and s.admAppln.isApproved=0 and s.admAppln.isBypassed=0 and s.admAppln.isSelected=0 order by s.rank asc";
 			}
+			else if(category.equalsIgnoreCase("SEBC"))
+			{
+				s="from StudentRank s where   s.course.id="+courseId+" and s.admAppln.appliedYear="+year+" and s.admAppln.personalData.religionSection.id="+9+" and s.admAppln.isApproved=0 and s.admAppln.isBypassed=0 and s.admAppln.isSelected=0 order by s.rank asc";
+			}
 					
 	
 			
@@ -3033,7 +3037,12 @@ try {
 				 " and s.admAppln.id not in (select distinct s1.admAppln.id from StudentCourseAllotment s1 where   (s1.isAssigned=0 or (s1.prefNo=1 and s1.isAssigned=1)or(s1.isSatisfied=1)) and s1.admAppln.appliedYear="+year+") " +
 				 " and s.admAppln.isApproved=0 and s.admAppln.isBypassed=0 and s.admAppln.isSelected=0 order by s.rank asc";
 			}
-					
+			else if(category.equalsIgnoreCase("SEBC"))
+			{
+				s="from StudentRank s where   s.course.id="+courseId+" and s.admAppln.appliedYear="+year+" and s.admAppln.personalData.religionSection.id="+9+
+				 " and s.admAppln.id not in (select distinct s1.admAppln.id from StudentCourseAllotment s1 where   (s1.isAssigned=0 or (s1.prefNo=1 and s1.isAssigned=1)or(s1.isSatisfied=1)) and s1.admAppln.appliedYear="+year+") " +
+				 " and s.admAppln.isApproved=0 and s.admAppln.isBypassed=0 and s.admAppln.isSelected=0 order by s.rank asc";
+			}
 				 
 			 
 			//Query hqlQuery = session.createQuery("select distinct s.admAppln,max(s.indexMark) from StudentIndexMark s  where s.remark='Eligible' " +
@@ -3431,6 +3440,12 @@ try {
 				s="from StudentRank s where   s.course.id="+courseId+" and s.admAppln.appliedYear="+year+" and s.admAppln.personalData.isCommunity=1"+
 				 " and s.admAppln.id not in (select distinct s1.admAppln.id from StudentCourseAllotment s1 where  s1.admAppln.appliedYear="+year+" and s1.course.id="+courseId+") " +
 				 " and s.admAppln.isApproved=0 and s.admAppln.isBypassed=0 and s.admAppln.isSelected=0 order by s.rank asc";
+			}
+			else if(category.equalsIgnoreCase("SEBC"))
+			{
+				s="from StudentRank s where   s.course.id="+courseId+" and s.admAppln.appliedYear="+year+" and s.admAppln.personalData.religionSection.id="+9+
+						 " and s.admAppln.id not in (select distinct s1.admAppln.id from StudentCourseAllotment s1 where  s1.admAppln.appliedYear="+year+" and s1.course.id="+courseId+") " +
+						 " and s.admAppln.isApproved=0 and s.admAppln.isBypassed=0 and s.admAppln.isSelected=0 order by s.rank asc";
 			}
 					
 				 

@@ -68,6 +68,8 @@ public class NewExamMarksEntryForm extends BaseActionForm {
 	private boolean isRoleIdForDeveloper;
 	private boolean isExamMaxEntry;
 	private String retest;
+	private int totalCount;
+	private boolean generateRandomly;
 	
 
 
@@ -409,6 +411,18 @@ public class NewExamMarksEntryForm extends BaseActionForm {
 	}
 	public void setRetest(String retest) {
 		this.retest = retest;
+	}
+	public int getTotalCount() {
+		return totalCount;
+	}
+	public void setTotalCount(int totalCount) {
+		this.totalCount = totalCount;
+	}
+	public boolean getGenerateRandomly() {
+		return generateRandomly;
+	}
+	public void setGenerateRandomly(boolean generateRandomly) {
+		this.generateRandomly = generateRandomly;
 	}
 	
 	

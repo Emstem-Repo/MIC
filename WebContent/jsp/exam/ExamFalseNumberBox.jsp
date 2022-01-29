@@ -11,7 +11,7 @@
 <title>:: CMS ::</title>
 <SCRIPT>
 	function cancelAction() {
-		document.location.href = "marksEntry.do?method=initFalseNoEntry";
+		document.location.href = "LoginAction.do?method=LoginAction";
 	}
 
 	function getExamName(examType) {
@@ -159,34 +159,41 @@
 		var subco ="subco";
 		updateOptionsFromMap(req, "subject", "- Select -");
 	}
-	
+	function getTeacher() {
+
+		var year=document.getElementById("year").value;
+		var subjectId = document.getElementById("subject").value;
+		getTeacherBysubId("teachersMap", year, subjectId, "teachers", updateToTeachers);
+	}
+	function updateToTeachers(req) {
+		updateOptionsFromMap(req, "teachers", "- Select -");
+	}
+	function barcodeAlert() {
+		  alert("CONECT YOUR BARCODE READER AND SCAN CODES");
+		}
 </SCRIPT>
 
 </head>
 
 
-<html:form action="/marksEntry" method="POST" enctype="multipart/form-data">
-	<html:hidden property="method" styleId="method" value="saveFalseNumber" />
-	<html:hidden property="formName" value="newExamMarksEntryForm" styleId="formName" />
+<html:form action="/falsenumSINO" method="POST" enctype="multipart/form-data">
+	<html:hidden property="method" styleId="method" value="initFalseBoxSecondPage" />
+	<html:hidden property="formName" value="falsenumSINOForm" styleId="formName" />
 	<html:hidden property="pageType" value="2" styleId="pageType" />
-	<html:hidden property="validationAST" styleId="validationAST" />
-	<html:hidden property="validationET" styleId="validationET"/>
-	<html:hidden property="displayAST" styleId="displayAST"/>
-	<html:hidden property="displayET" styleId="displayET"/>
 	<html:hidden property="displaySubType" styleId="sCodeName_2" value="sName" />
 									
 	<table width="99%" border="0">
 
 		<tr>
 			<td><span class="heading"><span class="Bredcrumbs">Exam
-			&gt;&gt; Exam False Number Entry&gt;&gt;</span></span></td>
+			&gt;&gt; Exam paper boxing&gt;&gt;</span></span></td>
 		</tr>
 		<tr>
 			<td>
 			<table width="100%" border="0" cellpadding="0" cellspacing="0">
 				<tr>
 					<td width="9"><img src="images/Tright_03_01.gif" width="9" height="29"></td>
-					<td background="images/Tcenter.gif" class="heading_white">Student False Number Entry</td>
+					<td background="images/Tcenter.gif" class="heading_white">Exam papers Boxing</td>
 					<td width="10"><img src="images/Tright_1_01.gif" width="9" height="29"></td>
 				</tr>
 				<tr>
@@ -224,12 +231,12 @@
 									<%  boolean disableInternal=false; 
 										boolean disableRegular=false;
 									%>
-									<c:if test="${newExamMarksEntryForm.regular==false && newExamMarksEntryForm.internal==true}">
+									<c:if test="${falsenumSINOForm.regular==false && falsenumSINOForm.internal==true}">
 										<%   disableInternal=false; 
 											 disableRegular=true;
 										%>
 									</c:if>
-									<c:if test="${newExamMarksEntryForm.regular==true && newExamMarksEntryForm.internal==false}">
+									<c:if test="${falsenumSINOForm.regular==true && falsenumSINOForm.internal==false}">
 										<%   disableInternal=true; 
 											 disableRegular=false;
 										%>
@@ -256,7 +263,7 @@
 									<td width="16%" class="row-even" valign="top">
 									<input
 										type="hidden" id="tempyear" name="appliedYear"
-										value="<bean:write name="newExamMarksEntryForm" property="year"/>" />
+										value="<bean:write name="falsenumSINOForm" property="year"/>" />
 									<html:select 
 										property="year" styleId="year"
 										styleClass="combo" onchange="getExamsByExamTypeAndYear()">
@@ -270,15 +277,15 @@
 
 									<td class="row-even"><html:select property="examId"
 										styleClass="combo" styleId="examNameId"
-										name="newExamMarksEntryForm" onchange="getCourse(this.value)"
+										name="falsenumSINOForm" onchange="getCourse(this.value)"
 										style="width:200px">
 										<html:option value="">
 											<bean:message key="knowledgepro.admin.select" />
 										</html:option>
-										<logic:notEmpty name="newExamMarksEntryForm"
+										<logic:notEmpty name="falsenumSINOForm"
 											property="examNameList">
 											<html:optionsCollection property="examNameList"
-												name="newExamMarksEntryForm" label="value" value="key" />
+												name="falsenumSINOForm" label="value" value="key" />
 										</logic:notEmpty>
 									</html:select></td>
 								</tr>
@@ -294,10 +301,10 @@
 										<html:option value="">
 											<bean:message key="knowledgepro.select" />
 										</html:option>
-										<logic:notEmpty name="newExamMarksEntryForm"
+										<logic:notEmpty name="falsenumSINOForm"
 											property="courseMap">
 											<html:optionsCollection property="courseMap"
-												name="newExamMarksEntryForm" label="value" value="key" />
+												name="falsenumSINOForm" label="value" value="key" />
 										</logic:notEmpty>
 									</html:select></td>
 
@@ -311,28 +318,28 @@
 										<html:option value="">
 											<bean:message key="knowledgepro.select" />
 										</html:option>
-										<logic:notEmpty name="newExamMarksEntryForm"
+										<logic:notEmpty name="falsenumSINOForm"
 											property="schemeMap">
 											<html:optionsCollection property="schemeMap"
-												name="newExamMarksEntryForm" label="value" value="key" />
+												name="falsenumSINOForm" label="value" value="key" />
 										</logic:notEmpty>
 									</html:select></td>
 								</tr>
-								<%-- <tr>
+								<tr>
 									<td height="25" class="row-odd">
 									<div align="right"><span class="Mandatory"></span>Subject
 									:</div>
 									</td>
 									<td height="25" class="row-even"><html:select
 										property="subjectId" styleClass="body" styleId="subject"
-										onchange="getSubjectType(this.value)">
+										onchange="getSubjectType(this.value),getTeacher()">
 										<html:option value="">
 											<bean:message key="knowledgepro.select" />
 										</html:option>
-										<logic:notEmpty name="newExamMarksEntryForm"
+										<logic:notEmpty name="falsenumSINOForm"
 											property="subjectCodeNameMap">
 											<html:optionsCollection property="subjectCodeNameMap"
-												name="newExamMarksEntryForm" label="value" value="key" />
+												name="falsenumSINOForm" label="value" value="key" />
 										</logic:notEmpty>
 									</html:select></td>
 									 <td height="25" class="row-odd">
@@ -344,53 +351,34 @@
 										<html:option value="">
 											<bean:message key="knowledgepro.select" />
 										</html:option>
-										<logic:notEmpty name="newExamMarksEntryForm"
+										<logic:notEmpty name="falsenumSINOForm"
 											property="subjectTypeMap">
 											<html:optionsCollection property="subjectTypeMap"
-												name="newExamMarksEntryForm" label="value" value="key" />
-										</logic:notEmpty>
-									</html:select></td>
-
-								</tr> --%>
-							 	<tr style="display: none">
-									<td height="25" class="row-odd">
-									<div align="right" id="et"><span class="Mandatory">*</span>Evaluator
-									Type :</div>
-									</td>
-									<td height="25" class="row-even"><html:select
-										property="evaluatorType" styleClass="combo"
-										styleId="evaluatorType" name="newExamMarksEntryForm"
-										style="width:200px">
-										<html:option value="">
-											<bean:message key="knowledgepro.admin.select" />
-										</html:option>
-										<logic:notEmpty name="newExamMarksEntryForm"
-											property="evaluatorList">
-											<html:optionsCollection property="evaluatorList"
-												name="newExamMarksEntryForm" label="value" value="key" />
-										</logic:notEmpty>
-									</html:select></td>
-
-									<td height="25" class="row-odd">
-									<div align="right" id="ast"><span class="Mandatory">*</span>Answer
-									Script Type :</div>
-									</td>
-
-									<td height="25" class="row-even" colspan="1"><html:select
-										property="answerScriptType" styleClass="combo"
-										styleId="answerScriptType" name="newExamMarksEntryForm"
-										style="width:200px">
-										<html:option value="">
-											<bean:message key="knowledgepro.admin.select" />
-										</html:option>
-										<logic:notEmpty name="newExamMarksEntryForm" property="answerScriptTypeList">
-											<html:optionsCollection property="answerScriptTypeList"
-												name="newExamMarksEntryForm" label="value" value="key" />
+												name="falsenumSINOForm" label="value" value="key" />
 										</logic:notEmpty>
 									</html:select></td>
 
 								</tr>
-								<tr style="display: none">
+							 	<tr >
+									<td height="25" class="row-odd">
+									<div align="right" ><span class="Mandatory">*</span>Teacher</div>
+									</td>
+									<td height="25" class="row-even">
+									<html:select name="falsenumSINOForm" styleId="teachers" property="teachers"  >
+									<html:option value="">
+											<bean:message key="knowledgepro.select" />
+										</html:option>
+                    						<html:optionsCollection name="falsenumSINOForm" property="teachersMap" label="value" value="key"/>
+                  					</html:select></td>
+
+									<td height="25" class="row-odd">
+									<div align="right" ><span class="Mandatory">*</span>Box No</div>
+									</td>
+
+									<td height="25" class="row-even" colspan="1"><html:text property="boxNo" styleId="boxNo" name="falsenumSINOForm"></html:text></td>
+
+								</tr>
+								<%-- <tr style="display: none">
 									<td class="row-odd">
 									
 									</td>
@@ -404,10 +392,10 @@
 										<html:option value="">
 											<bean:message key="knowledgepro.select" />
 										</html:option>
-										<logic:notEmpty name="newExamMarksEntryForm" property="sectionMap">
-										<html:optionsCollection name="newExamMarksEntryForm" property="sectionMap" label="value" value="key" />
+										<logic:notEmpty name="falsenumSINOForm" property="sectionMap">
+										<html:optionsCollection name="falsenumSINOForm" property="sectionMap" label="value" value="key" />
 										</logic:notEmpty>
-									</html:select></td>
+									</html:select></td><tr> --%>
 							</table>
 							</td>
 
@@ -430,7 +418,7 @@
 					<table width="100%" border="0" cellspacing="0" cellpadding="0">
 						<tr>
 							<td width="49%" height="35" align="right"><input
-								name="Submit7" type="submit" class="formbutton" value="Submit" /></td>
+								name="Submit7" type="submit" class="formbutton"  onclick="barcodeAlert()" 	 value="Next" /></td>
 
 							<td width="2%" height="35" align="center">&nbsp;</td>
 							<td width="49%" height="35" align="left"><input
@@ -441,6 +429,83 @@
 					</td>
 					<td valign="top" background="images/Tright_3_3.gif"></td>
 				</tr>
+				
+				<logic:notEmpty name="falsenumSINOForm" property="falseBoxToList">
+				<tr>
+					<td height="19" valign="top" background="images/Tright_03_03.gif"></td>
+					<td valign="top" class="news">
+					<table width="100%" border="0" align="center" cellpadding="0"
+						cellspacing="0">
+						<tr>
+							<td><img src="images/01.gif" width="5" height="5" /></td>
+							<td width="914" background="images/02.gif"></td>
+
+							<td><img src="images/03.gif" width="5" height="5" /></td>
+						</tr>
+						<tr>
+							<td width="5" background="images/left.gif"></td>
+							<td valign="top">
+							<table width="100%" cellspacing="1" cellpadding="2">
+								<tr align="center" style="font-weight: bolder;">
+									<td td height="25" class="row-odd">Sl.No</td>
+									<td td height="25" class="row-even">Course</td>
+									<td td height="25" class="row-odd">Subject</td>
+									<td td height="25" class="row-even">Box.No</td>
+									<td td height="25" class="row-even">sem</td>
+									<td td height="25" class="row-odd">Academic Year</td>
+									<td td height="25" class="row-odd">Exam Name</td>
+									<td td height="25" class="row-even">Edit</td>
+									<td td height="25" class="row-odd">Delete</td>
+								</tr>
+								<%int i=1; %>
+								<logic:iterate id="box" name="falsenumSINOForm" property="falseBoxToList">
+								 <c:choose>
+       							 <c:when test="${i % 2 == 0}">
+								<tr align="center" style="font-weight: bolder;">
+									<td td height="25" class="row-odd"><%=i %></td>
+									<td td height="25" class="row-odd"><bean:write name="box" property="courseName"/></td>
+									<td td height="25" class="row-odd"><bean:write name="box" property="subjectName"/></td>
+									<td td height="25" class="row-odd"><bean:write name="box" property="boxNum"/></td>
+									<td td height="25" class="row-odd"><bean:write name="box" property="schemeNum"/></td>
+									<td td height="25" class="row-odd"><bean:write name="box" property="academicYear"/></td>
+									<td td height="25" class="row-odd"><bean:write name="box" property="examName"/></td>
+									<td td height="25" class="row-odd">edit</td>
+									<td td height="25" class="row-odd">delete</td>
+								</tr>
+								</c:when>
+       						 <c:otherwise>
+       						 <tr align="center" style="font-weight: bolder;">
+									<td td height="25" class="row-even"><%=i %></td>
+									<td td height="25" class="row-even"><bean:write name="box" property="courseName"/></td>
+									<td td height="25" class="row-even"><bean:write name="box" property="subjectName"/></td>
+									<td td height="25" class="row-even"><bean:write name="box" property="boxNum"/></td>
+									<td td height="25" class="row-even"><bean:write name="box" property="schemeNum"/></td>
+									<td td height="25" class="row-even"><bean:write name="box" property="academicYear"/></td>
+									<td td height="25" class="row-even"><bean:write name="box" property="examName"/></td>
+									<td td height="25" class="row-even">edit</td>
+									<td td height="25" class="row-odd">delete</td>
+								</tr>
+								</c:otherwise>
+    						</c:choose>
+    						<%i++; %>
+								</logic:iterate>
+							</table>
+							</td>
+							<td width="5" height="30" background="images/right.gif"></td>
+						</tr>
+						<tr>
+
+							<td height="5"><img src="images/04.gif" width="5" height="5" /></td>
+							<td background="images/05.gif"></td>
+							<td><img src="images/06.gif" /></td>
+						</tr>
+					</table>
+					</td>
+					<td valign="top" background="images/Tright_3_3.gif" class="news"></td>
+				</tr>
+				</logic:notEmpty>
+				
+				
 				<tr>
 					<td height="19" valign="top" background="images/Tright_03_03.gif"></td>
 					<td class="heading"></td>

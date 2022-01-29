@@ -172,6 +172,7 @@ public class StudentTO implements Serializable,Comparable<StudentTO>{
 	private String ParentMobileNo2;
 	private String feeDate;
 	private String maxMarksInternal;
+	private String recognitionDetails;
 	
 
 	private Map<String,SubjectTO> internalSubjectMap;
@@ -1146,6 +1147,12 @@ public class StudentTO implements Serializable,Comparable<StudentTO>{
 	}
 	public void setInternalSubjectMap(Map<String, SubjectTO> internalSubjectMap) {
 		this.internalSubjectMap = internalSubjectMap;
+	}
+	public String getRecognitionDetails() {
+		return recognitionDetails;
+	}
+	public void setRecognitionDetails(String recognitionDetails) {
+		this.recognitionDetails = recognitionDetails;
 	}
 	
 	

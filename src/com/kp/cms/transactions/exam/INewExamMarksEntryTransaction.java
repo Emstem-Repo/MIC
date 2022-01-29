@@ -73,5 +73,6 @@ public interface INewExamMarksEntryTransaction {
 	boolean saveBo(SupplementaryFees bo) throws Exception;
 
 	boolean saveRegularBo(RegularExamFees bo) throws Exception;
+	public int getCurrentNO(NewExamMarksEntryForm marksCardForm)throws Exception;
 
 }

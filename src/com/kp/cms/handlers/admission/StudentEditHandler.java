@@ -276,6 +276,7 @@ public class StudentEditHandler {
 			student.setId(studentTO.getId());
 			student.setRegisterNo(studentTO.getRegisterNo());
 			student.setRollNo(studentTO.getRollNo());
+			student.setRecognitionDetails(studentTO.getRecognitionDetails());
 			admAppln.setAdmissionNumber(studentTO.getAdmissionNumber());
 			admAppln.setId(studentTO.getAdmApplnId());
 			if(CommonUtil

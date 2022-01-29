@@ -188,5 +188,10 @@ public class NewExamMarksEntryHandler {
 		INewExamMarksEntryTransaction transaction=NewExamMarksEntryTransactionImpl.getInstance();// creating object for Transaction Impl class
 		return transaction.saveMarksForAllInternals(newExamMarksEntryForm);
 	}
+	public int getCurrentNO(NewExamMarksEntryForm marksCardForm) throws Exception{
+		// TODO Auto-generated method stub
+		INewExamMarksEntryTransaction transaction=NewExamMarksEntryTransactionImpl.getInstance();
+		return transaction.getCurrentNO(marksCardForm);
+	}
 	
 }

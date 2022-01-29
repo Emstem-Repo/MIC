@@ -395,6 +395,9 @@ public class StudentEditTransactionImpl implements IStudentEditTransaction {
 						classSchemewise.setId(student.getClassSchemewise().getId());
 						student1.setClassSchemewise(classSchemewise);
 					}
+					if (student.getRecognitionDetails()!=null) {
+						student1.setRecognitionDetails(student.getRecognitionDetails());
+					}
 					session.saveOrUpdate(student1);
 				}
 				AdmAppln admAppln1=(AdmAppln)session.get(AdmAppln.class,student.getAdmAppln().getId());

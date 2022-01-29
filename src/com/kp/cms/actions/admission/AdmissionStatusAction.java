@@ -328,14 +328,14 @@ public class AdmissionStatusAction extends BaseDispatchAction {
                             admissionStatusForm.clearstatusTO();
                             return mapping.findForward("initapplicationstatus");
                         }
-                        if (admissionStatusTO.isAdmitted()) {
+                        /*if (admissionStatusTO.isAdmitted()) {
                             errors.add("error", new ActionError("knowledgepro.admission.admissionstatus.is.admitted"));
                             this.saveErrors(request, errors);
                             admissionStatusForm.clear();
                             admissionStatusForm.clearadmissionStatusTO();
                             admissionStatusForm.clearstatusTO();
                             return mapping.findForward("getAdmissionStatus");
-                        }
+                        }*/
                         admissionStatusForm.setAdmStatus(null);
                         if (admissionStatusTO.getAdmStatus() != null && !admissionStatusTO.getAdmStatus().trim().isEmpty()) {
                             admissionStatusForm.setAdmStatus(admissionStatusTO.getAdmStatus());
@@ -384,7 +384,7 @@ public class AdmissionStatusAction extends BaseDispatchAction {
                             admissionStatusForm.setAdmissionStatusTO(admissionStatusTO);
                             return mapping.findForward("getAdmissionStatus");
                         }
-                        if (!admissionStatusTO.getIsSelected().equalsIgnoreCase("You are Selected for Admission")) {
+                        if (!admissionStatusTO.getIsSelected().equalsIgnoreCase("You are Selected for Admissions")) {
                             final AdmissionStatusTO admTO = AdmissionStatusHandler.getInstance().getInterviewResult(applicationNo, admissionStatusTO.getAppliedYear());
                             admissionStatusForm.setStatusTO(admTO);
                             admissionStatusForm.setAdmissionStatusTO(admissionStatusTO);

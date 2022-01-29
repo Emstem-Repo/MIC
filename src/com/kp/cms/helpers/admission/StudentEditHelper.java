@@ -9950,6 +9950,9 @@ adminAppTO.setMarkscardNo(admApplnBo.getMarkscardNo());
 				}else if (personalData.getCaste() != null) {
 					stto.setCaste(String.valueOf(personalData.getCaste().getId()));
 				}
+				if (student.getRecognitionDetails()!=null) {
+					stto.setRecognitionDetails(student.getRecognitionDetails());
+				}
 				
 //				priyatham end
 				studentTos.add(stto);				

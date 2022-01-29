@@ -14280,9 +14280,9 @@
             <field property="schemeNo" depends="required">
                 <arg key="knowledgepro.exam.revaluationApplication.scheme"/>
             </field>
-            <field property="subjectId" depends="required">
+           <!--  <field property="subjectId" depends="required">
                 <arg key="admissionForm.detailmark.subject.label"/>
-            </field>
+            </field> -->
           
         </form>
 		

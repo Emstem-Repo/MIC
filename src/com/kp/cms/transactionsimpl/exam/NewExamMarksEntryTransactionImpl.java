@@ -31,6 +31,7 @@ import com.kp.cms.bo.exam.ExamInternalRetestApplicationSubjectsBO;
 import com.kp.cms.bo.exam.ExamPublishHallTicketMarksCardBO;
 import com.kp.cms.bo.exam.ExamRegularApplication;
 import com.kp.cms.bo.exam.ExamSettingsBO;
+import com.kp.cms.bo.exam.FalseNumSiNo;
 import com.kp.cms.bo.exam.MarksEntry;
 import com.kp.cms.bo.exam.MarksEntryDetails;
 import com.kp.cms.bo.exam.PublishSupplementaryImpApplication;
@@ -1496,6 +1497,35 @@ public class NewExamMarksEntryTransactionImpl implements INewExamMarksEntryTrans
 			throw new ApplicationException(e);
 		}
 	}
-	
+	public int getCurrentNO(NewExamMarksEntryForm marksCardForm)throws Exception{
+		int result= -1;
+		Session session = null;
+		try {
+			 SessionFactory sessionFactory = InitSessionFactory.getInstance();
+			 session =sessionFactory.openSession();
+			 String query="";
+				 query="select bo from FalseNumSiNo bo where bo.isActive=1 and bo.courseId.id ="+Integer.parseInt(marksCardForm.getCourseId())+" and bo.academicYear ="+Integer.parseInt(marksCardForm.getYear())+" and bo.semister="+Integer.parseInt(marksCardForm.getSemister())+" and bo.examId.id="+Integer.parseInt(marksCardForm.getExamId());
+			 Query qr = session.createQuery(query);
+			 
+			 FalseNumSiNo obj=(FalseNumSiNo)qr.uniqueResult();
+			 
+			 if(obj!=null){
+				 result = Integer.parseInt(obj.getCurrentNo());
+				 if(obj.getStartNo().equalsIgnoreCase("0")){
+					 marksCardForm.setGenerateRandomly(true);
+				 }
+				 else
+					 marksCardForm.setGenerateRandomly(false);
+			 }
+		 }catch (Exception e) {
+			 throw e; 
+		 }finally {
+			if (session != null) {
+				session.flush();
+				session.close();
+			}
+		}
+		return result;
+	}
 
 }

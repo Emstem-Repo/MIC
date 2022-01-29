@@ -4,5 +4,6 @@
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="C:/Users/Pimin Poley/Downloads/barbecue-1.5-beta1/barbecue-1.5-beta1/lib/jdom.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

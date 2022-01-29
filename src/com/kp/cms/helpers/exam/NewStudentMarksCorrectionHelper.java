@@ -389,11 +389,11 @@ public class NewStudentMarksCorrectionHelper {
 				bo.setSubject(subject);
 				
 				if(isPracticalChanged){
-					bo.setPracticalMarks(to.getOldPracticalMarks());
+					bo.setPracticalMarks(to.getPracticalMarks());
 					bo.setPreviousEvaluatorPracticalMarks(to.getOldPracticalMarks());
 				}
 				if(isTheoryChanged){
-					bo.setTheoryMarks(to.getOldTheoryMarks());
+					bo.setTheoryMarks(to.getTheoryMarks());
 					bo.setPreviousEvaluatorTheoryMarks(to.getOldTheoryMarks());
 				}
 				bo.setComments(to.getComments());

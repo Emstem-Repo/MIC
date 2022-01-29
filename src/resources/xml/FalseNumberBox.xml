@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Aug 27, 2009 2:58:31 PM by Hibernate Tools 3.2.0.b9 -->
+<hibernate-mapping>
+    <class name="com.kp.cms.bo.exam.FalseNumberBox" table="false_number_box">
+        <comment></comment>
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="native" />
+        </id>
+        
+        <many-to-one name="subjectId" class="com.kp.cms.bo.admin.Subject" fetch="select" >
+            <column name="subject_id">
+                <comment></comment>
+            </column>
+        </many-to-one>
+        
+        <many-to-one name="courseId" class="com.kp.cms.bo.admin.Course" fetch="select" >
+            <column name="course_id">
+                <comment></comment>
+            </column>
+        </many-to-one>
+       
+        <property name="academicYear" type="integer">
+            <column name="academic_year" length="5">
+                <comment></comment>
+            </column>
+        </property>	
+        
+        <property name="schemeNum" type="integer">
+            <column name="scheme" length="5">
+                <comment></comment>
+            </column>
+        </property>
+        <property name="boxNum" type="integer">
+            <column name="box_number" length="11">
+                <comment></comment>
+            </column>
+        </property>
+        
+    
+         <many-to-one name="examId" class="com.kp.cms.bo.exam.ExamDefinition" fetch="select">
+            <column name="exam_id">
+                <comment></comment>
+            </column>
+        </many-to-one>
+        
+        <many-to-one name="examinerId" class="com.kp.cms.bo.admin.Users" fetch="select" >
+            <column name="examiner">
+                <comment></comment>
+            </column>
+        </many-to-one>
+        <property name="chiefExaminer" type="string">
+            <column name="chief_examiner" length="50">
+                <comment></comment>
+            </column>
+        </property>
+        <property name="additionalExaminer" type="string">
+            <column name="additional_examiner" length="50">
+                <comment></comment>
+            </column>
+        </property>
+    </class>
+</hibernate-mapping>

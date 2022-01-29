@@ -10,6 +10,7 @@ public class PasswordGenerator {
 	  public static final int MIN_LENGTH_ALPHA = 1;
 	  public static final int MIN_LENGTH_NUM = 5;
 	  public static final int OTP_LENGTH_NUM = 6;
+	  public static final int MIN_LENGTH_1 = 6;
 	  
 	  /** The random number generator. */
 	  protected static java.util.Random rand = new java.util.Random();
@@ -61,5 +62,11 @@ public class PasswordGenerator {
 		    }
 		    return sbuf.toString();
 		}
-	  
+	  public static String getRandomNo() {
+		    StringBuffer sbuf = new StringBuffer();
+		    for (int cnt = 0; cnt < MIN_LENGTH_1; cnt++) {
+		    	sbuf.append(goodChar[rand.nextInt(goodChar.length)]);
+		    }
+		    return sbuf.toString();
+		  }
 }
