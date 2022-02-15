@@ -12221,4 +12221,18 @@ This is a blank Tiles definition file with a commented example.
         </put>
         <put name="body" value="/jsp/exam/ExamFalseNumberBoxSecondPage.jsp"/>
 	</definition>
+	<definition name="updateTeacher" extends=".cmsLayout">
+        <put name="title" value="Exam Home"/>
+        <put name="module" value="Exam"/>
+        <put name="page" value="BarCode Type">
+        </put>
+        <put name="body" value="/jsp/exam/ExamFalseNumberBoxExaminer.jsp"/>
+	</definition>
+	<definition name="addexaminerInit" extends=".cmsLayout">
+        <put name="title" value="Employee Home"/>
+        <put name="module" value="Employee"/>
+        <put name="page" value="Guest Information">
+        </put>
+        <put name="body" value="/jsp/employee/AddExaminer.jsp"/>
+    </definition> 
 </tiles-definitions>

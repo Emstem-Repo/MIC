@@ -425,6 +425,7 @@ function onlinePay(){
 				</tr>
 				
 				  <tr><td colspan="3"><hr></hr></td></tr>
+		<nested:notEqual value="true" name="newSupplementaryImpApplicationForm" property="isAttendanceShortage">
 		 <tr align="center" >
 		 <td colspan="3" style="height: 20px">
 		 	<b>Examination Fee : </b> <bean:write name="newSupplementaryImpApplicationForm" property="theoryFee" /></td>
@@ -439,8 +440,7 @@ function onlinePay(){
 		 <tr align="center"><td colspan="3" style="height: 20px">
 		 	<b>Total Fee : </b><bean:write name="newSupplementaryImpApplicationForm" property="totalFee" /></td>
 		 </tr>
-		 
-		 
+	</nested:notEqual>		 
 				<tr>
 					<td height="19" valign="top" background="images/Tright_03_03.gif"></td>
 					<td valign="top" class="news">
@@ -487,11 +487,13 @@ function onlinePay(){
 							</nested:equal>
 							
 							<nested:equal value="true" name="newSupplementaryImpApplicationForm" property="challanButton">
+							<nested:notEqual value="true" name="newSupplementaryImpApplicationForm" property="isAttendanceShortage">
 							
 								<html:button property=""
 								styleClass="btnbg" value="Pay Online"
 								onclick="onlinePay()"></html:button>
 								
+								</nested:notEqual>
 							</nested:equal>
 							
 							

@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import com.kp.cms.actions.ajax.CommonAjaxExamAction;
@@ -61,9 +62,11 @@ public class ExamFalseNumberHelper {
 					schemeId = subId;
 				}
 		Map<Integer, String> subMap= CommonAjaxHandler.getInstance()
-				.getSubjectsCodeNameByCourseSchemeExamId("sCode",Integer.parseInt(newExamMarksEntryForm.getCourseId()),schemeId,
+				.getSubjectsCodeNameByCourseSchemeExamIdForFalse("sCode",Integer.parseInt(newExamMarksEntryForm.getCourseId()),schemeId,
 				Integer.parseInt(newExamMarksEntryForm.getSchemeNo()), Integer.parseInt(newExamMarksEntryForm.getExamId()));;
 		
+				
+				
 		List<StudentMarksTO> boList =newExamMarksEntryForm.getStudentList();
 	for (Integer subId : subMap.keySet()){
 		newExamMarksEntryForm.setSubjectId(String.valueOf(subId));
@@ -72,7 +75,8 @@ public class ExamFalseNumberHelper {
 		Iterator<StudentMarksTO> itr = list.iterator();
 		while (itr.hasNext()) {
 		  StudentMarksTO student = (StudentMarksTO) itr.next();
-		 
+		  String suborderquery="select s.subjectOrder from ExamSubDefinitionCourseWiseBO s where s.subjectId="+subId+" and s.academicYear="+academicYear+" and courseId="+newExamMarksEntryForm.getCourseId();
+			if (transaction.getData(newExamMarksEntryForm, suborderquery)!=null) {
 			bo = new ExamFalseNumberGen();
 			Classes classes=new Classes();
 			classes.setId(student.getClassId());
@@ -96,8 +100,7 @@ public class ExamFalseNumberHelper {
 			subject.setId(subId);
 			bo.setSubject(subject);
 			int appYear=(Integer) transaction.getData(newExamMarksEntryForm, "select s.admAppln.appliedYear from Student s where s.id="+student.getStudentId());
-			int suborder=(Integer) transaction.getData(newExamMarksEntryForm, 
-					"select s.subjectOrder from ExamSubDefinitionCourseWiseBO s where s.subjectId="+subId+" and s.academicYear="+academicYear+" and courseId="+newExamMarksEntryForm.getCourseId());
+			int suborder=(Integer) transaction.getData(newExamMarksEntryForm, suborderquery);
 			String courseCode=(String) transaction.getData(newExamMarksEntryForm,"select c.bankName from Course c where c.id="+newExamMarksEntryForm.getCourseId());
 			int sem=Integer.parseInt(newExamMarksEntryForm.getSchemeNo());
 			int ptype= (Integer) transaction.getData(newExamMarksEntryForm,"select c.program.programType.id from Course c where c.id="+newExamMarksEntryForm.getCourseId());
@@ -128,6 +131,7 @@ public class ExamFalseNumberHelper {
 			falseBoList.add(bo);
 			//isadded=transaction.savedata(bo);
 		  //}
+		}
 		}
 	}
 		isadded=transaction.savedata(falseBoList);

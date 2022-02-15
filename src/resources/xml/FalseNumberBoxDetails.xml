@@ -9,7 +9,11 @@
             <column name="id" />
             <generator class="native" />
         </id>
-        
+        <property name="isActive" type="java.lang.Boolean">
+            <column name="is_active">
+                <comment></comment>
+            </column>
+        </property>
         <many-to-one name="falseNumBox" class="com.kp.cms.bo.exam.FalseNumberBox" fetch="select" >
             <column name="false_number_box">
                 <comment></comment>

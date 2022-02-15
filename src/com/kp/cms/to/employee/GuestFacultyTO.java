@@ -238,6 +238,9 @@ import com.kp.cms.to.admin.StateTO;
 		private String bankBranch;
 		private String bankIfscCode;
 		private String communicationAddress;
+		private boolean outside;
+		private String collegeName;
+		private String retired;
 		public List<GuestPreviousChristWorkDetailsTO> getGuestPreviousChristWorkDetailsTOs() {
 			return guestPreviousChristWorkDetailsTOs;
 		}
@@ -1530,6 +1533,24 @@ import com.kp.cms.to.admin.StateTO;
 		}
 		public void setCommunicationAddress(String communicationAddress) {
 			this.communicationAddress = communicationAddress;
+		}
+		public boolean isOutside() {
+			return outside;
+		}
+		public void setOutside(boolean outside) {
+			this.outside = outside;
+		}
+		public String getCollegeName() {
+			return collegeName;
+		}
+		public void setCollegeName(String collegeName) {
+			this.collegeName = collegeName;
+		}
+		public String getRetired() {
+			return retired;
+		}
+		public void setRetired(String retired) {
+			this.retired = retired;
 		}
 		
 	}

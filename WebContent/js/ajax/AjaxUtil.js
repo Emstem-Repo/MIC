@@ -3147,8 +3147,9 @@ function getExamNameByAcademicYearForRetest(propertyName, classId,
 			callback);
 
 }
-function getTeacherBysubId(propertyName, year, subId, destinationProperty,
-		callback) {
-	var args = "method=getTeacherBySubID&subjectId=" + subId+ "&year=" +year;
-	populateSecondOptionsValues(subId, args, destinationProperty, callback);
+function getTeacherBysubId(outside,dept,callback){
+			var args = "method=getTeacherBySubID&departmentId=" + dept+ "&hostelId=" +outside;
+			var url = "AjaxRequest.do";
+			requestOperation(url, args, callback);
+		
 }

@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionMapping;
 
+import com.kp.cms.bo.admin.Users;
 import com.kp.cms.forms.BaseActionForm;
 import com.kp.cms.to.admin.ProgramTypeTO;
 import com.kp.cms.to.exam.FalseBoxDetTo;
@@ -46,12 +47,19 @@ public class FalseNumSiNoForm extends BaseActionForm {
 	private Map<Integer, String> teachersMap;
 	private String boxNo;
 	private String barcode;
-	private List<String> barcodeList;
+	private List<FalseBoxDetTo> barcodeList;
+	private List<FalseBoxDetTo> ceckBarcodeList;
 	private String deleId;
+	private String outside;
+	
+	private boolean edit;
 
 	private String chiefExaminer;
 	private String additionalExaminer;
 	private List<FalseBoxDetTo> falseBoxToList;
+	private int falseBoxId;
+	private Map<Integer, String> departmentMap;
+	private String correctionValidator;
 	
 	public String getStartNo() {
 		return startNo;
@@ -68,7 +76,15 @@ public class FalseNumSiNoForm extends BaseActionForm {
 		this.currentFalseNo = null;
 		this.subjectTypeMap=new HashMap();
 		this.teachersMap=new HashMap();
+		this.departmentMap=new HashMap();
 		this.barcodeList=new ArrayList();
+		this.additionalExaminer=null;
+		this.chiefExaminer=null;
+		this.teachers=null;
+		this.examId=null;
+		this.subjectId=null;
+		this.boxNo=null;
+		
 	}
 	
 	public ActionErrors validate(ActionMapping mapping,
@@ -309,13 +325,7 @@ public class FalseNumSiNoForm extends BaseActionForm {
 		this.barcode = barcode;
 	}
 
-	public List<String> getBarcodeList() {
-		return barcodeList;
-	}
 
-	public void setBarcodeList(List<String> barcodeList) {
-		this.barcodeList = barcodeList;
-	}
 
 	public String getDeleId() {
 		return deleId;
@@ -348,4 +358,62 @@ public class FalseNumSiNoForm extends BaseActionForm {
 	public void setFalseBoxToList(List<FalseBoxDetTo> falseBoxToList) {
 		this.falseBoxToList = falseBoxToList;
 	}
+
+	public int getFalseBoxId() {
+		return falseBoxId;
+	}
+
+	public void setFalseBoxId(int falseBoxId) {
+		this.falseBoxId = falseBoxId;
+	}
+
+	public List<FalseBoxDetTo> getBarcodeList() {
+		return barcodeList;
+	}
+
+	public void setBarcodeList(List<FalseBoxDetTo> barcodeList) {
+		this.barcodeList = barcodeList;
+	}
+
+	public boolean isEdit() {
+		return edit;
+	}
+
+	public void setEdit(boolean edit) {
+		this.edit = edit;
+	}
+
+	public List<FalseBoxDetTo> getCeckBarcodeList() {
+		return ceckBarcodeList;
+	}
+
+	public void setCeckBarcodeList(List<FalseBoxDetTo> ceckBarcodeList) {
+		this.ceckBarcodeList = ceckBarcodeList;
+	}
+
+	public Map<Integer, String> getDepartmentMap() {
+		return departmentMap;
+	}
+
+	public void setDepartmentMap(Map<Integer, String> departmentMap) {
+		this.departmentMap = departmentMap;
+	}
+
+	public String getOutside() {
+		return outside;
+	}
+
+	public void setOutside(String outside) {
+		this.outside = outside;
+	}
+
+	public String getCorrectionValidator() {
+		return correctionValidator;
+	}
+
+	public void setCorrectionValidator(String correctionValidator) {
+		this.correctionValidator = correctionValidator;
+	}
+
+	
 }

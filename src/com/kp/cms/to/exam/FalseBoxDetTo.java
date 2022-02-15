@@ -17,12 +17,21 @@ public class FalseBoxDetTo {
 	private String courseName;
 	private int examinerId;
 	private String examinerName;
-	private int boxNum;
+	private String boxNum;
 	private int examId;
 	private int subjectId;
 	private String subjectName;
 	private String falseNum;
 	private String examName;
+	private String examType;
+	private boolean boxDetIsActive;
+	private boolean boxIsActive;
+	private int chiefExaminerId;
+	
+	private int additionalExaminerId;
+	private int correctionValidatorId;
+	private String correctionValidatorName;
+	
 	
 	public FalseBoxDetTo() {
 		super();
@@ -108,13 +117,7 @@ public class FalseBoxDetTo {
 		this.examinerName = examinerName;
 	}
 
-	public int getBoxNum() {
-		return boxNum;
-	}
-
-	public void setBoxNum(int boxNum) {
-		this.boxNum = boxNum;
-	}
+	
 
 	public int getExamId() {
 		return examId;
@@ -155,6 +158,72 @@ public class FalseBoxDetTo {
 	public void setExamName(String examName) {
 		this.examName = examName;
 	}
+
+	public String getExamType() {
+		return examType;
+	}
+
+	public void setExamType(String examType) {
+		this.examType = examType;
+	}
+
+	public boolean isBoxDetIsActive() {
+		return boxDetIsActive;
+	}
+
+	public void setBoxDetIsActive(boolean boxDetIsActive) {
+		this.boxDetIsActive = boxDetIsActive;
+	}
+
+	public boolean isBoxIsActive() {
+		return boxIsActive;
+	}
+
+	public void setBoxIsActive(boolean boxIsActive) {
+		this.boxIsActive = boxIsActive;
+	}
+
+	public String getBoxNum() {
+		return boxNum;
+	}
+
+	public void setBoxNum(String boxNum) {
+		this.boxNum = boxNum;
+	}
+
+	public int getChiefExaminerId() {
+		return chiefExaminerId;
+	}
+
+	public void setChiefExaminerId(int chiefExaminerId) {
+		this.chiefExaminerId = chiefExaminerId;
+	}
+
+	public int getAdditionalExaminerId() {
+		return additionalExaminerId;
+	}
+
+	public void setAdditionalExaminerId(int additionalExaminerId) {
+		this.additionalExaminerId = additionalExaminerId;
+	}
+
+	public int getCorrectionValidatorId() {
+		return correctionValidatorId;
+	}
+
+	public void setCorrectionValidatorId(int correctionValidatorId) {
+		this.correctionValidatorId = correctionValidatorId;
+	}
+
+	public String getCorrectionValidatorName() {
+		return correctionValidatorName;
+	}
+
+	public void setCorrectionValidatorName(String correctionValidatorName) {
+		this.correctionValidatorName = correctionValidatorName;
+	}
+
+	
 	
 	
 }

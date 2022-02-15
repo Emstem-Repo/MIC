@@ -39,9 +39,13 @@ function onGlobalKeyPressed(e) {
 function deleteSub(courseId) {
 	deleteConfirm = confirm("Are you sure you want to delete this entry?"+courseId)
 	if (deleteConfirm) {
-		document.location.href = "falsenumSINO.do?method=updateBarCodeList&deleId="
-				+ courseId ;
+		/* document.location.href = "falsenumSINO.do?method=updateBarCodeList&deleId="
+				+ courseId ; */
+		document.getElementById("method").value="updateBarCodeList";
+		document.getElementById("deleId").value=courseId;
+	    document.falsenumSINOForm.submit();
 	}
+	document.getElementById("falseBoxId").value=id;
 }
 
 function cancelAction() {
@@ -53,13 +57,13 @@ function cancelAction() {
 
 
 <html:form action="/falsenumSINO" method="POST" enctype="multipart/form-data">
-	<html:hidden property="method" styleId="method" value="saveBarCodeList" />
+	<html:hidden property="method" styleId="method" value="updateteExaminer" />
 	<html:hidden property="formName" value="falsenumSINOForm"/>
 	<html:hidden property="pageType" value="2" styleId="pageType" />
 	<html:hidden property="barcode" styleId="brcode" />
 	<html:hidden property="subjectId" />
 	<html:hidden property="examId" />
-									
+	<html:hidden property="deleId" styleId="deleId" />									
 	<table width="99%" border="0">
 
 		<tr>
@@ -111,17 +115,19 @@ function cancelAction() {
 								</tr>
 								<logic:notEmpty property="barcodeList" name="falsenumSINOForm">
 								<logic:iterate id="val" property="barcodeList" name="falsenumSINOForm">
+								<logic:equal value="true" name="val" property="boxDetIsActive">
 								<tr>
 									<td width="5%" class="row-even" align="center" valign="top"><%=i %></td>
-								     <td height="25" align="center" width="80%" class="row-odd"><bean:write name="val" /></td>
+								     <td height="25" align="center" width="80%" class="row-odd"><bean:write name="val"  property="falseNum"/></td>
 									<td width="15%" align="center" class="row-even" valign="top">
 									<div align="center"><img src="images/delete_icon.gif"
 										width="16" height="16" style="cursor:pointer" 
-										onclick="deleteSub('<bean:write name="val"/>')">
+										onclick="deleteSub('<bean:write name="val" property="falseNum" />')">
 									</div></td>
 								
 								</tr>
 								<%i++; %>
+								</logic:equal>
 								</logic:iterate>
 								</logic:notEmpty>
 								
@@ -148,7 +154,7 @@ function cancelAction() {
 					<table width="100%" border="0" cellspacing="0" cellpadding="0">
 						<tr>
 							<td width="49%" height="35" align="right"><input
-								name="Submit7" type="submit" class="formbutton" value="Save" /></td>
+								name="Submit7" type="submit" class="formbutton" value="Next" /></td>
 
 							<td width="2%" height="35" align="center">&nbsp;</td>
 							<td width="49%" height="35" align="left"><input

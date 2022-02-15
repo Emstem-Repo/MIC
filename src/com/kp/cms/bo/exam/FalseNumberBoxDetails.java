@@ -13,6 +13,8 @@ public class FalseNumberBoxDetails implements Serializable {
 	private int id;
 	private String falseNum;
 	private FalseNumberBox falseNumBox;
+	private Boolean isActive;
+	
 	public FalseNumberBoxDetails(){
 		
 	}
@@ -34,6 +36,12 @@ public class FalseNumberBoxDetails implements Serializable {
 	}
 	public void setFalseNum(String falseNum) {
 		this.falseNum = falseNum;
+	}
+	public Boolean getIsActive() {
+		return isActive;
+	}
+	public void setIsActive(Boolean isActive) {
+		this.isActive = isActive;
 	}
 	
 	

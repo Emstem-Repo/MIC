@@ -11,16 +11,19 @@ import com.kp.cms.to.admin.ProgramTypeTO;
 
 public class FalseNumberBox implements Serializable {
 	private int id;
-	private String chiefExaminer;
+	private Users chiefExaminer;
 	
-	private String additionalExaminer;
+	private Users additionalExaminer;
 	private Integer academicYear;
 	private Integer schemeNum;
 	private Course courseId;
 	private Users examinerId;
-	private Integer boxNum;
+	private String boxNum;
 	private ExamDefinition examId;
 	private Subject subjectId;
+	private Boolean isActive;
+	private Users correctionValidator;
+	
 	public FalseNumberBox(){
 		
 	}
@@ -67,28 +70,43 @@ public class FalseNumberBox implements Serializable {
 	public void setExaminerId(Users examinerId) {
 		this.examinerId = examinerId;
 	}
-	public Integer getBoxNum() {
-		return boxNum;
-	}
-	public void setBoxNum(Integer boxNum) {
-		this.boxNum = boxNum;
-	}
+	
 	public ExamDefinition getExamId() {
 		return examId;
 	}
 	public void setExamId(ExamDefinition examId) {
 		this.examId = examId;
 	}
-	public String getChiefExaminer() {
+	
+	
+	public Boolean getIsActive() {
+		return isActive;
+	}
+	public void setIsActive(Boolean isActive) {
+		this.isActive = isActive;
+	}
+	public String getBoxNum() {
+		return boxNum;
+	}
+	public void setBoxNum(String boxNum) {
+		this.boxNum = boxNum;
+	}
+	public Users getChiefExaminer() {
 		return chiefExaminer;
 	}
-	public void setChiefExaminer(String chiefExaminer) {
+	public void setChiefExaminer(Users chiefExaminer) {
 		this.chiefExaminer = chiefExaminer;
 	}
-	public String getAdditionalExaminer() {
+	public Users getAdditionalExaminer() {
 		return additionalExaminer;
 	}
-	public void setAdditionalExaminer(String additionalExaminer) {
+	public Users getCorrectionValidator() {
+		return correctionValidator;
+	}
+	public void setCorrectionValidator(Users correctionValidator) {
+		this.correctionValidator = correctionValidator;
+	}
+	public void setAdditionalExaminer(Users additionalExaminer) {
 		this.additionalExaminer = additionalExaminer;
 	}
 	

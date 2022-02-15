@@ -37,6 +37,7 @@ public class CandidatePGIDetailsExamRegular implements Serializable{
 	private String paymentEmail;
 	private ExamDefinitionBO exam;
 	private Student student;
+	private Classes classes;
 
 	
 	public CandidatePGIDetailsExamRegular() {
@@ -251,6 +252,22 @@ public class CandidatePGIDetailsExamRegular implements Serializable{
 	}
 	public void setStudent(Student student) {
 		this.student = student;
+	}
+
+
+
+
+
+	public Classes getClasses() {
+		return classes;
+	}
+
+
+
+
+
+	public void setClasses(Classes classes) {
+		this.classes = classes;
 	}
 	
 	

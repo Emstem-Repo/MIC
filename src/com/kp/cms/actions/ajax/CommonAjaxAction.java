@@ -6090,13 +6090,23 @@ public ActionForward duplicateCheckingOfOrderNoByLocationId(ActionMapping mappin
 		FalseNumSiNoTransactionImpl transaction = new FalseNumSiNoTransactionImpl();
 		Map<Integer, String> teacherMap = new HashMap<Integer, String>();
 		try {
-			int subId = 0;
-			int year = 0;
-			if(baseActionForm.getSubjectId()!= null && baseActionForm.getYear()!= null){
-				subId = Integer.parseInt(baseActionForm.getSubjectId());
-				year = Integer.parseInt(baseActionForm.getYear());
+			int dept = 0;
+			String outside = null;
+			int out=0;
+			if(baseActionForm.getDepartmentId()!=null && baseActionForm.getHostelId()!= null){
+				dept = Integer.parseInt(baseActionForm.getDepartmentId());
+				outside = (String) baseActionForm.getHostelId();
+				
+				if ((outside!=null && !outside.isEmpty() )&& outside=="1" || outside.equalsIgnoreCase("1")) {
+						out=1;
+				}else if ((outside!=null && !outside.isEmpty() )&& outside=="0" || outside.equalsIgnoreCase("0")) {
+						out=0;
+				}else{
+					out=2;
+				}
+				
 			}
-			teacherMap =transaction.getTeachers(subId, year);
+			teacherMap =transaction.getTeachers(dept, out);
 			//rejoinClassMap = CommonAjaxHandler.getInstance().getClassesBySelectedCourse1(courseId, year);
 			} catch (Exception e) {
 				log.debug(e.getMessage());

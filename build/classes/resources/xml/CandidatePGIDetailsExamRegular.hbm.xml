@@ -95,5 +95,11 @@
             </column>
         </many-to-one>
         
+         <many-to-one name="classes" class="com.kp.cms.bo.admin.Classes" fetch="select">
+            <column name="class_id">
+                <comment></comment>
+            </column>
+        </many-to-one>
+        
     </class>
 </hibernate-mapping>

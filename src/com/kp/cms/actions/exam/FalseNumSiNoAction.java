@@ -24,16 +24,17 @@ import com.kp.cms.actions.BaseDispatchAction;
 import com.kp.cms.bo.admin.AcademicYear;
 import com.kp.cms.constants.CMSConstants;
 import com.kp.cms.forms.exam.FalseNumSiNoForm;
-import com.kp.cms.forms.exam.NewExamMarksEntryForm;
 import com.kp.cms.handlers.admin.ProgramTypeHandler;
 import com.kp.cms.handlers.ajax.CommonAjaxExamHandler;
 import com.kp.cms.handlers.ajax.CommonAjaxHandler;
 import com.kp.cms.handlers.exam.ExamMarksEntryHandler;
 import com.kp.cms.handlers.exam.FalseNumSiNoHandler;
-import com.kp.cms.handlers.exam.NewExamMarksEntryHandler;
 import com.kp.cms.to.admin.ProgramTypeTO;
+import com.kp.cms.to.exam.FalseBoxDetTo;
 import com.kp.cms.to.exam.FalseNumSiNoTO;
+import com.kp.cms.transactions.exam.IFalseNumSiNoTransaction;
 import com.kp.cms.transactionsimpl.attendance.AcademicyearTransactionImpl;
+import com.kp.cms.transactionsimpl.exam.FalseNumSiNoTransactionImpl;
 import com.kp.cms.utilities.CommonUtil;
 import com.kp.cms.utilities.CurrentAcademicYear;
 
@@ -389,6 +390,15 @@ public class FalseNumSiNoAction extends BaseDispatchAction{
 		if (errors.isEmpty()) {
 		
 		try{
+			List<FalseBoxDetTo> toList=FalseNumSiNoHandler.getInstance().getFlaseNumberDetils(cardSiNoForm);
+			if (toList!=null && !toList.isEmpty()) {
+				cardSiNoForm.setBarcodeList(toList);
+				cardSiNoForm.setCeckBarcodeList(toList);
+			}else{
+				cardSiNoForm.setBarcodeList(new ArrayList<FalseBoxDetTo>());
+				cardSiNoForm.setCeckBarcodeList(new ArrayList<FalseBoxDetTo>());
+			}
+			
 			
 		}catch (Exception e) {
 			// TODO: handle exception
@@ -405,27 +415,56 @@ public class FalseNumSiNoAction extends BaseDispatchAction{
 	public ActionForward updateBarCodeList(ActionMapping mapping,ActionForm form,HttpServletRequest request,HttpServletResponse response)throws Exception{
 		FalseNumSiNoForm cardSiNoForm = (FalseNumSiNoForm)form;
 		String bcode=null;
-		List<String> bcodeList=null;
+		List<FalseBoxDetTo> bcodeList=null;
 		ActionErrors errors = new ActionErrors();
 		ActionMessages messages =new ActionMessages();
+		IFalseNumSiNoTransaction transaction = new FalseNumSiNoTransactionImpl();
 		try{
-			if (cardSiNoForm.getDeleId()!=null ) {
+			if (cardSiNoForm.getDeleId()!=null && !cardSiNoForm.getDeleId().isEmpty()) {
 				bcodeList=cardSiNoForm.getBarcodeList();
-				bcodeList.remove(cardSiNoForm.getDeleId());
-				cardSiNoForm.setBarcodeList(bcodeList);
+				List<FalseBoxDetTo> tempBcodeList=new ArrayList();
+				for (FalseBoxDetTo to : bcodeList) {
+					boolean re=transaction.getDuplicateDet(cardSiNoForm, to.getFalseNum());
+					
+					if ((to.getFalseNum()!=cardSiNoForm.getDeleId() && !to.getFalseNum().equalsIgnoreCase(cardSiNoForm.getDeleId())) && !cardSiNoForm.isEdit()) {
+						tempBcodeList.add(to);
+					}else if ((to.getFalseNum()!=cardSiNoForm.getDeleId() && !to.getFalseNum().equalsIgnoreCase(cardSiNoForm.getDeleId())) && cardSiNoForm.isEdit()) {
+						if (re) {
+							to.setBoxDetIsActive(true);
+							to.setBoxIsActive(true);
+							tempBcodeList.add(to);
+						}
+						
+					}
+					else if ((to.getFalseNum()==cardSiNoForm.getDeleId() || to.getFalseNum().equalsIgnoreCase(cardSiNoForm.getDeleId())) && cardSiNoForm.isEdit()) {
+						if (re) {
+							to.setBoxDetIsActive(false);
+							to.setBoxIsActive(false);
+							tempBcodeList.add(to);
+						}
+						
+					}
+				}
+				cardSiNoForm.setBarcodeList(tempBcodeList);
 				cardSiNoForm.setDeleId(null);
 				
 			}else{
 				if (cardSiNoForm.getBarcodeList()!=null) {
 					bcodeList=cardSiNoForm.getBarcodeList();
+					if (bcodeList.size()>=30) {
+
+						errors.add("error", new ActionError("knowledgepro.exam.false.limit.exeed"));
+						saveErrors(request, errors);
+					return mapping.findForward("initBOXSecond");
+					}
 				}else{
 					bcodeList=new ArrayList();
 				}
 			
 				bcode=cardSiNoForm.getBarcode();
 				if (bcodeList!=null) {
-					for (String id : bcodeList) {
-						if (bcode==id ||bcode.equalsIgnoreCase(id)) {
+					for (FalseBoxDetTo id : bcodeList) {
+						if (bcode==id.getFalseNum() ||bcode.equalsIgnoreCase(id.getFalseNum())) {
 							errors.add("error", new ActionError("inventory.stockReceipt.amc.itemNo.duplicate"));
 							saveErrors(request, errors);
 							return mapping.findForward("initBOXSecond");
@@ -433,7 +472,11 @@ public class FalseNumSiNoAction extends BaseDispatchAction{
 					}
 				}
 				if (bcodeList.size()<30 && !bcode.isEmpty()) {
-					bcodeList.add(bcode);
+					FalseBoxDetTo bcodObj=new FalseBoxDetTo();
+					bcodObj.setFalseNum(bcode);
+					bcodObj.setBoxDetIsActive(true);
+					bcodObj.setBoxIsActive(true);
+					bcodeList.add(bcodObj);
 				}else{
 					errors.add("error", new ActionError("knowledgepro.exam.false.limit.exeed"));
 					saveErrors(request, errors);
@@ -447,6 +490,29 @@ public class FalseNumSiNoAction extends BaseDispatchAction{
 		}
 		return mapping.findForward("initBOXSecond");
 	}
+	
+	public ActionForward updateteExaminer(ActionMapping mapping,ActionForm form,HttpServletRequest request,HttpServletResponse response)throws Exception{
+		FalseNumSiNoForm cardSiNoForm = (FalseNumSiNoForm)form;
+		Map<Integer, String> teacherMap = new HashMap<Integer, String>();
+		Map<Integer, String> deptMap = new HashMap();
+		FalseNumSiNoTransactionImpl transaction = new FalseNumSiNoTransactionImpl();
+		try{
+			int subId = 0;
+		int year = 0;
+		if(cardSiNoForm.getSubjectId()!= null && cardSiNoForm.getYear()!= null){
+			subId = Integer.parseInt(cardSiNoForm.getSubjectId());
+			year = Integer.parseInt(cardSiNoForm.getYear());
+		}
+		teacherMap =transaction.getTeachers(subId,3);
+		deptMap=CommonAjaxHandler.getInstance().getDepartments();
+		cardSiNoForm.setDepartmentMap(deptMap);
+		cardSiNoForm.setTeachersMap(teacherMap);
+		}catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return mapping.findForward("updateTeacher");
+	}
 	public ActionForward saveBarCodeList(ActionMapping mapping,ActionForm form,HttpServletRequest request,HttpServletResponse response)throws Exception{
 		FalseNumSiNoForm cardSiNoForm = (FalseNumSiNoForm)form;
 		boolean result=false;
@@ -456,7 +522,10 @@ public class FalseNumSiNoAction extends BaseDispatchAction{
 		try{
 			
 			result=FalseNumSiNoHandler.getInstance().saveFalseBox(cardSiNoForm);
+			cardSiNoForm.reset();
 			FalseNumSiNoHandler.getInstance().setFalseBoxList(cardSiNoForm);
+			cardSiNoForm.setEdit(false);
+			cardSiNoForm.setFalseBoxId(0);
 			if (result) {
 				cardSiNoForm.reset();
 				setRequiredBoxDatatoForm(cardSiNoForm, request);
@@ -465,6 +534,52 @@ public class FalseNumSiNoAction extends BaseDispatchAction{
 				messages.add(CMSConstants.MESSAGES, message);
 				saveMessages(request, messages);
 			}
+		}catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return mapping.findForward("initBOX");
+	}
+	public ActionForward editBarcodeBox(ActionMapping mapping,ActionForm form,HttpServletRequest request,HttpServletResponse response)throws Exception{
+		FalseNumSiNoForm cardSiNoForm = (FalseNumSiNoForm)form;
+		try{
+			FalseNumSiNoHandler.getInstance().setFalseBoxList(cardSiNoForm);
+			List<FalseBoxDetTo> toList=cardSiNoForm.getFalseBoxToList();
+			cardSiNoForm.reset();
+			for (FalseBoxDetTo to : toList) {
+				if (to.getBoxId()==cardSiNoForm.getFalseBoxId()) {
+					cardSiNoForm.setYear(String.valueOf(to.getAcademicYear()));
+					cardSiNoForm.setExamId(String.valueOf(to.getExamId()));
+					cardSiNoForm.setCourseId(String.valueOf(to.getCourseId()));
+					cardSiNoForm.setSchemeNo("7_"+String.valueOf(to.getSchemeNum()));
+					cardSiNoForm.setSubjectId(String.valueOf(to.getSubjectId()));
+					cardSiNoForm.setTeachers(String.valueOf(to.getExaminerId()));
+					cardSiNoForm.setBoxNo(String.valueOf(to.getBoxNum()));
+					cardSiNoForm.setExamType(to.getExamType());
+					cardSiNoForm.setAdditionalExaminer(String.valueOf(to.getAdditionalExaminerId()));
+					cardSiNoForm.setChiefExaminer(String.valueOf(to.getChiefExaminerId()));
+				}
+			}
+			cardSiNoForm.setEdit(true);
+			FalseNumSiNoHandler.getInstance().editFalseBox(cardSiNoForm);
+			FalseNumSiNoHandler.getInstance().setFalseBoxList(cardSiNoForm);
+		}catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return mapping.findForward("initBOX");
+	}
+	public ActionForward updateFalseBoxList(ActionMapping mapping,ActionForm form,HttpServletRequest request,HttpServletResponse response)throws Exception{
+		FalseNumSiNoForm cardSiNoForm = (FalseNumSiNoForm)form;
+		Map<Integer, String> courseMap = new HashMap<Integer, String>();
+		try{
+			
+			FalseNumSiNoHandler.getInstance().setFalseBoxList(cardSiNoForm);
+
+			courseMap = CommonAjaxHandler.getInstance()
+					.getCourseByExamName(cardSiNoForm.getExamId());
+			courseMap=CommonUtil.sortMapByValue(courseMap);
+			cardSiNoForm.setCourseMap(courseMap);
 		}catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();

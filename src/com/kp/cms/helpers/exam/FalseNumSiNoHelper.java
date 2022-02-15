@@ -110,12 +110,14 @@ public class FalseNumSiNoHelper {
 		return bo;
 	}
 	public List<FalseNumberBoxDetails> convertToFalseNumberBoxDetails(FalseNumSiNoForm cardSiNoForm) {
-		List<String> barcodeList=cardSiNoForm.getBarcodeList();
+		List<FalseBoxDetTo> barcodeList=cardSiNoForm.getBarcodeList();
 		FalseNumberBox falsebox=new FalseNumberBox();
 		List<FalseNumberBoxDetails> boxDetailsList=new ArrayList();
-		
+		if (cardSiNoForm.getFalseBoxId()!=0) {
+			falsebox.setId(cardSiNoForm.getFalseBoxId());
+		}
 		falsebox.setAcademicYear(Integer.parseInt(cardSiNoForm.getYear()));
-		falsebox.setBoxNum(Integer.parseInt(cardSiNoForm.getBoxNo()));
+		falsebox.setBoxNum(cardSiNoForm.getBoxNo());
 		String semString[]=cardSiNoForm.getSchemeNo().split("_");
 		falsebox.setSchemeNum(Integer.parseInt(semString[1]));
 		Course couse=new Course();
@@ -124,23 +126,40 @@ public class FalseNumSiNoHelper {
 		Subject sub=new Subject();
 		sub.setId(Integer.parseInt(cardSiNoForm.getSubjectId()));
 		couse.setId(Integer.parseInt(cardSiNoForm.getCourseId()));
-		Users uid=new Users();
-		uid.setId(Integer.parseInt(cardSiNoForm.getTeachers()));
+		
 		falsebox.setCourseId(couse);
 		falsebox.setSubjectId(sub);
 		falsebox.setExamId(edef);
-		falsebox.setExaminerId(uid);
+		if (cardSiNoForm.getTeachers()!=null  && !cardSiNoForm.getTeachers().isEmpty()) {
+			Users uid=new Users();
+			uid.setId(Integer.parseInt(cardSiNoForm.getTeachers()));
+			falsebox.setExaminerId(uid);
+		}
+		falsebox.setIsActive(true);
 		if (cardSiNoForm.getChiefExaminer()!=null && !cardSiNoForm.getChiefExaminer().isEmpty()) {
-			falsebox.setChiefExaminer(cardSiNoForm.getChiefExaminer());
+			Users cid=new Users();
+			cid.setId(Integer.parseInt(cardSiNoForm.getChiefExaminer()));
+			falsebox.setChiefExaminer(cid);
 		}
 
 		if (cardSiNoForm.getAdditionalExaminer()!=null && !cardSiNoForm.getAdditionalExaminer().isEmpty()) {
-			falsebox.setAdditionalExaminer(cardSiNoForm.getAdditionalExaminer());
+			Users aid=new Users();
+			aid.setId(Integer.parseInt(cardSiNoForm.getAdditionalExaminer()));
+			falsebox.setAdditionalExaminer(aid);
 		}
-		for (String bcode : barcodeList) {
+		if (cardSiNoForm.getCorrectionValidator()!=null &&! cardSiNoForm.getCorrectionValidator().isEmpty()) {
+			Users corid=new Users();
+			corid.setId(Integer.parseInt(cardSiNoForm.getCorrectionValidator()));
+			falsebox.setCorrectionValidator(corid);
+		}
+		for (FalseBoxDetTo bcode : barcodeList) {
 			FalseNumberBoxDetails boxDetails=new FalseNumberBoxDetails();
+			if (bcode.getBoxDetId()!=0) {
+				boxDetails.setId(bcode.getBoxDetId());
+			}
 			boxDetails.setFalseNumBox(falsebox);
-			boxDetails.setFalseNum(bcode);
+			boxDetails.setFalseNum(bcode.getFalseNum());
+			boxDetails.setIsActive(bcode.isBoxDetIsActive());
 			boxDetailsList.add(boxDetails);
 		}
 		
@@ -151,6 +170,7 @@ public class FalseNumSiNoHelper {
 		if (boxList!=null) {
 		for (FalseNumberBox bo : boxList) {
 			FalseBoxDetTo to=new FalseBoxDetTo();
+			to.setBoxId(bo.getId());
 			to.setAcademicYear(bo.getAcademicYear());
 			to.setBoxNum(bo.getBoxNum());
 			to.setCourseId(bo.getCourseId().getId());
@@ -158,8 +178,38 @@ public class FalseNumSiNoHelper {
 			to.setSchemeNum(bo.getSchemeNum());
 			to.setSubjectId(bo.getSubjectId().getId());
 			to.setSubjectName(bo.getSubjectId().getName());
-			to.setExamId(bo.getExaminerId().getId());
+			to.setExamId(bo.getExamId().getId());
+			to.setExamName(bo.getExamId().getName());
+			to.setExaminerId(bo.getExaminerId().getId());
 			to.setExaminerName(bo.getExaminerId().getEmployee().getFirstName());
+			to.setExamType(String.valueOf(bo.getExamId().getExamType().getId()));
+			
+			if (bo.getAdditionalExaminer()!=null) {
+				to.setAdditionalExaminerId(bo.getAdditionalExaminer().getId());
+				if (bo.getAdditionalExaminer().getEmployee()!=null) {
+					to.setAdditionalExaminer(bo.getAdditionalExaminer().getEmployee().getFirstName());
+				}else if (bo.getAdditionalExaminer().getGuest()!=null) {
+					to.setAdditionalExaminer(bo.getAdditionalExaminer().getGuest().getFirstName());
+				}
+			}
+			
+			if (bo.getChiefExaminer()!=null) {
+				to.setChiefExaminerId(bo.getChiefExaminer().getId());
+				if (bo.getChiefExaminer().getEmployee()!=null) {
+					to.setChiefExaminer(bo.getChiefExaminer().getEmployee().getFirstName());
+				}else if (bo.getChiefExaminer().getGuest()!=null) {
+					to.setChiefExaminer(bo.getChiefExaminer().getGuest().getFirstName());
+				}
+			}
+			
+			if (bo.getCorrectionValidator()!=null) {
+				to.setCorrectionValidatorId(bo.getCorrectionValidator().getId());
+				if (bo.getCorrectionValidator().getEmployee()!=null) {
+					to.setCorrectionValidatorName(bo.getCorrectionValidator().getEmployee().getFirstName());
+				}else if (bo.getCorrectionValidator().getGuest()!=null) {
+					to.setCorrectionValidatorName(bo.getCorrectionValidator().getGuest().getFirstName());
+				}
+			}
 			toList.add(to);
 			
 		}

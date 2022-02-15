@@ -6524,7 +6524,21 @@
    		<forward name="initSINO" path="initSINO"/>
    		<forward name="initBOX" path="initBOX"/>
    		<forward name="initBOXSecond" path="initBOXSecond"/>
+   		<forward name="updateTeacher" path="updateTeacher"/>
 		</action>
+		
+		<action path="/ExaminerInfo" type="com.kp.cms.actions.employee.ExaminerInfoAction" 
+			name="GuestFacultyInfoForm" scope="session" parameter="method" validate="false">
+			<forward name="addexaminerInit" path="addexaminerInit"/>
+			<forward name="guestEditFirstPage" path="guestFirstPage"/>
+			<forward name="guestListForEdit" path="guestListForEdit"/>
+			<forward name="guestFacultyDetails" path="guestFacultyDetails"/>
+			<forward name="guestFacultyDetailsEdit" path="guestFacultyDetailsEdit"/>
+			<forward name="guestFacultyPrintDetails" path="/jsp/employee/GuestInfoPrint.jsp"/>
+			<forward name="guestInfoSubmitConfirm" path="guestInfoSubmitConfirm"/>
+			<forward name="guestEditSubmitConfirm" path="guestEditSubmitConfirm"/>
+			<forward name="guestFacultyBankDetailsEdit" path="guestFacultyBankDetailsEdit"/>
+        </action>
 		
 	</action-mappings>
 

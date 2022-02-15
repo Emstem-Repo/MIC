@@ -2215,7 +2215,7 @@ public class NewSupplementaryImpApplicationHandler {
 		String reqPercentage=CMSConstants.ATTENDANCE_PERCENTAGE_FOR_APP;
 		if(ava){
 		int classes = newSupplementaryImpApplicationForm.getStudentObj().getClassSchemewise().getClasses().getId();
-		if(!CMSConstants.ATT_EXCLUDED_EXAMREG.contains(classes)){
+		if(CMSConstants.ATT_EXCLUDED_EXAMREG.contains(classes)){
 		//if(programType.equalsIgnoreCase("ug")){
 			if(totalAggrPer<=Float.parseFloat(reqPercentage)){
 				boolean ava1=checkCondonationAvailability(newSupplementaryImpApplicationForm.getStudentObj().getId(),newSupplementaryImpApplicationForm.getStudentObj().getClassSchemewise().getClasses().getId());
@@ -2444,6 +2444,9 @@ public class NewSupplementaryImpApplicationHandler {
 		ExamDefinitionBO examBo = new ExamDefinitionBO();
 		examBo.setId(Integer.parseInt(form.getExamId()));
 		bo.setExam(examBo);
+		Classes cl=new Classes();
+		cl.setId(student.getClassSchemewise().getClasses().getId());
+		bo.setClasses(cl);
 		INewSupplementaryImpApplicationTransaction transaction=NewSupplementaryImpApplicationTransactionImpl.getInstance();
 		String candidateRefNo=transaction.generateCandidateRefNo(bo, form);
 		StringBuilder temp=new StringBuilder();		
@@ -3997,6 +4000,9 @@ public String getParameterForPGIReg(NewSupplementaryImpApplicationForm admForm) 
 	ExamDefinitionBO examDefinition = new ExamDefinitionBO();
 	examDefinition.setId(Integer.valueOf(admForm.getExamId()));
 	bo.setExam(examDefinition);
+	Classes cl=new Classes();
+	cl.setId(Integer.parseInt(admForm.getClassId()));
+	bo.setClasses(cl);
 	
 			
 	INewSupplementaryImpApplicationTransaction transaction=NewSupplementaryImpApplicationTransactionImpl.getInstance();

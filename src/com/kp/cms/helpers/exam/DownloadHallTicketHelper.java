@@ -5481,11 +5481,13 @@ public static Map<String, String> semesterMap = null;
 		"              EXAM_subject_rule_settings.final_practical_internal_maximum_mark, 0)+ if(EXAM_subject_rule_settings.practical_ese_maximum_mark > 0, " +
 		"                EXAM_subject_rule_settings.practical_ese_maximum_mark, 0)) * 100) " +
 		"          AS practicalper, " +
-		"       ifnull((SELECT EXAM_sub_coursewise_grade_defn.grade" +
-		"  FROM EXAM_sub_coursewise_grade_defn EXAM_sub_coursewise_grade_defn where theoryPer between start_prcntg_grade and end_prcntg_grade and EXAM_sub_coursewise_grade_defn.course_id = classes.course_id and subject_id=subject.id), " +
-		"   (ifnull( (SELECT EXAM_grade_class_definition_frombatch.grade " +
-		"     FROM EXAM_grade_class_definition_frombatch EXAM_grade_class_definition_frombatch where theoryPer between EXAM_grade_class_definition_frombatch.start_percentage and EXAM_grade_class_definition_frombatch.end_percentage and EXAM_grade_class_definition_frombatch.course_id = classes.course_id and from_batch <= adm_appln.applied_year limit 1), " +
-		" (SELECT  EXAM_grade_class_definition.grade   FROM EXAM_grade_class_definition EXAM_grade_class_definition where theoryPer between start_percentage and EXAM_grade_class_definition.end_percentage and EXAM_grade_class_definition.course_id = classes.course_id limit 1)))) as thegra, " +
+		" (select EXAM_grade_class_definition.grade from EXAM_grade_class_definition EXAM_grade_class_definition "+
+		"		where EXAM_grade_class_definition.course_id = classes.course_id "+
+		"		and round(( round "+
+		"		((( "+
+		"		theoryPer/ "+
+		"		EXAM_subject_rule_settings.subject_final_maximum)*100),2)/10),2) "+
+		"		between  EXAM_grade_class_definition.start_percentage and EXAM_grade_class_definition.end_percentage limit 1) as thegra," +
 		" ifnull( (SELECT  EXAM_sub_coursewise_grade_defn.grade " +
 		" FROM EXAM_sub_coursewise_grade_defn EXAM_sub_coursewise_grade_defn where practicalper between start_prcntg_grade and end_prcntg_grade and EXAM_sub_coursewise_grade_defn.course_id = classes.course_id and subject_id=subject.id), " +
 		" (ifnull( (SELECT EXAM_grade_class_definition_frombatch.grade " +
@@ -5794,11 +5796,13 @@ public static Map<String, String> semesterMap = null;
 		"              EXAM_subject_rule_settings.final_practical_internal_maximum_mark, 0) + if(EXAM_subject_rule_settings.practical_ese_maximum_mark > 0, " +
 		"                EXAM_subject_rule_settings.practical_ese_maximum_mark,0)) * 100) " +
 		"          AS practicalper, " +
-		"       ifnull((SELECT EXAM_sub_coursewise_grade_defn.grade" +
-		"  FROM EXAM_sub_coursewise_grade_defn EXAM_sub_coursewise_grade_defn where theoryPer between start_prcntg_grade and end_prcntg_grade and EXAM_sub_coursewise_grade_defn.course_id = classes.course_id and subject_id=subject.id), " +
-		"   (ifnull( (SELECT EXAM_grade_class_definition_frombatch.grade " +
-		"     FROM EXAM_grade_class_definition_frombatch EXAM_grade_class_definition_frombatch where theoryPer between EXAM_grade_class_definition_frombatch.start_percentage and EXAM_grade_class_definition_frombatch.end_percentage and EXAM_grade_class_definition_frombatch.course_id = classes.course_id and from_batch <= adm_appln.applied_year limit 1), " +
-		" (SELECT  EXAM_grade_class_definition.grade   FROM EXAM_grade_class_definition EXAM_grade_class_definition where theoryPer between start_percentage and EXAM_grade_class_definition.end_percentage and EXAM_grade_class_definition.course_id = classes.course_id limit 1)))) as thegra, " +
+		" (select EXAM_grade_class_definition.grade from EXAM_grade_class_definition EXAM_grade_class_definition "+
+		"		where EXAM_grade_class_definition.course_id = classes.course_id "+
+		"		and round(( round "+
+		"		((( "+
+		"		theoryPer/ "+
+		"		EXAM_subject_rule_settings.subject_final_maximum)*100),2)/10),2) "+
+		"		between  EXAM_grade_class_definition.start_percentage and EXAM_grade_class_definition.end_percentage limit 1) as thegra," +
 		" ifnull( (SELECT  EXAM_sub_coursewise_grade_defn.grade " +
 		" FROM EXAM_sub_coursewise_grade_defn EXAM_sub_coursewise_grade_defn where practicalper between start_prcntg_grade and end_prcntg_grade and EXAM_sub_coursewise_grade_defn.course_id = classes.course_id and subject_id=subject.id), " +
 		" (ifnull( (SELECT EXAM_grade_class_definition_frombatch.grade " +

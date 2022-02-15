@@ -141,6 +141,10 @@ public class GuestFaculty implements java.io.Serializable {
 	private boolean displayInWebsite;
 	private String bankBranch;
 	private String bankIfscCode;
+	private boolean outside;
+	private String collegeName;
+	private String retired;
+	
 	
 	public GuestFaculty(Country country, State state,
 			EmpEducationMaster empEducationDetailses,
@@ -1137,6 +1141,34 @@ public class GuestFaculty implements java.io.Serializable {
 
 	public void setBankIfscCode(String bankIfscCode) {
 		this.bankIfscCode = bankIfscCode;
+	}
+
+	public boolean isOutside() {
+		return outside;
+	}
+
+	public void setOutside(boolean outside) {
+		this.outside = outside;
+	}
+
+	public String getCollegeName() {
+		return collegeName;
+	}
+
+	public void setCollegeName(String collegeName) {
+		this.collegeName = collegeName;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+	public String getRetired() {
+		return retired;
+	}
+
+	public void setRetired(String retired) {
+		this.retired = retired;
 	}	
 
 	

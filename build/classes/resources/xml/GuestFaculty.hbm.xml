@@ -508,7 +508,23 @@
             <column name="bank_ifsc_code" length="11">
                 <comment></comment>
             </column>
-        </property>        
+        </property>  
+        <property name="collegeName" type="string">
+            <column name="college_name" length="5">
+                <comment></comment>
+            </column>
+        </property>
+        <property name="outside" type="java.lang.Boolean">
+            <column name="outside">
+                <comment></comment>
+            </column>
+        </property>
+         <property name="retired" type="string">
+            <column name="retired" length="20">
+                <comment></comment>
+            </column>
+        </property>
+              
        
         </class>
 </hibernate-mapping>

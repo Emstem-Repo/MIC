@@ -9,7 +9,11 @@
             <column name="id" />
             <generator class="native" />
         </id>
-        
+        <property name="isActive" type="java.lang.Boolean">
+            <column name="is_active">
+                <comment></comment>
+            </column>
+        </property>
         <many-to-one name="subjectId" class="com.kp.cms.bo.admin.Subject" fetch="select" >
             <column name="subject_id">
                 <comment></comment>
@@ -33,8 +37,8 @@
                 <comment></comment>
             </column>
         </property>
-        <property name="boxNum" type="integer">
-            <column name="box_number" length="11">
+        <property name="boxNum" type="string">
+            <column name="box_number" length="50">
                 <comment></comment>
             </column>
         </property>
@@ -51,15 +55,21 @@
                 <comment></comment>
             </column>
         </many-to-one>
-        <property name="chiefExaminer" type="string">
-            <column name="chief_examiner" length="50">
+         <many-to-one name="chiefExaminer" class="com.kp.cms.bo.admin.Users" fetch="select" >
+            <column name="chief_examiner">
                 <comment></comment>
             </column>
-        </property>
-        <property name="additionalExaminer" type="string">
-            <column name="additional_examiner" length="50">
+        </many-to-one>
+         <many-to-one name="additionalExaminer" class="com.kp.cms.bo.admin.Users" fetch="select" >
+            <column name="additional_examiner">
                 <comment></comment>
             </column>
-        </property>
+        </many-to-one>
+         <many-to-one name="correctionValidator" class="com.kp.cms.bo.admin.Users" fetch="select" >
+            <column name="correction_examiner">
+                <comment></comment>
+            </column>
+        </many-to-one>
+        
     </class>
 </hibernate-mapping>

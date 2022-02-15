@@ -2124,5 +2124,12 @@ public class CommonAjaxHandler extends CommonAjaxExamHandler {
 			return classMap;
 			
 		}
+		public Map<Integer, String> getSubjectsCodeNameByCourseSchemeExamIdForFalse(String sCodeName,int courseId,
+				int schemeId, int schemeNo, Integer examId) {
+			ExamGenHelper helper = new ExamGenHelper();
+			return helper.convertTOToMap_SubjectsCodeName(helper
+					.convertBOToTO_SubjectsCodeName(CommonAjaxImpl.getInstance().getSubjectsCodeNameByCourseSchemeExamIdfor(
+							sCodeName,courseId, schemeId, schemeNo, examId),sCodeName));
+		}
 		
 	}

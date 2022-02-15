@@ -171,6 +171,21 @@
 	function barcodeAlert() {
 		  alert("CONECT YOUR BARCODE READER AND SCAN CODES");
 		}
+	
+	function editFalseBox(id){
+		document.getElementById("falseBoxId").value=id;
+		document.getElementById("method").value="editBarcodeBox";
+        document.falsenumSINOForm.submit();
+	}
+	function updateFalseBoxList() {
+		var year = document.getElementById("year").value;
+		var exam = document.getElementById("examNameId").value;
+		document.location.href = "falsenumSINO.do?method=updateFalseBoxList&year="+year+"&examId="+exam;
+	}
+	function resetInfo() {
+		document.location.href = "falsenumSINO.do?method=initFalseBox";
+	}
+
 </SCRIPT>
 
 </head>
@@ -181,6 +196,8 @@
 	<html:hidden property="formName" value="falsenumSINOForm" styleId="formName" />
 	<html:hidden property="pageType" value="2" styleId="pageType" />
 	<html:hidden property="displaySubType" styleId="sCodeName_2" value="sName" />
+	<html:hidden property="falseBoxId" styleId="falseBoxId" />
+	
 									
 	<table width="99%" border="0">
 
@@ -277,7 +294,7 @@
 
 									<td class="row-even"><html:select property="examId"
 										styleClass="combo" styleId="examNameId"
-										name="falsenumSINOForm" onchange="getCourse(this.value)"
+										name="falsenumSINOForm" onchange="updateFalseBoxList()"
 										style="width:200px">
 										<html:option value="">
 											<bean:message key="knowledgepro.admin.select" />
@@ -343,23 +360,13 @@
 										</logic:notEmpty>
 									</html:select></td>
 									 <td height="25" class="row-odd">
-									<div align="right">Subject Type:</div>
+									<div align="right" ><span class="Mandatory">*</span>Box No</div>
 									</td>
 
-									<td height="25" class="row-even"><html:select
-										property="subjectType" styleId="subjectType" onchange="displayEvaluAndAnswerScript(this.value)">
-										<html:option value="">
-											<bean:message key="knowledgepro.select" />
-										</html:option>
-										<logic:notEmpty name="falsenumSINOForm"
-											property="subjectTypeMap">
-											<html:optionsCollection property="subjectTypeMap"
-												name="falsenumSINOForm" label="value" value="key" />
-										</logic:notEmpty>
-									</html:select></td>
+									<td height="25" class="row-even" colspan="1"><html:text property="boxNo" styleId="boxNo" name="falsenumSINOForm"></html:text></td>
 
 								</tr>
-							 	<tr >
+							 	<%-- <tr >
 									<td height="25" class="row-odd">
 									<div align="right" ><span class="Mandatory">*</span>Teacher</div>
 									</td>
@@ -371,31 +378,10 @@
                     						<html:optionsCollection name="falsenumSINOForm" property="teachersMap" label="value" value="key"/>
                   					</html:select></td>
 
-									<td height="25" class="row-odd">
-									<div align="right" ><span class="Mandatory">*</span>Box No</div>
-									</td>
-
-									<td height="25" class="row-even" colspan="1"><html:text property="boxNo" styleId="boxNo" name="falsenumSINOForm"></html:text></td>
-
-								</tr>
-								<%-- <tr style="display: none">
-									<td class="row-odd">
 									
-									</td>
-									<td class="row-even"></td>
-									<td width="22%" class="row-odd">
-									<div align="right">&nbsp;<bean:message
-										key="admissionForm.studentinfo.castcatg.label" /></div>
-									</td>
-									<td width="34%" class="row-even"><html:select
-										property="section" styleClass="combo" styleId="section">
-										<html:option value="">
-											<bean:message key="knowledgepro.select" />
-										</html:option>
-										<logic:notEmpty name="falsenumSINOForm" property="sectionMap">
-										<html:optionsCollection name="falsenumSINOForm" property="sectionMap" label="value" value="key" />
-										</logic:notEmpty>
-									</html:select></td><tr> --%>
+
+								</tr> --%>
+							
 							</table>
 							</td>
 
@@ -423,7 +409,9 @@
 							<td width="2%" height="35" align="center">&nbsp;</td>
 							<td width="49%" height="35" align="left"><input
 								type="button" class="formbutton" value="Cancel"
-								onclick="cancelAction()" /></td>
+								onclick="cancelAction()" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input
+								type="button" class="formbutton" value="Reset"
+								onclick="resetInfo()" /></td>
 						</tr>
 					</table>
 					</td>
@@ -454,13 +442,15 @@
 									<td td height="25" class="row-even">sem</td>
 									<td td height="25" class="row-odd">Academic Year</td>
 									<td td height="25" class="row-odd">Exam Name</td>
-									<td td height="25" class="row-even">Edit</td>
-									<td td height="25" class="row-odd">Delete</td>
+									<td td height="25" class="row-white">Edit</td>
+									<!-- <td td height="25" class="row-white">Delete</td> -->
 								</tr>
-								<%int i=1; %>
+								<c:set var="temp" value="0" />
+								<%int i=0; %>
 								<logic:iterate id="box" name="falsenumSINOForm" property="falseBoxToList">
+								
 								 <c:choose>
-       							 <c:when test="${i % 2 == 0}">
+       							 <c:when test="${temp == 0}">
 								<tr align="center" style="font-weight: bolder;">
 									<td td height="25" class="row-odd"><%=i %></td>
 									<td td height="25" class="row-odd"><bean:write name="box" property="courseName"/></td>
@@ -469,9 +459,20 @@
 									<td td height="25" class="row-odd"><bean:write name="box" property="schemeNum"/></td>
 									<td td height="25" class="row-odd"><bean:write name="box" property="academicYear"/></td>
 									<td td height="25" class="row-odd"><bean:write name="box" property="examName"/></td>
-									<td td height="25" class="row-odd">edit</td>
-									<td td height="25" class="row-odd">delete</td>
+									<td width="10%" height="25" class="row-white" align="center">
+													<div align="center"><img src="images/edit_icon.gif"
+														width="16" height="18" style="cursor: pointer"
+														onclick="editFalseBox('<bean:write name="box" property="boxId"/>')">
+													</div>
+													</td>
+									<%-- <td width="10%" height="25" class="row-white" align="center">
+													<div align="center"><img src="images/delete_icon.gif"
+														width="16" height="18" style="cursor: pointer"
+														onclick="deleteFalseBox('<bean:write name="box" property="boxId"/>'">
+													</div>
+													</td> --%>
 								</tr>
+								<c:set var="temp" value="1" />
 								</c:when>
        						 <c:otherwise>
        						 <tr align="center" style="font-weight: bolder;">
@@ -482,11 +483,21 @@
 									<td td height="25" class="row-even"><bean:write name="box" property="schemeNum"/></td>
 									<td td height="25" class="row-even"><bean:write name="box" property="academicYear"/></td>
 									<td td height="25" class="row-even"><bean:write name="box" property="examName"/></td>
-									<td td height="25" class="row-even">edit</td>
-									<td td height="25" class="row-odd">delete</td>
-								</tr>
+									<td width="10%" height="25" class="row-white" align="center">
+													<div align="center"><img src="images/edit_icon.gif"
+														width="16" height="18" style="cursor: pointer"
+														onclick="editFalseBox('<bean:write name="box" property="boxId"/>')">
+													</div>
+													</td>
+									<%-- <td width="10%" height="25" class="row-white" align="center">
+													<div align="center"><img src="images/delete_icon.gif"
+														width="16" height="18" style="cursor: pointer"
+														onclick="deleteFalseBox('<bean:write name="box" property="boxId"/>')">
+													</div>
+													</td> --%>
 								</c:otherwise>
     						</c:choose>
+    						
     						<%i++; %>
 								</logic:iterate>
 							</table>
@@ -523,25 +534,12 @@
 	</table>
 </html:form>
 <script type="text/javascript">
-var showET = document.getElementById("displayET").value;
-if(showET.length != 0 && showET == "yes") {
-	document.getElementById("et").style.display = "block";
-	document.getElementById("evaluatorType").style.display = "block";
-}else{
-	document.getElementById("et").style.display = "none";
-	document.getElementById("evaluatorType").style.display = "none";
+/* examName = document.getElementById("examNameId").value;
+console.log(examName);
+if (examName!='') {
 	
-}
-var showAT = document.getElementById("displayAST").value;
-if(showAT.length != 0 && showAT == "yes") {
-	document.getElementById("ast").style.display = "block";
-	document.getElementById("answerScriptType").style.display = "block";
-}else{
-	document.getElementById("ast").style.display = "none";
-	document.getElementById("answerScriptType").style.display = "none";
-}
-var year = document.getElementById("tempyear").value;
-if(year.length != 0) {
- 	document.getElementById("year").value=year;
-}
+	getCourseByExamName("schemeMap", examName, "course", updateToCourse);
+	updateOptionsFromMap(req, "course", "- Select -");
+
+} */
 </script>

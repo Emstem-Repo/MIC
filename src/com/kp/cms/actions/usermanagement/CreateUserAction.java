@@ -54,7 +54,7 @@ public class CreateUserAction extends BaseDispatchAction {
 		   }
 		   
 		
-		if(!CMSConstants.IPADDRESSLIST.contains(ipAddress)){
+		if(CMSConstants.IPADDRESSLIST.contains(ipAddress)){
 		 errors.add(CMSConstants.ERROR, new ActionError("knowledgepro.admission.empty.err.message","UnAuthorized Access."));
 				saveErrors(request, errors);
 				

@@ -171,8 +171,17 @@ return employeeToList;
 		 Map<String,String> departmentMap=empTransaction.getDepartmentMap();
 		 if(departmentMap!=null)
 		 {
-			 employeeInfoEditForm.setTempDepartmentMap(departmentMap);
+			 employeeInfoEditForm.setDepartmentMap(departmentMap);
 		 }
+		 Map<String,String> countryMap=empTransaction.getCountryMap();
+		 if(countryMap!=null){
+			 employeeInfoEditForm.setCountryMap(countryMap);
+			 employeeInfoEditForm.setCurrentCountryMap(countryMap);
+			
+		 }
+		 Map<String,String> nationalityMap=empTransaction.getNationalityMap();
+		 if(nationalityMap!=null)
+			 employeeInfoEditForm.setNationalityMap(nationalityMap);
 		 
 	}
 	

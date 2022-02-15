@@ -241,6 +241,9 @@ public class GuestFacultyInfoForm extends BaseActionForm{
 	private String originalBankBranch;
 	private String originalIfscCode;
 	private String originalPanNo;
+	private String collegeName;
+	private String retired;
+	
 	
 	public void reset(){
 		
@@ -1962,5 +1965,21 @@ public class GuestFacultyInfoForm extends BaseActionForm{
 	public void reset1(){
 		this.guestFacultyTo=null;
 		this.guestId=null;
+	}
+
+	public String getCollegeName() {
+		return collegeName;
+	}
+
+	public void setCollegeName(String collegeName) {
+		this.collegeName = collegeName;
+	}
+
+	public String getRetired() {
+		return retired;
+	}
+
+	public void setRetired(String retired) {
+		this.retired = retired;
 	}
 }

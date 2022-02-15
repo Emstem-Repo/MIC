@@ -25,4 +25,8 @@ public interface IFalseNumSiNoTransaction {
 
 	List<FalseNumberBox> getFalseBox(FalseNumSiNoForm cardSiNoForm);
 
+	List<FalseNumberBoxDetails> getFlaseNumberDetils(FalseNumSiNoForm cardSiNoForm);
+
+	boolean getDuplicateDet(FalseNumSiNoForm cardSiNoForm,String num);
+
 }

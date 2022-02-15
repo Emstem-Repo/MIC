@@ -22,10 +22,12 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Restrictions;
 
 import com.kp.cms.bo.admin.Activity;
 import com.kp.cms.bo.admin.AdmAppln;
@@ -104,6 +106,7 @@ import com.kp.cms.exceptions.ApplicationException;
 import com.kp.cms.handlers.admission.ExportPhotosHandler;
 import com.kp.cms.to.admin.CollegeTO;
 import com.kp.cms.to.attendance.AttendanceTO;
+import com.kp.cms.to.exam.ExamSubjectTO;
 import com.kp.cms.transactions.admin.IUniversityTxn;
 import com.kp.cms.transactions.ajax.ICommonAjax;
 import com.kp.cms.transactionsimpl.admin.UniversityTxnImpl;
@@ -6566,6 +6569,120 @@ public Map<Integer, String> getClassByAcademicYearAndSemester(String academicYea
 	
 }
 
+public ArrayList<ExamSubjectTO> getSubjectsCodeNameByCourseSchemeExamIdfor(
+		String sCodeName,int courseId, int schemeId, int schemeNo, Integer examId) {
+	SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+	Session session = sessionFactory.openSession();
+	ArrayList<ExamSubjectTO> list = null;
+	try {
+		String SQL_QUERY = null;
+
+		/*SQL_QUERY = "select sub.id, sub.name || '(' || sub.code || ')'"
+				+ " from SubjectUtilBO sub"
+				+ " where sub.id in ("
+				+ " select distinct sgs.subjectUtilBO.id"
+				+ " from SubjectGroupSubjectsUtilBO sgs"
+				+ " where sgs.subjectGroupUtilBO.id in ("
+				+ " select css.subjectGroupId from CurriculumSchemeSubjectUtilBO css"
+				+ " where css.curriculumSchemeDurationId in ("
+				+ " select csd.id from CurriculumSchemeDurationUtilBO csd"
+				+ " where csd.curriculumSchemeId in ( "
+				+ " select cs.id from CurriculumSchemeUtilBO cs"
+				+ " where cs.courseId = :courseId"
+				+ " and cs.courseSchemeId = :schemeId)"
+				+ " and csd.semesterYearNo = :schemeNo and";
+*/
+		SQL_QUERY="select s.subject.id, s.subject.name, s.subject.code " +
+				" from CurriculumSchemeDuration c join c.curriculumSchemeSubjects cs " +
+				" join cs.subjectGroup.subjectGroupSubjectses s where c.semesterYearNo=:schemeNo " +
+				" and c.curriculumScheme.course.id=:courseId" +
+				" and c.curriculumScheme.courseScheme.id=:schemeId" +
+				" and cs.subjectGroup.isActive=1" +
+				" and s.isActive=1 and s.subject.isActive=1";
+		
+		if(suplExam(examId)){
+			SQL_QUERY = SQL_QUERY + " and c.academicYear >= (select examForJoiningBatch "
+				+ " from ExamDefinitionBO e where e.id = :examId)";
+		}
+		else{
+			SQL_QUERY = SQL_QUERY + " and c.academicYear IN (select e.academicYear "
+			+ " from ExamDefinitionBO e where e.id = :examId)";
+			
+		}
+		SQL_QUERY=SQL_QUERY+" group by s.subject.id, s.subject.name, s.subject.code ";
+		
+		if (sCodeName.equalsIgnoreCase("sCode")) {
+			// HQL = HQL + " order by sub.code";
+			SQL_QUERY = SQL_QUERY + " order by s.subject.code";
+
+		} else {
+			// HQL = HQL + " order by sub.name";
+			SQL_QUERY = SQL_QUERY + " order by s.subject.name";
+		}
+		
+		
+		Query query = session.createQuery(SQL_QUERY);
+		query.setParameter("courseId", courseId);
+		query.setParameter("schemeId", schemeId);
+		query.setParameter("schemeNo", schemeNo);
+		query.setParameter("examId", examId);
+		if (query.list() != null && query.list().size() > 0) {
+			list = new ArrayList<ExamSubjectTO>(query.list());
+		} else {
+			list = new ArrayList<ExamSubjectTO>();
+		}
+		session.flush();
+		// session.close();
+	} catch (Exception e) {
+
+		log.error(e.getMessage());
+		if (session != null) {
+			session.flush();
+			session.close();
+		}
+
+	}
+	return list;
+}
+
+public boolean suplExam(
+		int examId) {
+	Session session = null;
+	ArrayList<ExamDefinitionBO> list;
+	int examTypeId = 0;
+	try {
+		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+		session = sessionFactory.openSession();
+
+		Criteria crit = session.createCriteria(ExamDefinitionBO.class);
+		crit.add(Restrictions.eq("isActive", true));
+		crit.add(Restrictions.eq("id", examId));
+
+		list = new ArrayList<ExamDefinitionBO>(crit.list());
+		if (list.size() > 0){
+			ExamDefinitionBO examDefinitionBO =list.get(0);
+			examTypeId = examDefinitionBO.getExamTypeID();
+		}
+		session.flush();
+		// session.close();
+		
+	} catch (Exception e) {
+		log.error(e.getMessage());
+		if (session != null) {
+			session.flush();
+			session.close();
+		}
+		list = new ArrayList<ExamDefinitionBO>();
+
+	}
+	if((examTypeId == 6) || (examTypeId == 3)){
+		return true;
+	}
+	else{
+		return false;
+	}
+
+}
 		
 		
 	}

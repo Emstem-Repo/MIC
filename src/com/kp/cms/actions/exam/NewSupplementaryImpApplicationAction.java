@@ -1969,8 +1969,7 @@ public class NewSupplementaryImpApplicationAction extends BaseDispatchAction {
 				.getAttribute("isPrevApplicationAvailable").toString());
 		Integer prevClassId = (Integer) session.getAttribute("prevClassId");
 		
-		newSupplementaryImpApplicationForm.setPrevClassId(String
-				.valueOf(prevClassId));
+		newSupplementaryImpApplicationForm.setPrevClassId(String.valueOf(prevClassId));
 		newSupplementaryImpApplicationForm.setStudentId(Integer
 				.parseInt(session.getAttribute("studentId").toString()));
 		ISingleFieldMasterTransaction txn = SingleFieldMasterTransactionImpl
@@ -1979,9 +1978,9 @@ public class NewSupplementaryImpApplicationAction extends BaseDispatchAction {
 				newSupplementaryImpApplicationForm.getStudentId());
 		
 		int classId=student.getClassSchemewise().getClasses().getId();
-		if (regClassList.contains(prevClassId)) {
+		/*if (regClassList.contains(prevClassId)) {
 			classId=prevClassId;
-		}
+		}*/
 		newSupplementaryImpApplicationForm.setStudentObj(student);
 		List<Integer> examIds = new ArrayList<Integer>();
 		if (newSupplementaryImpApplicationForm.getPreviousExam()) {
