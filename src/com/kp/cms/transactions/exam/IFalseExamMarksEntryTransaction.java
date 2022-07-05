@@ -7,14 +7,17 @@ import java.util.Map;
 import com.kp.cms.bo.admin.ProgramType;
 import com.kp.cms.bo.exam.ExamBlockUnblockHallTicketBO;
 import com.kp.cms.bo.exam.ExamFalseNumberGen;
+import com.kp.cms.bo.exam.ExamMarkEvaluationBo;
 import com.kp.cms.bo.exam.RegularExamFees;
 import com.kp.cms.bo.exam.StudentSupplementaryImprovementApplication;
 import com.kp.cms.bo.exam.SupplementaryFees;
+import com.kp.cms.exceptions.ApplicationException;
+import com.kp.cms.exceptions.BusinessException;
 import com.kp.cms.forms.exam.NewExamMarksEntryForm;
 import com.kp.cms.forms.exam.NewSecuredMarksEntryForm;
 import com.kp.cms.forms.exam.NewSupplementaryImpApplicationForm;
 
-public interface INewExamMarksEntryTransaction {
+public interface IFalseExamMarksEntryTransaction {
 
 	List getDataForQuery(String query) throws Exception;
 
@@ -79,5 +82,11 @@ public interface INewExamMarksEntryTransaction {
 	public ExamFalseNumberGen getDetailsByFalsenum(String falseNo);
 
 	public boolean checkFallseBox(NewExamMarksEntryForm marksCardForm);
+
+	public Object getUniqeDataForQuery(String query) throws Exception;
+
+	boolean saveEvalationMarks(List<ExamMarkEvaluationBo> boList) throws BusinessException, ApplicationException;
+
+	int getDuplication(String falseNo);
 
 }

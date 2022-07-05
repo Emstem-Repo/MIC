@@ -5124,7 +5124,7 @@ public static Map<String, String> semesterMap = null;
 		" personal_data.middle_name, personal_data.last_name, "+
 		" subject.code, subject.name as subjectName, EXAM_time_table.date_starttime,course.name as cname, personal_data.date_of_birth, "+
 		" EXAM_time_table.date_endtime,EXAM_definition.name as examname,EXAM_exam_course_scheme_details.scheme_no, "+
-		" EXAM_definition.month as months,EXAM_definition.year as years,EXAM_supplementary_improvement_application.is_supplementary as suppl,subject_type.name as typeName "+
+		" EXAM_definition.month as months,EXAM_definition.year as years,EXAM_supplementary_improvement_application.is_supplementary as suppl,subject_type.name as typeName, EXAM_definition.id as examid "+
 		
 		" from student student "+
 		" LEFT JOIN adm_appln adm_appln "+
@@ -5237,6 +5237,9 @@ public static Map<String, String> semesterMap = null;
 					if(obj[4]!=null){
 						to.setStudentName(to.getStudentName()+" "+obj[4].toString());
 					}
+					if(obj[17]!=null){
+						to.setExamId(Integer.parseInt(obj[17].toString()));;
+					}
 					subList=new ArrayList<SubjectTO>();
 					
 				}else{
@@ -5306,6 +5309,7 @@ public static Map<String, String> semesterMap = null;
 				
 				subList.add(subto);
 				to.setSubList(subList);
+				
 			}
 		}
 		return to;

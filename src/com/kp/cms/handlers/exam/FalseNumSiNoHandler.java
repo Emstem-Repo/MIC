@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.kp.cms.bo.admin.Classes;
 import com.kp.cms.bo.exam.ExamDefinition;
+import com.kp.cms.bo.exam.ExamFalseNumberGen;
 import com.kp.cms.bo.exam.FalseNumSiNo;
 import com.kp.cms.bo.exam.FalseNumberBox;
 import com.kp.cms.bo.exam.FalseNumberBoxDetails;
@@ -133,6 +134,16 @@ public class FalseNumSiNoHandler {
 		}
 		
 		return toList;
+		
+	}
+
+
+	public boolean setcheckIsAvalible(FalseNumSiNoForm cardSiNoForm, FalseBoxDetTo to) throws Exception {
+		ExamFalseNumberGen bo= transaction.getcheckfalseNoAvailable(cardSiNoForm,to);
+		if (bo!=null) {
+			return true;
+		}
+		return false;
 		
 	}
 }

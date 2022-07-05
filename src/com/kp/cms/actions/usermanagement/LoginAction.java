@@ -104,7 +104,10 @@ public class LoginAction extends BaseDispatchAction {
 
 				loginForm.setEncryptedPassword(EncryptUtil.getInstance().encryptDES(loginForm.getPassword()));
 				Users user = LoginHandler.getInstance().isValiedUser(loginForm) ;
-				session.setAttribute("employeeId",String.valueOf(user.getEmployee().getId()));
+				if (user.getEmployee()!=null) {
+					session.setAttribute("employeeId",String.valueOf(user.getEmployee().getId()));
+				}
+				
 				if (user == null) {
 					message = new ActionMessage("knowledgepro.admin.validusername");
 					messages.add("messages", message);

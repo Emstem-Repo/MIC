@@ -29,7 +29,7 @@ public class CancelPromotionAction extends BaseDispatchAction {
 /**
  * @param mapping
  * @param form
- * @param request
+ * @param requesto
  * @param response
  * @return
  * @throws Exception

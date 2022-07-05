@@ -40,35 +40,60 @@
 		document.getElementById("method").value="editBarcodeBox";
         document.falsenumSINOForm.submit();
 	}
-	function searchDeptWise(deptId,par){
+	function searchDeptWise(dept,par){
 		
 		if (par=='ex') {
+			var out='';
+			if (document.getElementById('outexr').checked) {
+				  out = '1';
+				}else if(document.getElementById('outexf').checked){
+					out = '0';
+				}
 			var destination = document.getElementById("teachers");
 			for (x1 = destination.options.length; x1 >=0; x1--) {
 			destination.options[x1] = null;
 			} 
-			getTeacherBysubId("",deptId,updateTeachersMapByDepEx);
+			getTeacherBysubId(out,dept, updateTeachersMapByDepEx);
 		}
 		else if (par=='ch') {
+			
+			var out='';
+			if (document.getElementById('outchr').checked) {
+				  out = '1';
+				}else if(document.getElementById('outchf').checked){
+					out = '0';
+				}
 			var destination = document.getElementById("chiefExaminer");
 			for (x1 = destination.options.length; x1 >=0; x1--) {
 			destination.options[x1] = null;
 			} 
-			getTeacherBysubId("",deptId,updateTeachersMapByDepCh);
+			getTeacherBysubId(out,dept, updateTeachersMapByDepCh);
 		}
 		else if (par=='ad') {
+			var out='';
+			if (document.getElementById('outadr').checked) {
+				  out = '1';
+				}else if(document.getElementById('outadf').checked){
+					out = '0';
+				}
 			var destination = document.getElementById("additionalExaminer");
 			for (x1 = destination.options.length; x1 >=0; x1--) {
 			destination.options[x1] = null;
 			} 
-			getTeacherBysubId("",deptId,updateTeachersMapByDepAd);
+			getTeacherBysubId(out,dept, updateTeachersMapByDepAd);
 		}
 		else if (par=='cr') {
+			var out='';
+			if (document.getElementById('outcrr').checked) {
+				  out = '1';
+				}else if(document.getElementById('outcrf').checked){
+					out = '0';
+				}
 			var destination = document.getElementById("correctionValidator");
 			for (x1 = destination.options.length; x1 >=0; x1--) {
 			destination.options[x1] = null;
 			} 
-			getTeacherBysubId("",deptId,updateTeachersMapByDepCr);
+			getTeacherBysubId(out,dept, updateTeachersMapByDepCr);
 		}
 		
 	}
@@ -190,7 +215,12 @@
 							
 								
 								<tr>
-									
+									<td height="25" class="row-odd"><div align="left">Outside facualty
+																	</div></td>
+																<td class="row-even"><span class="star"> <html:radio
+																			name="falsenumSINOForm" onchange="searchOutSider(this.value,'ex')" property="outside" styleId="outexr" value="1" />Yes&nbsp; <html:radio
+																			name="falsenumSINOForm" onchange="searchOutSider(this.value,'ex')" property="outside" styleId="outexf" value="0" />No
+																</span></td>
 									 <td height="25" class="row-odd">
 									<div align="right">Department:</div>
 									</td>
@@ -207,15 +237,10 @@
 										</logic:notEmpty>
 									</html:select></td>
 									
-									<td height="25" class="row-even"><div align="left">Outside facualty
-																	</div></td>
-																<td class="row-odd"><span class="star"> <html:radio
-																			name="falsenumSINOForm" onchange="searchOutSider(this.value,'ex')" property="outside" value="1" />Yes&nbsp; <html:radio
-																			name="falsenumSINOForm" onchange="searchOutSider(this.value,'ex')" property="outside" value="0" />No
-																</span></td>
+									
 									
 									<td height="25" class="row-odd">
-									<div align="right"><span class="Mandatory"></span>Teacher
+									<div align="right"><span class="Mandatory"></span>Kindly assign the faculty for First valuation
 									:</div>
 									</td>
 									<td height="25" class="row-even">
@@ -227,49 +252,13 @@
                   					</html:select></td>
 
 								</tr>
-								
 								<tr>
-									
-									 <td height="25" class="row-odd">
-									<div align="right">Department:</div>
-									</td>
-
-									<td height="25" class="row-even"><html:select
-										property="departmentId" styleId="departmentIdCH" onchange="searchDeptWise(this.value,'ch')">
-										<html:option value="">
-											<bean:message key="knowledgepro.select" />
-										</html:option>
-										<logic:notEmpty name="falsenumSINOForm"
-											property="departmentMap">
-											<html:optionsCollection property="departmentMap"
-												name="falsenumSINOForm" label="value" value="key" />
-										</logic:notEmpty>
-									</html:select></td>
-									
-									<td height="25" class="row-even"><div align="left">Outside facualty
+									<td height="25" class="row-odd"><div align="left">Outside facualty
 																	</div></td>
-																<td class="row-odd"><span class="star"> <html:radio
-																			name="falsenumSINOForm" onchange="searchOutSider(this.value,'ch')" property="outside" value="1" />Yes&nbsp; <html:radio
-																			name="falsenumSINOForm" onchange="searchOutSider(this.value,'ch')" property="outside" value="0" />No
+																<td class="row-even"><span class="star"> <html:radio
+																			name="falsenumSINOForm" onchange="searchOutSider(this.value,'ad')" styleId="outadr" property="outside" value="1" />Yes&nbsp; <html:radio
+																			name="falsenumSINOForm" onchange="searchOutSider(this.value,'ad')" styleId="outadf" property="outside" value="0" />No
 																</span></td>
-									
-									<td height="25" class="row-odd">
-									<div align="right"><span class="Mandatory"></span>Chief Examiner
-									:</div>
-									</td>
-									<td height="25" class="row-even">
-									<html:select name="falsenumSINOForm" styleId="chiefExaminer" property="chiefExaminer"  >
-									<html:option value="">
-											<bean:message key="knowledgepro.select" />
-										</html:option>
-                    						<html:optionsCollection name="falsenumSINOForm" property="teachersMap" label="value" value="key"/>
-                  					</html:select></td>
-
-								</tr>
-								
-								
-								<tr>
-									
 									 <td height="25" class="row-odd">
 									<div align="right">Department:</div>
 									</td>
@@ -286,15 +275,10 @@
 										</logic:notEmpty>
 									</html:select></td>
 									
-									<td height="25" class="row-even"><div align="left">Outside facualty
-																	</div></td>
-																<td class="row-odd"><span class="star"> <html:radio
-																			name="falsenumSINOForm" onchange="searchOutSider(this.value,'ad')" property="outside" value="1" />Yes&nbsp; <html:radio
-																			name="falsenumSINOForm" onchange="searchOutSider(this.value,'ad')" property="outside" value="0" />No
-																</span></td>
+									
 									
 									<td height="25" class="row-odd">
-									<div align="right"><span class="Mandatory"></span>Additional Examiner
+									<div align="right"><span class="Mandatory"></span>Kindly assign the faculty for Second valuation
 									:</div>
 									</td>
 									<td height="25" class="row-even">
@@ -308,7 +292,54 @@
 								</tr>
 								
 								<tr>
+									<td height="25" class="row-odd"><div align="left">Outside facualty
+																	</div></td>
+																<td class="row-even"><span class="star"> <html:radio
+																			name="falsenumSINOForm" styleId="outchr" onchange="searchOutSider(this.value,'ch')" property="outside" value="1" />Yes&nbsp; <html:radio
+																			name="falsenumSINOForm" styleId="outchf" onchange="searchOutSider(this.value,'ch')" property="outside" value="0" />No
+																</span></td>
+									 <td height="25" class="row-odd">
+									<div align="right">Department:</div>
+									</td>
+
+									<td height="25" class="row-even"><html:select
+										property="departmentId" styleId="departmentIdCH" onchange="searchDeptWise(this.value,'ch')">
+										<html:option value="">
+											<bean:message key="knowledgepro.select" />
+										</html:option>
+										<logic:notEmpty name="falsenumSINOForm"
+											property="departmentMap">
+											<html:optionsCollection property="departmentMap"
+												name="falsenumSINOForm" label="value" value="key" />
+										</logic:notEmpty>
+									</html:select></td>
 									
+									
+									
+									<td height="25" class="row-odd">
+									<div align="right"><span class="Mandatory"></span>Kindly assign the faculty for Third valuation
+									:</div>
+									</td>
+									<td height="25" class="row-even">
+									<html:select name="falsenumSINOForm" styleId="chiefExaminer" property="chiefExaminer"  >
+									<html:option value="">
+											<bean:message key="knowledgepro.select" />
+										</html:option>
+                    						<html:optionsCollection name="falsenumSINOForm" property="teachersMap" label="value" value="key"/>
+                  					</html:select></td>
+
+								</tr>
+								
+								
+								
+								
+								<tr>
+									<td height="25" class="row-odd"><div align="left">Outside facualty
+																	</div></td>
+																<td class="row-even"><span class="star"> <html:radio
+																			name="falsenumSINOForm" styleId="outcrr" onchange="searchOutSider(this.value,'cr')" property="outside" value="1" />Yes&nbsp; <html:radio
+																			name="falsenumSINOForm" styleId="outcrf" onchange="searchOutSider(this.value,'cr')" property="outside" value="0" />No
+																</span></td>
 									 <td height="25" class="row-odd">
 									<div align="right">Department:</div>
 									</td>
@@ -325,15 +356,10 @@
 										</logic:notEmpty>
 									</html:select></td>
 									
-									<td height="25" class="row-even"><div align="left">Outside facualty
-																	</div></td>
-																<td class="row-odd"><span class="star"> <html:radio
-																			name="falsenumSINOForm" onchange="searchOutSider(this.value,'cr')" property="outside" value="1" />Yes&nbsp; <html:radio
-																			name="falsenumSINOForm" onchange="searchOutSider(this.value,'cr')" property="outside" value="0" />No
-																</span></td>
+									
 									
 									<td height="25" class="row-odd">
-									<div align="right"><span class="Mandatory"></span>Correction Validator
+									<div align="right"><span class="Mandatory"></span>Kindly assign the faculty for Final evaluation
 									:</div>
 									</td>
 									<td height="25" class="row-even">

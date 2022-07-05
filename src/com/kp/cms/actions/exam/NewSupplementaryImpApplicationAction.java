@@ -696,7 +696,7 @@ public class NewSupplementaryImpApplicationAction extends BaseDispatchAction {
 		}
 
 		if (newSupplementaryImpApplicationForm.getStudentObj().getIsEgrand()) {
-			newSupplementaryImpApplicationForm.setTotalFees(30);
+			newSupplementaryImpApplicationForm.setTotalFees(new Double(newSupplementaryImpApplicationForm.geteGrandFees()));
 		}
 		// online payment code temporarily commented do not delete
 		/*
@@ -866,6 +866,14 @@ public class NewSupplementaryImpApplicationAction extends BaseDispatchAction {
 								.getOnlineServiceChargeFees()
 								.doubleValue()));
 					} else {
+						newSupplementaryImpApplicationForm
+						.setFeesNotConfigured(true);
+					}
+					if (bo.getEgrandFees()!=null) {
+						newSupplementaryImpApplicationForm.seteGrandFees(String.valueOf(bo
+								.getEgrandFees()
+								.doubleValue()));
+					}else{
 						newSupplementaryImpApplicationForm
 						.setFeesNotConfigured(true);
 					}
@@ -1563,7 +1571,7 @@ public class NewSupplementaryImpApplicationAction extends BaseDispatchAction {
 					newSupplementaryImpApplicationForm.setStudentObj(student);
 					if (newSupplementaryImpApplicationForm.getStudentObj()
 							.getIsEgrand()) {
-						newSupplementaryImpApplicationForm.setTotalFees(30);
+						newSupplementaryImpApplicationForm.setTotalFees(new Double(newSupplementaryImpApplicationForm.geteGrandFees()));
 					}
 					String printData = NewSupplementaryImpApplicationHandler
 					.getInstance().getPrintData(
@@ -1965,6 +1973,7 @@ public class NewSupplementaryImpApplicationAction extends BaseDispatchAction {
 		regClassList.add(706);regClassList.add(707);regClassList.add(711);
 		regClassList.add(716);		
 		HttpSession session = request.getSession(true);
+		session.setAttribute("isPrevApplicationAvailable","no");
 		newSupplementaryImpApplicationForm.setIsPreviousExam(session
 				.getAttribute("isPrevApplicationAvailable").toString());
 		Integer prevClassId = (Integer) session.getAttribute("prevClassId");
@@ -1982,20 +1991,22 @@ public class NewSupplementaryImpApplicationAction extends BaseDispatchAction {
 			classId=prevClassId;
 		}*/
 		newSupplementaryImpApplicationForm.setStudentObj(student);
+		
 		List<Integer> examIds = new ArrayList<Integer>();
-		if (newSupplementaryImpApplicationForm.getPreviousExam()) {
+		/*if (newSupplementaryImpApplicationForm.getPreviousExam()) {
 			examIds = NewSupplementaryImpApplicationHandler.getInstance()
 			.checkRegularAppAvailable(prevClassId);
-			if (examIds.size() > 0)
+			if (examIds.size() > 0){
 				newSupplementaryImpApplicationForm.setPrevClassExamId(String
 						.valueOf(examIds.get(0)));
-		} else {
+			}
+		} else {*/
 			newSupplementaryImpApplicationForm
 			.setClassId(String.valueOf(student.getClassSchemewise()
 					.getClasses().getId()));
 			examIds = NewSupplementaryImpApplicationHandler.getInstance()
 			.checkRegularAppAvailable(classId);
-		}
+		//}
 		IDownloadHallTicketTransaction txn1 = DownloadHallTicketTransactionImpl
 		.getInstance();
 		if (examIds.isEmpty()) {

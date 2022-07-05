@@ -3,6 +3,7 @@ package com.kp.cms.handlers.admission;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLEncoder;
@@ -23,6 +24,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.validator.EmailValidator;
 import org.apache.struts.action.ActionErrors;
+import org.apache.struts.upload.FormFile;
 
 import com.kp.cms.bo.admin.AdmAppln;
 import com.kp.cms.bo.admin.ApplnDoc;
@@ -722,7 +724,7 @@ public class UniqueIdRegistrationHandler {
 			isRegisted = generateUniqueIDForApplicant(onlineApplication,objForm.getYear(),objForm.getMobileNo().trim(),	objForm.getMobileCode().trim(),
 					objForm.getGender(),objForm.getEmailId().trim(),objForm.getRegisterDateOfBirth(),objForm.getUserId(),"OnlineMode",
 					objForm.getApplicantName(),objForm.getProgramTypeId(),objForm.getResidentCategoryId(),objForm.getSubReligionId(),objForm.getChallanRefNo(),objForm.getMngQuota(),
-					objForm.getMalankara(), objForm.getCategoryOther(),objForm.getParishName());
+					objForm.getMalankara(), objForm.getCategoryOther(),objForm.getParishName(),objForm.getParishFile(),objForm.getFilePath());
 		}
 		
 		if(isRegisted){
@@ -762,7 +764,8 @@ public class UniqueIdRegistrationHandler {
 	 */
 	public synchronized boolean generateUniqueIDForApplicant(StudentOnlineApplication onlineApplication, String admissionAcademicYear,
 			String mobileNo, String mobileCode, String gender,String emailId, String registerDateOfBirth, String userId, 
-			String mode,String name, String programTypeId, String categoryId, String subReligionId,String challanNo,Boolean mngQuota,Boolean malankara, String categoryOther, String malankaraParishname) throws Exception {
+			String mode,String name, String programTypeId, String categoryId, String subReligionId,String challanNo,Boolean mngQuota,Boolean malankara,
+			String categoryOther, String malankaraParishname,FormFile parishFile,String filepathloc) throws Exception {
 		
 		boolean isRegisted = false;
 		//StudentUniqueIdGenerator uniqueIdGenerator = txnImpl.getUniqueIdGenerator(admissionAcademicYear);
@@ -787,6 +790,40 @@ public class UniqueIdRegistrationHandler {
 		onlineApplication.setChallanNumber(challanNo);
 		onlineApplication.setCategoryOther(categoryOther);
 		onlineApplication.setMalankaraParishname(malankaraParishname);
+		FormFile file = parishFile;
+		//parish start
+		if (file.getFileName()!="") {
+			String filePath = filepathloc;
+			//filePath= "/opt/ParishFiles";
+			filePath= filePath+"/ParishFiles";
+			File folder = new File(filePath);
+			if(!folder.exists()){
+				folder.mkdir();
+			}
+			String extension = "";
+
+			int i = file.getFileName().lastIndexOf('.');
+			int p = Math.max(file.getFileName().lastIndexOf('/'), file.getFileName().lastIndexOf('\\'));
+
+			if (i > p) {
+			    extension = file.getFileName().substring(i+1);
+			}
+			String fileName = emailId+"."+extension;
+			if(!("").equals(fileName)){
+				File uploadFileName = new File(filePath, fileName);
+				if(!uploadFileName.exists()){
+					FileOutputStream fos = new FileOutputStream(uploadFileName);
+					fos.write(file.getFileData());
+					fos.flush();
+					fos.close();
+				}
+			}
+		}
+		
+		
+		
+		
+		//parish nd
 		
 		String collegeCode = CMSConstants.COLLEGE_CODE;
 		
@@ -1012,8 +1049,10 @@ public class UniqueIdRegistrationHandler {
 		temp=temp+ URLEncoder.encode(" and Your password is  "+onlineApplication.getUniqueId()+"","UTF-8");
 		temp=temp+ URLEncoder.encode(" Keep safe for future reference.","UTF-8");
 		temp=temp+URLEncoder.encode(collegeName,"UTF-8");
-		
-		
+		/*temp=temp+URLEncoder.encode("One Time Password for Accessing login is ","UTF-8");
+		temp=temp+URLEncoder.encode(onlineApplication.getUniqueId()+",","UTF-8");
+		temp=temp+URLEncoder.encode("Please use the password to access it. Please do not share this with anyone.\nMar Ivanios College","UTF-8");
+		*/
 		PasswordMobileMessaging mob=new PasswordMobileMessaging();						
 		mob.setDestinationNumber(onlineApplication.getMobileCode()+onlineApplication.getMobileNo());
 		mob.setMessagePriority(3);

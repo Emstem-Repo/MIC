@@ -29,6 +29,7 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
+import org.apache.struts.upload.FormFile;
 
 import com.ibm.icu.text.DateFormat;
 import com.ibm.icu.text.SimpleDateFormat;
@@ -311,9 +312,36 @@ import com.kp.cms.utilities.CommonUtil;
 					errors.add("error", new ActionError("admissionFormForm.doblimit.larger"));
 				}
 			}
+			if (objForm.getMalankara()) {
+				if (objForm.getParishFile().getFileName()!="") {
+					String filePath = request.getRealPath("");
+					objForm.setFilePath(filePath);
+					FormFile file=objForm.getParishFile();
+					System.out.println(file.getFileSize());
+					String extension = "";
+
+					int i = file.getFileName().lastIndexOf('.');
+					int p = Math.max(file.getFileName().lastIndexOf('/'), file.getFileName().lastIndexOf('\\'));
+
+					if (i > p) {
+					    extension = file.getFileName().substring(i+1);
+					}
+					if (file.getFileSize()>150019) {
+						errors.add("error", new ActionError("admissionFormForm.attachment.maxSignatureSize"));
+					}
+					if (extension!="pdf" && !extension.equalsIgnoreCase("pdf")) {
+						errors.add("error", new ActionError("admissionFormForm.attachment.nonPDF"));
+					}
+					}else{
+						errors.add("error", new ActionError("knowledgepro.admin.parish.addfailure"));
+					}
+				
+			}
+			
 			
 			try {
 				if (errors.isEmpty()) {
+					
 					boolean isSuccess = UniqueIdRegistrationHandler
 							.getInstance().registerApplicant(objForm, errors);
 					

@@ -530,6 +530,18 @@
 			             			<html:radio styleId="OTHERRadio" property="patternofStudy" value="OTHER"></html:radio>
                          			<label for="OTHERRadio"><span><span></span></span>Reversed CBCSS Pattern(mark entry)</label> 
 			             		</fieldset>
+			             		<script>
+									console.log("university"+'<bean:write name="onlineApplicationForm" property="applicantDetails.ednQualificationList[0].universityId"/>');
+									var unid='<bean:write name="onlineApplicationForm" property="applicantDetails.ednQualificationList[0].universityId"/>';
+									
+									if (unid!=20) {
+										console.log("not  kerala university");
+										document.getElementById("OTHERRadio").checked=true;
+										document.getElementById('CBCSSNEWRadio').style.visibility = 'hidden';
+										 document.getElementById("CBCSSNEWRadio").disabled = true;
+										console.log(document.getElemenntById(OTHERRadio).value);
+									}
+								</script>
                         	</td>
          				</tr>
               			

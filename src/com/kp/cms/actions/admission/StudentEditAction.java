@@ -1243,10 +1243,12 @@ public class StudentEditAction extends BaseDispatchAction {
 		} catch (ApplicationException e) {
 			log.error("error in getSearchedStudents...", e);
 			String msg = super.handleApplicationException(e);
+			e.printStackTrace();
 			stForm.setErrorMessage(msg);
 			stForm.setErrorStack(e.getMessage());
 			return mapping.findForward(CMSConstants.ERROR_PAGE);
 		} catch (Exception e) {
+			e.printStackTrace();
 			log.error("error in getSearchedStudents...", e);
 			throw e;
 

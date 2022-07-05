@@ -1069,9 +1069,15 @@ public class NewExamMarksEntryAction extends BaseDispatchAction {
 				newExamMarksEntryForm.setOldschemeNo(newExamMarksEntryForm.getSchemeNo());
 				String schemeNo=newExamMarksEntryForm.getSchemeNo();// If no record comes to put the value to form
 				String schemes[] = newExamMarksEntryForm.getSchemeNo().split("_");
-				newExamMarksEntryForm.setSchemeNo(schemes[1]);
+				try {
+					newExamMarksEntryForm.setSchemeNo(schemes[1]);
+				} catch (Exception e) {
+					e.printStackTrace();
+					newExamMarksEntryForm.setSchemeNo(schemeNo);
+				}
+				
 				int year=Integer.parseInt(newExamMarksEntryForm.getYear());
-				Map<Integer, String> examNameMap = CommonAjaxHandler.getInstance().getExamNameByYearAndCourseAndSem(year, Integer.parseInt(newExamMarksEntryForm.getCourseId()), Integer.parseInt(schemes[1]));
+				Map<Integer, String> examNameMap = CommonAjaxHandler.getInstance().getExamNameByYearAndCourseAndSem(year, Integer.parseInt(newExamMarksEntryForm.getCourseId()), Integer.parseInt(newExamMarksEntryForm.getSchemeNo()));
 				examNameMap = (Map<Integer, String>) CommonUtil.sortMapByValue(examNameMap);// sorting the exam names based on name
 				newExamMarksEntryForm.setExamNameList(examNameMap);// setting the examNameMap to form
 				if(examNameMap.isEmpty()){// if student list is empty display no record found in the input screen

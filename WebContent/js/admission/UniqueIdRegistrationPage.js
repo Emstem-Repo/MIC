@@ -142,6 +142,9 @@ $('#register_validate').click(function(e)
     	if($('#parishname').val().length == 0){
             empty_count=1;
         }
+    	if($('#parisletter').val().length == 0){
+            empty_count=1;
+        }
     	}
     
     

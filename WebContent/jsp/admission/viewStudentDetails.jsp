@@ -275,8 +275,20 @@ function cancel() {
 										<td height="20" class="row-odd" align="right"><div align="right">
 										<bean:message key="knowledgepro.admission.admission.number"/>
 										</div></td>
-										<td height="20" class="row-even" colspan="5" align="left"><div align="left">
+										<td height="20" class="row-even"  align="left"><div align="left">
 										&nbsp;<nested:write property="applicantDetails.admissionNumber"></nested:write>
+										</div></td>
+										<td height="20" class="row-odd" align="right"><div align="right">
+										index mark
+										</div></td>
+										<td height="20" class="row-even"  align="left"><div align="left">
+										&nbsp;<nested:write property="applicantDetails.indexMark"></nested:write>
+										</div></td>
+										<td height="20" class="row-odd" align="right"><div align="right">
+										Student rank
+										</div></td>
+										<td height="20" class="row-even" align="left"><div align="left">
+										&nbsp;<nested:write property="applicantDetails.rank"></nested:write>
 										</div></td>
 										</tr>
 									</table>

@@ -34,6 +34,7 @@ public class StudentMarksTO implements Serializable,Comparable<StudentMarksTO> {
 	private Boolean isGracing;
 	private String falseNo;
 	private String falseNoId;
+	private ExamMarkEvaluationTo examEvalTo;
 	
 	//raghu all internal mark
 	private String examId;
@@ -282,6 +283,12 @@ public class StudentMarksTO implements Serializable,Comparable<StudentMarksTO> {
 	}
 	public void setRetests(boolean retests) {
 		this.retests = retests;
+	}
+	public ExamMarkEvaluationTo getExamEvalTo() {
+		return examEvalTo;
+	}
+	public void setExamEvalTo(ExamMarkEvaluationTo examEvalTo) {
+		this.examEvalTo = examEvalTo;
 	}
 	
 }

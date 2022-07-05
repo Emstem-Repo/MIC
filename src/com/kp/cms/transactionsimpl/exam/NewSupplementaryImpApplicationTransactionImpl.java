@@ -796,6 +796,7 @@ public class NewSupplementaryImpApplicationTransactionImpl implements
 	
 	public boolean getPrevClasssIdFromRegularApp(int stuId, int prevClassId)throws Exception {
 		Session session = null;
+		List<ExamRegularApplication>  regApps = null;
 		ExamRegularApplication regApp = null;
 		boolean applied=false;
 		try {
@@ -803,7 +804,10 @@ public class NewSupplementaryImpApplicationTransactionImpl implements
 			session = sessionFactory.openSession();
 			String subQuery ="from ExamRegularApplication er where er.student.id="+stuId+" and er.isApplied=1 and er.classes.id="+prevClassId ; 
 			Query subjectQuery = session.createQuery(subQuery);
-			regApp = (ExamRegularApplication) subjectQuery.uniqueResult();
+			regApps = subjectQuery.list();
+			regApp=regApps.get(0);
+			
+			
 			if(regApp!=null && regApp.getIsApplied())
 				applied=true;
 		} catch (Exception e) {

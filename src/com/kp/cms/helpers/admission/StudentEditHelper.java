@@ -73,8 +73,10 @@ import com.kp.cms.bo.admin.Sports;
 import com.kp.cms.bo.admin.State;
 import com.kp.cms.bo.admin.Student;
 import com.kp.cms.bo.admin.StudentExtracurricular;
+import com.kp.cms.bo.admin.StudentIndexMark;
 import com.kp.cms.bo.admin.StudentOnlineApplication;
 import com.kp.cms.bo.admin.StudentQualifyexamDetail;
+import com.kp.cms.bo.admin.StudentRank;
 import com.kp.cms.bo.admin.StudentRemarks;
 import com.kp.cms.bo.admin.StudentVehicleDetails;
 import com.kp.cms.bo.admin.SubjectGroup;
@@ -124,6 +126,7 @@ import com.kp.cms.transactions.admission.IAdmissionFormTransaction;
 import com.kp.cms.transactions.admission.IStudentEditTransaction;
 import com.kp.cms.transactionsimpl.admission.AdmissionFormTransactionImpl;
 import com.kp.cms.transactionsimpl.admission.StudentEditTransactionImpl;
+import com.kp.cms.transactionsimpl.exam.FalseExamMarksEntryTransactionImpl;
 import com.kp.cms.utilities.CommonUtil;
 /**
  * 
@@ -356,6 +359,7 @@ public class StudentEditHelper {
 		PersonalDataTO personalDataTO = null;
 		CourseTO courseTO = null;
 		List<EdnQualificationTO> ednQualificationList = null;
+		
 		List<ApplicantWorkExperienceTO> workExpList = null;
 		List<CandidatePrerequisiteMarksTO> prereqList = null;
 		PreferenceTO preferenceTO = null;
@@ -366,6 +370,10 @@ public class StudentEditHelper {
 		if (admApplnBo != null) {
 			adminAppTO = new AdmApplnTO();
 			adminAppTO.setId(admApplnBo.getId());
+			StudentIndexMark indexmark=(StudentIndexMark) FalseExamMarksEntryTransactionImpl.getInstance().getUniqeDataForQuery("from StudentIndexMark i where i.admAppln.id="+admApplnBo.getId()+" group by i.admAppln.id");
+			StudentRank rank=(StudentRank) FalseExamMarksEntryTransactionImpl.getInstance().getUniqeDataForQuery("from StudentRank r where r.admAppln.id="+admApplnBo.getId()+" group by r.admAppln.id");
+			adminAppTO.setIndexMark(indexmark.getIndexMark().toString());
+			adminAppTO.setRank(rank.getRank().toString());
 			adminAppTO.setCreatedBy(admApplnBo.getCreatedBy());
 			//added by vishnu
 			adminAppTO.setAdmissionNumber(admApplnBo.getAdmissionNumber());

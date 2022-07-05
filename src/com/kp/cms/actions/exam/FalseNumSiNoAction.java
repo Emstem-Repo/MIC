@@ -425,9 +425,12 @@ public class FalseNumSiNoAction extends BaseDispatchAction{
 				List<FalseBoxDetTo> tempBcodeList=new ArrayList();
 				for (FalseBoxDetTo to : bcodeList) {
 					boolean re=transaction.getDuplicateDet(cardSiNoForm, to.getFalseNum());
-					
+					boolean result =FalseNumSiNoHandler.getInstance().setcheckIsAvalible(cardSiNoForm,to);
 					if ((to.getFalseNum()!=cardSiNoForm.getDeleId() && !to.getFalseNum().equalsIgnoreCase(cardSiNoForm.getDeleId())) && !cardSiNoForm.isEdit()) {
-						tempBcodeList.add(to);
+						if (result) {
+							tempBcodeList.add(to);
+						}
+						
 					}else if ((to.getFalseNum()!=cardSiNoForm.getDeleId() && !to.getFalseNum().equalsIgnoreCase(cardSiNoForm.getDeleId())) && cardSiNoForm.isEdit()) {
 						if (re) {
 							to.setBoxDetIsActive(true);
@@ -451,7 +454,7 @@ public class FalseNumSiNoAction extends BaseDispatchAction{
 			}else{
 				if (cardSiNoForm.getBarcodeList()!=null) {
 					bcodeList=cardSiNoForm.getBarcodeList();
-					if (bcodeList.size()>=30) {
+					if (bcodeList.size()>=25) {
 
 						errors.add("error", new ActionError("knowledgepro.exam.false.limit.exeed"));
 						saveErrors(request, errors);
@@ -471,12 +474,17 @@ public class FalseNumSiNoAction extends BaseDispatchAction{
 						}
 					}
 				}
+				
 				if (bcodeList.size()<30 && !bcode.isEmpty()) {
 					FalseBoxDetTo bcodObj=new FalseBoxDetTo();
 					bcodObj.setFalseNum(bcode);
 					bcodObj.setBoxDetIsActive(true);
 					bcodObj.setBoxIsActive(true);
-					bcodeList.add(bcodObj);
+					boolean result =FalseNumSiNoHandler.getInstance().setcheckIsAvalible(cardSiNoForm,bcodObj);
+					if (result) {
+						bcodeList.add(bcodObj);
+					}
+					
 				}else{
 					errors.add("error", new ActionError("knowledgepro.exam.false.limit.exeed"));
 					saveErrors(request, errors);
@@ -503,7 +511,8 @@ public class FalseNumSiNoAction extends BaseDispatchAction{
 			subId = Integer.parseInt(cardSiNoForm.getSubjectId());
 			year = Integer.parseInt(cardSiNoForm.getYear());
 		}
-		teacherMap =transaction.getTeachers(subId,3);
+		cardSiNoForm.setDepartmentId(null);
+		teacherMap =transaction.getTeachers(0,3);
 		deptMap=CommonAjaxHandler.getInstance().getDepartments();
 		cardSiNoForm.setDepartmentMap(deptMap);
 		cardSiNoForm.setTeachersMap(teacherMap);

@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionMapping;
+import org.apache.struts.upload.FormFile;
 
 import com.kp.cms.forms.BaseActionForm;
 import com.kp.cms.to.admin.CandidatePGIDetailsTO;
@@ -74,6 +75,8 @@ public class UniqueIdRegistrationForm extends BaseActionForm{
 	private Boolean malankara;
 	private String categoryOther;
 	private String parishName;
+	private FormFile parishFile;
+	private String filePath;
 	
 	private String pageNum;
 //	setter getter methods
@@ -461,6 +464,18 @@ public class UniqueIdRegistrationForm extends BaseActionForm{
 	}
 	public void setPageNum(String pageNum) {
 		this.pageNum = pageNum;
+	}
+	public FormFile getParishFile() {
+		return parishFile;
+	}
+	public void setParishFile(FormFile parishFile) {
+		this.parishFile = parishFile;
+	}
+	public String getFilePath() {
+		return filePath;
+	}
+	public void setFilePath(String filePath) {
+		this.filePath = filePath;
 	}
 	
 	

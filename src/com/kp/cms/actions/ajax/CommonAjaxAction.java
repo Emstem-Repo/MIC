@@ -6092,15 +6092,18 @@ public ActionForward duplicateCheckingOfOrderNoByLocationId(ActionMapping mappin
 		try {
 			int dept = 0;
 			String outside = null;
-			int out=0;
-			if(baseActionForm.getDepartmentId()!=null && baseActionForm.getHostelId()!= null){
+			int out=3;
+			if (baseActionForm.getDepartmentId()!=null && !baseActionForm.getDepartmentId().isEmpty() ) {
 				dept = Integer.parseInt(baseActionForm.getDepartmentId());
+			}
+			if(baseActionForm.getHostelId()!= null && !baseActionForm.getHostelId().isEmpty()){
+				
 				outside = (String) baseActionForm.getHostelId();
 				
 				if ((outside!=null && !outside.isEmpty() )&& outside=="1" || outside.equalsIgnoreCase("1")) {
 						out=1;
 				}else if ((outside!=null && !outside.isEmpty() )&& outside=="0" || outside.equalsIgnoreCase("0")) {
-						out=0;
+						out=2;
 				}else{
 					out=2;
 				}

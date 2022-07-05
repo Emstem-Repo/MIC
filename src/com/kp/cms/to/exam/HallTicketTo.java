@@ -10,7 +10,17 @@ public class HallTicketTo implements Serializable,Comparable<HallTicketTo> {
 	private String registerNo;
 	private String studentName;
 	private List<SubjectTO> subList;
+	private int examId;
 	
+	public int getExamId() {
+		return examId;
+	}
+	public void setExamId(int examId) {
+		this.examId = examId;
+	}
+
+
+
 	//vibin-------------
 	private List<SubjectTO> subListCore;
 	public List<SubjectTO> getSubListCore() {

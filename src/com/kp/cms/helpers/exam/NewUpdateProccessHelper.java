@@ -943,6 +943,9 @@ public class NewUpdateProccessHelper {
 			while (itr.hasNext()) {
 				Student bo = (Student) itr.next();
 				StudentTO to=new StudentTO();
+				if (bo.getId()==49560) {
+					System.out.println("");
+				}
 				to.setId(bo.getId());
 				to.setAppliedYear(bo.getAdmAppln().getAppliedYear());
 				to.setRegisterNo(bo.getRegisterNo());

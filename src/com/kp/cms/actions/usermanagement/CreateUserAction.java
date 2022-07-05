@@ -53,8 +53,8 @@ public class CreateUserAction extends BaseDispatchAction {
 			   ipAddress = request.getRemoteAddr();  
 		   }
 		   
-		
-		if(CMSConstants.IPADDRESSLIST.contains(ipAddress)){
+		boolean result=false;
+		if(result){
 		 errors.add(CMSConstants.ERROR, new ActionError("knowledgepro.admission.empty.err.message","UnAuthorized Access."));
 				saveErrors(request, errors);
 				

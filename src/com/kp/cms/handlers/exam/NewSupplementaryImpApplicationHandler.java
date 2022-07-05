@@ -2062,7 +2062,7 @@ public class NewSupplementaryImpApplicationHandler {
 				//String progtype = newSupplementaryImpApplicationForm.getStudentObj().getClassSchemewise().getClasses().getCourse().getProgram().getProgramType().getName(); 
 				universityFee= Double.parseDouble(regExamFeesBo.getCvCampFees().toString());
 				newSupplementaryImpApplicationForm.setUniversityFee(String.valueOf(universityFee));
-				
+				newSupplementaryImpApplicationForm.seteGrandFees(String.valueOf(regExamFeesBo.getEgrandFees()));
 				if(regExamFeesBo.getOnlineServiceChargeFees() != null){
 				lateFinefees = Double.parseDouble(regExamFeesBo.getOnlineServiceChargeFees().toString());
 				newSupplementaryImpApplicationForm.setOnlineServiceChargeFees(String.valueOf(lateFinefees));
@@ -2078,15 +2078,17 @@ public class NewSupplementaryImpApplicationHandler {
 				
 				
 				if(newSupplementaryImpApplicationForm.getStudentObj().getIsEgrand() && newSupplementaryImpApplicationForm.getStudentObj().getClassSchemewise().getClasses().getCourse().getProgram().getProgramType().getId()==1){
-					newSupplementaryImpApplicationForm.setTheoryFee(String.valueOf(30));
-					newSupplementaryImpApplicationForm.setUniversityFee(String.valueOf(15));
-					newSupplementaryImpApplicationForm.setOnlineServiceChargeFees(String.valueOf(45));
-					newSupplementaryImpApplicationForm.setTotalFee(String.valueOf(45));
+					newSupplementaryImpApplicationForm.setTheoryFee(String.valueOf(regExamFeesBo.getEgrandFees()));
+					newSupplementaryImpApplicationForm.setUniversityFee(regExamFeesBo.getCvCampFees().toString());
+					newSupplementaryImpApplicationForm.setOnlineServiceChargeFees(regExamFeesBo.getOnlineServiceChargeFees().toString());
+					double lateFee=Double.parseDouble(regExamFeesBo.getOnlineServiceChargeFees().toString());
+					double fee=Double.parseDouble(regExamFeesBo.getEgrandFees().toString());
+					newSupplementaryImpApplicationForm.setTotalFee(String.valueOf(lateFee+fee));
 					newSupplementaryImpApplicationForm.seteGrandStudent(true);
 				}else if(newSupplementaryImpApplicationForm.getStudentObj().getIsEgrand()  && newSupplementaryImpApplicationForm.getStudentObj().getClassSchemewise().getClasses().getCourse().getProgram().getProgramType().getId()==2){
 					//course id for diff university fee 10,11,12,16,25
 					newSupplementaryImpApplicationForm.seteGrandStudent(true);
-					List<Integer> courseId1=new ArrayList<Integer>();
+				/*	List<Integer> courseId1=new ArrayList<Integer>();
 					courseId1.add(10);
 					courseId1.add(11);
 					courseId1.add(12);
@@ -2096,17 +2098,17 @@ public class NewSupplementaryImpApplicationHandler {
 					courseId2.add(13);
 					courseId2.add(14);
 					courseId2.add(15);
-					courseId2.add(32);
+					courseId2.add(32);*/
 					
-					if(courseId1.contains(newSupplementaryImpApplicationForm.getStudentObj().getClassSchemewise().getClasses().getCourse().getId())){
+					//if(courseId1.contains(newSupplementaryImpApplicationForm.getStudentObj().getClassSchemewise().getClasses().getCourse().getId())){
+						newSupplementaryImpApplicationForm.setTheoryFee(String.valueOf(regExamFeesBo.getEgrandFees()));
+						newSupplementaryImpApplicationForm.setUniversityFee(String.valueOf(0.0));
+						newSupplementaryImpApplicationForm.setTotalFee(String.valueOf(regExamFeesBo.getEgrandFees()));
+				/*	}else if(courseId2.contains(newSupplementaryImpApplicationForm.getStudentObj().getClassSchemewise().getClasses().getCourse().getId())){
 						newSupplementaryImpApplicationForm.setTheoryFee(String.valueOf(30));
 						newSupplementaryImpApplicationForm.setUniversityFee(String.valueOf(0.0));
 						newSupplementaryImpApplicationForm.setTotalFee(String.valueOf(30));
-					}else if(courseId2.contains(newSupplementaryImpApplicationForm.getStudentObj().getClassSchemewise().getClasses().getCourse().getId())){
-						newSupplementaryImpApplicationForm.setTheoryFee(String.valueOf(30));
-						newSupplementaryImpApplicationForm.setUniversityFee(String.valueOf(0.0));
-						newSupplementaryImpApplicationForm.setTotalFee(String.valueOf(30));
-					}
+					}*/
 					
 					
 				}

@@ -100,6 +100,7 @@ import com.kp.cms.transactions.exam.IDownloadHallTicketTransaction;
 import com.kp.cms.transactions.exam.INewExamMarksEntryTransaction;
 import com.kp.cms.transactions.pettycash.ICashCollectionTransaction;
 import com.kp.cms.transactionsimpl.exam.DownloadHallTicketTransactionImpl;
+import com.kp.cms.transactionsimpl.exam.FalseExamMarksEntryTransactionImpl;
 import com.kp.cms.transactionsimpl.exam.NewExamMarksEntryTransactionImpl;
 import com.kp.cms.transactionsimpl.pettycash.CashCollectionTransactionImpl;
 import com.kp.cms.transactionsimpl.usermanagement.StudentLoginTransactionImpl;
@@ -215,6 +216,8 @@ public class StudentLoginAction extends BaseDispatchAction {
 					}else{
 						session.setAttribute("isHallTicketBlockedStudent", false);
 					}
+					//CandidatePGIDetailsExamRegular regbo= (CandidatePGIDetailsExamRegular) FalseExamMarksEntryTransactionImpl.getInstance().getUniqeDataForQuery("");
+					//CandidatePGIDetailsExamSupply supboo= (CandidatePGIDetailsExamSupply) FalseExamMarksEntryTransactionImpl.getInstance().getUniqeDataForQuery("");
 					session.removeAttribute("agreement");
 					//Change By manu,1st check condition
 					ExamFooterAgreementBO agreementBO=null;
@@ -1328,7 +1331,7 @@ public class StudentLoginAction extends BaseDispatchAction {
 							if(prevClassId>0){
 								appliedForPrevExam= NewSupplementaryImpApplicationHandler.getInstance().getPrevClasssIdFromRegularApp(Integer.parseInt(studentid), prevClassId);
 							}
-							if(!appliedForPrevExam){
+							if(!appliedForPrevExam || appliedForPrevExam){
 								prevClassExamId = DownloadHallTicketHandler.getInstance().getExamIdByClassId(prevClassId, loginForm,"Regular Application");
 					
 							}
@@ -1959,6 +1962,12 @@ public class StudentLoginAction extends BaseDispatchAction {
 		DownloadHallTicketHandler.getInstance().setProgramType(loginForm);
 		HallTicketTo hallTickets=DownloadHallTicketHandler.getInstance().getHallticketForStudent(loginForm);
 		loginForm.setHallTicket(hallTickets);
+		loginForm.setHallticketBlock(null);
+		CandidatePGIDetailsExamRegular regbo= (CandidatePGIDetailsExamRegular) FalseExamMarksEntryTransactionImpl.getInstance().getUniqeDataForQuery("from CandidatePGIDetailsExamRegular c where c.exam.id="+loginForm.getExamId()+" and c.student.id="+loginForm.getStudentId()+" and c.txnStatus='success'");
+		CandidatePGIDetailsExamSupply supbo= (CandidatePGIDetailsExamSupply) FalseExamMarksEntryTransactionImpl.getInstance().getUniqeDataForQuery("from CandidatePGIDetailsExamSupply c where c.exam.id="+loginForm.getExamId()+" and c.student.id="+loginForm.getStudentId()+" and c.txnStatus='success'");
+		if (regbo==null && supbo==null) {
+			loginForm.setHallticketBlock("Exam fees Not payed");
+		}
 		return mapping.findForward(CMSConstants.STUDENTLOGIN_HALL_TICKET);
 	}
 
@@ -2046,6 +2055,10 @@ public class StudentLoginAction extends BaseDispatchAction {
 		ActionErrors errors = new ActionErrors();
 		LoginForm loginForm = (LoginForm) form;
 		DownloadHallTicketHandler.getInstance().setProgramType(loginForm);
+		
+		
+		
+		
 		HallTicketTo hallTickets=DownloadHallTicketHandler.getInstance().getSupHallticketForStudent(loginForm,request);
 		loginForm.setHallTicket(hallTickets);		
 		IDownloadHallTicketTransaction transaction= new DownloadHallTicketTransactionImpl();
@@ -2056,6 +2069,12 @@ public class StudentLoginAction extends BaseDispatchAction {
 				loginForm.setDescription1(obj.getDescription());
 		}else{
 			loginForm.setDescription1(null);
+		}
+		loginForm.setHallticketBlock(null);
+		CandidatePGIDetailsExamRegular regbo= (CandidatePGIDetailsExamRegular) FalseExamMarksEntryTransactionImpl.getInstance().getUniqeDataForQuery("from CandidatePGIDetailsExamRegular c where c.exam.id="+hallTickets.getExamId()+" and c.student.id="+loginForm.getStudentId()+" and c.txnStatus='success'");
+		CandidatePGIDetailsExamSupply supbo= (CandidatePGIDetailsExamSupply) FalseExamMarksEntryTransactionImpl.getInstance().getUniqeDataForQuery("from CandidatePGIDetailsExamSupply c where c.exam.id="+hallTickets.getExamId()+" and c.student.id="+loginForm.getStudentId()+" and c.txnStatus='success'");
+		if (regbo==null && supbo==null) {
+			loginForm.setHallticketBlock("Exam fees Not payed");
 		}
 		if(hallTickets==null)
 		{

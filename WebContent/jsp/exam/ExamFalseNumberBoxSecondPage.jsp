@@ -21,6 +21,7 @@ function onGlobalKeyPressed(e) {
 
     if (charCode != 13) { // ascii 13 is return key
         lastScannedBarCode += String.fromCharCode(charCode);
+    console.log(lastScannedBarCode);
     } else { // barcode reader indicate code finished with "enter"
         var lastCode = lastScannedBarCode;
 

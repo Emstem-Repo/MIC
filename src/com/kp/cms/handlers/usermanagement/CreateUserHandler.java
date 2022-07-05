@@ -271,8 +271,8 @@ public class CreateUserHandler {
 		session.setAttribute("OTP", otp);
 		
 		String temp="";
-		temp=temp+URLEncoder.encode("One Time Password for Accessing "+screenName+" is "+otp,"UTF-8");
-		temp=temp+URLEncoder.encode("Please use the password to access it.Please do not share this with anyone.","UTF-8");
+		temp=temp+URLEncoder.encode("One Time Password for Accessing login is "+otp,"UTF-8");
+		temp=temp+URLEncoder.encode("Please use the password to access it. Please do not share this with anyone.\nMar Ivanios College","UTF-8");
 		
 		
 		SMS_Message sms=new SMS_Message();

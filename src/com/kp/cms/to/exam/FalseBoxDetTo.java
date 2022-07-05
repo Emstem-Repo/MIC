@@ -9,6 +9,7 @@ public class FalseBoxDetTo {
 	private int boxId;
 	private int boxDetId;
 	private String chiefExaminer;
+	private int count;
 	
 	private String additionalExaminer;
 	private int academicYear;
@@ -221,6 +222,14 @@ public class FalseBoxDetTo {
 
 	public void setCorrectionValidatorName(String correctionValidatorName) {
 		this.correctionValidatorName = correctionValidatorName;
+	}
+
+	public int getCount() {
+		return count;
+	}
+
+	public void setCount(int count) {
+		this.count = count;
 	}
 
 	

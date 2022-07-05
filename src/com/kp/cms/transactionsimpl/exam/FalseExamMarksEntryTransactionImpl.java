@@ -29,10 +29,12 @@ import com.kp.cms.bo.exam.ExamBlockUnblockHallTicketBO;
 import com.kp.cms.bo.exam.ExamDefinitionBO;
 import com.kp.cms.bo.exam.ExamFalseNumberGen;
 import com.kp.cms.bo.exam.ExamInternalRetestApplicationSubjectsBO;
+import com.kp.cms.bo.exam.ExamMarkEvaluationBo;
 import com.kp.cms.bo.exam.ExamPublishHallTicketMarksCardBO;
 import com.kp.cms.bo.exam.ExamRegularApplication;
 import com.kp.cms.bo.exam.ExamSettingsBO;
 import com.kp.cms.bo.exam.FalseNumSiNo;
+import com.kp.cms.bo.exam.FalseNumberBox;
 import com.kp.cms.bo.exam.FalseNumberBoxDetails;
 import com.kp.cms.bo.exam.MarksEntry;
 import com.kp.cms.bo.exam.MarksEntryDetails;
@@ -48,28 +50,29 @@ import com.kp.cms.forms.exam.NewSecuredMarksEntryForm;
 import com.kp.cms.forms.exam.NewSupplementaryImpApplicationForm;
 import com.kp.cms.to.admin.StudentTO;
 import com.kp.cms.to.exam.StudentMarksTO;
+import com.kp.cms.transactions.exam.IFalseExamMarksEntryTransaction;
 import com.kp.cms.transactions.exam.INewExamMarksEntryTransaction;
 import com.kp.cms.utilities.CommonUtil;
 import com.kp.cms.utilities.HibernateUtil;
 import com.kp.cms.utilities.InitSessionFactory;
 
-public class NewExamMarksEntryTransactionImpl implements INewExamMarksEntryTransaction {
+public class FalseExamMarksEntryTransactionImpl implements IFalseExamMarksEntryTransaction {
 
 	/**
 	 * Singleton object of NewExamMarksEntryTransactionImpl
 	 */
-	private static volatile NewExamMarksEntryTransactionImpl newExamMarksEntryTransactionImpl = null;
-	private static final Log log = LogFactory.getLog(NewExamMarksEntryTransactionImpl.class);
-	private NewExamMarksEntryTransactionImpl() {
+	private static volatile FalseExamMarksEntryTransactionImpl newExamMarksEntryTransactionImpl = null;
+	private static final Log log = LogFactory.getLog(FalseExamMarksEntryTransactionImpl.class);
+	private FalseExamMarksEntryTransactionImpl() {
 		
 	}
 	/**
 	 * return singleton object of NewExamMarksEntryTransactionImpl.
 	 * @return
 	 */
-	public static NewExamMarksEntryTransactionImpl getInstance() {
+	public static FalseExamMarksEntryTransactionImpl getInstance() {
 		if (newExamMarksEntryTransactionImpl == null) {
-			newExamMarksEntryTransactionImpl = new NewExamMarksEntryTransactionImpl();
+			newExamMarksEntryTransactionImpl = new FalseExamMarksEntryTransactionImpl();
 		}
 		return newExamMarksEntryTransactionImpl;
 	}
@@ -88,6 +91,21 @@ public class NewExamMarksEntryTransactionImpl implements INewExamMarksEntryTrans
 			Query selectedCandidatesQuery=session.createQuery(query);
 			list = selectedCandidatesQuery.list();
 			return list;
+		} catch (Exception e) {
+			log.error("Error while retrieving selected candidates.." +e);
+			throw  new ApplicationException(e);
+		}
+	}
+	@Override
+	public Object getUniqeDataForQuery(String query) throws Exception {
+		Session session = null;
+		Object obj=null;
+		try {
+			session = HibernateUtil.getSessionFactory().openSession();
+
+			Query selectedCandidatesQuery=session.createQuery(query);
+			obj = selectedCandidatesQuery.uniqueResult();
+			return obj;
 		} catch (Exception e) {
 			log.error("Error while retrieving selected candidates.." +e);
 			throw  new ApplicationException(e);
@@ -1590,6 +1608,97 @@ public class NewExamMarksEntryTransactionImpl implements INewExamMarksEntryTrans
 			// TODO: handle finally clause
 		}
 		return false;
+		
+	}
+	@Override
+	public boolean saveEvalationMarks(List<ExamMarkEvaluationBo> boList) throws BusinessException, ApplicationException {
+		log.debug("inside addTermsConditionCheckList");
+		Session session = null;
+		Transaction transaction = null;
+		try {
+			session = session = HibernateUtil.getSession();
+			transaction = session.beginTransaction();
+			transaction.begin();
+			int count = 0;
+			for (ExamMarkEvaluationBo bo : boList) {
+				session.saveOrUpdate(bo);
+			}
+			
+			
+			transaction.commit();
+			session.flush();
+			//session.close();
+			log.debug("leaving addTermsConditionCheckList");
+			return true;
+		} catch (ConstraintViolationException e) {
+			transaction.rollback();
+			log.error("Error in addTermsConditionCheckList impl...", e);
+			throw new BusinessException(e);
+		} catch (Exception e) {
+			transaction.rollback();
+			log.error("Error in addTermsConditionCheckList impl...", e);
+			throw new ApplicationException(e);
+		}
+	}
+	@Override
+	public int getDuplication(String falseNo) {
+		Session session = null;
+		
+		try {
+			session = HibernateUtil.getSession();
+			Query query=session.createQuery("select bo.id from ExamMarkEvaluationBo bo where bo.falseNo='"+falseNo+"'");
+			int ids = (Integer) query.uniqueResult();
+			return ids;
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		
+		finally {
+			// TODO: handle finally clause
+		}
+		return 0;
+		
+	}
+	
+	public ExamMarkEvaluationBo getEvalBo(String no) {
+		Session session = null;
+		ExamMarkEvaluationBo bo=new ExamMarkEvaluationBo();
+		try {
+			session = HibernateUtil.getSession();
+			String quer="from ExamMarkEvaluationBo f where f.falseNo='"+no+"'";
+		
+			Query query=session.createQuery(quer);
+			bo = (ExamMarkEvaluationBo) query.uniqueResult();
+			
+			return bo;
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		
+		finally {
+			// TODO: handle finally clause
+		}
+		return null;
+		
+	}
+	public FalseNumberBox getDetailsOfFalseBox(NewExamMarksEntryForm marksCardForm) {
+		Session session = null;
+		FalseNumberBox bo=new FalseNumberBox();
+		try {
+			session = HibernateUtil.getSession();
+			Query query=session.createQuery("from FalseNumberBox f where f.subjectId="+marksCardForm.getSubjectId()+
+					" and f.courseId="+marksCardForm.getCourseId()+" and f.correctionValidator.id="+marksCardForm.getUserId()+
+					" and f.examId.id="+marksCardForm.getExamId());
+			bo = (FalseNumberBox) query.uniqueResult();
+			return bo;
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		
+		finally {
+			// TODO: handle finally clause
+		}
+		return null;
 		
 	}
 

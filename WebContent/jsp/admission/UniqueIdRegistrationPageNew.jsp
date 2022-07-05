@@ -128,7 +128,7 @@
 		<title>Online Application Form</title>
 	</head>
 
-	<html:form action="/uniqueIdRegistration" method="post" styleId="register">
+	<html:form action="/uniqueIdRegistration" method="post" styleId="register" enctype="multipart/form-data">
 		<html:hidden property="method" styleId="method" value="" />
 		<html:hidden property="formName" value="uniqueIdRegistrationForm" />
 		<html:hidden property="mode" name="uniqueIdRegistrationForm" styleId="mode" />
@@ -330,6 +330,10 @@
 								<td class="row-odd"  height="30%" width="55%"><span class="Mandatory">*</span><font size="3px" color="red">Malakara Syrian Catholic Parish Name</font></td>
                            		<td class="row-even">
 			 						<html:text property="parishName" styleClass="textboxmedium" styleId="parishname" size="30" name="uniqueIdRegistrationForm" maxlength="10"/>
+								</td>
+								<td class="row-even">
+			 						<label>
+											Letter from Priest &nbsp;&nbsp;&nbsp;&nbsp;<html:file property="parishFile" styleId="parisletter" size="15" maxlength="30" name="uniqueIdRegistrationForm"/></label>
 								</td>
 							</tr>
 							</table>

@@ -433,10 +433,10 @@ function onlinePay(){
 		 <tr align="center"><td colspan="3" style="height: 20px">
 		 	<b>University Fee :</b> <bean:write name="newSupplementaryImpApplicationForm" property="universityFee" /></td>
 		 </tr>
-		 <logic:equal value="false" property="eGrandStudent" name="newSupplementaryImpApplicationForm">
+		 <%-- <logic:equal value="false" property="eGrandStudent" name="newSupplementaryImpApplicationForm"> --%>
 		 <tr align="center"><td colspan="3" style="height: 20px">
 		 	<b>Late Fine Fee :</b> <bean:write name="newSupplementaryImpApplicationForm" property="onlineServiceChargeFees" /></td>
-		 </tr></logic:equal>
+		 </tr><%-- </logic:equal> --%>
 		 <tr align="center"><td colspan="3" style="height: 20px">
 		 	<b>Total Fee : </b><bean:write name="newSupplementaryImpApplicationForm" property="totalFee" /></td>
 		 </tr>

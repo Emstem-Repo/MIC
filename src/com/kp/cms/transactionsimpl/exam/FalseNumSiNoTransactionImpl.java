@@ -10,10 +10,12 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
+import com.kp.cms.bo.exam.ExamFalseNumberGen;
 import com.kp.cms.bo.exam.FalseNumSiNo;
 import com.kp.cms.bo.exam.FalseNumberBox;
 import com.kp.cms.bo.exam.FalseNumberBoxDetails;
 import com.kp.cms.forms.exam.FalseNumSiNoForm;
+import com.kp.cms.to.exam.FalseBoxDetTo;
 import com.kp.cms.transactions.exam.IFalseNumSiNoTransaction;
 import com.kp.cms.utilities.HibernateUtil;
 
@@ -131,20 +133,25 @@ public class FalseNumSiNoTransactionImpl implements IFalseNumSiNoTransaction {
 			String hql=null;
 				if (outside!=2 && outside!=3) {
 					hql=" select users.id as user_id,  users.user_name  , "+
-							" ifnull(employee.id,guest_faculty.id) as employee_id, "+
-							" ifnull(employee.first_name,guest_faculty.first_name) as employ_name, department.id as department_id, "+
-							" department.name as department FROM  users  "+
-							" left join employee ON employee.id = users.employee_id left join guest_faculty on users.guest_id=guest_faculty.id "+
-							" inner join department ON ifnull((department.id = employee.department_id),(department.id=guest_faculty.department_id and guest_faculty.outside="+outside +")) "+
-							" where department.id= "+dept;
+						" guest_faculty.id as employee_id,"+
+						" guest_faculty.first_name as employ_name,"+
+						" department.id as department_id,"+
+						" department.name as department FROM  users   "+
+						" left join guest_faculty on users.guest_id=guest_faculty.id  and guest_faculty.outside=1"+
+						" inner join department ON department.id=guest_faculty.department_id ";
+							if (dept!=0) {
+								hql=hql+" where department.id= "+dept;
+							}
 				}else if (outside==2) {
 					hql=" select users.id as user_id,  users.user_name  , "+
 							" ifnull(employee.id,guest_faculty.id) as employee_id, "+
 							" ifnull(employee.first_name,guest_faculty.first_name) as employ_name, department.id as department_id, "+
 							" department.name as department FROM  users  "+
-							" left join employee ON employee.id = users.employee_id left join guest_faculty on users.guest_id=guest_faculty.id "+
-							" inner join department ON ifnull((department.id = employee.department_id),(department.id=guest_faculty.department_id )) "+
-							" where department.id= "+dept;
+							" left join employee ON employee.id = users.employee_id left join guest_faculty on users.guest_id=guest_faculty.id and guest_faculty.outside="+outside+
+							" inner join department ON ifnull((department.id = employee.department_id),(department.id=guest_faculty.department_id )) ";
+							if (dept!=0) {
+								hql=hql+" where department.id= "+dept;
+							}
 				}else{
 					hql=" select users.id as user_id,  users.user_name  , "+
 							" ifnull(employee.id,guest_faculty.id) as employee_id, "+
@@ -152,6 +159,9 @@ public class FalseNumSiNoTransactionImpl implements IFalseNumSiNoTransaction {
 							" department.name as department FROM  users  "+
 							" left join employee ON employee.id = users.employee_id left join guest_faculty on users.guest_id=guest_faculty.id "+
 							" inner join department ON ifnull((department.id = employee.department_id),(department.id=guest_faculty.department_id )) ";
+					if (dept!=0) {
+						hql=hql+" where department.id= "+dept;
+					}
 				}
 
 
@@ -276,5 +286,40 @@ public class FalseNumSiNoTransactionImpl implements IFalseNumSiNoTransaction {
 			e.printStackTrace();
 		}
 		return false;
+	}
+
+	@Override
+	public int getCount(int id) {
+		Session session = null;
+		long count=0;
+		try {
+			session = HibernateUtil.getSession();
+			count = (Long) session.createQuery("select count(*) from FalseNumberBoxDetails fb where fb.falseNumBox.id="+id).uniqueResult();
+			if(count!=0){
+				return (int)count;
+			}
+		} catch (Exception e) {
+			if (session != null){
+				session.flush();
+			}
+		}
+		return (int)count;
+	}
+
+	@Override
+	public ExamFalseNumberGen getcheckfalseNoAvailable(FalseNumSiNoForm cardSiNoForm,FalseBoxDetTo to) {
+		Session session =null;
+		ExamFalseNumberGen boxdetailsList =null;
+		try{
+			session =HibernateUtil.getSession();
+			String hql = "from ExamFalseNumberGen fb where fb.falseNo='"+to.getFalseNum()+"' and fb.subject.id="+cardSiNoForm.getSubjectId()+" and fb.examId.id="+cardSiNoForm.getExamId()+" and fb.course.id="+cardSiNoForm.getCourseId();
+			Query query = session.createQuery(hql);
+			boxdetailsList = (ExamFalseNumberGen) query.uniqueResult();
+			
+				return boxdetailsList;
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }

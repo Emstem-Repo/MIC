@@ -265,6 +265,7 @@ public class LoginForm extends BaseActionForm {
 	private String lateFineFees;
 	private List<ExamInternalRetestApplicationSubjectsTO> examInternalRetestApplicationSubjectsTO;
 	private List<RevaluationMarksUpdateTo> revaluationMemoList;
+	private String hallticketBlock;
 	
 	
 
@@ -2119,6 +2120,14 @@ public class LoginForm extends BaseActionForm {
 
 	public void setRevaluationMemoList(List<RevaluationMarksUpdateTo> revaluationMemoList) {
 		this.revaluationMemoList = revaluationMemoList;
+	}
+
+	public String getHallticketBlock() {
+		return hallticketBlock;
+	}
+
+	public void setHallticketBlock(String hallticketBlock) {
+		this.hallticketBlock = hallticketBlock;
 	}
 	
 	

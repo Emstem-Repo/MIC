@@ -12192,7 +12192,7 @@ This is a blank Tiles definition file with a commented example.
         <put name="body" value="/jsp/studentlogin/initRevaluationMarkscardStudLogin.jsp"/>
     </definition>
     
-	 <definition name="initSINO" extends=".cmsLayout">
+	 <definition name="initfalSINO" extends=".cmsLayout">
         <put name="title" value="Exam Home"/>
         <put name="module" value="Exam"/>
         <put name="page" value="BarCode Type">
@@ -12235,4 +12235,25 @@ This is a blank Tiles definition file with a commented example.
         </put>
         <put name="body" value="/jsp/employee/AddExaminer.jsp"/>
     </definition> 
+    <definition name="initFalseMarksEntry" extends=".cmsLayout">
+        <put name="title" value="Exam Home"/>
+        <put name="module" value="Exam"/>
+        <put name="page" value="BarCode Type">
+        </put>
+        <put name="body" value="/jsp/exam/falseExamMarksEntry.jsp"/>
+    </definition>
+    <definition name="initFinalFalseMarksEntry" extends=".cmsLayout">
+        <put name="title" value="Exam Home"/>
+        <put name="module" value="Exam"/>
+        <put name="page" value="BarCode Type">
+        </put>
+        <put name="body" value="/jsp/exam/finalFalseExamMarksEntry.jsp"/>
+    </definition>
+    <definition name="finalFalseMarksEntryresult" extends=".cmsLayout">
+        <put name="title" value="Exam Home"/>
+        <put name="module" value="Exam"/>
+        <put name="page" value="BarCode Type">
+        </put>
+        <put name="body" value="/jsp/exam/falseMarksEntryResult.jsp"/>
+    </definition>
 </tiles-definitions>

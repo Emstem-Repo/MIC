@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.poi.hssf.record.formula.functions.Count;
+
 import java.util.Iterator;
 import com.kp.cms.bo.admin.Course;
 import com.kp.cms.bo.admin.Subject;
@@ -27,6 +29,7 @@ public class FalseNumSiNoHelper {
 		return marksCardSiNoHelper;
 	}
 	public FalseNumSiNo convertFormToBo(FalseNumSiNoForm cardSiNoForm)throws Exception {
+		
 		// TODO Auto-generated method stub
 		FalseNumSiNo bo = new FalseNumSiNo();
 		if(cardSiNoForm.getStartNo().equalsIgnoreCase(""))
@@ -167,6 +170,7 @@ public class FalseNumSiNoHelper {
 	}
 	public List<FalseBoxDetTo> setFalseNumberBoxBoTo(List<FalseNumberBox> boxList) {
 		List<FalseBoxDetTo> toList=new ArrayList();
+		IFalseNumSiNoTransaction transaction = new FalseNumSiNoTransactionImpl();
 		if (boxList!=null) {
 		for (FalseNumberBox bo : boxList) {
 			FalseBoxDetTo to=new FalseBoxDetTo();
@@ -180,8 +184,14 @@ public class FalseNumSiNoHelper {
 			to.setSubjectName(bo.getSubjectId().getName());
 			to.setExamId(bo.getExamId().getId());
 			to.setExamName(bo.getExamId().getName());
-			to.setExaminerId(bo.getExaminerId().getId());
-			to.setExaminerName(bo.getExaminerId().getEmployee().getFirstName());
+			to.setCount(transaction.getCount(bo.getId()));
+			if (bo.getExaminerId()!=null) {
+				to.setExaminerId(bo.getExaminerId().getId());
+				if (bo.getExaminerId().getEmployee()!=null) 
+					to.setExaminerName(bo.getExaminerId().getEmployee().getFirstName());
+				else if (bo.getExaminerId().getGuest()!=null) 
+					to.setExaminerName(bo.getExaminerId().getGuest().getFirstName());
+			}
 			to.setExamType(String.valueOf(bo.getExamId().getExamType().getId()));
 			
 			if (bo.getAdditionalExaminer()!=null) {

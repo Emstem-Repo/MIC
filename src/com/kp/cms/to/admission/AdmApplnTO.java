@@ -232,6 +232,8 @@ public class AdmApplnTO {
 
 	private List<CandidatePreferenceEntranceDetailsTO> candidatePreferenceEntranceDetails;
 	private String totalCredit;
+	private String indexMark;
+	private String rank;
 	
 	public Boolean getInactiveRadio() {
 		return inactiveRadio;
@@ -1324,5 +1326,21 @@ public class AdmApplnTO {
 
 	public void setQuota(String quota) {
 		this.quota = quota;
+	}
+
+	public String getIndexMark() {
+		return indexMark;
+	}
+
+	public void setIndexMark(String indexMark) {
+		this.indexMark = indexMark;
+	}
+
+	public String getRank() {
+		return rank;
+	}
+
+	public void setRank(String rank) {
+		this.rank = rank;
 	}
 }

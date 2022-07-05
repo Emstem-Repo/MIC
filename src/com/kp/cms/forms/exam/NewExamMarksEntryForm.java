@@ -10,6 +10,8 @@ import org.apache.struts.action.ActionMapping;
 
 import com.kp.cms.forms.BaseActionForm;
 import com.kp.cms.to.admin.StudentTO;
+import com.kp.cms.to.exam.ExamMarkEvaluationTo;
+import com.kp.cms.to.exam.FalseNoDisplayTo;
 import com.kp.cms.to.exam.KeyValueTO;
 import com.kp.cms.to.exam.StudentMarksTO;
 import com.kp.cms.to.exam.StudentMarksTO1;
@@ -70,7 +72,16 @@ public class NewExamMarksEntryForm extends BaseActionForm {
 	private String retest;
 	private int totalCount;
 	private boolean generateRandomly;
-	
+	private String falseNo;
+	private String name;
+	private boolean falseBased;
+	private FalseNoDisplayTo displatoList;
+	private String evalNo;
+	private StudentMarksTO studentMarksTo;
+	private List<ExamMarkEvaluationTo> examEvalToList;
+	private String lastEnteredFalsenum;
+	private String falseNumber;
+	private boolean finalValidation;
 
 
 	public boolean isIsfalsegenerated() {
@@ -303,6 +314,11 @@ public class NewExamMarksEntryForm extends BaseActionForm {
 		this.regular=false;
 		this.internal=false;
 		this.displaySubType=null;
+		this.falseBased=false;
+		this.name=null;
+		this.falseNo=null;
+		this.evalNo=null;
+		this.displatoList=new FalseNoDisplayTo();
 	}
 	public Map<Integer, Integer> getStudentsYearMap() {
 		return studentsYearMap;
@@ -423,6 +439,67 @@ public class NewExamMarksEntryForm extends BaseActionForm {
 	}
 	public void setGenerateRandomly(boolean generateRandomly) {
 		this.generateRandomly = generateRandomly;
+	}
+	public String getFalseNo() {
+		return falseNo;
+	}
+	public void setFalseNo(String falseNo) {
+		this.falseNo = falseNo;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public boolean isFalseBased() {
+		return falseBased;
+	}
+	public void setFalseBased(boolean falseBased) {
+		this.falseBased = falseBased;
+	}
+	public FalseNoDisplayTo getDisplatoList() {
+		return displatoList;
+	}
+	public void setDisplatoList(FalseNoDisplayTo displatoList) {
+		this.displatoList = displatoList;
+	}
+	public String getEvalNo() {
+		return evalNo;
+	}
+	public void setEvalNo(String evalNo) {
+		this.evalNo = evalNo;
+	}
+	public StudentMarksTO getStudentMarksTo() {
+		return studentMarksTo;
+	}
+	public void setStudentMarksTo(StudentMarksTO studentMarksTo) {
+		this.studentMarksTo = studentMarksTo;
+	}
+	public String getLastEnteredFalsenum() {
+		return lastEnteredFalsenum;
+	}
+	public void setLastEnteredFalsenum(String lastEnteredFalsenum) {
+		this.lastEnteredFalsenum = lastEnteredFalsenum;
+	}
+	
+	public boolean isFinalValidation() {
+		return finalValidation;
+	}
+	public void setFinalValidation(boolean finalValidation) {
+		this.finalValidation = finalValidation;
+	}
+	public List<ExamMarkEvaluationTo> getExamEvalToList() {
+		return examEvalToList;
+	}
+	public void setExamEvalToList(List<ExamMarkEvaluationTo> examEvalToList) {
+		this.examEvalToList = examEvalToList;
+	}
+	public String getFalseNumber() {
+		return falseNumber;
+	}
+	public void setFalseNumber(String falseNumber) {
+		this.falseNumber = falseNumber;
 	}
 	
 	

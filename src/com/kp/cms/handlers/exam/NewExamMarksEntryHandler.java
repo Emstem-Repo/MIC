@@ -10,9 +10,11 @@ import java.util.Set;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.kp.cms.bo.exam.ExamFalseNumberGen;
 import com.kp.cms.forms.exam.NewExamMarksEntryForm;
 import com.kp.cms.helpers.exam.NewExamMarksEntryHelper;
 import com.kp.cms.to.admin.StudentTO;
+import com.kp.cms.to.exam.FalseNoDisplayTo;
 import com.kp.cms.to.exam.MarksDetailsTO;
 import com.kp.cms.to.exam.StudentMarksTO;
 import com.kp.cms.transactions.exam.INewExamMarksEntryTransaction;
@@ -192,6 +194,45 @@ public class NewExamMarksEntryHandler {
 		// TODO Auto-generated method stub
 		INewExamMarksEntryTransaction transaction=NewExamMarksEntryTransactionImpl.getInstance();
 		return transaction.getCurrentNO(marksCardForm);
+	}
+	public void setValuesFalseNumberBased(NewExamMarksEntryForm newExamMarksEntryForm) {
+		INewExamMarksEntryTransaction transaction=NewExamMarksEntryTransactionImpl.getInstance();
+		ExamFalseNumberGen bo=null;
+		boolean result=false;
+		FalseNoDisplayTo to=new FalseNoDisplayTo();
+		result= transaction.checkFallseBox(newExamMarksEntryForm);
+		if (result) {
+			bo= transaction.getDetailsByFalsenum(newExamMarksEntryForm.getFalseNo());
+		}
+		
+		if (bo!=null) {
+			to.setClassName(bo.getClassId().getName());
+			to.setCourseName(bo.getCourse().getName());
+			to.setExamName(bo.getExamId().getName());
+			to.setExamType(bo.getExamId().getExamType().getName());
+			to.setSubjectName(bo.getSubject().getName());
+			to.setTermNum(bo.getClassId().getTermNumber()+"-semeser");
+			to.setStudentId(String.valueOf(bo.getStudentId().getId()));
+			if (bo.getSubject().getIsTheoryPractical()=="T" || bo.getSubject().getIsTheoryPractical().equalsIgnoreCase("T")) {
+				to.setSubjectType("Theory");
+			}else if (bo.getSubject().getIsTheoryPractical()=="P" || bo.getSubject().getIsTheoryPractical().equalsIgnoreCase("P")) {
+				to.setSubjectType("Practical");
+			}
+			newExamMarksEntryForm.setExamType(bo.getExamId().getExamType().getName());
+			newExamMarksEntryForm.setYear(String.valueOf(bo.getExamId().getAcademicYear()));
+			newExamMarksEntryForm.setExamId(String.valueOf(bo.getExamId().getId()));
+			newExamMarksEntryForm.setCourseId(String.valueOf(bo.getCourse().getId()));
+			newExamMarksEntryForm.setSubjectId(String.valueOf(bo.getSubject().getId()));
+			newExamMarksEntryForm.setSchemeNo("7_"+bo.getClassId().getTermNumber());
+			if (bo.getSubject().getIsTheoryPractical()=="T" || bo.getSubject().getIsTheoryPractical().equalsIgnoreCase("T")) {
+				newExamMarksEntryForm.setSubjectType("1");
+			}else if (bo.getSubject().getIsTheoryPractical()=="P" || bo.getSubject().getIsTheoryPractical().equalsIgnoreCase("P")) {
+				newExamMarksEntryForm.setSubjectType("0");
+			}
+			
+			newExamMarksEntryForm.setDisplatoList(to);
+		}
+		
 	}
 	
 }

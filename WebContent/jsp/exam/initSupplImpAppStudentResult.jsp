@@ -233,9 +233,9 @@ function onlinePay(){
 									No.</td>
 									<td rowspan="2" class="studentrow-odd">Subject Code</td>
 									<td rowspan="2" class="studentrow-odd">Subject Name</td>
-									<nested:equal value="true" name="newSupplementaryImpApplicationForm" property="supplementary"><td colspan="2" class="studentrow-odd">
+									<%-- <nested:equal value="true" name="newSupplementaryImpApplicationForm" property="supplementary"><td colspan="2" class="studentrow-odd">
 									<div align="center">Failed</div>
-									</td></nested:equal>
+									</td></nested:equal> --%>
 									<td colspan="2" class="studentrow-odd">
 									<div align="center">Apply For</div>
 									</td>
@@ -245,8 +245,10 @@ function onlinePay(){
 									-->
 								</tr>
 								<tr>
-									<nested:equal value="true" name="newSupplementaryImpApplicationForm" property="supplementary"><td class="studentrow-odd">Theory</td>
-									<td class="studentrow-odd">Practical</td></nested:equal>
+									<%-- <nested:equal value="true" name="newSupplementaryImpApplicationForm" property="supplementary">
+									<td class="studentrow-odd">Theory</td>
+									<td class="studentrow-odd">Practical</td>
+									</nested:equal> --%>
 									<td class="studentrow-odd">Theory</td>
 									<td class="studentrow-odd">Practical</td>
 								</tr>
@@ -278,7 +280,7 @@ function onlinePay(){
 										--%>
 										
 										<nested:equal value="true" property="isSupplementary">
-										<td class='<%=dynamicStyle%>'>
+										<%-- <td class='<%=dynamicStyle%>'>
 										<%    String ft2 = "ft2_"+count2+"_"+count1+"_"+count; 
                       					 	  String ft1 = "ft1_"+count2+"_"+count1+"_"+count; %>
                       					 	  
@@ -293,8 +295,8 @@ function onlinePay(){
 												document.getElementById("sp_<c:out value='${count2}'/>_<c:out value='${count1}'/>_<c:out value='${count}'/>").style.background="red";
 												}
        										</script>
-										</td>
-										<td class='<%=dynamicStyle%>'>
+										</td> --%>
+										<%-- <td class='<%=dynamicStyle%>'>
 										<%    String fp2 = "hidden1_"+count2+"_"+count1+"_"+count; 
                       						  String fp1 = "check1_"+count2+"_"+count1+"_"+count; %>
 		                     				 <nested:hidden styleId='<%=fp2%>' property="isFailedPractical" />
@@ -308,7 +310,7 @@ function onlinePay(){
 										document.getElementById("pr_<c:out value='${count2}'/>_<c:out value='${count1}'/>_<c:out value='${count}'/>").style.background="red";
 										}
 										</script>
-										</td>
+										</td> --%>
 										
 										<% String control="control1_"+count;
 										String disable="disable_"+count;
@@ -378,7 +380,7 @@ function onlinePay(){
 										<nested:equal value="true" name="newSupplementaryImpApplicationForm" property="supplementary">
 												
 												
-												<td class='<%=dynamicStyle%>'>
+												<%-- <td class='<%=dynamicStyle%>'>
 										<%    String ft2 = "ft2_"+count2+"_"+count1+"_"+count; 
                       					 	  String ft1 = "ft1_"+count2+"_"+count1+"_"+count; %>
                       					 	  
@@ -393,8 +395,8 @@ function onlinePay(){
 												document.getElementById("sp_<c:out value='${count2}'/>_<c:out value='${count1}'/>_<c:out value='${count}'/>").style.background="red";
 												}
        										</script>
-										</td>
-										<td class='<%=dynamicStyle%>'>
+										</td> --%>
+										<%-- <td class='<%=dynamicStyle%>'>
 										<%    String fp2 = "hidden1_"+count2+"_"+count1+"_"+count; 
                       						  String fp1 = "check1_"+count2+"_"+count1+"_"+count; %>
 		                     				 <nested:hidden styleId='<%=fp2%>' property="isFailedPractical" />
@@ -408,7 +410,7 @@ function onlinePay(){
 										document.getElementById("pr_<c:out value='${count2}'/>_<c:out value='${count1}'/>_<c:out value='${count}'/>").style.background="red";
 										}
 										</script>
-										</td>
+										</td> --%>
 												
 										</nested:equal>
 												

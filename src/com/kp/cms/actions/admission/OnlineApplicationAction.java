@@ -665,7 +665,7 @@ static {
 							if(amount!=null && !amount.equalsIgnoreCase("")){
 								
 							if(ismng){
-								int amt=Integer.parseInt(amount)+750;//500 is adding for management quota
+								int amt=Integer.parseInt(amount)+1000;//500 is adding for management quota
 								amount=String.valueOf(amt);
 							admForm.setApplicationAmount(amount);
 							admForm.setApplicationAmount1(amount);

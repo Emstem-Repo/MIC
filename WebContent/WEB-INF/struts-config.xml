@@ -6521,7 +6521,7 @@
             <forward name="addOnCourseDetailsInit" path="addOnCourseDetailsInit"/>
         </action>
         <action path="/falsenumSINO" type="com.kp.cms.actions.exam.FalseNumSiNoAction" name="falsenumSINOForm"  parameter="method" validate="false">
-   		<forward name="initSINO" path="initSINO"/>
+   		<forward name="initSINO" path="initfalSINO"/>
    		<forward name="initBOX" path="initBOX"/>
    		<forward name="initBOXSecond" path="initBOXSecond"/>
    		<forward name="updateTeacher" path="updateTeacher"/>
@@ -6538,6 +6538,15 @@
 			<forward name="guestInfoSubmitConfirm" path="guestInfoSubmitConfirm"/>
 			<forward name="guestEditSubmitConfirm" path="guestEditSubmitConfirm"/>
 			<forward name="guestFacultyBankDetailsEdit" path="guestFacultyBankDetailsEdit"/>
+        </action>
+        
+        <action path="/falseMarkEntry" type="com.kp.cms.actions.exam.FalseNumberExamMarksEntryAction" name="newExamMarksEntryForm" scope="session" parameter="method" validate="false">
+            <forward name="initFalseMarksEntry" path="initFalseMarksEntry"/>
+            <forward name="initFinalFalseMarksEntry" path="initFinalFalseMarksEntry"/>
+            <forward name="finalFalseMarksEntryresult" path="finalFalseMarksEntryresult"/>
+			
+			<forward name="printFalseMarks" path="/jsp/exam/printFalseMarkCard.jsp"/>
+						
         </action>
 		
 	</action-mappings>

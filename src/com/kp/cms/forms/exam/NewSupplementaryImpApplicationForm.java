@@ -52,6 +52,7 @@ public class NewSupplementaryImpApplicationForm extends BaseActionForm {
 	private boolean displayButton;
 	private boolean isExtended;
 	private double fineFees;
+	private String eGrandFees;
 	
 	//raghu added from mounts 
 	private String dateOfApplication;
@@ -1190,5 +1191,11 @@ public class NewSupplementaryImpApplicationForm extends BaseActionForm {
 	}
 	public void setTotalRevaluationPaymentFees(String totalRevaluationPaymentFees) {
 		this.totalRevaluationPaymentFees = totalRevaluationPaymentFees;
+	}
+	public String geteGrandFees() {
+		return eGrandFees;
+	}
+	public void seteGrandFees(String eGrandFees) {
+		this.eGrandFees = eGrandFees;
 	}
 }

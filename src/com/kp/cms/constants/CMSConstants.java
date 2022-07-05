@@ -5053,10 +5053,10 @@ public class CMSConstants extends CMSExamConstants {
 	public static final String PGI_CHECKSUM_KEY = "Rui8Hy58";
 */
 	
-	public static final String PGI_MERCHANT_ID = "xdRPRHGC";
+	public static final String PGI_MERCHANT_ID = "F0meUOlq";
 	//original saltCHANT_ID_STU = "rhzXewvw";
-	public static final String PGI_SECURITY_ID = "3sPSQVsUob";
-	public static final String PGI_CHECKSUM_KEY = "3sPSQVsUob";
+	public static final String PGI_SECURITY_ID = "fQmaRSFBHb";
+	public static final String PGI_CHECKSUM_KEY = "fQmaRSFBHb";
 	
 
 	//original key for student semester fees

@@ -1,3 +1,4 @@
+
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -34,7 +35,7 @@ function printPass(){
 	<html:hidden property="pageType" value="1" />
 	<html:hidden property="formName" value="loginform" />
 
-	
+	<logic:empty name="loginform" property="hallticketBlock">
 	<table width="98%" border="0">
 		<tr>
 			<td><span class="Bredcrumbs"><bean:message key="knowledgepro.admin.studentlogin" />
@@ -366,4 +367,13 @@ function printPass(){
 			</td>
 		</tr>
 	</table>
+	</logic:empty>
+	<logic:notEmpty name="loginform" property="hallticketBlock">
+							<table width="100%" cellspacing="1" cellpadding="2" class="row-white" style="font-family: Times New Roman">
+								<tr>
+									<td width="80%" align="center" class="bold"><font size="3"><bean:write name="loginform" property="hallticketBlock"/></font></td>
+								</tr>
+								
+							</table>
+							</logic:notEmpty>
 </html:form>

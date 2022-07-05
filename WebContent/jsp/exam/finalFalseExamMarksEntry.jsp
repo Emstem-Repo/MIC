@@ -10,10 +10,6 @@
 <head>
 <title>:: CMS ::</title>
 <SCRIPT>
-	function cancelAction() {
-		document.location.href = "LoginAction.do?method=LoginAction";
-	}
-
 	function getExamName(examType) {
 		getExamNameByExamType("examMap", examType, "examNameId", updateExamName);
 
@@ -66,6 +62,12 @@
 	}
 	function updateClass(req) {
 		updateSubjectsTypeBySubjectIdForMarks(req, "subjectType");
+		var subjectId = document.getElementById("subject").value;
+		var subjectType = document.getElementById("subjectType").value;
+		var courseId = document.getElementById("course").value;
+		var schemeId = document.getElementById("scheme").value;
+		getAnswerScript(subjectId, subjectType, courseId, schemeId);
+		getEvaluatorType(subjectId, subjectType, courseId, schemeId);
 	}
 
 	function getEvaluatorType(subjectId, subjectType, courseId, schemeId) {
@@ -120,7 +122,8 @@
 		}
 	}
 	function getSectionByScheme(schemeId) {
-		var ScodeName="sCode";
+		document.getElementById("sCodeName_1").checked = true;
+		var ScodeName=document.getElementById("sCodeName_1").value;
 		getSCodeName(ScodeName);
 		var courseId = document.getElementById("course").value;
 		var examId =  document.getElementById("examNameId").value;
@@ -151,78 +154,54 @@
 	function getSCodeName(sCName) {
 
 		var courseId = document.getElementById("course").value;
+		getAnswerScript("", "", courseId, schemeId);
+		getEvaluatorType("", "", courseId, schemeId);
 		var examId = document.getElementById("examNameId").value;
 		var schemeId = document.getElementById("scheme").value;
-		getSubjectsCodeNameByCourseSchemeExamId("schemeMap", sCName, courseId, "subject", updateToSubject, schemeId,examId);
+		getSubjectsCodeNameByCourseSchemeExamId("schemeMap", sCName, courseId, "subject",
+				updateToSubject, schemeId,examId);
 	}
 	function updateToSubject(req) {
 		var subco ="subco";
 		updateOptionsFromMap(req, "subject", "- Select -");
 	}
-	function getTeacher() {
-
-		var year=document.getElementById("year").value;
-		var subjectId = document.getElementById("subject").value;
-		getTeacherBysubId("teachersMap", year, subjectId, "teachers", updateToTeachers);
-	}
-	function updateToTeachers(req) {
-		updateOptionsFromMap(req, "teachers", "- Select -");
-	}
-	function barcodeAlert() {
-		  alert("CONECT YOUR BARCODE READER AND SCAN CODES");
-		}
 	
-	function editFalseBox(id){
-		document.getElementById("falseBoxId").value=id;
-		document.getElementById("method").value="editBarcodeBox";
-        document.falsenumSINOForm.submit();
-	}
-	function updateFalseBoxList() {
-		var year = document.getElementById("year").value;
-		var exam = document.getElementById("examNameId").value;
-		document.location.href = "falsenumSINO.do?method=updateFalseBoxList&year="+year+"&examId="+exam;
-	}
-	function resetInfo() {
-		document.location.href = "falsenumSINO.do?method=initFalseBox";
-	}
-
 </SCRIPT>
-<style>
-	.row-white{
-		border: 1px solid #d17171;
-		font-weight: bold;
-		vertical-align: baseline;;
-	}
-</style>
 
 </head>
 
 
-<html:form action="/falsenumSINO" method="POST" enctype="multipart/form-data">
-	<html:hidden property="method" styleId="method" value="initFalseBoxSecondPage" />
-	<html:hidden property="formName" value="falsenumSINOForm" styleId="formName" />
-	<html:hidden property="pageType" value="2" styleId="pageType" />
-	<html:hidden property="displaySubType" styleId="sCodeName_2" value="sName" />
-	<html:hidden property="falseBoxId" styleId="falseBoxId" />
-	
-									
+<html:form action="/falseMarkEntry" method="POST" enctype="multipart/form-data">
+	<html:hidden property="method" styleId="method" value="getCandidates" />
+	<html:hidden property="formName" value="newExamMarksEntryForm" styleId="formName" />
+	<html:hidden property="pageType" value="1" styleId="pageType" />
+	<html:hidden property="validationAST" styleId="validationAST" />
+	<html:hidden property="validationET" styleId="validationET"/>
+	<html:hidden property="displayAST" styleId="displayAST"/>
+	<html:hidden property="displayET" styleId="displayET"/>
+	<html:hidden property="finalValidation" value="true"/>
 	<table width="99%" border="0">
 
 		<tr>
 			<td><span class="heading"><span class="Bredcrumbs">Exam
-			&gt;&gt; Exam paper boxing&gt;&gt;</span></span></td>
+			&gt;&gt; Exam Marks Entry&gt;&gt;</span></span></td>
+
 		</tr>
 		<tr>
 			<td>
 			<table width="100%" border="0" cellpadding="0" cellspacing="0">
 				<tr>
-					<td width="9"><img src="images/Tright_03_01.gif" width="9" height="29"></td>
-					<td background="images/Tcenter.gif" class="heading_white">Exam papers Boxing</td>
-					<td width="10"><img src="images/Tright_1_01.gif" width="9" height="29"></td>
+					<td width="9"><img src="images/Tright_03_01.gif" width="9"
+						height="29"></td>
+					<td background="images/Tcenter.gif" class="heading_white">Student
+					Marks Entry</td>
+					<td width="10"><img src="images/Tright_1_01.gif" width="9"
+						height="29"></td>
 				</tr>
 				<tr>
 					<td height="19" valign="top" background="images/Tright_03_03.gif"></td>
 					<td height="20" class="news">
+
 					<div id="errorMessage"><FONT color="red"><html:errors /></FONT>
 					<FONT color="green"> <html:messages id="msg"
 						property="messages" message="true">
@@ -255,12 +234,12 @@
 									<%  boolean disableInternal=false; 
 										boolean disableRegular=false;
 									%>
-									<c:if test="${falsenumSINOForm.regular==false && falsenumSINOForm.internal==true}">
+									<c:if test="${newExamMarksEntryForm.regular==false && newExamMarksEntryForm.internal==true}">
 										<%   disableInternal=false; 
 											 disableRegular=true;
 										%>
 									</c:if>
-									<c:if test="${falsenumSINOForm.regular==true && falsenumSINOForm.internal==false}">
+									<c:if test="${newExamMarksEntryForm.regular==true && newExamMarksEntryForm.internal==false}">
 										<%   disableInternal=true; 
 											 disableRegular=false;
 										%>
@@ -287,7 +266,7 @@
 									<td width="16%" class="row-even" valign="top">
 									<input
 										type="hidden" id="tempyear" name="appliedYear"
-										value="<bean:write name="falsenumSINOForm" property="year"/>" />
+										value="<bean:write name="newExamMarksEntryForm" property="year"/>" />
 									<html:select 
 										property="year" styleId="year"
 										styleClass="combo" onchange="getExamsByExamTypeAndYear()">
@@ -301,15 +280,15 @@
 
 									<td class="row-even"><html:select property="examId"
 										styleClass="combo" styleId="examNameId"
-										name="falsenumSINOForm" onchange="updateFalseBoxList()"
+										name="newExamMarksEntryForm" onchange="getCourse(this.value)"
 										style="width:200px">
 										<html:option value="">
 											<bean:message key="knowledgepro.admin.select" />
 										</html:option>
-										<logic:notEmpty name="falsenumSINOForm"
+										<logic:notEmpty name="newExamMarksEntryForm"
 											property="examNameList">
 											<html:optionsCollection property="examNameList"
-												name="falsenumSINOForm" label="value" value="key" />
+												name="newExamMarksEntryForm" label="value" value="key" />
 										</logic:notEmpty>
 									</html:select></td>
 								</tr>
@@ -325,10 +304,10 @@
 										<html:option value="">
 											<bean:message key="knowledgepro.select" />
 										</html:option>
-										<logic:notEmpty name="falsenumSINOForm"
+										<logic:notEmpty name="newExamMarksEntryForm"
 											property="courseMap">
 											<html:optionsCollection property="courseMap"
-												name="falsenumSINOForm" label="value" value="key" />
+												name="newExamMarksEntryForm" label="value" value="key" />
 										</logic:notEmpty>
 									</html:select></td>
 
@@ -336,18 +315,39 @@
 									<div align="right"><span class="Mandatory">*</span>
 									Scheme:</div>
 									</td>
+								<!--  	<td width="26%" class="row-even"><html:select
+										property="schemeNo" styleClass="body" styleId="scheme"
+										onchange="getSubject(this.value), getSectionByScheme(this.value)">
+										<html:option value="">
+											<bean:message key="knowledgepro.select" />
+										</html:option>
+										<logic:notEmpty name="newExamMarksEntryForm"
+											property="schemeMap">
+											<html:optionsCollection property="schemeMap"
+												name="newExamMarksEntryForm" label="value" value="key" />
+										</logic:notEmpty>
+									</html:select></td> -->
 									<td width="26%" class="row-even"><html:select
 										property="schemeNo" styleClass="body" styleId="scheme"
 										onchange="getSectionByScheme(this.value)" > 
 										<html:option value="">
 											<bean:message key="knowledgepro.select" />
 										</html:option>
-										<logic:notEmpty name="falsenumSINOForm"
+										<logic:notEmpty name="newExamMarksEntryForm"
 											property="schemeMap">
 											<html:optionsCollection property="schemeMap"
-												name="falsenumSINOForm" label="value" value="key" />
+												name="newExamMarksEntryForm" label="value" value="key" />
 										</logic:notEmpty>
 									</html:select></td>
+								</tr>
+								<tr>
+								<td height="25" colspan="2" class="row-even">
+									<div align="center">
+									<html:radio property="displaySubType" styleId="sCodeName_1" value="sCode" onchange="getSCodeName(this.value)">Subject Code</html:radio>
+									 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									 <html:radio property="displaySubType" styleId="sCodeName_2" value="sName" onchange="getSCodeName(this.value)">Subject Name</html:radio>
+									</div>
+									</td>
 								</tr>
 								<tr>
 									<td height="25" class="row-odd">
@@ -356,39 +356,94 @@
 									</td>
 									<td height="25" class="row-even"><html:select
 										property="subjectId" styleClass="body" styleId="subject"
-										onchange="getSubjectType(this.value),getTeacher()">
+										onchange="getSubjectType(this.value)">
 										<html:option value="">
 											<bean:message key="knowledgepro.select" />
 										</html:option>
-										<logic:notEmpty name="falsenumSINOForm"
-											property="subjectCodeNameMap">
-											<html:optionsCollection property="subjectCodeNameMap"
-												name="falsenumSINOForm" label="value" value="key" />
+									<!--  	<logic:notEmpty name="newExamMarksEntryForm"
+											property="subjectMap">
+											<html:optionsCollection property="subjectMap"
+												name="newExamMarksEntryForm" label="value" value="key" />
+										</logic:notEmpty>-->
+										<logic:notEmpty name="newExamMarksEntryForm"
+											property="subjectList">
+											<html:optionsCollection property="setSubjectCodeNameMap"
+												name="newExamMarksEntryForm" label="value" value="key" />
 										</logic:notEmpty>
 									</html:select></td>
-									 <td height="25" class="row-odd">
-									<div align="right" ><span class="Mandatory">*</span>Box No</div>
-									</td>
-
-									<td height="25" class="row-even" colspan="1"><html:text property="boxNo" styleId="boxNo" name="falsenumSINOForm"></html:text></td>
-
-								</tr>
-							 	<%-- <tr >
 									<td height="25" class="row-odd">
-									<div align="right" ><span class="Mandatory">*</span>Teacher</div>
+									<div align="right">Subject Type:</div>
 									</td>
-									<td height="25" class="row-even">
-									<html:select name="falsenumSINOForm" styleId="teachers" property="teachers"  >
-									<html:option value="">
+
+									<td height="25" class="row-even"><html:select
+										property="subjectType" styleId="subjectType" onchange="displayEvaluAndAnswerScript(this.value)">
+										<html:option value="">
 											<bean:message key="knowledgepro.select" />
 										</html:option>
-                    						<html:optionsCollection name="falsenumSINOForm" property="teachersMap" label="value" value="key"/>
-                  					</html:select></td>
+										<logic:notEmpty name="newExamMarksEntryForm"
+											property="subjectTypeMap">
+											<html:optionsCollection property="subjectTypeMap"
+												name="newExamMarksEntryForm" label="value" value="key" />
+										</logic:notEmpty>
+									</html:select></td>
 
+								</tr>
+								<tr>
+									<td height="25" class="row-odd">
+									<div align="right" id="et"><span class="Mandatory">*</span>Evaluator
+									Type :</div>
+									</td>
+									<td height="25" class="row-even"><html:select
+										property="evaluatorType" styleClass="combo"
+										styleId="evaluatorType" name="newExamMarksEntryForm"
+										style="width:200px">
+										<html:option value="">
+											<bean:message key="knowledgepro.admin.select" />
+										</html:option>
+										<logic:notEmpty name="newExamMarksEntryForm"
+											property="evaluatorList">
+											<html:optionsCollection property="evaluatorList"
+												name="newExamMarksEntryForm" label="value" value="key" />
+										</logic:notEmpty>
+									</html:select></td>
+
+									<td height="25" class="row-odd">
+									<div align="right" id="ast"><span class="Mandatory">*</span>Answer
+									Script Type :</div>
+									</td>
+
+									<td height="25" class="row-even" colspan="1"><html:select
+										property="answerScriptType" styleClass="combo"
+										styleId="answerScriptType" name="newExamMarksEntryForm"
+										style="width:200px">
+										<html:option value="">
+											<bean:message key="knowledgepro.admin.select" />
+										</html:option>
+										<logic:notEmpty name="newExamMarksEntryForm" property="answerScriptTypeList">
+											<html:optionsCollection property="answerScriptTypeList"
+												name="newExamMarksEntryForm" label="value" value="key" />
+										</logic:notEmpty>
+									</html:select></td>
+
+								</tr>
+								<tr>
+									<td class="row-odd">
 									
-
-								</tr> --%>
-							
+									</td>
+									<td class="row-even"></td>
+									<td width="22%" class="row-odd">
+									<div align="right">&nbsp;<bean:message
+										key="admissionForm.studentinfo.castcatg.label" /></div>
+									</td>
+									<td width="34%" class="row-even"><html:select
+										property="section" styleClass="combo" styleId="section">
+										<html:option value="">
+											<bean:message key="knowledgepro.select" />
+										</html:option>
+										<logic:notEmpty name="newExamMarksEntryForm" property="sectionMap">
+										<html:optionsCollection name="newExamMarksEntryForm" property="sectionMap" label="value" value="key" />
+										</logic:notEmpty>
+									</html:select></td>
 							</table>
 							</td>
 
@@ -411,123 +466,17 @@
 					<table width="100%" border="0" cellspacing="0" cellpadding="0">
 						<tr>
 							<td width="49%" height="35" align="right"><input
-								name="Submit7" type="submit" class="formbutton"  onclick="barcodeAlert()" 	 value="Next" /></td>
+								name="Submit7" type="submit" class="formbutton" value="Submit" /></td>
 
 							<td width="2%" height="35" align="center">&nbsp;</td>
-							<td width="49%" height="35" align="left"><input
-								type="button" class="formbutton" value="Cancel"
-								onclick="cancelAction()" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input
-								type="button" class="formbutton" value="Reset"
-								onclick="resetInfo()" /></td>
+							<td width="49%" height="35" align="left">
+								<html:reset styleClass="formbutton"></html:reset>
+							</td>
 						</tr>
 					</table>
 					</td>
 					<td valign="top" background="images/Tright_3_3.gif"></td>
 				</tr>
-				
-				<logic:notEmpty name="falsenumSINOForm" property="falseBoxToList">
-				<tr>
-					<td height="19" valign="top" background="images/Tright_03_03.gif"></td>
-					<td valign="top" class="news">
-					<table width="100%" border="0" align="center" cellpadding="0"
-						cellspacing="0">
-						<tr>
-							<td><img src="images/01.gif" width="5" height="5" /></td>
-							<td width="914" background="images/02.gif"></td>
-
-							<td><img src="images/03.gif" width="5" height="5" /></td>
-						</tr>
-						<tr>
-							<td width="5" background="images/left.gif"></td>
-							<td valign="top">
-							<table width="100%" cellspacing="1" cellpadding="2">
-								<tr align="center" style="font-weight: bolder;">
-									<th  height="25" class="row-white">Sl.NO</th>
-									<th  height="25" class="row-white">COURSE</th>
-									<th  height="25" class="row-white">SUBJECT</th>
-									<th  height="25" class="row-white">BOX NO..</th>
-									<th  height="25" class="row-white">SEMESTER</th>
-									<th  height="25" class="row-white">ACADEMIC YEAR</th>
-									<th  height="25" class="row-white">EXAM NAME</th>
-									<th  height="25" class="row-white">NO. OF PAPERS</th>
-									<th  height="25" class="row-white">EDIT</th>
-									<!-- <td td height="25" class="row-white">Delete</td> -->
-								</tr>
-								<c:set var="temp" value="0" />
-								<%int i=1; %>
-								<logic:iterate id="box" name="falsenumSINOForm" property="falseBoxToList">
-								
-								 <c:choose>
-       							 <c:when test="${temp == 0}">
-								<tr align="center" style="font-weight: bolder;">
-									<td td height="25" class="row-odd"><%=i %></td>
-									<td td height="25" class="row-odd"><bean:write name="box" property="courseName"/></td>
-									<td td height="25" class="row-odd"><bean:write name="box" property="subjectName"/></td>
-									<td td height="25" class="row-odd"><bean:write name="box" property="boxNum"/></td>
-									<td td height="25" class="row-odd"><bean:write name="box" property="schemeNum"/></td>
-									<td td height="25" class="row-odd"><bean:write name="box" property="academicYear"/></td>
-									<td td height="25" class="row-odd"><bean:write name="box" property="examName"/></td>
-									<td td height="25" class="row-odd"><bean:write name="box" property="count"/></td>
-									<td width="10%" height="25" class="row-odd" align="center">
-													<div align="center"><img src="images/edit_icon.gif"
-														width="16" height="18" style="cursor: pointer"
-														onclick="editFalseBox('<bean:write name="box" property="boxId"/>')">
-													</div>
-													</td>
-									<%-- <td width="10%" height="25" class="row-white" align="center">
-													<div align="center"><img src="images/delete_icon.gif"
-														width="16" height="18" style="cursor: pointer"
-														onclick="deleteFalseBox('<bean:write name="box" property="boxId"/>'">
-													</div>
-													</td> --%>
-								</tr>
-								<c:set var="temp" value="1" />
-								</c:when>
-       						 <c:otherwise>
-       						 <tr align="center" style="font-weight: bolder;">
-									<td td height="25" class="row-even"><%=i %></td>
-									<td td height="25" class="row-even"><bean:write name="box" property="courseName"/></td>
-									<td td height="25" class="row-even"><bean:write name="box" property="subjectName"/></td>
-									<td td height="25" class="row-even"><bean:write name="box" property="boxNum"/></td>
-									<td td height="25" class="row-even"><bean:write name="box" property="schemeNum"/></td>
-									<td td height="25" class="row-even"><bean:write name="box" property="academicYear"/></td>
-									<td td height="25" class="row-even"><bean:write name="box" property="examName"/></td>
-									<td td height="25" class="row-even"><bean:write name="box" property="count"/></td>
-									<td width="10%" height="25" class="row-even" align="center">
-													<div align="center"><img src="images/edit_icon.gif"
-														width="16" height="18" style="cursor: pointer"
-														onclick="editFalseBox('<bean:write name="box" property="boxId"/>')">
-													</div>
-													</td>
-									<%-- <td width="10%" height="25" class="row-white" align="center">
-													<div align="center"><img src="images/delete_icon.gif"
-														width="16" height="18" style="cursor: pointer"
-														onclick="deleteFalseBox('<bean:write name="box" property="boxId"/>')">
-													</div>
-													</td> --%>
-													<c:set var="temp" value="0" />
-								</c:otherwise>
-    						</c:choose>
-    						
-    						<%i++; %>
-								</logic:iterate>
-							</table>
-							</td>
-							<td width="5" height="30" background="images/right.gif"></td>
-						</tr>
-						<tr>
-
-							<td height="5"><img src="images/04.gif" width="5" height="5" /></td>
-							<td background="images/05.gif"></td>
-							<td><img src="images/06.gif" /></td>
-						</tr>
-					</table>
-					</td>
-					<td valign="top" background="images/Tright_3_3.gif" class="news"></td>
-				</tr>
-				</logic:notEmpty>
-				
-				
 				<tr>
 					<td height="19" valign="top" background="images/Tright_03_03.gif"></td>
 					<td class="heading"></td>
@@ -545,12 +494,25 @@
 	</table>
 </html:form>
 <script type="text/javascript">
-/* examName = document.getElementById("examNameId").value;
-console.log(examName);
-if (examName!='') {
+var showET = document.getElementById("displayET").value;
+if(showET.length != 0 && showET == "yes") {
+	document.getElementById("et").style.display = "block";
+	document.getElementById("evaluatorType").style.display = "block";
+}else{
+	document.getElementById("et").style.display = "none";
+	document.getElementById("evaluatorType").style.display = "none";
 	
-	getCourseByExamName("schemeMap", examName, "course", updateToCourse);
-	updateOptionsFromMap(req, "course", "- Select -");
-
-} */
+}
+var showAT = document.getElementById("displayAST").value;
+if(showAT.length != 0 && showAT == "yes") {
+	document.getElementById("ast").style.display = "block";
+	document.getElementById("answerScriptType").style.display = "block";
+}else{
+	document.getElementById("ast").style.display = "none";
+	document.getElementById("answerScriptType").style.display = "none";
+}
+var year = document.getElementById("tempyear").value;
+if(year.length != 0) {
+ 	document.getElementById("year").value=year;
+}
 </script>
