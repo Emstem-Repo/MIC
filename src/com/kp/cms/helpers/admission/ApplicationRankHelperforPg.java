@@ -364,6 +364,12 @@ public class ApplicationRankHelperforPg {
 			while(iter.hasNext()){
 			AdmAppln admAppln=(AdmAppln)iter.next();
 			
+			if (admAppln.getId()==54238) {
+				continue;
+			}
+			/*if (admAppln.getId()==55037) {
+				continue;
+			}*/
 			
 			int penalty=0;
 			int bonus=0;
@@ -645,6 +651,9 @@ public class ApplicationRankHelperforPg {
                                 for (final Object[] objects : list) {
                                     eligMap.put(Integer.parseInt(objects[0].toString()), objects[1].toString());
                                 }
+                                if (admAppln.getId()==54225) {
+									System.out.println("dff");
+								}
                                 session.flush();
                                 final double maxmark = 0.0;
                                 double language1Mark = 0.0;
@@ -926,7 +935,11 @@ public class ApplicationRankHelperforPg {
                                         }
                                     }
                                     else if (ugcourseid == 20 || ugcourseid == 173) {
-                                        eligiblemark = obtainedCGPA_MARK;
+                                    	if (obtainedCGPA_MARK < language1Mark / totalmarklanguage * 10.0) {
+                                            eligiblemark = language1Mark / totalmarklanguage * 10.0;
+                                        }else{
+                                        	eligiblemark = obtainedCGPA_MARK;
+                                        }
                                     }
                                     else {
                                         eligiblemark = language1Mark;
@@ -1185,6 +1198,10 @@ public class ApplicationRankHelperforPg {
                                 final Course course2 = new Course();
                                 course2.setId(candidatePreference.getCourse().getId());
                                 si2.setCourse(course2);
+                                System.out.println(total +"    "+ ednQualificationBO.getId());
+                                if (ednQualificationBO.getId()==51997) {
+                                	System.out.println(total +"    "+ ednQualificationBO.getId());
+								}
                                 si2.setIndexMark(Double.valueOf(Double.parseDouble(twoDForm.format(total))));
                                 si2.setRemark(remark);
                                 si2.setCreatedDate(new Date());
@@ -1588,7 +1605,10 @@ public class ApplicationRankHelperforPg {
 										Course course=new Course();
 										course.setId(candidatePreference.getCourse().getId());
 										si.setCourse(course);
-										
+										System.out.println(total +"    "+ ednQualificationBO.getId());
+		                                if (ednQualificationBO.getId()==47656) {
+		                                	System.out.println(total +"    "+ ednQualificationBO.getId());
+										}
 										si.setIndexMark(Double.parseDouble(twoDForm.format(total)));
 										si.setRemark(remark);
 										si.setCreatedDate(new Date());
@@ -2106,6 +2126,10 @@ public class ApplicationRankHelperforPg {
 							 //MTTM
 							  else if(candidatePreference.getCourse().getId()==25){
                                   Session session=null;
+                                  if (admAppln.getId()==54272) {
+                                	  System.out.println("");
+								}
+                                 
 	                               Map<Integer,String> eligMap=new HashMap<Integer, String>();
 	                               session = HibernateUtil.getSession();
 	                       		String str="select p.uGCoursesBO.id, p.uGCoursesBO.name from PgAdmSubjectForRank p where p.course.id="+candidatePreference.getCourse().getId();
@@ -2200,7 +2224,7 @@ public class ApplicationRankHelperforPg {
 		                      	   else {
 		                      		   total=totalmark*250;
 		                      	   }
-			                      	if (ednQualificationBO.getPercentage().doubleValue() > 50) {
+			                      	if (ednQualificationBO.getPercentage().doubleValue() > 55) {
 			                      		remark="Eligible";
 									}
 			                      	Iterator<CandidatePreferenceEntranceDetails> itere =admAppln.getCandidatePreferenceEntranceDetailses().iterator();
@@ -2214,19 +2238,18 @@ public class ApplicationRankHelperforPg {
 				                        }
 			                      	}
 			                      	if(ugcourseid==7 || 
-			                      	   ugcourseid == 111 || 			                      	    
-			                      	   ugcourseid ==153 ||
-			                      	   ugcourseid == 169 ||
-			                      	   ugcourseid == 174 ||
-			                      	   ugcourseid == 175 ||
-			                      	   ugcourseid == 187 ||
-			                      	   ugcourseid == 189 ||
-			                      	   ugcourseid == 188){
-			                      		total=total+10;
-			                      	}
-			                      	else if(CMSConstants.UG_ELIGIBLE_COURSE_LIST_FOR_BCOMMODI.contains(ugcourseid)){
-			                      		total=total+5;
-			                      	}
+							                   ugcourseid == 10 || 			                      	    
+							                   ugcourseid ==183 ||
+							                   ugcourseid == 188 ||
+							                   ugcourseid == 151 ||
+							                   ugcourseid == 187 ||
+							                   ugcourseid == 198 ||
+							                   ugcourseid == 153){
+				                        		total=total+10;
+				                        	 }
+				                        	 else if(ugcourseid==53){
+				                         		total=total+5;
+				                         	 }
 			                      	total=total+bonus;
 //			                      	total = total - 
 //			                      			(penalty > 0 ? (penalty*0.5)/10 : 0) + 
@@ -2295,14 +2318,16 @@ public class ApplicationRankHelperforPg {
 			  	                        	}
 			                        	 }
 			                        	if(ugcourseid==7 || 
-						                   ugcourseid == 111 || 			                      	    
-						                   ugcourseid ==153 ||
-						                   ugcourseid == 169 ||
-						                   ugcourseid == 174 ||
-						                   ugcourseid == 175){
+						                   ugcourseid == 10 || 			                      	    
+						                   ugcourseid ==183 ||
+						                   ugcourseid == 188 ||
+						                   ugcourseid == 151 ||
+						                   ugcourseid == 198 ||
+						                	ugcourseid == 187 ||
+						                   ugcourseid == 153){
 			                        		total=total+10;
 			                        	 }
-			                        	 else if(CMSConstants.UG_ELIGIBLE_COURSE_LIST_FOR_BCOMMODI.contains(ugcourseid)){
+			                        	 else if(ugcourseid==53){
 			                         		total=total+5;
 			                         	 }
 			                        	total = total +bonus;

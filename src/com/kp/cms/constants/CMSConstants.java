@@ -5065,11 +5065,17 @@ public class CMSConstants extends CMSExamConstants {
 	public static final String PGI_SECURITY_ID_STU = "7GX4i4856g";
 	public static final String PGI_CHECKSUM_KEY_STU = "7GX4i4856g";
 	
-	//original key for revaluation payment
-	public static final String PGI_MERCHANT_ID_REV = "xdRPRHGC";
+	/*//original key for revaluation payment
+	public static final String PGI_MERCHANT_ID_REV = "nxG3BF";
 	//original salt
-	public static final String PGI_SECURITY_ID_REV = "3sPSQVsUob";
-	public static final String PGI_CHECKSUM_KEY_REV = "3sPSQVsUob";
+	public static final String PGI_SECURITY_ID_REV = "Ec2ZzQJkF5A8E1HMYR0vdsBi3zKj4hCA";
+	public static final String PGI_CHECKSUM_KEY_REV = "Ec2ZzQJkF5A8E1HMYR0vdsBi3zKj4hCA";*/
+	
+	//original key for revaluation payment
+		public static final String PGI_MERCHANT_ID_REV = "cxdRPRHGC";
+		//original salt
+		public static final String PGI_SECURITY_ID_REV = "3sPSQVsUob";
+		public static final String PGI_CHECKSUM_KEY_REV = "3sPSQVsUob";
 
 	public static final String STUDENT_LOGIN_SMART_CARD_ENQUIRY = "studentLoginSmartCardEnquiry";
 	public static final String AUDITORIUM_ALLOCATION = "initAuditoriumAllocation";

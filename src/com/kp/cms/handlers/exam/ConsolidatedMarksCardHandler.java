@@ -65,6 +65,7 @@ public class ConsolidatedMarksCardHandler {
 			for (String courseId : courseIds) {
 				String query=ConsolidatedMarksCardHelper.getInstance().getStudentsQuery(courseId,consolidatedMarksCardForm.getYear());
 				List<Integer> studentIds=txn.getDataForQuery(query);
+				System.out.println(studentIds);
 				if(studentIds!=null && !studentIds.isEmpty()){
 					//studentIds.clear();// checking purpose
 					//studentIds.add(16370);// checking purpose

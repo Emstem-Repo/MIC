@@ -223,7 +223,11 @@ public class ConsolidatedMarksCardTransactionImpl implements
 				Iterator itr=pairs.getValue().entrySet().iterator();
 				while (itr.hasNext()) {
 					Map.Entry<String,ConsolidateMarksCard> mapPair= (Map.Entry)itr.next();
+					
 					bo=mapPair.getValue();
+					if (bo.getStudent().getId()==10385) {
+						System.out.println("ffffffff "+bo.getStudent().getId());
+					}
 					session.save(bo);
 					if(++count % 20 == 0){
 						session.flush();

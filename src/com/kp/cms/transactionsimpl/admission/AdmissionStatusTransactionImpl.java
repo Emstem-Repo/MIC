@@ -212,7 +212,7 @@ public class AdmissionStatusTransactionImpl implements IAdmissionStatusTransacti
         final String d = CommonUtil.formatDate(dob);
         try {
             session = HibernateUtil.getSession();
-            final Query query = session.createQuery("from StudentCourseChanceMemo s where s.chanceNo=4 and s.admAppln.applnNo = " + applicationNo + " and s.admAppln.personalData.dateOfBirth='" + d + "'" + ")");
+            final Query query = session.createQuery("from StudentCourseChanceMemo s where s.chanceNo=1 and s.admAppln.applnNo = " + applicationNo + " and s.admAppln.personalData.dateOfBirth='" + d + "'" + ")");
             courseAllotment = (List<StudentCourseChanceMemo>)query.list();
             return courseAllotment;
         }
@@ -539,7 +539,7 @@ public class AdmissionStatusTransactionImpl implements IAdmissionStatusTransacti
         final String d = CommonUtil.formatDate(dateOfBirth);
         try {
             session = HibernateUtil.getSession();
-            final Query query = session.createQuery("from StudentCourseChanceMemo s where s.chanceNo=2 and s.admAppln.applnNo = " + applicationNo + " and s.admAppln.personalData.dateOfBirth='" + d + "'");
+            final Query query = session.createQuery("from StudentCourseChanceMemo s where s.chanceNo=1 and s.admAppln.applnNo = " + applicationNo + " and s.admAppln.personalData.dateOfBirth='" + d + "'");
             courseAllotment = (List<StudentCourseChanceMemo>)query.list();
             return courseAllotment;
         }
@@ -576,7 +576,7 @@ public class AdmissionStatusTransactionImpl implements IAdmissionStatusTransacti
         final String d = CommonUtil.formatDate(dateOfBirth);
         try {
             session = HibernateUtil.getSession();
-            final Query query = session.createQuery("from StudentCourseChanceMemo s where s.chanceNo=6 and s.admAppln.applnNo = " + applicationNo + " and s.admAppln.personalData.dateOfBirth='" + d + "'");
+            final Query query = session.createQuery("from StudentCourseChanceMemo s where s.chanceNo=1 and s.admAppln.applnNo = " + applicationNo + " and s.admAppln.personalData.dateOfBirth='" + d + "'");
             courseAllotment = (List<StudentCourseChanceMemo>)query.list();
             return courseAllotment;
         }
@@ -597,7 +597,7 @@ public class AdmissionStatusTransactionImpl implements IAdmissionStatusTransacti
         final String d = CommonUtil.formatDate(dateOfBirth);
         try {
             session = HibernateUtil.getSession();
-            final Query query = session.createQuery("from StudentCourseAllotment s where s.allotmentNo=2 and s.admAppln.applnNo = " + applicationNo + " and s.admAppln.personalData.dateOfBirth='" + d + "'");
+            final Query query = session.createQuery("from StudentCourseAllotment s where s.allotmentNo=1 and s.admAppln.applnNo = " + applicationNo + " and s.admAppln.personalData.dateOfBirth='" + d + "'");
             courseAllotment = (List<StudentCourseAllotment>)query.list();
             return courseAllotment;
         }

@@ -50,7 +50,7 @@
 	}	
 	function downloadmemo() {
 		var appno=document.getElementById('appNo').value; 
-		var year="2021";
+		var year="2022";
 		var url = "AdmissionStatus.do?method=downloadApplication&applicationNo="+appno +"&appliedYear="+year+"&displaySemister="+true+"&memo="+true+"&chanceMemo="+false;
 		myRef = window
 		.open(url, "viewDescription",
@@ -59,7 +59,7 @@
 	function downloadChanceMemo() {
 		var chanceCourseId=document.getElementById("courseId").value;
 		var appno=document.getElementById('appNo').value; 
-		var year="2021";
+		var year="2022";
 		var url = "AdmissionStatus.do?method=downloadApplication&applicationNo="+appno +"&appliedYear="+year+"&displaySemister="+true+"&memo="+false+"&chanceMemo="+true+"&chanceCourseId="+chanceCourseId;
 		myRef = window
 		.open(url, "viewDescription",
@@ -368,7 +368,7 @@ a:hover {
 																	<logic:equal value="false" name="admissionStatusForm"
 																		property="specialCourse">
 																		<c:choose>
-																			<c:when test="${admissionStatusForm.maxallotment==2}">
+																			<c:when test="${admissionStatusForm.maxallotment==1}">
 																				<td align="center" height="25" class="row-even">
 																					<font color="red">UG Allotment Published.</font>
 																				</td>
@@ -399,7 +399,7 @@ a:hover {
 																<logic:equal value="true" name="admissionStatusForm"
 																	property="specialCourse">
 																	<c:choose>
-																		<c:when test="${admissionStatusForm.maxallotment==2}">
+																		<c:when test="${admissionStatusForm.maxallotment==1}">
 																			<td align="center" height="25" class="row-even">
 																				<font color="red">PG/UG Allotment
 																					Published.(Only for New Aided Programmes)</font>
@@ -442,7 +442,7 @@ a:hover {
 															</tr>
 															<logic:equal value="1" name="admissionStatusForm"
 																property="programTypeId">
-																<logic:equal value="2" name="admissionStatusForm"
+																<logic:equal value="1" name="admissionStatusForm"
 																	property="maxallotment">
 																	<tr id="eight">
 																		<td height="25" colspan="4">
@@ -821,7 +821,7 @@ If a candidate receives more than one allotment
 															</tr>
 														<c:if
 															test="${admissionStatusForm.certificationCourseDone==true}">
-															<logic:equal value="2" name="admissionStatusForm"
+															<logic:equal value="1" name="admissionStatusForm"
 																property="maxallotment">
 
 																<tr id="sixth">

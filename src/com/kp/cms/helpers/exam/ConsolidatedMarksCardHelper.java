@@ -225,6 +225,11 @@ public class ConsolidatedMarksCardHelper {
 
 				Object[] obj=itr.next();
 				//if(Integer.parseInt(obj[3].toString()) == 16370 && obj[5].toString().equalsIgnoreCase("897")){
+				//System.out.println(obj[3].toString());
+				if (obj[3].toString().equalsIgnoreCase("10385") || obj[3].toString()=="10385") {
+					System.out.println("ff");
+				}
+				
 				boolean doNotAddMarks=false;
 				boolean showOnlyCredits=false;
 				if(obj[50]!=null && obj[50].toString().equalsIgnoreCase("true"))
@@ -237,7 +242,7 @@ public class ConsolidatedMarksCardHelper {
 				if(obj[22]!=null){
 					//if(obj[3]!=null && obj[32]!=null && obj[5]!=null /*&& Integer.parseInt(obj[3].toString())==4226 */ && (Integer.parseInt(obj[5].toString())==468)|| Integer.parseInt(obj[5].toString())==768){
 						if(obj[3]!=null && obj[32]!=null && obj[5]!=null /*&& Integer.parseInt(obj[3].toString())==4226 && Integer.parseInt(obj[5].toString())==468*/){
-											System.out.println(obj[3].toString()+"_"+obj[5].toString());
+											//System.out.println(obj[3].toString()+"_"+obj[5].toString());
 						//					System.out.println(obj[3].toString());
 						if(mainMap.containsKey(Integer.parseInt(obj[3].toString()))){
 							semMap=mainMap.get(Integer.parseInt(obj[3].toString()));
@@ -1086,7 +1091,7 @@ public class ConsolidatedMarksCardHelper {
 							" 	and  EXAM_grade_class_definition_frombatch.course_id = "+consolidateMarksCard.getCourse().getId()+
 							" 	and from_batch >="+consolidateMarksCard.getAppliedYear()+" limit 1), "+
 							" 	(SELECT  EXAM_grade_class_definition.grade "+
-							" 	FROM EXAM_grade_class_definition EXAM_grade_class_definition where "+percentage+
+							" 	FROM EXAM_grade_class_definition EXAM_grade_class_definition where "+(percentage/10)+
 							" 	between start_percentage and EXAM_grade_class_definition.end_percentage "+
 							" 	and EXAM_grade_class_definition.course_id = "+consolidateMarksCard.getCourse().getId()+" limit 1))) "+
 							" 	,(SELECT EXAM_sub_coursewise_grade_defn.grade   "+
@@ -1102,7 +1107,7 @@ public class ConsolidatedMarksCardHelper {
 							" 	and  EXAM_grade_class_definition_frombatch.course_id = "+consolidateMarksCard.getCourse().getId()+
 							" 	and from_batch >="+consolidateMarksCard.getAppliedYear()+" limit 1), "+
 							" 	(SELECT  EXAM_grade_class_definition.grade_point "+
-							" 	FROM EXAM_grade_class_definition EXAM_grade_class_definition where "+percentage+
+							" 	FROM EXAM_grade_class_definition EXAM_grade_class_definition where "+(percentage/10)+
 							" 	between start_percentage and EXAM_grade_class_definition.end_percentage "+
 							" 	and EXAM_grade_class_definition.course_id = "+consolidateMarksCard.getCourse().getId()+" limit 1))) "+
 							" 	,(SELECT EXAM_sub_coursewise_grade_defn.grade_point   "+
@@ -1231,7 +1236,7 @@ public class ConsolidatedMarksCardHelper {
 							" 	and  EXAM_grade_class_definition_frombatch.course_id = "+consolidateMarksCard.getCourse().getId()+
 							" 	and from_batch >="+consolidateMarksCard.getAppliedYear()+" limit 1), "+
 							" 	(SELECT  EXAM_grade_class_definition.grade "+
-							" 	FROM EXAM_grade_class_definition EXAM_grade_class_definition where "+percentage+
+							" 	FROM EXAM_grade_class_definition EXAM_grade_class_definition where "+(percentage/10)+
 							" 	between start_percentage and EXAM_grade_class_definition.end_percentage "+
 							" 	and EXAM_grade_class_definition.course_id = "+consolidateMarksCard.getCourse().getId()+" limit 1))) "+
 							" 	,(SELECT EXAM_sub_coursewise_grade_defn.grade   "+
@@ -1247,7 +1252,7 @@ public class ConsolidatedMarksCardHelper {
 							" 	and  EXAM_grade_class_definition_frombatch.course_id = "+consolidateMarksCard.getCourse().getId()+
 							" 	and from_batch >="+consolidateMarksCard.getAppliedYear()+" limit 1), "+
 							" 	(SELECT  EXAM_grade_class_definition.grade_point "+
-							" 	FROM EXAM_grade_class_definition EXAM_grade_class_definition where "+percentage+
+							" 	FROM EXAM_grade_class_definition EXAM_grade_class_definition where "+(percentage/10)+
 							" 	between start_percentage and EXAM_grade_class_definition.end_percentage "+
 							" 	and EXAM_grade_class_definition.course_id = "+consolidateMarksCard.getCourse().getId()+" limit 1))) "+
 							" 	,(SELECT EXAM_sub_coursewise_grade_defn.grade_point   "+
@@ -1379,7 +1384,7 @@ public class ConsolidatedMarksCardHelper {
 							" 	and  EXAM_grade_class_definition_frombatch.course_id = "+consolidateMarksCard.getCourse().getId()+
 							" 	and from_batch >="+consolidateMarksCard.getAppliedYear()+" limit 1), "+
 							" 	(SELECT  EXAM_grade_class_definition.grade "+
-							" 	FROM EXAM_grade_class_definition EXAM_grade_class_definition where "+percentage+
+							" 	FROM EXAM_grade_class_definition EXAM_grade_class_definition where "+(percentage/10)+
 							" 	between start_percentage and EXAM_grade_class_definition.end_percentage "+
 							" 	and EXAM_grade_class_definition.course_id = "+consolidateMarksCard.getCourse().getId()+" limit 1))) "+
 							" 	,(SELECT EXAM_sub_coursewise_grade_defn.grade   "+
@@ -1395,7 +1400,7 @@ public class ConsolidatedMarksCardHelper {
 							" 	and  EXAM_grade_class_definition_frombatch.course_id = "+consolidateMarksCard.getCourse().getId()+
 							" 	and from_batch >="+consolidateMarksCard.getAppliedYear()+" limit 1), "+
 							" 	(SELECT  EXAM_grade_class_definition.grade_point "+
-							" 	FROM EXAM_grade_class_definition EXAM_grade_class_definition where "+percentage+
+							" 	FROM EXAM_grade_class_definition EXAM_grade_class_definition where "+(percentage/10)+
 							" 	between start_percentage and EXAM_grade_class_definition.end_percentage "+
 							" 	and EXAM_grade_class_definition.course_id = "+consolidateMarksCard.getCourse().getId()+" limit 1))) "+
 							" 	,(SELECT EXAM_sub_coursewise_grade_defn.grade_point   "+

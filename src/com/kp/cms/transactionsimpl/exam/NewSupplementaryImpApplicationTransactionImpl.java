@@ -805,7 +805,10 @@ public class NewSupplementaryImpApplicationTransactionImpl implements
 			String subQuery ="from ExamRegularApplication er where er.student.id="+stuId+" and er.isApplied=1 and er.classes.id="+prevClassId ; 
 			Query subjectQuery = session.createQuery(subQuery);
 			regApps = subjectQuery.list();
-			regApp=regApps.get(0);
+			if (regApp!=null) {
+				regApp=regApps.get(0);
+			}
+			
 			
 			
 			if(regApp!=null && regApp.getIsApplied())
