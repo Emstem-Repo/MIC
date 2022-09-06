@@ -32,8 +32,10 @@ import com.kp.cms.handlers.exam.FalseNumSiNoHandler;
 import com.kp.cms.to.admin.ProgramTypeTO;
 import com.kp.cms.to.exam.FalseBoxDetTo;
 import com.kp.cms.to.exam.FalseNumSiNoTO;
+import com.kp.cms.transactions.exam.IExamValuationStatusTransaction;
 import com.kp.cms.transactions.exam.IFalseNumSiNoTransaction;
 import com.kp.cms.transactionsimpl.attendance.AcademicyearTransactionImpl;
+import com.kp.cms.transactionsimpl.exam.ExamValuationStatusTxImpl;
 import com.kp.cms.transactionsimpl.exam.FalseNumSiNoTransactionImpl;
 import com.kp.cms.utilities.CommonUtil;
 import com.kp.cms.utilities.CurrentAcademicYear;
@@ -419,6 +421,14 @@ public class FalseNumSiNoAction extends BaseDispatchAction{
 		ActionErrors errors = new ActionErrors();
 		ActionMessages messages =new ActionMessages();
 		IFalseNumSiNoTransaction transaction = new FalseNumSiNoTransactionImpl();
+		IExamValuationStatusTransaction trns=ExamValuationStatusTxImpl.getInstance();
+		String prgrmTypeName=trns.getProgramTypeByCourseId(Integer.parseInt(cardSiNoForm.getCourseId()));
+		int prgrmTypeId=0;
+		if (prgrmTypeName.equalsIgnoreCase("UG")) {
+			prgrmTypeId=1;
+		}else if (prgrmTypeName.equalsIgnoreCase("PG")){
+			prgrmTypeId=2;
+		}
 		try{
 			if (cardSiNoForm.getDeleId()!=null && !cardSiNoForm.getDeleId().isEmpty()) {
 				bcodeList=cardSiNoForm.getBarcodeList();
@@ -454,7 +464,13 @@ public class FalseNumSiNoAction extends BaseDispatchAction{
 			}else{
 				if (cardSiNoForm.getBarcodeList()!=null) {
 					bcodeList=cardSiNoForm.getBarcodeList();
-					if (bcodeList.size()>=25) {
+					if (bcodeList.size()>=25 && prgrmTypeId==1) {
+
+						errors.add("error", new ActionError("knowledgepro.exam.false.limit.exeed"));
+						saveErrors(request, errors);
+					return mapping.findForward("initBOXSecond");
+					}
+					else if (bcodeList.size()>=35 && prgrmTypeId==2) {
 
 						errors.add("error", new ActionError("knowledgepro.exam.false.limit.exeed"));
 						saveErrors(request, errors);

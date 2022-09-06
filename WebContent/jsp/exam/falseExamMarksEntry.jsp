@@ -172,9 +172,12 @@
 		
 	}
 	function  print() {
-		document.getElementById("method").value="printList";
-        document.newExamMarksEntryForm.submit();
+		//document.getElementById("method").value="printList";
+        //document.newExamMarksEntryForm.submit();
+        var url = "falseMarkEntry.do?method=printList";
+    	myRef = window .open(url, "Marks Card", "left=20,top=20,width=900,height=900,toolbar=1,resizable=0,scrollbars=1");
 	}
+	
 	
 </SCRIPT>
 
@@ -269,7 +272,7 @@
 									<bean:write name="newExamMarksEntryForm" property="displatoList.subjectType"/>
 								</td>
 							</tr>
-							<tr>
+							<%-- <tr>
 								<td height="25" width="22%" class="row-odd"><div align="left">Evaluator Type</div></td>
 								<td height="25" width="23%" class="row-even"><div align="left">
 									<html:select property="evalNo" name="newExamMarksEntryForm" disabled="true">
@@ -282,9 +285,9 @@
 								</div></td>
 								<td width="25%" class="row-odd" ></td>   
 								<td width="30%" class="row-even">
-									<%-- <bean:write name="newExamMarksEntryForm" property="displatoList.subjectType"/> --%>
+									<bean:write name="newExamMarksEntryForm" property="displatoList.subjectType"/>
 								</td>
-							</tr>
+							</tr> --%>
 							</table>
 							
 							</td>
@@ -340,6 +343,7 @@
 									<logic:notEmpty property="displatoList.examName" name="newExamMarksEntryForm">
 									<logic:notEmpty property="studentMarksTo" name="newExamMarksEntryForm">
 									<logic:notEmpty property="studentMarksTo" name="newExamMarksEntryForm">
+									<logic:notEmpty property="falseNo" name="newExamMarksEntryForm">
 										<logic:equal value="1" property="evalNo" name="newExamMarksEntryForm">
 											<logic:empty name="newExamMarksEntryForm" property="studentMarksTo.examEvalTo.firstEvaluator">
 												<html:text styleId="markId" onkeypress="keyListenAdd(event)" property="studentMarksTo.examEvalTo.firstEvaluation"></html:text>
@@ -377,7 +381,7 @@
             									</script>	
 											</logic:notEmpty>
 										</logic:equal>
-									
+									</logic:notEmpty>
 									</logic:notEmpty >
 									</logic:notEmpty>
 									</logic:notEmpty>
@@ -500,7 +504,7 @@
 							<td width="2%" height="35" align="center">&nbsp;</td>
 							<td width="49%" height="35" align="left">
 								<%-- <html:reset styleClass="formbutton"></html:reset> --%>
-								<button class="formbutton" onclick="print()">Pring</button>
+								<button class="formbutton" onclick="print()">Print</button>
 							</td>
 						</tr>
 					</table>

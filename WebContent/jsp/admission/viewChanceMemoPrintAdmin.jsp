@@ -183,8 +183,7 @@ div {
 												name="chncList" property="communityDateTime" /></td>
 										</tr>
 									</logic:equal>
-									<logic:equal value="true" name="admissionStatusForm"
-										property="admissionStatusTO.chanceAlmntCommunity">
+									<logic:equal value="true" name="chncList" property="chanceAlmntCommunity">
 										<tr>
 											<td align="center" class="mytabledata"><bean:write
 												name="chncList" property="chancePref" /></td>
@@ -195,9 +194,9 @@ div {
 											<td align="center" class="mytabledata"><bean:write
 												name="chncList" property="chanceIndexmark" /></td>
 											<td align="center" class="mytabledata"><bean:write
-												name="chncList" property="chncListcasteRank" /></td>
+												name="chncList" property="casteRank" /></td>
 											<td align="center" class="mytabledata"><bean:write
-												name="chncList" property="chncListcommunityDateTime" /></td>
+												name="chncList" property="communityDateTime" /></td>
 										</tr>
 									</logic:equal>
 							<%-- 	</logic:equal> --%>

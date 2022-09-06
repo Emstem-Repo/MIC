@@ -427,6 +427,8 @@ public class ApplicationRankHelper {
                      	 
                           // else if(candidatePreference.getCourse().getName().equalsIgnoreCase("BA English")){
                         	     if(candidatePreference.getCourse().getId()==2 || candidatePreference.getCourse().getId()==22){
+                        	    	 
+                        	    	 
                         		   if(isvhsc){
 
                                 	   remark="Eligible";
@@ -436,6 +438,7 @@ public class ApplicationRankHelper {
                                    double language2Mark=0;
                                    double groupMarks=0;
                                    double electiveSubjectMark=0;
+                                   double literatureCommunityMark=0;
                                    double marks=0;
                                    double langbonus=0;
                                    Iterator<AdmSubjectMarkForRank> markItr=detailMarks.iterator();
@@ -471,13 +474,29 @@ public class ApplicationRankHelper {
         									language2Mark=Double.parseDouble(detailMarkBO.getConversionmark());
         									   }
         									
+        									if (detailMarkBO.getAdmSubjectForRank().getName().equalsIgnoreCase("English Literature") || detailMarkBO.getAdmSubjectForRank().getName().equalsIgnoreCase("Communicative English")) {
+        										
+        										if (literatureCommunityMark!=0 && Double.parseDouble(detailMarkBO.getConversionmark()) < literatureCommunityMark) {
+        											literatureCommunityMark=literatureCommunityMark;
+												}else {
+													literatureCommunityMark=Double.parseDouble(detailMarkBO.getConversionmark());
+												}
+											}
+        									
+        									
                                 		}
-                                		
+                                		if (marks!=0) {
+                                			literatureCommunityMark=(literatureCommunityMark/100)*10;
+                                			System.out.println(detailMarkBO.getAdmSubjectForRank().getName());
+											
+										}else{
+											literatureCommunityMark=0;
+										}
                                 		totalmarkforpart3=(totalmarkforpart3/maxmark)*800;//normalising
                                 	
                                 	
                                 			//penalty &bonus
-         	                        	   totalmarkforpart3=totalmarkforpart3-penalty+bonus+marks+langbonus;
+         	                        	   totalmarkforpart3=totalmarkforpart3-penalty+bonus+marks+langbonus+literatureCommunityMark;
                                    
         								
         									// adding indexmark object
@@ -518,6 +537,8 @@ public class ApplicationRankHelper {
                            double groupMarks=0;
                            double electiveSubjectMark=0;
                            double marks=0;
+                           double literatureCommunityMark=0;
+                           
                            Iterator<AdmSubjectMarkForRank> markItr=detailMarks.iterator();
                         		while (markItr.hasNext()) {
 									detailMarkBO= (AdmSubjectMarkForRank) markItr.next();
@@ -548,14 +569,29 @@ public class ApplicationRankHelper {
 										
 									language2Mark=Double.parseDouble(detailMarkBO.getConversionmark());
 									   }
+									if (detailMarkBO.getAdmSubjectForRank().getName().equalsIgnoreCase("English Literature") || detailMarkBO.getAdmSubjectForRank().getName().equalsIgnoreCase("Communicative English")) {
+										
+										if (literatureCommunityMark!=0 && Double.parseDouble(detailMarkBO.getConversionmark()) < literatureCommunityMark) {
+											literatureCommunityMark=literatureCommunityMark;
+										}else {
+											literatureCommunityMark=Double.parseDouble(detailMarkBO.getConversionmark());
+										}
+									}
 									
                         		}
-                        		
+                        		if (marks!=0) {
+                        			literatureCommunityMark=(literatureCommunityMark/100)*10;
+                        			System.out.println(detailMarkBO.getAdmSubjectForRank().getName());
+                        			
+									
+								}else{
+									literatureCommunityMark=0;
+								}
                         		totalmarkforpart3=(totalmarkforpart3/maxmark)*1200;//normalising
                         	
                         	
                         			//penalty &bonus
- 	                        	   totalmarkforpart3=totalmarkforpart3-penalty+bonus+marks;
+ 	                        	   totalmarkforpart3=totalmarkforpart3-penalty+bonus+marks+literatureCommunityMark;
                            
 								
 									// adding indexmark object
@@ -3579,6 +3615,9 @@ public class ApplicationRankHelper {
                         	     
                         	     
                               	else if(candidatePreference.getCourse().getId()==29){
+                              		if (admAppln.getId()==56938) {
+    									System.out.println();
+    								}
                       		   if(isvhsc){
 
                               	   remark="Eligible";
@@ -3591,6 +3630,8 @@ public class ApplicationRankHelper {
                                  double marks=0;
                                  double langbonus=0;
                                  double communicativeEnglishMarks=0;
+                                 double literatureCommunityMark=0;
+                                 
                                  Iterator<AdmSubjectMarkForRank> markItr=detailMarks.iterator();
                               		while (markItr.hasNext()) {
       									detailMarkBO= (AdmSubjectMarkForRank) markItr.next();
@@ -3628,14 +3669,24 @@ public class ApplicationRankHelper {
       											communicativeEnglishMarks=Double.parseDouble(detailMarkBO.getConversionmark())*0.5;
       											electiveSubjectMark=Double.parseDouble(detailMarkBO.getConversionmark());
       									}
+      									if (detailMarkBO.getAdmSubjectForRank().getName().equalsIgnoreCase("English Literature")) {
+    										
+    											literatureCommunityMark=Double.parseDouble(detailMarkBO.getConversionmark());
+										}
       									
                               		}
+                              		if (marks!=0) {
+                              			literatureCommunityMark=(literatureCommunityMark/100)*10;
+										
+									}else{
+										literatureCommunityMark=0;
+									}
                               		
                               		totalmarkforpart3=(totalmarkforpart3/maxmark)*800;//normalising
                               	
                               	
                               			//penalty &bonus
-       	                        	   totalmarkforpart3=totalmarkforpart3-penalty+bonus+marks+langbonus+communicativeEnglishMarks;
+       	                        	   totalmarkforpart3=totalmarkforpart3-penalty+bonus+marks+langbonus+communicativeEnglishMarks+literatureCommunityMark;
                                  
       								
       									// adding indexmark object
@@ -3677,6 +3728,7 @@ public class ApplicationRankHelper {
                          double electiveSubjectMark=0;
                          double marks=0;
                          double communicativeEnglishMarks=0;
+                         double literatureCommunityMark=0;
                          Iterator<AdmSubjectMarkForRank> markItr=detailMarks.iterator();
                       		while (markItr.hasNext()) {
 									detailMarkBO= (AdmSubjectMarkForRank) markItr.next();
@@ -3712,14 +3764,23 @@ public class ApplicationRankHelper {
 										electiveSubjectMark=Double.parseDouble(detailMarkBO.getConversionmark());
 									
 								}
+									if (detailMarkBO.getAdmSubjectForRank().getName().equalsIgnoreCase("English Literature")) {
+											literatureCommunityMark=Double.parseDouble(detailMarkBO.getConversionmark());
+									}
 									
                       		}
+                      		if (marks!=0) {
+                      			literatureCommunityMark=(literatureCommunityMark/100)*10;
+								
+							}else{
+								literatureCommunityMark=0;
+							}
                       		
                       		totalmarkforpart3=(totalmarkforpart3/maxmark)*1200;//normalising
                       	
                       	
                       			//penalty &bonus
-	                        	   totalmarkforpart3=totalmarkforpart3-penalty+bonus+marks+communicativeEnglishMarks;
+	                        	   totalmarkforpart3=totalmarkforpart3-penalty+bonus+marks+communicativeEnglishMarks+literatureCommunityMark;
                          
 								
 									// adding indexmark object
@@ -3753,7 +3814,7 @@ public class ApplicationRankHelper {
                               }
                         	     
                         	     
-                              	else if(candidatePreference.getCourse().getId()==27){
+                              	else if(candidatePreference.getCourse().getId()==27){/*
 
                               		   remark="Eligible";
 	                        		   double maxmark=0;
@@ -3854,6 +3915,167 @@ public class ApplicationRankHelper {
 										
 										indexmarkList.add(si);
 									
+                              	*/
+                              		CandidatePreferenceEntranceDetails entrance=null;
+       								Iterator<CandidatePreferenceEntranceDetails> itere =admAppln.getCandidatePreferenceEntranceDetailses().iterator();
+      	                        	   while(itere.hasNext()){
+      	                        		   CandidatePreferenceEntranceDetails candidateEntranceDetails=itere.next();
+      	                        		   if(candidateEntranceDetails.getCourse().getId()==candidatePreference.getCourse().getId()){
+      	                        		   double maxmark=0;
+      		                        	   double language1Mark=0;                          
+      		                        	   double language2Mark=0;
+      		                        	   double groupMarks=0;
+      		                        	   double electiveSubjectMark=0;
+      		                        	   double Jmark=0;
+      	                        	   if(candidateEntranceDetails!=null){
+      	                        	   
+      	                        		 if(isvhsc){
+      	                        	   Iterator<AdmSubjectMarkForRank> markItr=detailMarks.iterator();
+      	                        	   while (markItr.hasNext()) {
+      										detailMarkBO= (AdmSubjectMarkForRank) markItr.next();
+      										if(!detailMarkBO.getAdmSubjectForRank().getGroupName().equalsIgnoreCase("Vocational") && !detailMarkBO.getAdmSubjectForRank().getGroupName().equalsIgnoreCase("Language")){
+      											
+      										maxmark=maxmark+200;
+      										double mark=Double.parseDouble(detailMarkBO.getConversionmark());
+      										totalmarkforpart3=totalmarkforpart3+mark;
+      										}
+      							     		//groups mark
+      										if(!detailMarkBO.getAdmSubjectForRank().getGroupName().equalsIgnoreCase("Language") && !detailMarkBO.getAdmSubjectForRank().getGroupName().equalsIgnoreCase("Vocational")){
+      										groupMarks=groupMarks+Double.parseDouble(detailMarkBO.getConversionmark());
+      										}
+      																					
+      										//lang1 mark
+      										if(detailMarkBO.getAdmSubjectForRank().getGroupName().equalsIgnoreCase("Language") && detailMarkBO.getAdmSubjectForRank().getName().equalsIgnoreCase("English")){
+      										language1Mark=Double.parseDouble(detailMarkBO.getConversionmark());
+      										   }
+      																					
+      										//lang2 mark
+      										if(detailMarkBO.getAdmSubjectForRank().getGroupName().equalsIgnoreCase("Language") && !detailMarkBO.getAdmSubjectForRank().getName().equalsIgnoreCase("English")){
+      										language2Mark=Double.parseDouble(detailMarkBO.getConversionmark());
+      										   }
+      										if(!detailMarkBO.getAdmSubjectForRank().getGroupName().equalsIgnoreCase("Language") && detailMarkBO.getAdmSubjectForRank().getName().equalsIgnoreCase("Journalism")){
+          										Jmark=Double.parseDouble(detailMarkBO.getConversionmark());
+          										   }
+      	                        	   }	
+      	                        	  totalmarkforpart3=(totalmarkforpart3/maxmark)*800;//normalising
+      	                        	//totalmarkforpart3=totalmarkforpart3+(language1Mark*2)+((Jmark*10)/100)-penalty+bonus;;
+      	                        	totalmarkforpart3=totalmarkforpart3+(language1Mark*2)-penalty+bonus;;
+      	                        		 }
+      	                        		 else{
+      	                        		   Iterator<AdmSubjectMarkForRank> markItr=detailMarks.iterator();
+          	                        	   while (markItr.hasNext()) {
+          										detailMarkBO= (AdmSubjectMarkForRank) markItr.next();
+          											
+          										maxmark=maxmark+200;
+          										double mark=Double.parseDouble(detailMarkBO.getConversionmark());
+          										totalmarkforpart3=totalmarkforpart3+mark;
+          										
+          							     		//groups mark
+          										if(!detailMarkBO.getAdmSubjectForRank().getGroupName().equalsIgnoreCase("Language") && !detailMarkBO.getAdmSubjectForRank().getGroupName().equalsIgnoreCase("Vocational")){
+          										groupMarks=groupMarks+Double.parseDouble(detailMarkBO.getConversionmark());
+          										}
+          																					
+          										//lang1 mark
+          										if(detailMarkBO.getAdmSubjectForRank().getGroupName().equalsIgnoreCase("Language") && detailMarkBO.getAdmSubjectForRank().getName().equalsIgnoreCase("English")){
+          										language1Mark=Double.parseDouble(detailMarkBO.getConversionmark());
+          										   }
+          																					
+          										//lang2 mark
+          										if(detailMarkBO.getAdmSubjectForRank().getGroupName().equalsIgnoreCase("Language") && !detailMarkBO.getAdmSubjectForRank().getName().equalsIgnoreCase("English")){
+          										language2Mark=Double.parseDouble(detailMarkBO.getConversionmark());
+          										   }
+          										if(!detailMarkBO.getAdmSubjectForRank().getGroupName().equalsIgnoreCase("Language") && detailMarkBO.getAdmSubjectForRank().getName().equalsIgnoreCase("Journalism")){
+              										Jmark=Double.parseDouble(detailMarkBO.getConversionmark());
+              										   }
+          	                        	   }	
+          	                        //	  totalmarkforpart3=(totalmarkforpart3/maxmark)*1200+((Jmark*10)/100)-penalty+bonus;;;//normalising
+          	                        	 totalmarkforpart3=(totalmarkforpart3/maxmark)*1200-penalty+bonus;;;//normalising
+      	                        		 }
+      	                        	   remark="Eligible";
+      	                        	 
+      	                        	   
+      	                        	  
+      	                        		   IApplicationEditTransaction txn= new ApplicationEditTransactionimpl();
+      	                        		    entrance=txn.getEntranceDetails(candidatePreference.getCourse().getId(),admAppln.getId());
+      	                        	   if(entrance!=null && entrance.getMarksObtained()!=null){
+      	                        		   totalmarkforpart3=((totalmarkforpart3/1200)*50)+(((Double.parseDouble(String.valueOf(entrance.getMarksObtained())))/(Double.parseDouble(String.valueOf(entrance.getTotalMarks()))))*50);
+      	                        		   electiveSubjectMark=Double.parseDouble(String.valueOf(entrance.getMarksObtained()));
+      	                        	   }
+      	                        	 //penalty &bonus
+      	                        	   
+                         
+      	                        	   }
+      	                        
+      	                        	   if(entrance!=null && entrance.getMarksObtained()!=null){
+      	                        		// adding indexmark object
+      		                        	   StudentIndexMark si=new StudentIndexMark();
+      										
+      										AdmAppln appln=new AdmAppln();
+      										appln.setId(admAppln.getId());
+      										si.setAdmAppln(appln);
+      										
+      										Course course=new Course();
+      										course.setId(candidatePreference.getCourse().getId());
+      										si.setCourse(course);
+      										
+      										si.setIndexMark(Double.parseDouble(twoDForm.format(totalmarkforpart3)));
+      										si.setRemark(remark);
+      										si.setCreatedDate(new Date());
+      										si.setLastModifiedDate(new Date());
+      										si.setCreatedBy(form.getUserId());
+      										si.setModifiedBy(form.getUserId());		
+
+      										si.setLanguage1Marks(language1Mark);
+      										si.setLanguage2Marks(language2Mark);
+      										si.setGroupMarks(groupMarks);
+      										si.setElectivesubmark(electiveSubjectMark);
+      										si.setActive(true);
+      										si.setPrefNo(candidatePreference.getPrefNo());
+      										si.setGenerateCourseId(Integer.parseInt(form.getCourseId()));
+      										
+      										indexmarkList.add(si);
+      									
+      	                        	   }
+      	                        	   
+      	                        	   else {
+      	                        		  
+      		                        		   remark="rejected";
+      		                        		// adding indexmark object
+      			                        	   StudentIndexMark si=new StudentIndexMark();
+      											
+      											AdmAppln appln=new AdmAppln();
+      											appln.setId(admAppln.getId());
+      											si.setAdmAppln(appln);
+      											
+      											Course course=new Course();
+      											course.setId(candidatePreference.getCourse().getId());
+      											si.setCourse(course);
+      											
+      											si.setIndexMark(Double.parseDouble(twoDForm.format(totalmarkforpart3)));
+      											si.setRemark(remark);
+      											si.setCreatedDate(new Date());
+      											si.setLastModifiedDate(new Date());
+      											si.setCreatedBy(form.getUserId());
+      											si.setModifiedBy(form.getUserId());		
+
+      											si.setLanguage1Marks(language1Mark);
+      											si.setLanguage2Marks(language2Mark);
+      											si.setGroupMarks(groupMarks);
+      											si.setElectivesubmark(electiveSubjectMark);
+      											si.setActive(true);
+      											si.setPrefNo(candidatePreference.getPrefNo());
+      											si.setGenerateCourseId(Integer.parseInt(form.getCourseId()));
+      											
+      											indexmarkList.add(si);
+      										
+      	                        	 
+      	                        	   }
+      	                        	   }
+      	                        	
+      						}	
+                              	
+                              	
+                              	
                               	} 
                               	 else if (candidatePreference.getCourse().getId() == 30) {
                                      if (isvhsc) {

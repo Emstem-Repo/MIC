@@ -1123,6 +1123,7 @@
         <forward name="ajaxResponseForOptions" path="/jsp/ajax/ajaxResponseMap.jsp"/>
 		<forward name="goToMasterPage" path="/jsp/admin/redirectToMaster.jsp"/>
 		<forward name="redirectToPgi" path="/jsp/admission/redirectToPGI.jsp" />
+		<forward name="redirectToPgiadm" path="/jsp/admission/redirectToPGIAdm.jsp" />
 		<forward name="redirectPgiStudentSemester" path="/jsp/studentlogin/redirectPgiStudentSemester.jsp" />
 		<forward name="redirectPgiSpecialFee" path="/jsp/studentlogin/redirectPgiSpecialFee.jsp" />
         <forward name="homePage" path="/Login.do">

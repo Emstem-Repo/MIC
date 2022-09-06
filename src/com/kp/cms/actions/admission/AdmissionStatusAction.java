@@ -1159,7 +1159,7 @@ public class AdmissionStatusAction extends BaseDispatchAction {
 		     saveErrors(request, errors);
 		
 		}
-		return mapping.findForward(CMSConstants.REDIRECT_TO_PGI_PAGE);
+		return mapping.findForward("redirectToPgiadm");
 	
 	
 	}
@@ -1171,20 +1171,20 @@ public class AdmissionStatusAction extends BaseDispatchAction {
 				errors.add(CMSConstants.ADMISSIONFORM_APPLICATIONAMNT_REQUIRED, new ActionError(CMSConstants.ADMISSIONFORM_APPLICATIONAMNT_REQUIRED));
 			}
 		}
-		if(CMSConstants.PGI_MERCHANT_ID== null || CMSConstants.PGI_MERCHANT_ID.isEmpty()
-				|| CMSConstants.PGI_MERCHANT_ID==""){
+		if(CMSConstants.PGI_MERCHANT_ID_ADM_STAT== null || CMSConstants.PGI_MERCHANT_ID_ADM_STAT.isEmpty()
+				|| CMSConstants.PGI_MERCHANT_ID_ADM_STAT==""){
 			if (errors.get(CMSConstants.PGI_MERCHANT_ID_REQUIRED)!=null && !errors.get(CMSConstants.PGI_MERCHANT_ID_REQUIRED).hasNext()) {
 				errors.add(CMSConstants.PGI_MERCHANT_ID_REQUIRED, new ActionError(CMSConstants.PGI_MERCHANT_ID_REQUIRED));
 			}
 		}
-		if(CMSConstants.PGI_SECURITY_ID == null || CMSConstants.PGI_SECURITY_ID.isEmpty()
-				|| CMSConstants.PGI_SECURITY_ID==""){
+		if(CMSConstants.PGI_SECURITY_ID_ADM_STAT == null || CMSConstants.PGI_SECURITY_ID_ADM_STAT.isEmpty()
+				|| CMSConstants.PGI_SECURITY_ID_ADM_STAT==""){
 			if (errors.get(CMSConstants.PGI_SECURITY_ID_REQUIRED)!=null && !errors.get(CMSConstants.PGI_SECURITY_ID_REQUIRED).hasNext()) {
 				errors.add(CMSConstants.PGI_SECURITY_ID_REQUIRED, new ActionError(CMSConstants.PGI_SECURITY_ID_REQUIRED));
 			}
 		}
-		if(CMSConstants.PGI_CHECKSUM_KEY == null || CMSConstants.PGI_CHECKSUM_KEY.isEmpty()
-				|| CMSConstants.PGI_CHECKSUM_KEY==""){
+		if(CMSConstants.PGI_CHECKSUM_KEY_ADM_STAT == null || CMSConstants.PGI_CHECKSUM_KEY_ADM_STAT.isEmpty()
+				|| CMSConstants.PGI_CHECKSUM_KEY_ADM_STAT==""){
 			if (errors.get(CMSConstants.PGI_CHECKSUM_KEY_REQUIRED)!=null && !errors.get(CMSConstants.PGI_CHECKSUM_KEY_REQUIRED).hasNext()) {
 				errors.add(CMSConstants.PGI_CHECKSUM_KEY_REQUIRED, new ActionError(CMSConstants.PGI_CHECKSUM_KEY_REQUIRED));
 			}

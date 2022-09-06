@@ -513,12 +513,13 @@ public class DownloadHallTicketTransactionImpl implements IDownloadHallTicketTra
 		Session session = null;
 		ArrayList<ExamSupplementaryImprovementApplicationBO> list;
 		boolean isAppeared = false;
+		
 		try {
 
 			String hql = "from ExamSupplementaryImprovementApplicationBO imp "
 					+ " where studentId = " + studentId;
 					if(mode.equalsIgnoreCase("hallTicket")){
-						hql = hql+"  and imp.isAppearedTheory = 1 " ;
+						hql = hql+"  and imp.isAppearedTheory = 1 or  imp.isAppearedPractical = 1" ;
 					}else if(mode.equalsIgnoreCase("marksCard")){
 						hql = hql+"  and (imp.isAppearedTheory = 1  or  imp.isAppearedPractical = 1) " ;
 					}

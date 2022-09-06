@@ -178,7 +178,7 @@ public class FalseNumberExamMarksEntryAction extends BaseDispatchAction {
 		if (errors.isEmpty()) {
 			try {
 				boolean isUpdated =FalseNumExamMarksEntryHandler.getInstance().addEvalationMarks(newExamMarksEntryForm);
-				newExamMarksEntryForm.setDisplatoList(new FalseNoDisplayTo());
+				//newExamMarksEntryForm.setDisplatoList(new FalseNoDisplayTo());
 				newExamMarksEntryForm.setFalseNo(null);
 				newExamMarksEntryForm.getStudentMarksTo().setExamEvalTo(new ExamMarkEvaluationTo());
 				//setRequiredDatatoForm(newExamMarksEntryForm, request);

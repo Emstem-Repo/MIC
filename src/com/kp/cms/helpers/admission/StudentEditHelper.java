@@ -373,7 +373,10 @@ public class StudentEditHelper {
 			StudentIndexMark indexmark=(StudentIndexMark) FalseExamMarksEntryTransactionImpl.getInstance().getUniqeDataForQuery("from StudentIndexMark i where i.admAppln.id="+admApplnBo.getId()+" group by i.admAppln.id");
 			StudentRank rank=(StudentRank) FalseExamMarksEntryTransactionImpl.getInstance().getUniqeDataForQuery("from StudentRank r where r.admAppln.id="+admApplnBo.getId()+" group by r.admAppln.id");
 			adminAppTO.setIndexMark(indexmark.getIndexMark().toString());
-			adminAppTO.setRank(rank.getRank().toString());
+			if (rank!=null) {
+				adminAppTO.setRank(rank.getRank().toString());
+			}
+			
 			adminAppTO.setCreatedBy(admApplnBo.getCreatedBy());
 			//added by vishnu
 			adminAppTO.setAdmissionNumber(admApplnBo.getAdmissionNumber());

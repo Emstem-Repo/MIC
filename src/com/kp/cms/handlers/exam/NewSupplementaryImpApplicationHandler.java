@@ -2217,7 +2217,7 @@ public class NewSupplementaryImpApplicationHandler {
 		String reqPercentage=CMSConstants.ATTENDANCE_PERCENTAGE_FOR_APP;
 		if(ava){
 		int classes = newSupplementaryImpApplicationForm.getStudentObj().getClassSchemewise().getClasses().getId();
-		if(CMSConstants.ATT_EXCLUDED_EXAMREG.contains(classes)){
+		//f(CMSConstants.ATT_EXCLUDED_EXAMREG.contains(classes)){
 		//if(programType.equalsIgnoreCase("ug")){
 			if(totalAggrPer<=Float.parseFloat(reqPercentage)){
 				boolean ava1=checkCondonationAvailability(newSupplementaryImpApplicationForm.getStudentObj().getId(),newSupplementaryImpApplicationForm.getStudentObj().getClassSchemewise().getClasses().getId());
@@ -2226,7 +2226,7 @@ public class NewSupplementaryImpApplicationHandler {
 				}																									
 			}
 		//}
-		}
+		//}
 		//}
 			//getting instructions
 			String programTypeId=	NewSecuredMarksEntryHandler.getInstance().getPropertyValue(newSupplementaryImpApplicationForm.getStudentObj().getClassSchemewise().getClasses().getId(),"Classes",true,"course.program.programType.id");
@@ -2879,7 +2879,7 @@ public List<ExamSupplementaryImpApplicationSubjectTO> getApplicationFormsForRegu
 		String reqPercentage=CMSConstants.ATTENDANCE_PERCENTAGE_FOR_APP;
 		if(ava){
 		String classes = newSupplementaryImpApplicationForm.getStudentObj().getClassSchemewise().getClasses().getName();
-		if(!CMSConstants.ATT_EXCLUDED_EXAMREG.contains(classes)){
+		//if(!CMSConstants.ATT_EXCLUDED_EXAMREG.contains(classes)){
 		//if(programType.equalsIgnoreCase("ug")){
 			if(totalAggrPer<Float.parseFloat(reqPercentage)){
 				boolean ava1=checkCondonationAvailability(newSupplementaryImpApplicationForm.getStudentObj().getId(),newSupplementaryImpApplicationForm.getStudentObj().getClassSchemewise().getClasses().getId());
@@ -2888,7 +2888,7 @@ public List<ExamSupplementaryImpApplicationSubjectTO> getApplicationFormsForRegu
 				}																									
 			}
 		//}
-		}
+		//}
 			//getting instructions
 			String programTypeId=	NewSecuredMarksEntryHandler.getInstance().getPropertyValue(newSupplementaryImpApplicationForm.getStudentObj().getClassSchemewise().getClasses().getId(),"Classes",true,"course.program.programType.id");
 			IDownloadHallTicketTransaction txn= new DownloadHallTicketTransactionImpl();

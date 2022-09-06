@@ -32,7 +32,7 @@
 	}	 */
 	function downloadmemo() {
 		var appno=document.getElementById('appNo').value; 
-		var year="2021";
+		var year="2022";
 		var url = "AdmissionStatus.do?method=downloadApplication&applicationNo="+appno +"&appliedYear="+year+"&displaySemister="+true+"&memo="+true+"&chanceMemo="+false;
 		myRef = window
 		.open(url, "viewDescription",
