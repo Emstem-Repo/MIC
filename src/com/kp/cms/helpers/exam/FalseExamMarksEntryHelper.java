@@ -1371,6 +1371,9 @@ public class FalseExamMarksEntryHelper {
 			to.setFalseNoId(obj[1].toString());
 			}
 		}
+		if (to.getFalseNo().equals("2002204P0110210")) {
+			System.out.println();
+		}
 		ExamMarkEvaluationTo evalTO=null;
 		ExamMarkEvaluationBo evalbo=FalseExamMarksEntryTransactionImpl.getInstance().getEvalBo(to.getFalseNo());
 		if (evalbo!=null) {
@@ -1404,11 +1407,11 @@ public class FalseExamMarksEntryHelper {
 							ExamFalseNumberGen falsBo=FalseExamMarksEntryTransactionImpl.getInstance().getDetailsByFalsenum(to.getFalseNo());
 							if (falsBo.getSubject().getIsTheoryPractical()=="T" 
 									|| falsBo.getSubject().getIsTheoryPractical().equalsIgnoreCase("T")) {
-								to.setTheoryMarks(String.valueOf((Integer.parseInt(evalTO.getFirstEvaluation())+Integer.parseInt(evalTO.getSecondEvaluation()))/2));
+								to.setTheoryMarks(String.valueOf(Math.round((new Double(evalTO.getFirstEvaluation())+new Double(evalTO.getSecondEvaluation()))/2)));
 								
 							}else if (falsBo.getSubject().getIsTheoryPractical()=="P" 
 									|| falsBo.getSubject().getIsTheoryPractical().equalsIgnoreCase("P")) {
-								to.setPracticalMarks(String.valueOf((Integer.parseInt(evalTO.getFirstEvaluation())+Integer.parseInt(evalTO.getSecondEvaluation()))/2));
+								to.setPracticalMarks(String.valueOf(Math.round((new Double(evalTO.getFirstEvaluation())+new Double(evalTO.getSecondEvaluation()))/2)));
 								
 							}
 							
@@ -1427,11 +1430,22 @@ public class FalseExamMarksEntryHelper {
 								if (secondDiff<0) {
 									secondDiff=secondDiff*(-1);
 								}
-								if (firstDiff<secondDiff) {
-									to.setTheoryMarks(String.valueOf((Integer.parseInt(evalTO.getFirstEvaluation())+Integer.parseInt(evalTO.getThirdEvaluation()))/2));
-								}else{
-									to.setTheoryMarks(String.valueOf((Integer.parseInt(evalTO.getSecondEvaluation())+Integer.parseInt(evalTO.getThirdEvaluation()))/2));
+								if (firstDiff == secondDiff) {
+									String finalMark=findTwoMaxNumbers(Integer.parseInt(evalTO.getFirstEvaluation()), Integer.parseInt(evalTO.getSecondEvaluation()), Integer.parseInt(evalTO.getThirdEvaluation()));
+									to.setTheoryMarks(finalMark);
 								}
+								else if (firstDiff<secondDiff) {
+									Double result=new Double(0);
+									result=((new Double(evalTO.getFirstEvaluation()))+(new Double(evalTO.getThirdEvaluation())))/2;
+									String finalMark=String.valueOf(Math.round(result));
+									to.setTheoryMarks(finalMark);
+								}else{
+									Double result=new Double(0);
+									result=((new Double(evalTO.getSecondEvaluation()))+(new Double(evalTO.getThirdEvaluation())))/2;
+									String finalMark=String.valueOf(Math.round(result));
+									to.setTheoryMarks(finalMark);
+								}
+								
 								
 								
 							}else if (falsBo.getSubject().getIsTheoryPractical()=="P" 
@@ -1445,11 +1459,22 @@ public class FalseExamMarksEntryHelper {
 								if (secondDiff<0) {
 									secondDiff=secondDiff*(-1);
 								}
-								if (firstDiff<secondDiff) {
-									to.setPracticalMarks(String.valueOf((Integer.parseInt(evalTO.getFirstEvaluation())+Integer.parseInt(evalTO.getThirdEvaluation()))/2));
-								}else{
-									to.setPracticalMarks(String.valueOf((Integer.parseInt(evalTO.getSecondEvaluation())+Integer.parseInt(evalTO.getThirdEvaluation()))/2));
+								if(firstDiff == secondDiff){
+									String finalMark=findTwoMaxNumbers(Integer.parseInt(evalTO.getFirstEvaluation()), Integer.parseInt(evalTO.getSecondEvaluation()), Integer.parseInt(evalTO.getThirdEvaluation()));
+									to.setPracticalMarks(finalMark);
 								}
+								else if (firstDiff<secondDiff) {
+									Double result=new Double(0);
+									result=((new Double(evalTO.getFirstEvaluation()))+(new Double(evalTO.getThirdEvaluation())))/2;
+									String finalMark=String.valueOf(Math.round(result));
+									to.setTheoryMarks(finalMark);
+								}else{
+									Double result=new Double(0);
+									result=((new Double(evalTO.getSecondEvaluation()))+(new Double(evalTO.getThirdEvaluation())))/2;
+									String finalMark=String.valueOf(Math.round(result));
+									to.setTheoryMarks(finalMark);
+								}
+								
 								
 								
 							}
@@ -1570,11 +1595,11 @@ public class FalseExamMarksEntryHelper {
 							ExamFalseNumberGen falsBo=FalseExamMarksEntryTransactionImpl.getInstance().getDetailsByFalsenum(to.getFalseNo());
 							if (falsBo.getSubject().getIsTheoryPractical()=="T" 
 									|| falsBo.getSubject().getIsTheoryPractical().equalsIgnoreCase("T")) {
-								to.setTheoryMarks(String.valueOf((Integer.parseInt(evalTO.getFirstEvaluation())+Integer.parseInt(evalTO.getSecondEvaluation()))/2));
+								to.setTheoryMarks(String.valueOf(Math.round((new Double(evalTO.getFirstEvaluation())+new Double(evalTO.getSecondEvaluation()))/2)));
 								
 							}else if (falsBo.getSubject().getIsTheoryPractical()=="P" 
 									|| falsBo.getSubject().getIsTheoryPractical().equalsIgnoreCase("P")) {
-								to.setPracticalMarks(String.valueOf((Integer.parseInt(evalTO.getFirstEvaluation())+Integer.parseInt(evalTO.getSecondEvaluation()))/2));
+								to.setPracticalMarks(String.valueOf(Math.round((new Double(evalTO.getFirstEvaluation())+new Double(evalTO.getSecondEvaluation()))/2)));
 								
 							}
 							
@@ -1593,10 +1618,20 @@ public class FalseExamMarksEntryHelper {
 								if (secondDiff<0) {
 									secondDiff=secondDiff*(-1);
 								}
-								if (firstDiff<secondDiff) {
-									to.setTheoryMarks(String.valueOf((Integer.parseInt(evalTO.getFirstEvaluation())+Integer.parseInt(evalTO.getThirdEvaluation()))/2));
+								if (firstDiff == secondDiff) {
+									String finalMark=findTwoMaxNumbers(Integer.parseInt(evalTO.getFirstEvaluation()), Integer.parseInt(evalTO.getSecondEvaluation()), Integer.parseInt(evalTO.getThirdEvaluation()));
+									to.setTheoryMarks(finalMark);
+								}
+								else if (firstDiff < secondDiff) {
+									Double result=new Double(0);
+									result=((new Double(evalTO.getFirstEvaluation()))+(new Double(evalTO.getThirdEvaluation())))/2;
+									String finalMark=String.valueOf(Math.round(result));
+									to.setTheoryMarks(finalMark);
 								}else{
-									to.setTheoryMarks(String.valueOf((Integer.parseInt(evalTO.getSecondEvaluation())+Integer.parseInt(evalTO.getThirdEvaluation()))/2));
+									Double result=new Double(0);
+									result=((new Double(evalTO.getSecondEvaluation()))+(new Double(evalTO.getThirdEvaluation())))/2;
+									String finalMark=String.valueOf(Math.round(result));
+									to.setTheoryMarks(finalMark);
 								}
 								
 								
@@ -1611,11 +1646,22 @@ public class FalseExamMarksEntryHelper {
 								if (secondDiff<0) {
 									secondDiff=secondDiff*(-1);
 								}
-								if (firstDiff<secondDiff) {
-									to.setPracticalMarks(String.valueOf((Integer.parseInt(evalTO.getFirstEvaluation())+Integer.parseInt(evalTO.getThirdEvaluation()))/2));
-								}else{
-									to.setPracticalMarks(String.valueOf((Integer.parseInt(evalTO.getSecondEvaluation())+Integer.parseInt(evalTO.getThirdEvaluation()))/2));
+								if (firstDiff == secondDiff) {
+									String finalMark=findTwoMaxNumbers(Integer.parseInt(evalTO.getFirstEvaluation()), Integer.parseInt(evalTO.getSecondEvaluation()), Integer.parseInt(evalTO.getThirdEvaluation()));
+									to.setPracticalMarks(finalMark);
 								}
+								else if (firstDiff<secondDiff) {
+									Double result=new Double(0);
+									result=((new Double(evalTO.getFirstEvaluation()))+(new Double(evalTO.getThirdEvaluation())))/2;
+									String finalMark=String.valueOf(Math.round(result));
+									to.setTheoryMarks(finalMark);
+								}else{
+									Double result=new Double(0);
+									result=((new Double(evalTO.getSecondEvaluation()))+(new Double(evalTO.getThirdEvaluation())))/2;
+									String finalMark=String.valueOf(Math.round(result));
+									to.setTheoryMarks(finalMark);
+								}
+								
 								
 								
 							}
@@ -1644,5 +1690,23 @@ public class FalseExamMarksEntryHelper {
 		newExamMarksEntryForm.setIsfalsegenerated(isfalsegenerated);
 		return studentList;
 	}
+	 public String findTwoMaxNumbers(int first , int second, int third){
+		 int array[] = {first,second,third};
+         int maxOne = 0;
+         String finalMark=null;
+         Double result=new Double(0);
+         int maxTwo = 0;
+         for(int num : array){
+             if(maxOne < num){
+                 maxTwo = maxOne;
+                 maxOne =num;
+             } else if(maxTwo < num){
+                 maxTwo = num;
+             }
+         }
+         result=((new Double(maxOne))+(new Double(maxTwo)))/2;
+         finalMark=String.valueOf(Math.round(result));
+		return finalMark;
+     }
 	
 }

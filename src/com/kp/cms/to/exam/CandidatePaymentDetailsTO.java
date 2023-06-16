@@ -6,6 +6,7 @@ public class CandidatePaymentDetailsTO {
 	private String txnDate;
 	private String txnStatus;
 	private String amount;
+	private String txnrefNo;
 	public int getId() {
 		return id;
 	}
@@ -35,6 +36,12 @@ public class CandidatePaymentDetailsTO {
 	}
 	public void setAmount(String amount) {
 		this.amount = amount;
+	}
+	public String getTxnrefNo() {
+		return txnrefNo;
+	}
+	public void setTxnrefNo(String txnrefNo) {
+		this.txnrefNo = txnrefNo;
 	}
 	
 	

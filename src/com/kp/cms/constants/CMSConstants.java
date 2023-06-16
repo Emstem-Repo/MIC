@@ -5053,6 +5053,24 @@ public class CMSConstants extends CMSExamConstants {
 	public static final String PGI_CHECKSUM_KEY = "Rui8Hy58";
 */
 	
+	//exam fee
+	public static final String PGI_MERCHANT_ID_EXAM_SCRUT_FEE = "nxG3BF";
+	public static final String PGI_SECURITY_ID_EXAM_SCRUT_FEE = "Ec2ZzQJkF5A8E1HMYR0vdsBi3zKj4hCA";
+	public static final String PGI_CHECKSUM_KEY_EXAM_SCRUT_FEE = "Ec2ZzQJkF5A8E1HMYR0vdsBi3zKj4hCA";
+	
+	//sem fee
+	public static final String PGI_MERCHANT_ID_SEM_FEE = "xdRPRHGC";
+	public static final String PGI_SECURITY_ID_SEM_FEE = "3sPSQVsUob";
+	public static final String PGI_CHECKSUM_KEY_SEM_FEE = "3sPSQVsUob";
+	
+	
+	//allotement fee
+	public static final String PGI_MERCHANT_ID_ALLOTMENT = "xdRPRHGC";
+	public static final String PGI_SECURITY_ID_ALLOTMENT = "3sPSQVsUob";
+	public static final String PGI_CHECKSUM_KEY_ALLOTMENT = "3sPSQVsUob";
+	
+	
+	//application fees
 	public static final String PGI_MERCHANT_ID = "F0meUOlq";
 	//original saltCHANT_ID_STU = "rhzXewvw";
 	public static final String PGI_SECURITY_ID = "fQmaRSFBHb";

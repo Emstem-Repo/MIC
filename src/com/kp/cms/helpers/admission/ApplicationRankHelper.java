@@ -3330,6 +3330,9 @@ public class ApplicationRankHelper {
                         	     
                         	     //Computer Science
                               	else if(candidatePreference.getCourse().getId()==28){
+                              		if (admAppln.getId()==63180) {
+										System.out.println("62904");
+									}
                       		   if(isvhsc){
 
                               	   remark="Eligible";
@@ -3342,11 +3345,17 @@ public class ApplicationRankHelper {
                                  double marks=0;
                                  boolean isMathematics=false;
                                  boolean isComputerScience=false;
+                                 boolean isComputerApplication=false;
                                  boolean isPhysics=false;
                                  String mathematicsMarks=null;
                                  String computerScienceMarks=null;
                                  String physicsMarks=null;
+                                 String computerApplication=null;
+                                 double highestMark=0;
                                  double marksSub=0;
+                                 double mathMarks = 0.0;
+									double csMarks = 0.0;
+									double caMarks = 0.0;
                                  Iterator<AdmSubjectMarkForRank> markItr=detailMarks.iterator();
                               		while (markItr.hasNext()) {
       									detailMarkBO= (AdmSubjectMarkForRank) markItr.next();
@@ -3392,8 +3401,38 @@ public class ApplicationRankHelper {
     										isPhysics=true;
     										physicsMarks=detailMarkBO.getConversionmark();
     									}
+    									if(detailMarkBO.getAdmSubjectForRank().getName().equalsIgnoreCase("Computer Application")){
+    										isComputerApplication=true;
+    										computerApplication=detailMarkBO.getConversionmark();
+    									}
+    									
+
+
+    									if (mathematicsMarks != null && !mathematicsMarks.isEmpty()) {
+    									    mathMarks = Double.parseDouble(mathematicsMarks);
+    									}
+
+    									if (computerScienceMarks != null && !computerScienceMarks.isEmpty()) {
+    									    csMarks = Double.parseDouble(computerScienceMarks);
+    									}
+
+    									if (computerApplication != null && !computerApplication.isEmpty()) {
+    									    caMarks = Double.parseDouble(computerApplication);
+    									}
+
+
+
       									
                               		}
+                              		if (mathMarks > csMarks && mathMarks > caMarks) {
+								        highestMark = mathMarks;
+								    } else if (csMarks > mathMarks && csMarks > caMarks) {
+								        highestMark = csMarks;
+								    } else if (caMarks > mathMarks && caMarks > csMarks) {
+								        highestMark = caMarks;
+								    } else {
+								        highestMark = mathMarks;
+								    }
                               		
                               		totalmarkforpart3=(totalmarkforpart3/maxmark)*800;//normalising
                               		
@@ -3440,7 +3479,8 @@ public class ApplicationRankHelper {
                               		}
                               		
                               			//penalty &bonus
-       	                        	   totalmarkforpart3=totalmarkforpart3-penalty+bonus+marks+marksSub;
+       	                        	  // totalmarkforpart3=totalmarkforpart3-penalty+bonus+marks+marksSub; 
+       	                        	 totalmarkforpart3=totalmarkforpart3-penalty+bonus+marks+highestMark;
                                  
       								
       									// adding indexmark object
@@ -3484,11 +3524,17 @@ public class ApplicationRankHelper {
                          double marks=0;
                          boolean isMathematics=false;
                          boolean isComputerScience=false;
+                         boolean isComputerApplication=false;
                          boolean isPhysics=false;
                          String mathematicsMarks=null;
                          String computerScienceMarks=null;
                          String physicsMarks=null;
+                         String computerApplication=null;
+                         double highestMark=0;
                          double marksSub=0;
+                         double mathMarks = 0.0;
+							double csMarks = 0.0;
+							double caMarks = 0.0;
                          Iterator<AdmSubjectMarkForRank> markItr=detailMarks.iterator();
                       		while (markItr.hasNext()) {
 									detailMarkBO= (AdmSubjectMarkForRank) markItr.next();
@@ -3529,10 +3575,38 @@ public class ApplicationRankHelper {
 										isPhysics=true;
 										physicsMarks=detailMarkBO.getConversionmark();
 									}
-  									
-									
+									if(detailMarkBO.getAdmSubjectForRank().getName().equalsIgnoreCase("Physics")){
+										isPhysics=true;
+										physicsMarks=detailMarkBO.getConversionmark();
+									}
+									if(detailMarkBO.getAdmSubjectForRank().getName().equalsIgnoreCase("Computer Application")){
+										isComputerApplication=true;
+										computerApplication=detailMarkBO.getConversionmark();
+									}
+
+
+									if (mathematicsMarks != null && !mathematicsMarks.isEmpty()) {
+									    mathMarks = Double.parseDouble(mathematicsMarks);
+									}
+
+									if (computerScienceMarks != null && !computerScienceMarks.isEmpty()) {
+									    csMarks = Double.parseDouble(computerScienceMarks);
+									}
+
+									if (computerApplication != null && !computerApplication.isEmpty()) {
+									    caMarks = Double.parseDouble(computerApplication);
+									}
+
                       		}
-                      		 
+                      	  if (mathMarks > csMarks && mathMarks > caMarks) {
+						        highestMark = mathMarks;
+						    } else if (csMarks > mathMarks && csMarks > caMarks) {
+						        highestMark = csMarks;
+						    } else if (caMarks > mathMarks && caMarks > csMarks) {
+						        highestMark = caMarks;
+						    } else {
+						        highestMark = mathMarks;
+						    }
                       		totalmarkforpart3=(totalmarkforpart3/maxmark)*1200;//normalising
                       	
                       	    if(!isMathematics  || admAppln.getPersonalData().getStream().getId()!=10){
@@ -3578,7 +3652,8 @@ public class ApplicationRankHelper {
                       			marksSub=Double.parseDouble(mathematicsMarks);
                       		}
                       			//penalty &bonus
-	                        	   totalmarkforpart3=totalmarkforpart3-penalty+bonus+marksSub;
+	                        	   //totalmarkforpart3=totalmarkforpart3-penalty+bonus+marksSub;
+                      				totalmarkforpart3=totalmarkforpart3-penalty+bonus+highestMark;
                          
 								
 									// adding indexmark object
@@ -4384,9 +4459,13 @@ public class ApplicationRankHelper {
                                      }
                                  }
                                  else {
+                                	 //B.Sc. Physics with Machine Learning
                                      if (candidatePreference.getCourse().getId() != 33) {
                                          continue;
                                      }
+                                     if (admAppln.getId()==63355) {
+										System.out.println("sjsj");
+									}
                                      if (isvhsc) {
                                          double maxmark2 = 0.0;
                                          double language1Mark2 = 0.0;
@@ -4394,6 +4473,10 @@ public class ApplicationRankHelper {
                                          double groupMarks2 = 0.0;
                                          double electiveSubjectMark2 = 0.0;
                                          boolean iselig = false;
+                                         boolean isPysicsContain = false;
+                                         boolean isChemistryContain = false;
+                                         boolean ismathsContain = false;
+                                         boolean isComputerContain = false;
                                          final Iterator<AdmSubjectMarkForRank> markItr3 = detailMarks.iterator();
                                          while (markItr3.hasNext()) {
                                              detailMarkBO = markItr3.next();
@@ -4403,7 +4486,8 @@ public class ApplicationRankHelper {
                                                  maxmark2 += 200.0;
                                              }
                                              if (detailMarkBO.getAdmSubjectForRank().getName().equalsIgnoreCase("Physics")) {
-                                                 iselig = true;
+                                                 //iselig = true;
+                                            	 isPysicsContain=true;
                                                  electiveSubjectMark2 = Double.parseDouble(detailMarkBO.getConversionmark());
                                              }
                                              if (!detailMarkBO.getAdmSubjectForRank().getGroupName().equalsIgnoreCase("Language") && !detailMarkBO.getAdmSubjectForRank().getGroupName().equalsIgnoreCase("Vocational")) {
@@ -4415,7 +4499,19 @@ public class ApplicationRankHelper {
                                              if (detailMarkBO.getAdmSubjectForRank().getGroupName().equalsIgnoreCase("Language") && !detailMarkBO.getAdmSubjectForRank().getName().equalsIgnoreCase("English")) {
                                                  language2Mark2 = Double.parseDouble(detailMarkBO.getConversionmark());
                                              }
+                                             if(detailMarkBO.getAdmSubjectForRank().getName().equalsIgnoreCase("Chemistry")){
+                                            	 isChemistryContain=true;
+         										}
+                                             if (detailMarkBO.getAdmSubjectForRank().getName().equalsIgnoreCase("Mathematics")) {
+                                                 ismathsContain = true;
+                                             }
+                                             if(detailMarkBO.getAdmSubjectForRank().getGroupName().equalsIgnoreCase("Computer Science")){
+                                            	 isComputerContain=true;
+                                             }
                                          }
+                                         if (isComputerContain && ismathsContain && isChemistryContain && isPysicsContain) {
+                                        	 iselig=true;
+										}
                                          if (iselig) {
                                              remark = "Eligible";
                                              totalmarkforpart3 = totalmarkforpart3 / maxmark2 * 800.0;
@@ -4453,6 +4549,10 @@ public class ApplicationRankHelper {
                                          double groupMarks2 = 0.0;
                                          double electiveSubjectMark2 = 0.0;
                                          boolean iselig = false;
+                                         boolean isPysicsContain = false;
+                                         boolean isChemistryContain = false;
+                                         boolean ismathsContain = false;
+                                         boolean isComputerContain = false;
                                          final Iterator<AdmSubjectMarkForRank> markItr3 = detailMarks.iterator();
                                          while (markItr3.hasNext()) {
                                              detailMarkBO = markItr3.next();
@@ -4460,8 +4560,8 @@ public class ApplicationRankHelper {
                                              totalmarkforpart3 += mark3;
                                              maxmark2 += 200.0;
                                              if (detailMarkBO.getAdmSubjectForRank().getName().equalsIgnoreCase("Physics")) {
-                                                 iselig = true;
                                                  electiveSubjectMark2 = Double.parseDouble(detailMarkBO.getConversionmark());
+                                                 isPysicsContain=true;
                                              }
                                              if (!detailMarkBO.getAdmSubjectForRank().getGroupName().equalsIgnoreCase("Language") && !detailMarkBO.getAdmSubjectForRank().getGroupName().equalsIgnoreCase("Vocational")) {
                                                  groupMarks2 += Double.parseDouble(detailMarkBO.getConversionmark());
@@ -4472,7 +4572,19 @@ public class ApplicationRankHelper {
                                              if (detailMarkBO.getAdmSubjectForRank().getGroupName().equalsIgnoreCase("Language") && !detailMarkBO.getAdmSubjectForRank().getName().equalsIgnoreCase("English")) {
                                                  language2Mark2 = Double.parseDouble(detailMarkBO.getConversionmark());
                                              }
+                                             if(detailMarkBO.getAdmSubjectForRank().getName().equalsIgnoreCase("Chemistry")){
+                                            	 isChemistryContain=true;
+         										}
+                                             if (detailMarkBO.getAdmSubjectForRank().getName().equalsIgnoreCase("Mathematics")) {
+                                                 ismathsContain = true;
+                                             }
+                                             if(detailMarkBO.getAdmSubjectForRank().getGroupName().equalsIgnoreCase("Computer Science")){
+                                            	 isComputerContain=true;
+                                             }
                                          }
+                                         if (isComputerContain && ismathsContain && isChemistryContain && isPysicsContain) {
+                                        	 iselig=true;
+										}
                                          if (iselig) {
                                              remark = "Eligible";
                                              totalmarkforpart3 = totalmarkforpart3 / maxmark2 * 1200.0;

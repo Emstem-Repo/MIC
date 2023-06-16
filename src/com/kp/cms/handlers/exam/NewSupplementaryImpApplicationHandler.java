@@ -2460,7 +2460,7 @@ public class NewSupplementaryImpApplicationHandler {
 		//change the url of response in the msg below when it has to be released to the production. Please put the production IP
 		if(candidateRefNo!=null && !candidateRefNo.isEmpty())
 		 //temp.append(CMSConstants.PGI_MERCHANT_ID).append("|").append(candidateRefNo).append("|NA|").append(bo.getTxnAmount()).append("|NA|NA|NA|INR|NA|R|").append(CMSConstants.PGI_SECURITY_ID).append("|NA|NA|F|applicationFee|NA|NA|NA|NA|NA|NA|").append(CMSConstants.pgiLink);
-			temp.append(CMSConstants.PGI_MERCHANT_ID).append("|").append(candidateRefNo).append("|").append(bo.getTxnAmount()).append("|").append(productinfo).append("|").append(bo.getCandidateName()).append("|").append(bo.getEmail()).append("|||||||||||").append(CMSConstants.PGI_SECURITY_ID);
+			temp.append(CMSConstants.PGI_MERCHANT_ID_EXAM_SCRUT_FEE).append("|").append(candidateRefNo).append("|").append(bo.getTxnAmount()).append("|").append(productinfo).append("|").append(bo.getCandidateName()).append("|").append(bo.getEmail()).append("|||||||||||").append(CMSConstants.PGI_SECURITY_ID_EXAM_SCRUT_FEE);
 		//sha512 ("key|txnid|amount|productinfo|firstname|email|||||||||||","<SALT>");
 		
 		String hash=hashCal("SHA-512",temp.toString());
@@ -2675,7 +2675,7 @@ public String getParameterForPGIForSuppl(NewSupplementaryImpApplicationForm form
 		//change the url of response in the msg below when it has to be released to the production. Please put the production IP
 		if(candidateRefNo!=null && !candidateRefNo.isEmpty())
 		 //temp.append(CMSConstants.PGI_MERCHANT_ID).append("|").append(candidateRefNo).append("|NA|").append(bo.getTxnAmount()).append("|NA|NA|NA|INR|NA|R|").append(CMSConstants.PGI_SECURITY_ID).append("|NA|NA|F|applicationFee|NA|NA|NA|NA|NA|NA|").append(CMSConstants.pgiLink);
-			temp.append(CMSConstants.PGI_MERCHANT_ID).append("|").append(candidateRefNo).append("|").append(bo.getTxnAmount()).append("|").append(productinfo).append("|").append(bo.getCandidateName()).append("|").append(bo.getEmail()).append("|||||||||||").append(CMSConstants.PGI_SECURITY_ID);
+			temp.append(CMSConstants.PGI_MERCHANT_ID_EXAM_SCRUT_FEE).append("|").append(candidateRefNo).append("|").append(bo.getTxnAmount()).append("|").append(productinfo).append("|").append(bo.getCandidateName()).append("|").append(bo.getEmail()).append("|||||||||||").append(CMSConstants.PGI_SECURITY_ID_EXAM_SCRUT_FEE);
 		//sha512 ("key|txnid|amount|productinfo|firstname|email|||||||||||","<SALT>");
 		
 		String hash=hashCal("SHA-512",temp.toString());
@@ -4019,7 +4019,7 @@ public String getParameterForPGIReg(NewSupplementaryImpApplicationForm admForm) 
 	//change the url of response in the msg below when it has to be released to the production. Please put the production IP
 	if(candidateRefNo!=null && !candidateRefNo.isEmpty())
 	 //temp.append(CMSConstants.PGI_MERCHANT_ID).append("|").append(candidateRefNo).append("|NA|").append(bo.getTxnAmount()).append("|NA|NA|NA|INR|NA|R|").append(CMSConstants.PGI_SECURITY_ID).append("|NA|NA|F|applicationFee|NA|NA|NA|NA|NA|NA|").append(CMSConstants.pgiLink);
-		temp.append(CMSConstants.PGI_MERCHANT_ID_REV).append("|").append(candidateRefNo).append("|").append(bo.getTxnAmount()).append("|").append(productinfo).append("|").append(bo.getCandidateName()).append("|").append(bo.getEmail()).append("|||||||||||").append(CMSConstants.PGI_SECURITY_ID_REV);
+		temp.append(CMSConstants.PGI_MERCHANT_ID_EXAM_SCRUT_FEE).append("|").append(candidateRefNo).append("|").append(bo.getTxnAmount()).append("|").append(productinfo).append("|").append(bo.getCandidateName()).append("|").append(bo.getEmail()).append("|||||||||||").append(CMSConstants.PGI_SECURITY_ID_EXAM_SCRUT_FEE);
 	//sha512 ("key|txnid|amount|productinfo|firstname|email|||||||||||","<SALT>");
 	//raghu write for pay e
 	String hash=hashCal("SHA-512",temp.toString());
@@ -4103,7 +4103,7 @@ public String getParameterForPGISuppl(NewSupplementaryImpApplicationForm admForm
 	//change the url of response in the msg below when it has to be released to the production. Please put the production IP
 	if(candidateRefNo!=null && !candidateRefNo.isEmpty())
 	 //temp.append(CMSConstants.PGI_MERCHANT_ID).append("|").append(candidateRefNo).append("|NA|").append(bo.getTxnAmount()).append("|NA|NA|NA|INR|NA|R|").append(CMSConstants.PGI_SECURITY_ID).append("|NA|NA|F|applicationFee|NA|NA|NA|NA|NA|NA|").append(CMSConstants.pgiLink);
-	temp.append(CMSConstants.PGI_MERCHANT_ID_REV).append("|").append(candidateRefNo).append("|").append(bo.getTxnAmount()).append("|").append(productinfo).append("|").append(bo.getCandidateName()).append("|").append(bo.getEmail()).append("|||||||||||").append(CMSConstants.PGI_SECURITY_ID_REV);
+	temp.append(CMSConstants.PGI_MERCHANT_ID_EXAM_SCRUT_FEE).append("|").append(candidateRefNo).append("|").append(bo.getTxnAmount()).append("|").append(productinfo).append("|").append(bo.getCandidateName()).append("|").append(bo.getEmail()).append("|||||||||||").append(CMSConstants.PGI_SECURITY_ID_EXAM_SCRUT_FEE);
 	//sha512 ("key|txnid|amount|productinfo|firstname|email|||||||||||","<SALT>");
 	//raghu write for pay e
 	String hash=hashCal("SHA-512",temp.toString());
@@ -4165,7 +4165,7 @@ public String getParameterForRevaluation(NewSupplementaryImpApplicationForm newS
 	//change the url of response in the msg below when it has to be released to the production. Please put the production IP
 	if(candidateRefNo!=null && !candidateRefNo.isEmpty())
 	 //temp.append(CMSConstants.PGI_MERCHANT_ID).append("|").append(candidateRefNo).append("|NA|").append(bo.getTxnAmount()).append("|NA|NA|NA|INR|NA|R|").append(CMSConstants.PGI_SECURITY_ID).append("|NA|NA|F|applicationFee|NA|NA|NA|NA|NA|NA|").append(CMSConstants.pgiLink);
-		temp.append(CMSConstants.PGI_MERCHANT_ID_REV).append("|").append(candidateRefNo).append("|").append(bo.getTxnAmount()).append("|").append(productinfo).append("|").append(bo.getCandidateName()).append("|").append(bo.getEmail()).append("|||||||||||").append(CMSConstants.PGI_SECURITY_ID_REV);
+		temp.append(CMSConstants.PGI_MERCHANT_ID_EXAM_SCRUT_FEE).append("|").append(candidateRefNo).append("|").append(bo.getTxnAmount()).append("|").append(productinfo).append("|").append(bo.getCandidateName()).append("|").append(bo.getEmail()).append("|||||||||||").append(CMSConstants.PGI_SECURITY_ID_EXAM_SCRUT_FEE);
 	//sha512 ("key|txnid|amount|productinfo|firstname|email|||||||||||","<SALT>");
 	//raghu write for pay e
 	String hash=hashCal("SHA-512",temp.toString());
@@ -4292,7 +4292,7 @@ public String getParameterForRevaluationSupply(NewSupplementaryImpApplicationFor
 	//change the url of response in the msg below when it has to be released to the production. Please put the production IP
 	if(candidateRefNo!=null && !candidateRefNo.isEmpty())
 	 //temp.append(CMSConstants.PGI_MERCHANT_ID).append("|").append(candidateRefNo).append("|NA|").append(bo.getTxnAmount()).append("|NA|NA|NA|INR|NA|R|").append(CMSConstants.PGI_SECURITY_ID).append("|NA|NA|F|applicationFee|NA|NA|NA|NA|NA|NA|").append(CMSConstants.pgiLink);
-		temp.append(CMSConstants.PGI_MERCHANT_ID_REV).append("|").append(candidateRefNo).append("|").append(bo.getTxnAmount()).append("|").append(productinfo).append("|").append(bo.getCandidateName()).append("|").append(bo.getEmail()).append("|||||||||||").append(CMSConstants.PGI_SECURITY_ID_REV);
+		temp.append(CMSConstants.PGI_MERCHANT_ID_EXAM_SCRUT_FEE).append("|").append(candidateRefNo).append("|").append(bo.getTxnAmount()).append("|").append(productinfo).append("|").append(bo.getCandidateName()).append("|").append(bo.getEmail()).append("|||||||||||").append(CMSConstants.PGI_SECURITY_ID_EXAM_SCRUT_FEE);
 	//sha512 ("key|txnid|amount|productinfo|firstname|email|||||||||||","<SALT>");
 	//raghu write for pay e
 	String hash=hashCal("SHA-512",temp.toString());

@@ -55,6 +55,7 @@ import com.kp.cms.exceptions.ExcessPreferenceException;
 import com.kp.cms.exceptions.MinimumPreferenceViolationException;
 import com.kp.cms.exceptions.MissingPreferenceException;
 import com.kp.cms.exceptions.ReActivateException;
+import com.kp.cms.forms.fee.FeePrintReciept;
 import com.kp.cms.forms.reports.StudentWiseAttendanceSummaryForm;
 import com.kp.cms.forms.usermanagement.LoginForm;
 import com.kp.cms.handlers.admin.AttendanceGraphHandler;
@@ -3824,8 +3825,10 @@ return mapping.findForward(CMSConstants.STUDENT_LOGIN_MARKSCARD);
 		ActionErrors errors=loginForm.validate(mapping, request);
 		String studentId = String.valueOf(loginForm.getStudentId());
 		Student student = StudentLoginHandler.getInstance().getStudentObj(studentId);
+		loginForm.setFeePrintReciept(new FeePrintReciept());
 		loginForm.setRegNo(student.getRegisterNo());
 		loginForm.setStudentName(student.getAdmAppln().getPersonalData().getFirstName());
+		loginForm.setCourseName(student.getAdmAppln().getCourse().getName());
 		//Date date = new Date();
 		//SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
 		//String daString = simpleDateFormat.format(date);
@@ -3887,6 +3890,7 @@ return mapping.findForward(CMSConstants.STUDENT_LOGIN_MARKSCARD);
 				candidatePaymentDetailsTO.setTxnStatus(candidatePGIDetailsExamRegular.getTxnStatus());
 				candidatePaymentDetailsTO.setExamName(candidatePGIDetailsExamRegular.getExam().getName());
 				candidatePaymentDetailsTO.setAmount(candidatePGIDetailsExamRegular.getTxnAmount().toString());
+				candidatePaymentDetailsTO.setTxnrefNo(candidatePGIDetailsExamRegular.getTxnRefNo());
 				SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("dd/MM/yyyy");
 				if(candidatePGIDetailsExamRegular.getTxnDate() != null){
 				String dateString = simpleDateFormat1.format(candidatePGIDetailsExamRegular.getTxnDate());
@@ -3910,6 +3914,7 @@ return mapping.findForward(CMSConstants.STUDENT_LOGIN_MARKSCARD);
 					candidatePaymentDetailsTO.setTxnStatus(candidatePGIDetailsExamRegular.getTxnStatus());
 					candidatePaymentDetailsTO.setExamName(candidatePGIDetailsExamRegular.getExam().getName());
 					candidatePaymentDetailsTO.setAmount(candidatePGIDetailsExamRegular.getTxnAmount().toString());
+					candidatePaymentDetailsTO.setTxnrefNo(candidatePGIDetailsExamRegular.getTxnRefNo());
 					SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("dd/MM/yyyy");
 					if(candidatePGIDetailsExamRegular.getTxnDate() != null){
 					String dateString = simpleDateFormat1.format(candidatePGIDetailsExamRegular.getTxnDate());
@@ -3921,6 +3926,7 @@ return mapping.findForward(CMSConstants.STUDENT_LOGIN_MARKSCARD);
 							candidatePaymentDetailsTO.setTxnStatus(candidatePGIDetailsExamRegular.getTxnStatus());
 							candidatePaymentDetailsTO.setExamName(candidatePGIDetailsExamRegular.getExam().getName());
 							candidatePaymentDetailsTO.setAmount(candidatePGIDetailsExamRegular.getTxnAmount().toString());
+							candidatePaymentDetailsTO.setTxnrefNo(candidatePGIDetailsExamRegular.getTxnRefNo());
 							SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("dd/MM/yyyy");
 							if(candidatePGIDetailsExamRegular.getTxnDate() != null){
 							String dateString = simpleDateFormat1.format(candidatePGIDetailsExamRegular.getTxnDate());
@@ -3934,6 +3940,7 @@ return mapping.findForward(CMSConstants.STUDENT_LOGIN_MARKSCARD);
 						candidatePaymentDetailsTO.setTxnStatus(candidatePGIDetailsExamRegular.getTxnStatus());
 						candidatePaymentDetailsTO.setExamName(candidatePGIDetailsExamRegular.getExam().getName());
 						candidatePaymentDetailsTO.setAmount(candidatePGIDetailsExamRegular.getTxnAmount().toString());
+						candidatePaymentDetailsTO.setTxnrefNo(candidatePGIDetailsExamRegular.getTxnRefNo());
 						SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("dd/MM/yyyy");
 						if(candidatePGIDetailsExamRegular.getTxnDate() != null){
 						String dateString = simpleDateFormat1.format(candidatePGIDetailsExamRegular.getTxnDate());
@@ -3984,6 +3991,7 @@ return mapping.findForward(CMSConstants.STUDENT_LOGIN_MARKSCARD);
 				candidatePaymentDetailsTO.setTxnStatus(candidatePGIDetailsExamSupply.getTxnStatus());
 				candidatePaymentDetailsTO.setExamName(candidatePGIDetailsExamSupply.getExam().getName());
 				candidatePaymentDetailsTO.setAmount(candidatePGIDetailsExamSupply.getTxnAmount().toString());
+				candidatePaymentDetailsTO.setTxnrefNo(candidatePGIDetailsExamSupply.getTxnRefNo());
 				if(candidatePGIDetailsExamSupply.getTxnDate() != null){
 				SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("dd/MM/yyyy");
 				String dateString = simpleDateFormat1.format(candidatePGIDetailsExamSupply.getTxnDate());
@@ -4007,6 +4015,7 @@ return mapping.findForward(CMSConstants.STUDENT_LOGIN_MARKSCARD);
 					candidatePaymentDetailsTO.setTxnStatus(candidatePGIDetailsExamSupply.getTxnStatus());
 					candidatePaymentDetailsTO.setExamName(candidatePGIDetailsExamSupply.getExam().getName());
 					candidatePaymentDetailsTO.setAmount(candidatePGIDetailsExamSupply.getTxnAmount().toString());
+					candidatePaymentDetailsTO.setTxnrefNo(candidatePGIDetailsExamSupply.getTxnRefNo());
 					SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("dd/MM/yyyy");
 					if(candidatePGIDetailsExamSupply.getTxnDate()!= null){
 					String dateString = simpleDateFormat1.format(candidatePGIDetailsExamSupply.getTxnDate());
@@ -4018,6 +4027,7 @@ return mapping.findForward(CMSConstants.STUDENT_LOGIN_MARKSCARD);
 							candidatePaymentDetailsTO.setTxnStatus(candidatePGIDetailsExamSupply.getTxnStatus());
 							candidatePaymentDetailsTO.setExamName(candidatePGIDetailsExamSupply.getExam().getName());
 							candidatePaymentDetailsTO.setAmount(candidatePGIDetailsExamSupply.getTxnAmount().toString());
+							candidatePaymentDetailsTO.setTxnrefNo(candidatePGIDetailsExamSupply.getTxnRefNo());
 							SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("dd/MM/yyyy");
 							if(candidatePGIDetailsExamSupply.getTxnDate()!= null){
 							String dateString = simpleDateFormat1.format(candidatePGIDetailsExamSupply.getTxnDate());
@@ -4031,6 +4041,7 @@ return mapping.findForward(CMSConstants.STUDENT_LOGIN_MARKSCARD);
 						candidatePaymentDetailsTO.setTxnStatus(candidatePGIDetailsExamSupply.getTxnStatus());
 						candidatePaymentDetailsTO.setExamName(candidatePGIDetailsExamSupply.getExam().getName());
 						candidatePaymentDetailsTO.setAmount(candidatePGIDetailsExamSupply.getTxnAmount().toString());
+						candidatePaymentDetailsTO.setTxnrefNo(candidatePGIDetailsExamSupply.getTxnRefNo());
 						SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("dd/MM/yyyy");
 						if(candidatePGIDetailsExamSupply.getTxnDate() != null){
 						String dateString = simpleDateFormat1.format(candidatePGIDetailsExamSupply.getTxnDate());
@@ -4082,6 +4093,7 @@ return mapping.findForward(CMSConstants.STUDENT_LOGIN_MARKSCARD);
 				candidatePaymentDetailsTO.setTxnStatus(revaluationApplicationPGIDetails.getTxnStatus());
 				candidatePaymentDetailsTO.setExamName(revaluationApplicationPGIDetails.getExam().getName());
 				candidatePaymentDetailsTO.setAmount(revaluationApplicationPGIDetails.getTxnAmount().toString());
+				candidatePaymentDetailsTO.setTxnrefNo(revaluationApplicationPGIDetails.getTxnRefNo());
 				if(revaluationApplicationPGIDetails.getTxnDate() != null){
 				SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("dd/MM/yyyy");
 				String dateString = simpleDateFormat1.format(revaluationApplicationPGIDetails.getTxnDate());
@@ -4105,6 +4117,7 @@ return mapping.findForward(CMSConstants.STUDENT_LOGIN_MARKSCARD);
 					candidatePaymentDetailsTO.setTxnStatus(revaluationApplicationPGIDetails.getTxnStatus());
 					candidatePaymentDetailsTO.setExamName(revaluationApplicationPGIDetails.getExam().getName());
 					candidatePaymentDetailsTO.setAmount(revaluationApplicationPGIDetails.getTxnAmount().toString());
+					candidatePaymentDetailsTO.setTxnrefNo(revaluationApplicationPGIDetails.getTxnRefNo());
 					SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("dd/MM/yyyy");
 					if(revaluationApplicationPGIDetails.getTxnDate() != null){
 					String dateString = simpleDateFormat1.format(revaluationApplicationPGIDetails.getTxnDate());
@@ -4116,6 +4129,7 @@ return mapping.findForward(CMSConstants.STUDENT_LOGIN_MARKSCARD);
 						candidatePaymentDetailsTO.setTxnStatus(revaluationApplicationPGIDetails.getTxnStatus());
 						candidatePaymentDetailsTO.setExamName(revaluationApplicationPGIDetails.getExam().getName());
 						candidatePaymentDetailsTO.setAmount(revaluationApplicationPGIDetails.getTxnAmount().toString());
+						candidatePaymentDetailsTO.setTxnrefNo(revaluationApplicationPGIDetails.getTxnRefNo());
 						SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("dd/MM/yyyy");
 						if(revaluationApplicationPGIDetails.getTxnDate() != null){
 						String dateString = simpleDateFormat1.format(revaluationApplicationPGIDetails.getTxnDate());
@@ -4129,6 +4143,7 @@ return mapping.findForward(CMSConstants.STUDENT_LOGIN_MARKSCARD);
 						candidatePaymentDetailsTO.setTxnStatus(revaluationApplicationPGIDetails.getTxnStatus());
 						candidatePaymentDetailsTO.setExamName(revaluationApplicationPGIDetails.getExam().getName());
 						candidatePaymentDetailsTO.setAmount(revaluationApplicationPGIDetails.getTxnAmount().toString());
+						candidatePaymentDetailsTO.setTxnrefNo(revaluationApplicationPGIDetails.getTxnRefNo());
 						SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("dd/MM/yyyy");
 						if(revaluationApplicationPGIDetails.getTxnDate() != null){
 						String dateString = simpleDateFormat1.format(revaluationApplicationPGIDetails.getTxnDate());
@@ -4195,7 +4210,7 @@ return mapping.findForward(CMSConstants.STUDENT_LOGIN_MARKSCARD);
 		List<PublishSpecialFeesTO> puList = StudentLoginHandler.getInstance().getPublishList(loginForm.getClassId());
 		loginForm.setPublishList(puList);
 		if(student.getIsEgrand() == true){
-			loginForm.setSpecialFeesAmount("320");
+			loginForm.setSpecialFeesAmount("0");
 		}else {
 		SpecialFeesBO bo = StudentLoginHandler.getInstance().getTotalAmount(loginForm.getClassId());
 		double tutionFees = 0.0;
@@ -4227,7 +4242,6 @@ return mapping.findForward(CMSConstants.STUDENT_LOGIN_MARKSCARD);
 		}else {
 			loginForm.setPaymentDone(false);
 		}
-		
 		return mapping.findForward(CMSConstants.PUBLISH_SPECIAL_FEES_LIST);
 	}
 	
@@ -4510,5 +4524,14 @@ return mapping.findForward(CMSConstants.STUDENT_LOGIN_MARKSCARD);
 			//addErrors(request, errors);
 			return mapping.findForward(CMSConstants.STUDENT_LOGIN_MARKSCARD);
 		}
+	}
+	
+	public ActionForward paymmentReciept(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		LoginForm loginForm = (LoginForm) form;
+		FeePrintReciept recipt=loginForm.getFeePrintReciept();
+		recipt.setAmountWords(CommonUtil.numberToWord(new Double(recipt.getAmount()).intValue()));
+		return mapping.findForward("feeReciept");
 	}
 }

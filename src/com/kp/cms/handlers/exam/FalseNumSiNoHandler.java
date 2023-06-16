@@ -19,6 +19,7 @@ import com.kp.cms.transactions.ajax.ICommonExamAjax;
 import com.kp.cms.transactions.exam.IFalseNumSiNoTransaction;
 import com.kp.cms.transactionsimpl.ajax.CommonAjaxExamImpl;
 import com.kp.cms.transactionsimpl.exam.FalseNumSiNoTransactionImpl;
+import com.kp.cms.utilities.CommonUtil;
 
 public class FalseNumSiNoHandler {
 	private static FalseNumSiNoHandler marksCardSiNoHandler=null;
@@ -86,7 +87,7 @@ public class FalseNumSiNoHandler {
 	public boolean setFalseBoxList(FalseNumSiNoForm cardSiNoForm)throws Exception {
 		List<FalseNumberBox> boxList=transaction.getFalseBox(cardSiNoForm);
 		List<FalseBoxDetTo> falseNumberBoxTo =FalseNumSiNoHelper.getInstance().setFalseNumberBoxBoTo(boxList);
-		if (falseNumberBoxTo!=null) {
+		if (falseNumberBoxTo!=null && !falseNumberBoxTo.isEmpty()) {
 			cardSiNoForm.setFalseBoxToList(falseNumberBoxTo);
 			return true;
 		}else{
@@ -99,9 +100,15 @@ public class FalseNumSiNoHandler {
 
 	public void editFalseBox(FalseNumSiNoForm cardSiNoForm) throws NumberFormatException, Exception {
 		ICommonExamAjax iCommonExamAjax = CommonAjaxExamImpl.getInstance();
+		int schemeNo=0;
 		FalseNumSiNoTransactionImpl transaction = new FalseNumSiNoTransactionImpl();
-		String schemeSplit[] = cardSiNoForm.getSchemeNo().split("_");
-		int schemeNo = Integer.parseInt(schemeSplit[1]);
+		if (CommonUtil.checkForEmpty(cardSiNoForm.getSchemeNo())) {
+			String schemeSplit[] = cardSiNoForm.getSchemeNo().split("_");
+			schemeNo = Integer.parseInt(schemeSplit[1]);
+		}else{
+			
+		}
+		
 		
 		Map<Integer, String> courseList=CommonAjaxHandler.getInstance().getCourseByExamName(String.valueOf(Integer.parseInt(cardSiNoForm.getExamId())));
 		Map<String, String> schemeList=CommonAjaxHandler.getInstance().getSchemeNoByExamIdCourseId(Integer.parseInt(cardSiNoForm.getExamId()), Integer.parseInt(cardSiNoForm.getCourseId()));

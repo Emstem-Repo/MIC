@@ -120,7 +120,7 @@
 									<td height="25" class="row-even"><bean:write
 										property="subjectType" name="newExamMarksEntryForm"></bean:write></td>
 								</tr>
-								<tr>
+								<%-- <tr>
 									<td height="25" class="row-odd">
 									<div align="right">Evaluator Type :</div>
 									</td>
@@ -131,7 +131,7 @@
 									</td>
 									<td height="25" class="row-even"><bean:write
 										property="answerScriptType" name="newExamMarksEntryForm"></bean:write></td>
-								</tr>
+								</tr> --%>
 							</table>
 							</td>
 							<td width="5" background="images/right.gif"></td>
@@ -227,20 +227,20 @@
 										<logic:equal value="true" property="isTheory" name="examMarksEntryStudentTO">
 											<td height="35" width="18%">
 											<logic:equal value="true" property="isTheorySecured" name="examMarksEntryStudentTO">	
-												<nested:text property="theoryMarks" maxlength="6" styleId= '<%=id %>' onkeydown="movenext(this.name, event, this.id)" disabled="true"/>
+												<nested:text property="theoryMarks" maxlength="6" styleId= '<%=id %>' onkeydown="movenext(this.name, event, this.id)" />
 											</logic:equal>
 											<logic:equal value="false" property="isTheorySecured" name="examMarksEntryStudentTO">	
-												<nested:text property="theoryMarks" maxlength="6" styleId= '<%=id %>' onkeydown="movenext(this.name, event, this.id)" disabled="true"/>
+												<nested:text property="theoryMarks" maxlength="6" styleId= '<%=id %>' onkeydown="movenext(this.name, event, this.id)" />
 											</logic:equal>
 											</td>
 										</logic:equal>
 										<logic:equal value="true" property="isPractical" name="examMarksEntryStudentTO">
 										<td width="18%" height="35">
 											<logic:equal value="true" property="isPracticalSecured" name="examMarksEntryStudentTO">	
-												<nested:text property="practicalMarks" maxlength="6" styleId= '<%=id %>' onkeydown="movenext(this.name, event, this.id)" disabled="true"/>
+												<nested:text property="practicalMarks" maxlength="6" styleId= '<%=id %>' onkeydown="movenext(this.name, event, this.id)" />
 											</logic:equal>
 											<logic:equal value="false" property="isPracticalSecured" name="examMarksEntryStudentTO">	
-												<nested:text property="practicalMarks" maxlength="6" styleId= '<%=id %>' onkeydown="movenext(this.name, event, this.id)" disabled="true"/>
+												<nested:text property="practicalMarks" maxlength="6" styleId= '<%=id %>' onkeydown="movenext(this.name, event, this.id)" />
 											</logic:equal>
 										</td>
 										</logic:equal>

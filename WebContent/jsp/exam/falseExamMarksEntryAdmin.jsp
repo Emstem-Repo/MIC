@@ -12,7 +12,7 @@
 <SCRIPT>
 	
 	function searchDetails(){
-		document.getElementById("method").value="setvaluesBybarcode";
+		document.getElementById("method").value="setvaluesBybarcodeAdmin";
         document.newExamMarksEntryForm.submit();
 		
 	}
@@ -27,6 +27,11 @@
         document.newExamMarksEntryForm.submit();
 	}
 	
+	function  addEvaluatorsMark() {
+		document.getElementById("method").value="addEvaluatorsMarksAdmin";
+        document.newExamMarksEntryForm.submit();
+	}
+	
 	
 </SCRIPT>
 
@@ -34,7 +39,7 @@
 
 
 <html:form action="/falseMarkEntry" method="POST" enctype="multipart/form-data">
-	<html:hidden property="method" styleId="method" value="saveEvaluatorsMarks" />
+	<html:hidden property="method" styleId="method" value="saveEvaluatorsMarksAdmin" />
 	<html:hidden property="formName" value="newExamMarksEntryForm" styleId="formName" />
 	<html:hidden property="pageType" value="9" styleId="pageType" />
 	<%-- <html:hidden property="validationAST" styleId="validationAST" />
@@ -121,22 +126,6 @@
 									<bean:write name="newExamMarksEntryForm" property="displatoList.subjectType"/>
 								</td>
 							</tr>
-							<%-- <tr>
-								<td height="25" width="22%" class="row-odd"><div align="left">Evaluator Type</div></td>
-								<td height="25" width="23%" class="row-even"><div align="left">
-									<html:select property="evalNo" name="newExamMarksEntryForm" disabled="true">
-										<html:option value="">Select</html:option>
-										<html:option value="1">First Evaluator</html:option>
-										<html:option value="2">Second Evaluator</html:option>
-										<html:option value="3">Third Evaluator</html:option>
-										<html:option value="4">Final Evaluator</html:option>
-									</html:select>
-								</div></td>
-								<td width="25%" class="row-odd" ></td>   
-								<td width="30%" class="row-even">
-									<bean:write name="newExamMarksEntryForm" property="displatoList.subjectType"/>
-								</td>
-							</tr> --%>
 							</table>
 							
 							</td>
@@ -172,11 +161,16 @@
 							<td valign="top">
 							<table width="100%" cellspacing="1" cellpadding="2">
 								<tr>
-									<td height="25" colspan="8" class="row-even">Scan barcode here!!!!!!!!</td>
+									<td height="25" colspan="9" class="row-even">Scan barcode here!!!!!!!!</td>
 								</tr>
 								<tr height="30px">
-									<td width="50%" align="center" colspan="2" class="row-odd" >False Number</td>   
-									<td width="50%" align="center" colspan="2" class="row-odd" >Marks</td>
+									<td width="20%" align="center" colspan="2" class="row-odd" >False Number</td>   
+									<td width="20%" align="center" colspan="2" class="row-odd" >First Evaluation</td>
+									<td width="20%" align="center" colspan="2" class="row-odd" >Second Evaluation</td>
+									<logic:equal value="2" name="newExamMarksEntryForm" property="programTypeId">
+									<td width="20%" align="center" colspan="2" class="row-odd" >Third Evaluation</td>
+									</logic:equal>
+<!-- 									<td width="20%" align="center" colspan="2" class="row-odd" >Final</td> -->
 									
 								</tr>
 								
@@ -188,66 +182,38 @@
 									
 										<html:text property="falseNo" maxlength="16" onkeypress="keyListen(event)" styleId="falseId"  name="newExamMarksEntryForm"/>
 									</td>
-									<td width="50%" align="center" colspan="2" class="row-even" >
 									<logic:notEmpty property="displatoList.examName" name="newExamMarksEntryForm">
 									<logic:notEmpty property="studentMarksTo" name="newExamMarksEntryForm">
 									<logic:notEmpty property="studentMarksTo" name="newExamMarksEntryForm">
 									<logic:notEmpty property="falseNo" name="newExamMarksEntryForm">
-										<logic:equal value="1" property="evalNo" name="newExamMarksEntryForm">
-											<logic:empty name="newExamMarksEntryForm" property="studentMarksTo.examEvalTo.firstEvaluator">
-												<html:text styleId="markId" onkeypress="keyListenAdd(event)" property="studentMarksTo.examEvalTo.firstEvaluation"></html:text>
-											</logic:empty>
-											<logic:notEmpty name="newExamMarksEntryForm" property="studentMarksTo.examEvalTo.firstEvaluator">
-												<html:text styleId="markId" onkeypress="keyListenAdd(event)" disabled="true" property="studentMarksTo.examEvalTo.firstEvaluation"></html:text>
-												<script>	
-													/* document.getElementById("method").value="AddEvaluatorsMarks";
-            										document.newExamMarksEntryForm.submit(); */
-            									</script>	
-											</logic:notEmpty>
-										</logic:equal>
-										<logic:equal  value="2" property="evalNo"  name="newExamMarksEntryForm">
-											<logic:empty name="newExamMarksEntryForm" property="studentMarksTo.examEvalTo.secondEvaluator">
-												<html:text styleId="markId" onkeypress="keyListenAdd(event)" property="studentMarksTo.examEvalTo.secondEvaluation"></html:text>
-											</logic:empty>
-											<logic:notEmpty name="newExamMarksEntryForm" property="studentMarksTo.examEvalTo.secondEvaluator">
-												<html:text styleId="markId" onkeypress="keyListenAdd(event)" disabled="true" property="studentMarksTo.examEvalTo.secondEvaluation"></html:text>
-												<script>	
-													document.getElementById("method").value="AddEvaluatorsMarks";
-            										document.newExamMarksEntryForm.submit();
-            									</script>	
-											</logic:notEmpty>
-										
-										</logic:equal>
-										<logic:equal value="3" property="evalNo" name="newExamMarksEntryForm">
-											<logic:empty name="newExamMarksEntryForm" property="studentMarksTo.examEvalTo.thirdEvaluator">
-												<html:text styleId="markId" onkeypress="keyListenAdd(event)" property="studentMarksTo.examEvalTo.thirdEvaluation"></html:text>
-											</logic:empty>
-											<logic:notEmpty name="newExamMarksEntryForm" property="studentMarksTo.examEvalTo.thirdEvaluator">
-												<html:text styleId="markId" onkeypress="keyListenAdd(event)" disabled="true" property="studentMarksTo.examEvalTo.thirdEvaluation"></html:text>
-												<script>	
-													document.getElementById("method").value="AddEvaluatorsMarks";
-            										document.newExamMarksEntryForm.submit();
-            									</script>	
-											</logic:notEmpty>
-										</logic:equal>
+										<td width="20%" align="center" colspan="2" class="row-even">
+												<html:text styleId="markId" property="studentMarksTo.examEvalTo.firstEvaluation"></html:text>
+											</td>
+											<td width="20%" align="center" colspan="2" class="row-even">
+												<html:text styleId="markId" property="studentMarksTo.examEvalTo.secondEvaluation"></html:text>
+											
+										</td>
+										<logic:equal value="2" name="newExamMarksEntryForm" property="programTypeId">
+										<td width="20%" align="center" colspan="2" class="row-even">
+												<html:text styleId="markId" property="studentMarksTo.examEvalTo.thirdEvaluation"></html:text>
+											</td>
+											</logic:equal>
+											<td width="20%" align="center" colspan="2" class="row-even">
+											
+											<button class="formbutton" onclick="addEvaluatorsMark()">Submit</button>
+											</td>
 									</logic:notEmpty>
 									</logic:notEmpty >
 									</logic:notEmpty>
 									</logic:notEmpty>
-									</td>   
 									
 								</tr>
 								
 								</table>
 							
 							</td>
-
-
 							<td width="5" background="images/right.gif"></td>
 						</tr>
-						
-						
-						
 						<tr>
 							<td height="5"><img src="images/04.gif" width="5" height="5" /></td>
 							<td background="images/05.gif"></td>
@@ -260,9 +226,6 @@
 				</tr>
 				
 				<tr height="25px"></tr>
-				
-				
-				
 				
 				<logic:notEmpty property="examEvalToList" name="newExamMarksEntryForm">
 				
@@ -286,8 +249,12 @@
 								</tr>
 								<tr height="30px">
 								<td width="10%" align="center" colspan="2" class="row-even">serial No.</td>
-									<td width="45%" align="center" colspan="2" class="row-even" >False Number</td>   
-									<td width="45%" align="center" colspan="2" class="row-even" >Marks</td>
+									<td width="20%" align="center" colspan="2" class="row-even" >False Number</td>   
+									<td width="20%" align="center" colspan="2" class="row-odd" >First Evaluation</td>
+									<td width="20%" align="center" colspan="2" class="row-odd" >Second Evaluation</td>
+									<logic:equal value="2" name="newExamMarksEntryForm" property="programTypeId">
+									<td width="20%" align="center" colspan="2" class="row-odd" >Third Evaluation</td>
+									</logic:equal>
 									
 								</tr>
 								<% int i=0; %>
@@ -295,25 +262,20 @@
 								<%i++ ;%>
 								<tr height="30px">
 								<td width="10%" align="center" colspan="2" class="row-even"><%=i %></td>
-									<td width="45%" align="center" colspan="2" class="row-odd" >
+									<td width="2%" align="center" colspan="2" class="row-odd" >
 										<bean:write name="evTo" property="falseNo"/>
 									</td>   
-									<td width="45%" align="center" colspan="2" class="row-odd" >
-										<logic:equal value="1" property="evalNo" name="newExamMarksEntryForm">
-											<logic:empty name="evTo" property="firstEvaluator">
-												<html:text styleId="markId"  disabled="true" name="evTo" onkeypress="keyListenAdd(event)" property="firstEvaluation"></html:text>
-											</logic:empty>
-											<logic:notEmpty name="evTo" property="firstEvaluator">
-												<html:text styleId="markId"  name="evTo" disabled="true" onkeypress="keyListenAdd(event)" property="firstEvaluation"></html:text>
-											</logic:notEmpty>
+									<td width="20%" align="center" colspan="2" class="row-odd" >
+										<html:text styleId="markId"  disabled="true" name="evTo" property="firstEvaluation"></html:text>
+										</td>
+										<td width="20%" align="center" colspan="2" class="row-odd" >
+										<html:text styleId="markId" name="evTo"  disabled="true" property="secondEvaluation"></html:text>
+										</td>
+										<logic:equal value="2" name="newExamMarksEntryForm" property="programTypeId">
+										<td width="20%" align="center" colspan="2" class="row-odd" >
+											<html:text styleId="markId" name="evTo"  disabled="true" property="thirdEvaluation"></html:text>
+											</td>
 										</logic:equal>
-										<logic:equal  value="2" property="evalNo"  name="newExamMarksEntryForm">
-											<html:text styleId="markId" name="evTo"  disabled="true" onkeypress="keyListenAdd(event)" property="secondEvaluation"></html:text>
-										</logic:equal>
-										<logic:equal value="3" property="evalNo" name="newExamMarksEntryForm">
-											<html:text styleId="markId" name="evTo"  disabled="true" onkeypress="keyListenAdd(event)" property="thirdEvaluation"></html:text>
-										</logic:equal>
-									</td>
 									
 								</tr>
 								</logic:iterate>
@@ -362,7 +324,7 @@
 							<td width="49%" height="35" align="left">
 								<%-- <html:reset styleClass="formbutton"></html:reset> --%>
 								<logic:notEmpty name="newExamMarksEntryForm" property="examMarkEvaluationPrintToList">
-								<button class="formbutton" onclick="print()">Print</button>
+<!-- 								<button class="formbutton" onclick="print()">Print</button> -->
 								</logic:notEmpty>
 							</td>
 						</tr>
@@ -390,17 +352,11 @@
 function keyListen(event) {
 	var chCode = ('charCode' in event) ? event.charCode : event.keyCode;
     if (chCode=="13") {
-    	document.getElementById("method").value="setvaluesBybarcode";
+    	document.getElementById("method").value="setvaluesBybarcodeAdmin";
         document.newExamMarksEntryForm.submit();
 	}
 }
-function keyListenAdd(event) {
-	var chCode = ('charCode' in event) ? event.charCode : event.keyCode;
-	 if (chCode=="13") {
-        	document.getElementById("method").value="AddEvaluatorsMarks";
-            document.newExamMarksEntryForm.submit();
-		}
-}
+
 
 /* var lastScannedBarCode = "";
 var listOfScannedBarCodes = [];
@@ -420,7 +376,7 @@ function onGlobalKeyPressed(e) {
         document.getElementById("falseId").value=lastCode;
         console.log(lastCode);
         console.log(document.getElementById("falseId").value);
-        document.getElementById("method").value="setvaluesBybarcode";
+        document.getElementById("method").value="setvaluesBybarcodeAdmin";
         document.newExamMarksEntryForm.submit();
     }    
 }

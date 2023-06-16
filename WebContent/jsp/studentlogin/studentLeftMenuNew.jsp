@@ -382,8 +382,10 @@ div.selected {
 							<a href="StudentLoginAction.do?method=initStudentInstruction" style="text-decoration: blink;color: red"  class="menuLink"><img src="images/smallArrow.gif" width="13" height="11" border="0"  >Student Extension Activity</a>
 						</c:if>
 					<c:if test="${showRevApp}">
-							<a href="newSupplementaryImpApp.do?method=checkRevaluationApplicationForStudentLogin" style="text-decoration: blink;color: red" class="menuLink"><img src="images/smallArrow.gif" width="13" height="11" border="0"  >
-							Application for Revaluation/Scrutiny</a>
+							<a href="newSupplementaryImpApp.do?method=checkRevaluationApplicationForStudentLogin&scrutiny=false&isRevaluation=1" style="text-decoration: blink;color: red" class="menuLink"><img src="images/smallArrow.gif" width="13" height="11" border="0"  >
+							Application for Revaluation</a>
+							<a href="newSupplementaryImpApp.do?method=checkRevaluationApplicationForStudentLogin&scrutiny=true" style="text-decoration: blink;color: red" class="menuLink"><img src="images/smallArrow.gif" width="13" height="11" border="0"  >
+							Application for Scrutiny</a>
 						
 					</c:if>	
 							<a href="StudentLoginAction.do?method=initInternalRetst" style="text-decoration: blink;color: red" class="menuLink"><img src="images/smallArrow.gif" width="13" height="11" border="0"  >

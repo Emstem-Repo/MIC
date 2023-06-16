@@ -1123,6 +1123,7 @@
         <forward name="ajaxResponseForOptions" path="/jsp/ajax/ajaxResponseMap.jsp"/>
 		<forward name="goToMasterPage" path="/jsp/admin/redirectToMaster.jsp"/>
 		<forward name="redirectToPgi" path="/jsp/admission/redirectToPGI.jsp" />
+		<forward name="redirectToExamPgi" path="/jsp/admission/redirectToExamFeePGI.jsp" />
 		<forward name="redirectToPgiadm" path="/jsp/admission/redirectToPGIAdm.jsp" />
 		<forward name="redirectPgiStudentSemester" path="/jsp/studentlogin/redirectPgiStudentSemester.jsp" />
 		<forward name="redirectPgiSpecialFee" path="/jsp/studentlogin/redirectPgiSpecialFee.jsp" />
@@ -1269,6 +1270,7 @@
 			 <forward name="init_internal_retst" path="init_internal_retst"/>
 			  <forward name="initRevaluationMarksCard" path="initRevaluationMarksCard"/>
 			  <forward name="revaluationMemo" path="/jsp/exam/revaluationMemoPrint.jsp"/>
+			  <forward name="feeReciept" path="/jsp/admission/feeRecieptStudentLogin.jsp"/>
         </action>
         <action path="/forwardException" type="org.apache.struts.actions.ForwardAction"
          name="baseActionForm" parameter="errorpage"/>
@@ -4529,6 +4531,7 @@
 			<forward name="redirectToPgiExamRegForExam" path="/jsp/exam/redirectToPGIForExam.jsp" />
 			<forward name="redirectToPgiExamSuppl" path="/jsp/exam/redirectToPGIExamSupply.jsp" />
 			<forward name="paymentSuccessfullDetails" path="/jsp/exam/PaymentSuccessInfo.jsp"/>
+			<forward name="initScrutinyAppStudentResult" path="initScrutinyAppStudentResult"/>
         </action>
         
         <action path="/empType" type="com.kp.cms.actions.employee.EmpTypeAction" name="empTypeForm"
@@ -6547,6 +6550,8 @@
             <forward name="finalFalseMarksEntryresult" path="finalFalseMarksEntryresult"/>
 			
 			<forward name="printFalseMarks" path="/jsp/exam/printFalseMarkCard.jsp"/>
+			
+			 <forward name="initAdminFalseMarksEntry" path="initAdminFalseMarksEntry"/>
 						
         </action>
 		

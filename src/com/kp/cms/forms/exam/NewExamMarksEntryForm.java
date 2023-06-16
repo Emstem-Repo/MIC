@@ -10,6 +10,7 @@ import org.apache.struts.action.ActionMapping;
 
 import com.kp.cms.forms.BaseActionForm;
 import com.kp.cms.to.admin.StudentTO;
+import com.kp.cms.to.exam.ExamMarkEvaluationPrintTo;
 import com.kp.cms.to.exam.ExamMarkEvaluationTo;
 import com.kp.cms.to.exam.FalseNoDisplayTo;
 import com.kp.cms.to.exam.KeyValueTO;
@@ -82,6 +83,11 @@ public class NewExamMarksEntryForm extends BaseActionForm {
 	private String lastEnteredFalsenum;
 	private String falseNumber;
 	private boolean finalValidation;
+	List<ExamMarkEvaluationPrintTo> examMarkEvaluationPrintToList;
+	private String courseCode;
+	private String qpCode;
+	private ExamMarkEvaluationPrintTo examMarkPrintTo ;
+	private boolean saved;
 
 
 	public boolean isIsfalsegenerated() {
@@ -319,6 +325,8 @@ public class NewExamMarksEntryForm extends BaseActionForm {
 		this.falseNo=null;
 		this.evalNo=null;
 		this.displatoList=new FalseNoDisplayTo();
+		this.examMarkEvaluationPrintToList=null;
+		this.examMarkPrintTo=null;
 	}
 	public Map<Integer, Integer> getStudentsYearMap() {
 		return studentsYearMap;
@@ -500,6 +508,42 @@ public class NewExamMarksEntryForm extends BaseActionForm {
 	}
 	public void setFalseNumber(String falseNumber) {
 		this.falseNumber = falseNumber;
+	}
+	public List<ExamMarkEvaluationPrintTo> getExamMarkEvaluationPrintToList() {
+		return examMarkEvaluationPrintToList;
+	}
+	public void setExamMarkEvaluationPrintToList(List<ExamMarkEvaluationPrintTo> examMarkEvaluationPrintToList) {
+		this.examMarkEvaluationPrintToList = examMarkEvaluationPrintToList;
+	}
+	public String getCourseCode() {
+		return courseCode;
+	}
+	public void setCourseCode(String courseCode) {
+		this.courseCode = courseCode;
+	}
+	public String getQpCode() {
+		return qpCode;
+	}
+	public void setQpCode(String qpCode) {
+		this.qpCode = qpCode;
+	}
+	public ExamMarkEvaluationPrintTo getExamMarkPrintTo() {
+		return examMarkPrintTo;
+	}
+	public void setExamMarkPrintTo(ExamMarkEvaluationPrintTo examMarkPrintTo) {
+		this.examMarkPrintTo = examMarkPrintTo;
+	}
+	public void setRoleIdForDeveloper(boolean isRoleIdForDeveloper) {
+		this.isRoleIdForDeveloper = isRoleIdForDeveloper;
+	}
+	public void setExamMaxEntry(boolean isExamMaxEntry) {
+		this.isExamMaxEntry = isExamMaxEntry;
+	}
+	public boolean isSaved() {
+		return saved;
+	}
+	public void setSaved(boolean saved) {
+		this.saved = saved;
 	}
 	
 	

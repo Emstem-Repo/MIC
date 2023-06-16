@@ -458,10 +458,10 @@ public class NewExamMarksEntryHelper {
 					to.setIsTheorySecured(false);
 					to.setIsPracticalSecured(false);
 				}
-				if(newExamMarksEntryForm.getSubjectType().equalsIgnoreCase("1")){
+				if(newExamMarksEntryForm.getSubjectType() !=null &&newExamMarksEntryForm.getSubjectType().equalsIgnoreCase("1")){
 					to.setIsTheory(true);
 					to.setIsPractical(false);
-				}else if(newExamMarksEntryForm.getSubjectType().equalsIgnoreCase("0")){
+				}else if(newExamMarksEntryForm.getSubjectType() !=null && newExamMarksEntryForm.getSubjectType().equalsIgnoreCase("0")){
 					to.setIsTheory(false);
 					to.setIsPractical(true);
 				}else{

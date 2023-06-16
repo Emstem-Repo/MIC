@@ -103,22 +103,7 @@
 		updateOptionsFromMap2(req, "evaluatorType", "- Select -","et","evaluatorType",examType);
 		
 	}
-	function populateOptionForSup(isSup){
-		var destination = document.getElementById("subjectType");
-		for (x1 = destination.options.length - 1; x1 > 0; x1--) {
-			destination.options[x1] = null;
-		}
-		if(isSup){
-			destination.options[0] = new Option("Select", "");
-			destination.options[1] = new Option("Theory", 1);
-			destination.options[2] = new Option("Practical", 0);
-		}
-		else{
-			destination.options[0] = new Option("Select", "");
-			destination.options[1] = new Option("Theory", 1);
-			destination.options[2] = new Option("Practical", 0);
-		}
-	}
+	
 	function getSectionByScheme(schemeId) {
 		var ScodeName="sCode";
 		getSCodeName(ScodeName);
@@ -174,16 +159,23 @@
 	
 	function editFalseBox(id){
 		document.getElementById("falseBoxId").value=id;
-		document.getElementById("method").value="editBarcodeBox";
-        document.falsenumSINOForm.submit();
+		console.log(document.getElementById("scheme").value)
+// 		document.getElementById("method").value="editBarcodeBox";
+//         document.falsenumSINOForm.submit();
+        document.location.href = "falsenumSINO.do?method=editBarcodeBox&falseBoxId="+id;
 	}
 	function updateFalseBoxList() {
 		var year = document.getElementById("year").value;
 		var exam = document.getElementById("examNameId").value;
-		document.location.href = "falsenumSINO.do?method=updateFalseBoxList&year="+year+"&examId="+exam;
+		var examtype = document.getElementById("hosID").value;
+		document.location.href = "falsenumSINO.do?method=updateFalseBoxList&year="+year+"&examId="+exam+"&examType="+examtype;
 	}
 	function resetInfo() {
 		document.location.href = "falsenumSINO.do?method=initFalseBox";
+	}
+	
+	function sethosId(type){
+		document.getElementById("hosID").value=type;
 	}
 
 </SCRIPT>
@@ -204,6 +196,8 @@
 	<html:hidden property="pageType" value="2" styleId="pageType" />
 	<html:hidden property="displaySubType" styleId="sCodeName_2" value="sName" />
 	<html:hidden property="falseBoxId" styleId="falseBoxId" />
+	<html:hidden property="academicYear" styleId="accYear" />
+	<html:hidden property="hostelId" styleId="hosID" />
 	
 									
 	<table width="99%" border="0">
@@ -252,7 +246,7 @@
 
 									<td height="25" colspan="8" class="row-even">
 									<div align="Center">
-									<%  boolean disableInternal=false; 
+									<!--<%  boolean disableInternal=false; 
 										boolean disableRegular=false;
 									%>
 									<c:if test="${falsenumSINOForm.regular==false && falsenumSINOForm.internal==true}">
@@ -264,17 +258,17 @@
 										<%   disableInternal=true; 
 											 disableRegular=false;
 										%>
-									</c:if>
+									</c:if>-->
 									<html:radio property="examType"
 										styleId="examId" value="Regular"
-										onclick="getExamsByExamTypeAndYear(), populateOptionForSup(false)" disabled="<%=disableRegular %>"></html:radio>
+										onclick="getExamsByExamTypeAndYear(), sethosId('Regular')" disabled="<%=disableRegular %>"></html:radio>
 									Regular&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 									<html:radio property="examType" value="Supplementary"
 										styleId="sup"
-										onclick="getExamsByExamTypeAndYear(), populateOptionForSup(true)" disabled="<%=disableRegular %>"></html:radio>
+										onclick="getExamsByExamTypeAndYear(), sethosId('Supplementary')" disabled="<%=disableRegular %>"></html:radio>
 									Supplementary&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 									<html:radio property="examType" value="Internal" styleId="int"
-										onclick="getExamsByExamTypeAndYear(), populateOptionForSup(false)" disabled="<%=disableInternal %>"></html:radio>
+										onclick="getExamsByExamTypeAndYear(), sethosId('Internal')" disabled="<%=disableInternal %>"></html:radio>
 									Internal
 									
 									</div>
@@ -545,7 +539,9 @@
 	</table>
 </html:form>
 <script type="text/javascript">
-/* examName = document.getElementById("examNameId").value;
+document.getElementById("year").value=document.getElementById("accYear").value;
+console.log(document.getElementById("accYear").value);
+/* examName = document.getElementById("examNameId").value;accYear
 console.log(examName);
 if (examName!='') {
 	

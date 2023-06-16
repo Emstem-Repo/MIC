@@ -6,7 +6,8 @@
 	<session-factory>
 		<property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
 		<property name="hibernate.connection.password">root</property>
-		<property name="hibernate.connection.url">jdbc:mysql://localhost:3306/mic_barcode</property>
+		<property name="hibernate.connection.url">jdbc:mysql://localhost:3306/mic_jun_14</property>
+		<!-- <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/mic_barcode_sep</property> -->
 		<property name="hibernate.connection.username">root</property>
 		<property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
 		<!--

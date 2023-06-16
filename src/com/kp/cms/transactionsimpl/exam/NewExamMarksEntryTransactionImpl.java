@@ -1592,5 +1592,24 @@ public class NewExamMarksEntryTransactionImpl implements INewExamMarksEntryTrans
 		return false;
 		
 	}
+	
+	public ExamDefinitionBO getDetailsByExamID(int examId) {
+		Session session = null;
+		ExamDefinitionBO bo=new ExamDefinitionBO();
+		try {
+			session = HibernateUtil.getSession();
+			Query query=session.createQuery("from ExamDefinitionBO f where f.id="+examId);
+			bo = (ExamDefinitionBO) query.uniqueResult();
+			return bo;
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		
+		finally {
+			// TODO: handle finally clause
+		}
+		return null;
+		
+	}
 
 }

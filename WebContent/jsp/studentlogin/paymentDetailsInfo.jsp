@@ -16,7 +16,15 @@
 	function cancelAction() {
 		document.location.href = "StudentLoginAction.do?method=returnHomePage";
 	}
-	
+	function downloadReciept(examName,txnDate,amount,txnStatus,txnrefNo){
+		document.getElementById("examname").value = examName;
+		document.getElementById("txnDate").value = txnDate;
+		document.getElementById("amount").value = amount;
+		document.getElementById("txnStatus").value = txnStatus;
+		console.log(document.getElementById("examname").value = examName);
+		var url = "StudentLoginAction.do?method=paymmentReciept&feePrintReciept.examName="+examName+"&feePrintReciept.txnDate="+txnDate+"&feePrintReciept.amount="+amount+"&feePrintReciept.txnStatus="+txnStatus+"&feePrintReciept.txNo="+txnrefNo;
+		myRef = window .open(url, "fee Reciept", "left=20,top=20,width=900,height=900,toolbar=1,resizable=0,scrollbars=1");
+	}
 
 	
 	</script>
@@ -24,6 +32,10 @@
 
 <html:hidden property="formName" value="loginform"/>
 <html:hidden property="pageType" value="1"/>
+<html:hidden property="feePrintReciept.examName" styleId="examname" />
+<html:hidden property="feePrintReciept.txnDate" styleId="txnDate" />
+<html:hidden property="feePrintReciept.amount" styleId="amount" />
+<html:hidden property="feePrintReciept.txnStatus" styleId="txnStatus" />
 
 <table width="100%" border="0" cellpadding="0" cellspacing="0">
 				<tr>
@@ -115,6 +127,7 @@
 									<td class="studentrow-odd" align="center"><div align="center">Transaction Date</div></td>
 									<td class="studentrow-odd"  align="center"><div align="center">Amount</div></td>
 									<td class="studentrow-odd" align="center"> <div align="center">Payment Status</div></td>
+									<td class="studentrow-odd" align="center"> <div align="center">Reciept</div></td>
 									
 								</tr>
 								<logic:notEmpty name="loginform" property="paymentDetailsList">
@@ -133,6 +146,10 @@
 									<td width="10%" align="center"><bean:write name="list" property="txnDate" /></td>
 									<td width="10%" align="center"><bean:write name="list"  property="amount"  /></td>
 									<td width="10%" align="center"><bean:write name="list" property="txnStatus"  /></td>
+									<td width="10%" align="center"><a  class="btnbg" onclick="downloadReciept('<bean:write name="list" property="examName" />',
+									'<bean:write name="list" property="txnDate" />','<bean:write name="list"  property="amount"  />',
+									'<bean:write name="list" property="txnStatus"  />',
+									'<bean:write name="list" property="txnrefNo"  />')">Download Reciept</a></td>
 								</logic:iterate>
 								</logic:notEmpty>
 							</table>

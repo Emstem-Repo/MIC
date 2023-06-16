@@ -605,6 +605,7 @@ public class FalseNumSiNoAction extends BaseDispatchAction{
 					.getCourseByExamName(cardSiNoForm.getExamId());
 			courseMap=CommonUtil.sortMapByValue(courseMap);
 			cardSiNoForm.setCourseMap(courseMap);
+			cardSiNoForm.setAcademicYear(cardSiNoForm.getYear());
 		}catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();

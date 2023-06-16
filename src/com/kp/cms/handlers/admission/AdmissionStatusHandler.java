@@ -241,7 +241,7 @@ public class AdmissionStatusHandler
         admForm.setRefNo(candidateRefNo);
         admForm.setProductinfo(productinfo);
         if(candidateRefNo!=null && !candidateRefNo.isEmpty())
-			temp.append(CMSConstants.PGI_MERCHANT_ID_ADM_STAT).append("|").append(candidateRefNo).append("|").append(bo.getTxnAmount()).append("|").append(productinfo).append("|").append(bo.getCandidateName()).append("|").append(bo.getEmail()).append("|||||||||||").append(CMSConstants.PGI_SECURITY_ID_ADM_STAT);
+			temp.append(CMSConstants.PGI_MERCHANT_ID_ALLOTMENT).append("|").append(candidateRefNo).append("|").append(bo.getTxnAmount()).append("|").append(productinfo).append("|").append(bo.getCandidateName()).append("|").append(bo.getEmail()).append("|||||||||||").append(CMSConstants.PGI_SECURITY_ID_ALLOTMENT);
 		String hash=hashCal("SHA-512",temp.toString());
         admForm.setTest(temp.toString());
         return hash;

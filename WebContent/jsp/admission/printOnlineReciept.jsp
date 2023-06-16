@@ -35,16 +35,16 @@ function printPass() {
 			<table width="100%" cellspacing="1" cellpadding="2" border="0" style="height:100%"  >
 			<tr>
 				<td colspan="2">
-											<table width="100%" cellspacing="1" cellpadding="2">
-													<tr><td><c:out value="${MSG}" escapeXml="false"></c:out></td></tr>
-											</table>
+					<table width="100%" cellspacing="1" cellpadding="2">
+						<tr><td><c:out value="${MSG}" escapeXml="false"></c:out></td></tr>
+					</table>
 				</td>
 			</tr>
-			
 			</table>
 		</td>
 	</tr>
-</table></html:form>
+</table>
+</html:form>
 
 
 </body>

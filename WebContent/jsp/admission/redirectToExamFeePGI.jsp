@@ -14,7 +14,7 @@
     --%>
 	<input type="hidden" name="hash" value="<%= request.getAttribute("hash") %>"/>
     <input type="hidden" name="txnid" value="<%= request.getAttribute("txnid") %>" />
-    <input type="hidden" name="key" value=<%=CMSConstants.PGI_MERCHANT_ID_ALLOTMENT %> />
+    <input type="hidden" name="key" value=<%=CMSConstants.PGI_MERCHANT_ID_EXAM_SCRUT_FEE %> />
 	<input type="hidden" name="service_provider" value="payu_paisa" />
     <input type="hidden" name="productinfo" value="<%= request.getAttribute("productinfo") %>" />
     <input type="hidden" name="amount" value="<%= request.getAttribute("amount") %>"/>

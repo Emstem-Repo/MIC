@@ -695,8 +695,15 @@ public class NewSupplementaryImpApplicationAction extends BaseDispatchAction {
 		   newSupplementaryImpApplicationForm.setTotalFees(totalAmount);
 		}
 
-		if (newSupplementaryImpApplicationForm.getStudentObj().getIsEgrand()) {
-			newSupplementaryImpApplicationForm.setTotalFees(new Double(newSupplementaryImpApplicationForm.geteGrandFees()));
+		if (newSupplementaryImpApplicationForm.getStudentObj().getIsEgrand() 
+			&& newSupplementaryImpApplicationForm.getStudentObj().getAdmAppln().getPersonalData().getReligionSection()!=null) {
+			if (newSupplementaryImpApplicationForm.getStudentObj().getAdmAppln().getPersonalData().getReligionSection().getId()==2
+				|| newSupplementaryImpApplicationForm.getStudentObj().getAdmAppln().getPersonalData().getReligionSection().getId()==3
+				|| newSupplementaryImpApplicationForm.getStudentObj().getAdmAppln().getPersonalData().getReligionSection().getId()==10
+				|| newSupplementaryImpApplicationForm.getStudentObj().getAdmAppln().getPersonalData().getReligionSection().getId()==4) {
+				newSupplementaryImpApplicationForm.setTotalFees(new Double(newSupplementaryImpApplicationForm.geteGrandFees()));
+			}
+			
 		}
 		// online payment code temporarily commented do not delete
 		/*
@@ -1562,6 +1569,18 @@ public class NewSupplementaryImpApplicationAction extends BaseDispatchAction {
 					}else{
 					   newSupplementaryImpApplicationForm.setTotalFees(totalAmount);
 					}
+					if (/*newSupplementaryImpApplicationForm.getStudentObj().getIsEgrand() 
+							&& */newSupplementaryImpApplicationForm.getStudentObj().getAdmAppln().getPersonalData().getReligionSection()!=null
+							&& (newSupplementaryImpApplicationForm.getStudentObj().getAdmAppln().getAppliedYear() == 2020
+							|| newSupplementaryImpApplicationForm.getStudentObj().getAdmAppln().getAppliedYear() == 2021)) {
+							if (newSupplementaryImpApplicationForm.getStudentObj().getAdmAppln().getPersonalData().getReligionSection().getId()==2
+								|| newSupplementaryImpApplicationForm.getStudentObj().getAdmAppln().getPersonalData().getReligionSection().getId()==3
+								|| newSupplementaryImpApplicationForm.getStudentObj().getAdmAppln().getPersonalData().getReligionSection().getId()==10
+								|| newSupplementaryImpApplicationForm.getStudentObj().getAdmAppln().getPersonalData().getReligionSection().getId()==4) {
+								newSupplementaryImpApplicationForm.setTotalFees(new Double(newSupplementaryImpApplicationForm.geteGrandFees()));
+							}
+							
+						}
 					//newSupplementaryImpApplicationForm.setTotalFees(totalAmount);
 					ISingleFieldMasterTransaction txn1 = SingleFieldMasterTransactionImpl
 					.getInstance();
@@ -1569,10 +1588,10 @@ public class NewSupplementaryImpApplicationAction extends BaseDispatchAction {
 							Student.class, newSupplementaryImpApplicationForm
 							.getStudentId());
 					newSupplementaryImpApplicationForm.setStudentObj(student);
-					if (newSupplementaryImpApplicationForm.getStudentObj()
+					/*if (newSupplementaryImpApplicationForm.getStudentObj()
 							.getIsEgrand()) {
 						newSupplementaryImpApplicationForm.setTotalFees(new Double(newSupplementaryImpApplicationForm.geteGrandFees()));
-					}
+					}*/
 					String printData = NewSupplementaryImpApplicationHandler
 					.getInstance().getPrintData(
 							newSupplementaryImpApplicationForm
@@ -2688,7 +2707,7 @@ public class NewSupplementaryImpApplicationAction extends BaseDispatchAction {
 				System.out.println("PGI ERROR" + e);
 				return mapping.findForward("printDetailsforRegularFail");
 			}
-			return mapping.findForward(CMSConstants.REDIRECT_TO_PGI_PAGE);
+			return mapping.findForward("redirectToExamPgi");
 		} else {
 			if (newSupplementaryImpApplicationForm.getStudentObj()
 					.getAdmAppln().getCourseBySelectedCourseId().getProgram()
@@ -2917,7 +2936,7 @@ public class NewSupplementaryImpApplicationAction extends BaseDispatchAction {
 				System.out.println("PGI ERROR" + e);
 				return mapping.findForward("printDetailsforRegularFail");
 			}
-			return mapping.findForward(CMSConstants.REDIRECT_TO_PGI_PAGE);
+			return mapping.findForward("redirectToExamPgi");
 		} else {
 			return mapping
 			.findForward(CMSConstants.INIT_SUPPL_IMP_APP_STUDENT_RESULT);
@@ -3694,8 +3713,14 @@ public class NewSupplementaryImpApplicationAction extends BaseDispatchAction {
 				.format(new Date()));
 		newSupplementaryImpApplicationForm.setIsRevaluation("");
 		newSupplementaryImpApplicationForm.setIsScrutiny("");
-		return mapping
-		.findForward(CMSConstants.INIT_REVALUATION_APP_STUDENT_RESULT);
+		if (newSupplementaryImpApplicationForm.isScrutiny()) {
+			return mapping
+					.findForward("initScrutinyAppStudentResult");
+		}
+		else{
+			//getDataToFormForRevaluationChoose(newSupplementaryImpApplicationForm, request);
+		return mapping.findForward(CMSConstants.INIT_REVALUATION_APP_STUDENT_RESULT);
+		}
 	}
 
 	private void setDataToFormForRevaluation(
@@ -4378,7 +4403,7 @@ public class NewSupplementaryImpApplicationAction extends BaseDispatchAction {
 			return mapping.findForward(CMSConstants.INIT_REVALUATION_APP_STUDENT_RESULT);
 		}
 		log.info("Entered NewSupplementaryImpApplicationAction - saveMarks");
-		return mapping.findForward(CMSConstants.REDIRECT_PGI_REVALUATION);
+		return mapping.findForward("redirectToExamPgi");
 	}
 
 	public ActionForward showPrintDetailsForRevalution(ActionMapping mapping,
@@ -5057,7 +5082,7 @@ public class NewSupplementaryImpApplicationAction extends BaseDispatchAction {
 				.findForward(CMSConstants.INIT_REGULAR_APP_STUDENT_RESULTPG);
 			}
 		}
-		return mapping.findForward(CMSConstants.REDIRECT_TO_PGI_PAGE_EXAM_REG);
+		return mapping.findForward("redirectToExamPgi");
 
 	}
 
@@ -5197,7 +5222,7 @@ public class NewSupplementaryImpApplicationAction extends BaseDispatchAction {
 			.findForward(CMSConstants.INIT_SUPPL_IMP_APP_STUDENT_RESULT);
 		}
 		return mapping
-		.findForward(CMSConstants.REDIRECT_TO_PGI_PAGE_EXAM_SUPPL);
+		.findForward("redirectToExamPgi");
 
 	}
 
@@ -5383,7 +5408,20 @@ public class NewSupplementaryImpApplicationAction extends BaseDispatchAction {
 						.getFineFees();
 					}
 				}
+				
 				newSupplementaryImpApplicationForm.setTotalFees(totalAmount);
+				if (/*newSupplementaryImpApplicationForm.getStudentObj().getIsEgrand() 
+						&& */newSupplementaryImpApplicationForm.getStudentObj().getAdmAppln().getPersonalData().getReligionSection()!=null
+						&& (newSupplementaryImpApplicationForm.getStudentObj().getAdmAppln().getAppliedYear() == 2020
+						|| newSupplementaryImpApplicationForm.getStudentObj().getAdmAppln().getAppliedYear() == 2021)) {
+						if (newSupplementaryImpApplicationForm.getStudentObj().getAdmAppln().getPersonalData().getReligionSection().getId()==2
+							|| newSupplementaryImpApplicationForm.getStudentObj().getAdmAppln().getPersonalData().getReligionSection().getId()==3
+							|| newSupplementaryImpApplicationForm.getStudentObj().getAdmAppln().getPersonalData().getReligionSection().getId()==10
+							|| newSupplementaryImpApplicationForm.getStudentObj().getAdmAppln().getPersonalData().getReligionSection().getId()==4) {
+							newSupplementaryImpApplicationForm.setTotalFees(new Double(newSupplementaryImpApplicationForm.geteGrandFees()));
+						}
+						
+					}
 
 				// for supplementary online payment temp commented as mic not
 				// using online payment
@@ -5552,7 +5590,7 @@ public class NewSupplementaryImpApplicationAction extends BaseDispatchAction {
 			return mapping.findForward(CMSConstants.INIT_REVALUATION_APP_STUDENT_RESULT);
 		}
 
-		return mapping.findForward(CMSConstants.REDIRECT_PGI_REVALUATION);
+		return mapping.findForward("redirectToExamPgi");
 	}
 
 	private void validatePGIForRevaluation(NewSupplementaryImpApplicationForm newSupplementaryImpApplicationForm,ActionErrors errors) {
@@ -5736,7 +5774,7 @@ public class NewSupplementaryImpApplicationAction extends BaseDispatchAction {
 			return mapping.findForward(CMSConstants.INIT_REVALUATION_APP_STUDENT_RESULT);
 		}
 
-		return mapping.findForward(CMSConstants.REDIRECT_PGI_REVALUATION);
+		return mapping.findForward("redirectToExamPgi");
 	}
 	
 	public ActionForward updatePGIDetailsForRevaluationNewSupply(ActionMapping mapping, ActionForm form, HttpServletRequest request,
@@ -5824,6 +5862,195 @@ public class NewSupplementaryImpApplicationAction extends BaseDispatchAction {
 
 		return mapping.findForward("paymentSuccessfullDetails");
 
+	}
+	
+	public void getDataToFormForRevaluationChoose(ActionForm form, HttpServletRequest request) throws Exception {
+		NewSupplementaryImpApplicationForm newSupplementaryImpApplicationForm = (NewSupplementaryImpApplicationForm) form;// Type
+		// casting
+		// the
+		// Action
+		// form
+		// to
+		// Required
+		// Form
+
+		try {
+			HttpSession session = request.getSession(false);
+			newSupplementaryImpApplicationForm.setStudentId(Integer.parseInt(session.getAttribute("studentId").toString()));
+			newSupplementaryImpApplicationForm.setRevclassid(Integer.parseInt(session.getAttribute("revclassId").toString()));
+
+			ISingleFieldMasterTransaction txn = SingleFieldMasterTransactionImpl.getInstance();
+			Student student = (Student) txn.getMasterEntryDataById(Student.class, newSupplementaryImpApplicationForm.getStudentId());
+			newSupplementaryImpApplicationForm.setStudentObj(student);
+
+			boolean extendedTrue = NewSupplementaryImpApplicationHandler.getInstance().extendedDateForRevaluation(student.getClassSchemewise().getClasses().getId(),newSupplementaryImpApplicationForm);
+			if (extendedTrue) {
+				newSupplementaryImpApplicationForm.setExtended(true);
+			}
+
+			List<Integer> examIds = NewSupplementaryImpApplicationHandler.getInstance().checkRevaluationAppAvailable(newSupplementaryImpApplicationForm.getRevclassid(),newSupplementaryImpApplicationForm.isExtended(),
+					newSupplementaryImpApplicationForm.isSupplementary());
+			newSupplementaryImpApplicationForm.setCourseId(student.getAdmAppln().getCourseBySelectedCourseId().getId()+ "");
+
+			if (examIds.isEmpty()) {
+				newSupplementaryImpApplicationForm.setRevAppAvailable(false);
+			}
+
+			else {
+
+				newSupplementaryImpApplicationForm.setRevAppAvailable(true);
+
+				INewExamMarksEntryTransaction transaction = NewExamMarksEntryTransactionImpl.getInstance();
+				String query = "from ExamRevaluationApplicationNew er where er.classes.id="+ newSupplementaryImpApplicationForm.getRevclassid()+ " and er.exam.id="+ examIds.get(0)
+					+ " and er.student.id= "+ newSupplementaryImpApplicationForm.getStudentId();
+
+				if (newSupplementaryImpApplicationForm.getIsRevaluation() != null	&& newSupplementaryImpApplicationForm.getIsRevaluation().equalsIgnoreCase("on")) {
+					query = query + "  and er.isRevaluation=1";
+				}
+				if (newSupplementaryImpApplicationForm.getIsScrutiny() != null && newSupplementaryImpApplicationForm.getIsScrutiny().equalsIgnoreCase("on")) {
+					query = query + "  and er.isScrutiny=1 ";
+				}
+
+				List<ExamRevaluationApp> boList = transaction.getDataForQuery(query);
+
+				if (boList.size() != 0) {
+					newSupplementaryImpApplicationForm.setPrintApplication(true);
+					NewSupplementaryImpApplicationHandler.getInstance().getApplicationFormsForRevaluationChooseType(examIds, newSupplementaryImpApplicationForm);
+				} else {
+					newSupplementaryImpApplicationForm.setPrintApplication(false);
+					newSupplementaryImpApplicationForm.setPaymentDone(false);
+					NewSupplementaryImpApplicationHandler.getInstance().getApplicationFormsForRevaluation(examIds,newSupplementaryImpApplicationForm);
+
+				}
+
+				if (student != null) {
+					// get class based on exam
+					ClassSchemewise classes = ClassEntryTransImpl.getInstance().getClassById(newSupplementaryImpApplicationForm.getRevclassid());
+
+					// setting data for print
+
+					/*
+					 * if(NewSupplementaryImpApplicationHandler.getInstance().checkOnlinePayment
+					 * (newSupplementaryImpApplicationForm)){
+					 * newSupplementaryImpApplicationForm
+					 * .setPrintSupplementary(true);
+					 * 
+					 * }else{
+					 * newSupplementaryImpApplicationForm.setPrintSupplementary
+					 * (false);
+					 * 
+					 * }
+					 */
+
+					// raghu write newly like regular app
+					newSupplementaryImpApplicationForm.setNameOfStudent(student.getAdmAppln().getPersonalData().getFirstName()
+							+ (student.getAdmAppln().getPersonalData()
+									.getMiddleName() != null ? student
+											.getAdmAppln().getPersonalData()
+											.getMiddleName() : "")
+											+ (student.getAdmAppln().getPersonalData()
+													.getLastName() != null ? student
+															.getAdmAppln().getPersonalData()
+															.getLastName() : ""));
+					newSupplementaryImpApplicationForm.setClassName(classes
+							.getClasses().getName());
+					newSupplementaryImpApplicationForm.setRegisterNo(student
+							.getRegisterNo());
+					newSupplementaryImpApplicationForm.setRollNo(student
+							.getRollNo());
+					newSupplementaryImpApplicationForm.setDob(null);
+					newSupplementaryImpApplicationForm
+					.setOriginalDob(CommonUtil
+							.ConvertStringToDateFormat(
+									CommonUtil.getStringDate(student
+											.getAdmAppln()
+											.getPersonalData()
+											.getDateOfBirth()),
+											NewStudentCertificateCourseAction.SQL_DATEFORMAT,
+											NewStudentCertificateCourseAction.FROM_DATEFORMAT));
+					newSupplementaryImpApplicationForm.setAddress("");
+					newSupplementaryImpApplicationForm.setCourseName(student
+							.getAdmAppln().getCourseBySelectedCourseId()
+							.getName());
+					newSupplementaryImpApplicationForm.setSchemeNo(""
+							+ student.getClassSchemewise().getClasses()
+							.getTermNumber());
+					newSupplementaryImpApplicationForm.setEmail(student
+							.getAdmAppln().getPersonalData().getEmail());
+					newSupplementaryImpApplicationForm.setMobileNo(student
+							.getAdmAppln().getPersonalData().getMobileNo2());
+					newSupplementaryImpApplicationForm.setCourseId(""
+							+ student.getClassSchemewise().getClasses()
+							.getCourse().getId());
+
+					String address = "";
+					if (student.getAdmAppln().getPersonalData()
+							.getCurrentAddressLine1() != null
+							&& !student.getAdmAppln().getPersonalData()
+							.getCurrentAddressLine1().equalsIgnoreCase(
+							"")) {
+						address = address
+						+ ""
+						+ student.getAdmAppln().getPersonalData()
+						.getCurrentAddressLine1() + ",";
+					}
+					if (student.getAdmAppln().getPersonalData()
+							.getCurrentAddressLine2() != null
+							&& !student.getAdmAppln().getPersonalData()
+							.getCurrentAddressLine2().equalsIgnoreCase(
+							"")) {
+						address = address
+						+ ""
+						+ student.getAdmAppln().getPersonalData()
+						.getCurrentAddressLine2() + ",";
+					}
+					if (student.getAdmAppln().getPersonalData()
+							.getStateByCurrentAddressDistrictId() != null) {
+						address = address
+						+ ""
+						+ student.getAdmAppln().getPersonalData()
+						.getStateByCurrentAddressDistrictId()
+						.getName();
+					} else if (student.getAdmAppln().getPersonalData()
+							.getCurrentAddressStateOthers() != null
+							&& !student.getAdmAppln().getPersonalData()
+							.getCurrentAddressStateOthers()
+							.equalsIgnoreCase("")) {
+						address = address
+						+ ""
+						+ student.getAdmAppln().getPersonalData()
+						.getCurrentAddressStateOthers() + ",";
+
+					}
+					if (student.getAdmAppln().getPersonalData()
+							.getStateByCurrentAddressStateId() != null) {
+						address = address
+						+ ""
+						+ student.getAdmAppln().getPersonalData()
+						.getStateByCurrentAddressStateId()
+						.getName() + ",";
+					} else if (student.getAdmAppln().getPersonalData()
+							.getCurrentAddressStateOthers() != null
+							&& !student.getAdmAppln().getPersonalData()
+							.getCurrentAddressStateOthers()
+							.equalsIgnoreCase("")) {
+						address = address
+						+ ""
+						+ student.getAdmAppln().getPersonalData()
+						.getCurrentAddressStateOthers() + ",";
+
+					}
+
+					newSupplementaryImpApplicationForm.setAddress(address);
+				}
+
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		
 	}
 	
 }

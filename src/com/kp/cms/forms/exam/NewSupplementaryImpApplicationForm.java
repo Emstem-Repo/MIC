@@ -178,6 +178,7 @@ public class NewSupplementaryImpApplicationForm extends BaseActionForm {
 	private String method;
 	private boolean paymentDone;
 	private boolean eGrandStudent;
+	private boolean scrutiny;
 	
 	
 
@@ -1197,5 +1198,20 @@ public class NewSupplementaryImpApplicationForm extends BaseActionForm {
 	}
 	public void seteGrandFees(String eGrandFees) {
 		this.eGrandFees = eGrandFees;
+	}
+	public boolean isScrutiny() {
+		return scrutiny;
+	}
+	public void setScrutiny(boolean scrutiny) {
+		this.scrutiny = scrutiny;
+	}
+	public boolean isAppliedThroughAdmin() {
+		return isAppliedThroughAdmin;
+	}
+	public void setFine(boolean isFine) {
+		this.isFine = isFine;
+	}
+	public void setFeesExempted(boolean isFeesExempted) {
+		this.isFeesExempted = isFeesExempted;
 	}
 }

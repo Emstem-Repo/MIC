@@ -40,7 +40,7 @@ public class OptionalCourseApplicationHelper {
 			System.out.println(bo[2]);
 			if(form.getCourseId().equalsIgnoreCase("23") || form.getCourseId().equalsIgnoreCase("26") ){
 				if(bo[2].toString().equalsIgnoreCase("14") || bo[2].toString().equalsIgnoreCase("1") || bo[2].toString().equalsIgnoreCase("20")
-						|| bo[2].toString().equalsIgnoreCase("7") || bo[2].toString().equalsIgnoreCase("19") || bo[2].toString().equalsIgnoreCase("31")){
+						|| bo[2].toString().equalsIgnoreCase("7") || bo[2].toString().equalsIgnoreCase("8") || bo[2].toString().equalsIgnoreCase("31")){
 			to.setCourseName(bo[1].toString());
 			to.setDepartment(bo[0].toString());
 			to.setDeptId(Integer.parseInt(bo[2].toString()));
@@ -51,7 +51,7 @@ public class OptionalCourseApplicationHelper {
 				}
 			}else if(form.getCourseId().equalsIgnoreCase("22") || form.getCourseId().equalsIgnoreCase("29")){
 				if(bo[2].toString().equalsIgnoreCase("14") || bo[2].toString().equalsIgnoreCase("17")|| bo[2].toString().equalsIgnoreCase("20")
-						|| bo[2].toString().equalsIgnoreCase("7") || bo[2].toString().equalsIgnoreCase("19") || bo[2].toString().equalsIgnoreCase("31")){
+						|| bo[2].toString().equalsIgnoreCase("7") || bo[2].toString().equalsIgnoreCase("8") || bo[2].toString().equalsIgnoreCase("31") || bo[2].toString().equalsIgnoreCase("33") ){
 				to.setCourseName(bo[1].toString());
 				to.setDepartment(bo[0].toString());
 				to.setDeptId(Integer.parseInt(bo[2].toString()));
@@ -63,7 +63,31 @@ public class OptionalCourseApplicationHelper {
 			}else if(form.getCourseId().equalsIgnoreCase("28") ){
 				System.out.println(bo[2].toString());
 				if(bo[2].toString().equalsIgnoreCase("14") || bo[2].toString().equalsIgnoreCase("17")|| bo[2].toString().equalsIgnoreCase("20")
-						|| bo[2].toString().equalsIgnoreCase("7") || bo[2].toString().equalsIgnoreCase("19") || bo[2].toString().equalsIgnoreCase("1") ){
+						|| bo[2].toString().equalsIgnoreCase("7") || bo[2].toString().equalsIgnoreCase("8") || bo[2].toString().equalsIgnoreCase("1")  || bo[2].toString().equalsIgnoreCase("33") ){
+				to.setCourseName(bo[1].toString());
+				to.setDepartment(bo[0].toString());
+				to.setDeptId(Integer.parseInt(bo[2].toString()));
+				to.setSubjectId(Integer.parseInt(bo[3].toString()));
+				toList.add(to);
+				count++;
+				optionMap.put(count, count);
+				}
+			}else if(form.getCourseId().equalsIgnoreCase("30") ){
+				System.out.println(bo[2].toString());
+				if(bo[2].toString().equalsIgnoreCase("14") || bo[2].toString().equalsIgnoreCase("17")|| bo[2].toString().equalsIgnoreCase("20")
+						|| bo[2].toString().equalsIgnoreCase("7") || bo[2].toString().equalsIgnoreCase("8") || bo[2].toString().equalsIgnoreCase("1") || bo[2].toString().equalsIgnoreCase("33") || bo[2].toString().equalsIgnoreCase("31")){
+				to.setCourseName(bo[1].toString());
+				to.setDepartment(bo[0].toString());
+				to.setDeptId(Integer.parseInt(bo[2].toString()));
+				to.setSubjectId(Integer.parseInt(bo[3].toString()));
+				toList.add(to);
+				count++;
+				optionMap.put(count, count);
+				}
+			}else if(form.getCourseId().equalsIgnoreCase("31") ){
+				System.out.println(bo[2].toString());
+				if(bo[2].toString().equalsIgnoreCase("14") || bo[2].toString().equalsIgnoreCase("17")|| bo[2].toString().equalsIgnoreCase("20")
+						|| bo[2].toString().equalsIgnoreCase("7") || bo[2].toString().equalsIgnoreCase("1") || bo[2].toString().equalsIgnoreCase("33") || bo[2].toString().equalsIgnoreCase("31")){
 				to.setCourseName(bo[1].toString());
 				to.setDepartment(bo[0].toString());
 				to.setDeptId(Integer.parseInt(bo[2].toString()));
@@ -73,7 +97,7 @@ public class OptionalCourseApplicationHelper {
 				optionMap.put(count, count);
 				}
 			}else {
-				if(bo[2].toString().equalsIgnoreCase("31")){
+				if(bo[2].toString().equalsIgnoreCase("31") || bo[2].toString().equalsIgnoreCase("8") || bo[2].toString().equalsIgnoreCase("33") ){
 					continue;
 				}
 				to.setCourseName(bo[1].toString());

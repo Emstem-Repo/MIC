@@ -8,6 +8,8 @@
 <%@taglib uri="/WEB-INF/cmsTags.tld" prefix="cms"%>
 <%@taglib uri="/WEB-INF/struts-tld/struts-nested.tld" prefix="nested"%>
 <%@page import="com.kp.cms.constants.CMSConstants"%>
+<%@ page import="java.util.*"%>
+<%@ page import="java.text.*"%>
 <html>
 <head>
 
@@ -61,55 +63,144 @@
 									</td>
 
 								</tr>
+								<tr>
+									<td align="center" colspan="4">
+										TABULATION SHEET AFTER FIRST & SECOND VALUATION OF THE P.G. DEGREE EXAMINATIONS
+									</td>
+
+								</tr>
 								
 								<tr>
-									<td width="10%" height="25" class="row-odd">
-									<div align="right">Exam Name :</div>
+									<td  height="25" class="row-odd">
+									<div align="left">Exam Name :</div>
 									</td>
-									<td width="50%" height="25" class="row-even">
-										<bean:write name="newExamMarksEntryForm" property="displatoList.examName"/>
+									<td  height="25" class="row-even">
+										<bean:write name="newExamMarksEntryForm" property="examName"/>
 									</td>
-									<td width="10%" class="row-odd">
-									<div align="right">Course Name :</div>
+									
+								</tr>
+								
+								<tr>
+									<td  height="25" class="row-odd">
+									<div align="left">Programme:</div>
 									</td>
-									<td width="30%" class="row-even">
-										<bean:write name="newExamMarksEntryForm" property="displatoList.courseName"/>
+									<td  height="25" class="row-even">
+										<bean:write name="newExamMarksEntryForm" property="programName"/>
+									</td>
+									
+								</tr>
+								<tr>
+								
+									<td  class="row-odd">
+									<div align="left">Course Name :</div>
+									</td>
+									<td  align="left" class="row-even">
+										<bean:write name="newExamMarksEntryForm" property="courseName"/>
 									</td>
 
 								</tr>
 								<tr>
-									<td width="20%" height="25" class="row-odd">
-									<div align="right">Semester:</div>
-									</td>
-									<td width="50%" height="25" class="row-even">
-										<bean:write name="newExamMarksEntryForm" property="displatoList.termNum"/>
-									</td>
-									<td width="20%" height="25" class="row-odd">
-									<div align="right">Subject :</div>
+									
+									<td  height="25" class="row-odd">
+									<div align="left">Course Code :</div>
 									</td>
 									<td height="25" class="row-even">
-										<bean:write name="newExamMarksEntryForm" property="displatoList.subjectName"/>
+										<bean:write name="newExamMarksEntryForm" property="courseCode"/>
 									</td>
 								</tr>
 								<tr>
-									<td width="20%" height="25" class="row-odd">
-									<div align="right">Teacher:</div>
+									<td  height="25" class="row-odd">
+									<div align="left">Q . P Code:</div>
 									</td>
-									<td width="50%" height="25" class="row-even">
-										<bean:write name="newExamMarksEntryForm" property="displatoList.teacher"/>
-									</td>
-									<td width="20%" height="25" class="row-odd">
-									
-									</td>
-									<td height="25" class="row-even">
+									<td  height="25" class="row-even">
 										
 									</td>
+									<td width="20%" height="25" class="row-odd">
+										Maximum Mark
+									</td>
+									<td height="25" class="row-even">
+										<bean:write name="newExamMarksEntryForm" property="qpCode"/>
+									</td>
 								</tr>
+								
 								
 							</table>
 							</td>
 							
 						</tr>
+						<tr>
+						 <td>
+							<table width="100%" cellspacing="1" cellpadding="2" border="1">
+								<tr>
+									<td rowspan="2" height="25" class="row-odd">
+									 	Sl.No
+									 </td>
+									<td rowspan="2" height="25" class="row-odd">
+									<div align="center">Box No.</div>
+									</td>
+									
+									<td rowspan="2" height="25" class="row-odd">
+									<div align="center">Barcode No.</div>
+									</td>
+									<td colspan="2" height="25" align="center" class="row-even">
+										Mark
+									</td>
+								</tr>
+								<tr>
+									<td>In Figures</td>
+									<td>In Words</td>
+								</tr>
+								<% int i=0; %>
+								<logic:notEmpty name="newExamMarksEntryForm" property="examMarkEvaluationPrintToList">
+								<logic:iterate id="to" name="newExamMarksEntryForm" property="examMarkEvaluationPrintToList">
+								<%i++ ;%>
+									<tr>
+									<td align="center">
+									 	<%=i %>
+									 </td>
+									 <td align="center">
+									 	<bean:write name="to" property="boxNo"/>
+									 </td>
+									 <td>
+									 	<bean:write name="to" property="falseNo"/>
+									 </td>
+									 <td>
+									 	<bean:write name="to" property="mark"/>
+									 </td>
+									 <td>
+									 	<bean:write name="to" property="markInWords"/>
+									 </td>
+									</tr>
+									
+								</logic:iterate>
+								</logic:notEmpty>
+							</table>
+						</td>
+					</tr>
+					<tr>
+						 <td>
+							<table width="100%" cellspacing="1" cellpadding="2" >
+							<tr height="50px"></tr>
+					<tr>
+									<% 
+									  					DateFormat dateFormat1 = new SimpleDateFormat("dd/MM/yyyy");
+									    				Date date2 = new Date();
+									    				String date11=dateFormat1.format(date2);
+								    %>
+										
+									<td width="20%" height="25" class="row-odd">
+									Date :<%=date11 %>
+									</td>
+									<td height="25" align="right" class="row-even">
+										<bean:write name="newExamMarksEntryForm" property="examMarkPrintTo.empName"/><br>
+										<bean:write name="newExamMarksEntryForm" property="examMarkPrintTo.dept"/><br>
+										<bean:write name="newExamMarksEntryForm" property="examMarkPrintTo.profession"/><br>
+									</td>
+								</tr>
+								</table>
+								</td>
+								</tr>
+					
 					</table>
 					</td>
 					

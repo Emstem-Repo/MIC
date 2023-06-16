@@ -178,9 +178,10 @@ public class NewAttendanceSmsHandler
 				}
 				
 				//temp=temp+ URLEncoder.encode("was absent for the" + " ", "UTF-8"); 
-				temp=temp+ URLEncoder.encode("was absent today("+CommonUtil.getTodayDate()+") during" + " ", "UTF-8");
+				//temp=temp+ URLEncoder.encode("was absent today("+CommonUtil.getTodayDate()+") during" + " ", "UTF-8");
+				temp=temp+ URLEncoder.encode("was absent today"+CommonUtil.getTodayDate()+" ", "UTF-8");
 				//temp=temp+ URLEncoder.encode(""+subjectNames+"", "UTF-8");
-				temp=temp+ URLEncoder.encode(""+periodNames+"", "UTF-8");
+				//temp=temp+ URLEncoder.encode(""+periodNames+"", "UTF-8");
 				
 				
 				//temp=temp+ URLEncoder.encode("on "+newAttendanceSmsForm.getAttendancedate(), "UTF-8");

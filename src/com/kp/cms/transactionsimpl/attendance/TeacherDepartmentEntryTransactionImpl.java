@@ -47,7 +47,7 @@ public class TeacherDepartmentEntryTransactionImpl implements ITeacherDepartment
 		Session session=null;
 		try{
 			session=HibernateUtil.getSession();
-		String query="select u.id, e.department.name, e.firstName from Users u left join u.employee e with (e.active=1 and e.isActive=1) left join e.department d  where  u.isActive=1 and u.active=1 and u.isTeachingStaff=1 and u.userName is not null " ;
+		String query="select u.id, e.department.name, e.firstName from Users u left join u.employee e with (e.active=1 and e.isActive=1) left join e.department d  where  u.isActive=1 and u.active=1 and u.isTeachingStaff=1 and u.userName is not null and u.employee.id is not null" ;
 //			code added by sudhir	
 		if(!CMSConstants.LINK_FOR_CJC){
 			query = query + " and (u.employee.id is not null or u.guest.id is not null)";

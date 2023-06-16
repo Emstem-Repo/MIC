@@ -79,6 +79,7 @@ public class FalseNumberExamMarksEntryAction extends BaseDispatchAction {
 		newExamMarksEntryForm.setDisplatoList(new FalseNoDisplayTo());
 		List<ExamMarkEvaluationTo> evalList=new ArrayList<ExamMarkEvaluationTo>();
 		newExamMarksEntryForm.setExamEvalToList(evalList);
+		newExamMarksEntryForm.setEvalNo("0");
 		setUserId(request, newExamMarksEntryForm);
 		return mapping.findForward("initFalseMarksEntry");
 	}
@@ -174,7 +175,7 @@ public class FalseNumberExamMarksEntryAction extends BaseDispatchAction {
 				&& (newExamMarksEntryForm.getStudentMarksTo().getExamEvalTo().getThirdEvaluation()==null || newExamMarksEntryForm.getStudentMarksTo().getExamEvalTo().getThirdEvaluation().isEmpty())){
 			errors.add(CMSConstants.ERROR,new ActionError("admissionFormForm.education.totalMark.notNumeric"));
 		}
-		//validateMaxMarks(newExamMarksEntryForm,errors);
+		validateMaxMarks(newExamMarksEntryForm,errors);
 		if (errors.isEmpty()) {
 			try {
 				boolean isUpdated =FalseNumExamMarksEntryHandler.getInstance().addEvalationMarks(newExamMarksEntryForm);
@@ -209,15 +210,16 @@ public class FalseNumberExamMarksEntryAction extends BaseDispatchAction {
 		ActionMessages messages=new ActionMessages();
 		ActionErrors errors = newExamMarksEntryForm.validate(mapping, request);
 		setUserId(request,newExamMarksEntryForm);
-		//validateMaxMarks(newExamMarksEntryForm,errors);
+			//validateMaxMarks(newExamMarksEntryForm,errors);
 		if (errors.isEmpty()) {
 			try {
 				boolean isUpdated =FalseNumExamMarksEntryHandler.getInstance().saveEvalationMarks(newExamMarksEntryForm);
 				if (isUpdated) {
 					newExamMarksEntryForm.setDisplatoList(new FalseNoDisplayTo());
-					List<ExamMarkEvaluationTo> evalList=new ArrayList<ExamMarkEvaluationTo>();
-					newExamMarksEntryForm.setExamEvalToList(evalList);
-					newExamMarksEntryForm.setEvalNo("0");
+					//List<ExamMarkEvaluationTo> evalList=new ArrayList<ExamMarkEvaluationTo>();
+					//newExamMarksEntryForm.setExamEvalToList(evalList);
+					//newExamMarksEntryForm.setEvalNo("0");
+					newExamMarksEntryForm.setSaved(true);
 					messages.add(CMSConstants.MESSAGES, new ActionError("knowledgepro.admin.addsuccess","Marks"));
 					saveMessages(request, messages);
 					
@@ -251,6 +253,7 @@ public class FalseNumberExamMarksEntryAction extends BaseDispatchAction {
 		newExamMarksEntryForm.resetFields();//Reseting the fields for input jsp
 		HttpSession session = request.getSession();
 		newExamMarksEntryForm.setFinalValidation(false);
+		newExamMarksEntryForm.setSaved(false);
 		newExamMarksEntryForm.setRoleId(session.getAttribute("rid").toString());
 		setRequiredDatatoForm(newExamMarksEntryForm, request);// setting the requested data to form
 		log.info("Exit initExamMarksEntry input");
@@ -330,8 +333,94 @@ public class FalseNumberExamMarksEntryAction extends BaseDispatchAction {
 	 * @throws Exception
 	 */
 	private void validateMaxMarks(NewExamMarksEntryForm newExamMarksEntryForm,ActionErrors errors) throws Exception{
-		Double maxMark=NewExamMarksEntryHandler.getInstance().getMaxMarkOfSubject(newExamMarksEntryForm);
-		if(!newExamMarksEntryForm.getExamType().equals("Supplementary")){
+		Double maxMark=FalseNumExamMarksEntryHandler.getInstance().getMaxMarkOfSubject(newExamMarksEntryForm);
+		newExamMarksEntryForm.setQpCode(maxMark.toString());
+
+		if(maxMark==null){
+			errors.add(CMSConstants.ERROR,new ActionError("knowledgepro.exam.max.marks.notDefined"));
+		}else{
+			List<StudentMarksTO> list=newExamMarksEntryForm.getStudentList();
+			Iterator<StudentMarksTO> itr=list.iterator();
+			String reg="";
+			String regValid="";
+			List<String> examAbscentCode = NewSecuredMarksEntryHandler.getInstance().getExamAbscentCode();
+				StudentMarksTO to = newExamMarksEntryForm.getStudentMarksTo();
+				if (newExamMarksEntryForm.getEvalNo()!=null) {
+				if(newExamMarksEntryForm.getEvalNo()=="1" || newExamMarksEntryForm.getEvalNo().equalsIgnoreCase("1")){
+					if((/*to.getIsTheory() && */to.getExamEvalTo().getFirstEvaluation()!=null && !to.getExamEvalTo().getFirstEvaluation().isEmpty())){
+						if(!(to.getExamEvalTo().getFirstEvaluation().matches("\\d{0,3}(\\.\\d{1,2})?") )){
+							if(examAbscentCode!=null && !examAbscentCode.contains(to.getExamEvalTo().getFirstEvaluation())){
+								errors.add(CMSConstants.ERROR,new ActionError("admissionFormForm.mark.false.invalid"));
+							}
+						}
+						else{
+							double marks=Double.parseDouble(to.getExamEvalTo().getFirstEvaluation());
+							if(marks>maxMark){
+								errors.add(CMSConstants.ERROR,new ActionError("admissionFormForm.mark.false.invalid"));
+							}
+						}
+					}
+				}
+				if(newExamMarksEntryForm.getEvalNo()=="2" || newExamMarksEntryForm.getEvalNo().equalsIgnoreCase("2")){
+					if((/*to.getIsTheory() && */to.getExamEvalTo().getSecondEvaluation()!=null && !to.getExamEvalTo().getSecondEvaluation().isEmpty())){
+						if(!(to.getExamEvalTo().getSecondEvaluation().matches("\\d{0,3}(\\.\\d{1,2})?") )){
+							if(examAbscentCode!=null && !examAbscentCode.contains(to.getExamEvalTo().getSecondEvaluation())){
+								errors.add(CMSConstants.ERROR,new ActionError("admissionFormForm.mark.false.invalid"));
+							}
+						}else{
+							double marks=Double.parseDouble(to.getExamEvalTo().getSecondEvaluation());
+							if(marks>maxMark){
+								errors.add(CMSConstants.ERROR,new ActionError("admissionFormForm.mark.false.invalid"));
+							}
+						}
+					}
+				}
+				if(newExamMarksEntryForm.getEvalNo()=="3" || newExamMarksEntryForm.getEvalNo().equalsIgnoreCase("3")){
+					if((/*to.getIsTheory() && */to.getExamEvalTo().getThirdEvaluation()!=null && !to.getExamEvalTo().getThirdEvaluation().isEmpty())){
+						if(!(to.getExamEvalTo().getThirdEvaluation().matches("\\d{0,3}(\\.\\d{1,2})?") )){
+							if(examAbscentCode!=null && !examAbscentCode.contains(to.getExamEvalTo().getThirdEvaluation())){
+								errors.add(CMSConstants.ERROR,new ActionError("admissionFormForm.mark.false.invalid"));
+							}
+						}else{
+							double marks=Double.parseDouble(to.getExamEvalTo().getThirdEvaluation());
+							if(marks>maxMark){
+								errors.add(CMSConstants.ERROR,new ActionError("admissionFormForm.mark.false.invalid"));
+							}
+						}
+					}
+				}
+				}
+				
+			/*else if(to.getIsPractical() && to.getPracticalMarks()!=null && !to.getPracticalMarks().isEmpty()){
+				if(!(to.getPracticalMarks().matches("\\d{0,3}(\\.\\d{1,2})?") )){
+						if(examAbscentCode!=null && !examAbscentCode.contains(to.getPracticalMarks())){
+							if(regValid.isEmpty()){
+								regValid=to.getRegisterNo();
+							}else{
+								regValid=regValid+","+to.getRegisterNo();
+							}
+						}
+					
+						}else{
+						double marks=Double.parseDouble(to.getPracticalMarks());
+						if(marks>maxMark){
+							if(reg.isEmpty()){
+								reg=to.getRegisterNo();
+							}else{
+								reg=reg+","+to.getRegisterNo();
+							}
+						}
+					}
+				}*/
+			if(!reg.isEmpty()){
+				errors.add(CMSConstants.ERROR,new ActionError("knowledgepro.exam.max.marks.registerNo",reg));
+			}
+			if(!regValid.isEmpty()){
+				errors.add(CMSConstants.ERROR,new ActionError("knowledgepro.exam.max.marks.registerNo.validMarks",regValid));
+			}
+		}
+	
+		/*if(!newExamMarksEntryForm.getExamType().equals("Supplementary")){
 			if(maxMark==null){
 				errors.add(CMSConstants.ERROR,new ActionError("knowledgepro.exam.max.marks.notDefined"));
 			}else{
@@ -393,7 +482,8 @@ public class FalseNumberExamMarksEntryAction extends BaseDispatchAction {
 					errors.add(CMSConstants.ERROR,new ActionError("knowledgepro.exam.max.marks.registerNo.validMarks",regValid));
 				}
 			}
-		}else{
+		}*/
+		/*else{
 			Map<Integer, Integer> studentsYearMap = newExamMarksEntryForm.getStudentsYearMap();
 			Map<Integer, Double> maxMarksMap = newExamMarksEntryForm.getMaxMarksMap();
 			List<StudentMarksTO> list=newExamMarksEntryForm.getStudentList();
@@ -455,7 +545,7 @@ public class FalseNumberExamMarksEntryAction extends BaseDispatchAction {
 				errors.add(CMSConstants.ERROR,new ActionError("knowledgepro.exam.max.marks.registerNo.validMarks",regValid));
 			}
 		
-		}
+		}*/
 	}
 
 	/**
@@ -506,7 +596,7 @@ public class FalseNumberExamMarksEntryAction extends BaseDispatchAction {
 		ActionMessages messages=new ActionMessages();
 		ActionErrors errors = newExamMarksEntryForm.validate(mapping, request);
 		setUserId(request,newExamMarksEntryForm);
-		validateMaxMarks(newExamMarksEntryForm,errors);
+		validateFinalMaxMarks(newExamMarksEntryForm,errors);
 		if (errors.isEmpty()) {
 			try {
 				boolean isUpdated =NewExamMarksEntryHandler.getInstance().saveMarks(newExamMarksEntryForm);
@@ -528,7 +618,7 @@ public class FalseNumberExamMarksEntryAction extends BaseDispatchAction {
 					}
 				}else{
 					errors.add(CMSConstants.ERROR,new ActionError("kknowledgepro.admin.addfailure","Marks"));
-					addErrors(request, errors);
+					//addErrors(request, errors);
 				}
 				//setRequiredDatatoForm(newExamMarksEntryForm, request);
 			}  catch (Exception exception) {
@@ -569,6 +659,7 @@ public class FalseNumberExamMarksEntryAction extends BaseDispatchAction {
 		newExamMarksEntryForm.setRoleId(session.getAttribute("rid").toString());
 		//setRequiredDatatoForm(newExamMarksEntryForm, request);// setting the requested data to form
 		log.info("Exit initExamMarksEntry input");
+		newExamMarksEntryForm.setSaved(false);
 		
 		return mapping.findForward(CMSConstants.EXAM_MARKS_ENTRY_INPUT);
 	}
@@ -762,10 +853,337 @@ public class FalseNumberExamMarksEntryAction extends BaseDispatchAction {
 		
 		log.info("Entered initExamMarksEntry input");
 		NewExamMarksEntryForm newExamMarksEntryForm = (NewExamMarksEntryForm) form;// Type casting the Action form to Required Form
-		newExamMarksEntryForm.resetFields();//Reseting the fields for input jsp
-		FalseNumExamMarksEntryHandler.getInstance().setprintData();
 		return mapping.findForward("printFalseMarks");
 	}
 	
+	private void validateFinalMaxMarks(NewExamMarksEntryForm newExamMarksEntryForm,ActionErrors errors) throws Exception{
+		Double maxMark=NewExamMarksEntryHandler.getInstance().getMaxMarkOfSubject(newExamMarksEntryForm);
+		if(!newExamMarksEntryForm.getExamType().equals("Supplementary")){
+			if(maxMark==null){
+				errors.add(CMSConstants.ERROR,new ActionError("knowledgepro.exam.max.marks.notDefined"));
+			}else{
+				List<StudentMarksTO> list=newExamMarksEntryForm.getStudentList();
+				Iterator<StudentMarksTO> itr=list.iterator();
+				String reg="";
+				String regValid="";
+				List<String> examAbscentCode = NewSecuredMarksEntryHandler.getInstance().getExamAbscentCode();
+				while (itr.hasNext()) {
+					StudentMarksTO to = (StudentMarksTO) itr.next();
+					if((to.getIsTheory() && to.getTheoryMarks()!=null && !to.getTheoryMarks().isEmpty())){
+						if(!(to.getTheoryMarks().matches("\\d{0,3}(\\.\\d{1,2})?") )){
+							if(examAbscentCode!=null && !examAbscentCode.contains(to.getTheoryMarks())){
+								if(regValid.isEmpty()){
+									regValid=to.getRegisterNo();
+								}else{
+									regValid=regValid+","+to.getRegisterNo();
+								}
+							}
+						}else{
+							
+							double marks=Double.parseDouble(to.getTheoryMarks());
+							if(marks>maxMark){
+								if(reg.isEmpty()){
+									reg=to.getRegisterNo();
+								}else{
+									reg=reg+","+to.getRegisterNo();
+								}
+							}
+						}
+					}
+					
+				else if(to.getIsPractical() && to.getPracticalMarks()!=null && !to.getPracticalMarks().isEmpty()){
+					if(!(to.getPracticalMarks().matches("\\d{0,3}(\\.\\d{1,2})?") )){
+							if(examAbscentCode!=null && !examAbscentCode.contains(to.getPracticalMarks())){
+								if(regValid.isEmpty()){
+									regValid=to.getRegisterNo();
+								}else{
+									regValid=regValid+","+to.getRegisterNo();
+								}
+							}
+						
+							}else{
+							double marks=Double.parseDouble(to.getPracticalMarks());
+							if(marks>maxMark){
+								if(reg.isEmpty()){
+									reg=to.getRegisterNo();
+								}else{
+									reg=reg+","+to.getRegisterNo();
+								}
+							}
+						}
+					}
+				}
+				if(!reg.isEmpty()){
+					errors.add(CMSConstants.ERROR,new ActionError("knowledgepro.exam.max.marks.registerNo",reg));
+				}
+				if(!regValid.isEmpty()){
+					errors.add(CMSConstants.ERROR,new ActionError("knowledgepro.exam.max.marks.registerNo.validMarks",regValid));
+				}
+			}
+		}else{
+			Map<Integer, Integer> studentsYearMap = newExamMarksEntryForm.getStudentsYearMap();
+			Map<Integer, Double> maxMarksMap = newExamMarksEntryForm.getMaxMarksMap();
+			List<StudentMarksTO> list=newExamMarksEntryForm.getStudentList();
+			Iterator<StudentMarksTO> itr=list.iterator();
+			String reg="";
+			String regValid="";
+			List<String> examAbscentCode = CMSConstants.EXAM_ABSCENT_CODE;
+			while (itr.hasNext()) {
+				StudentMarksTO to = (StudentMarksTO) itr.next();
+				if(studentsYearMap != null && maxMarksMap != null){
+					int year  = studentsYearMap.get(to.getStudentId());
+					maxMark = maxMarksMap.get(year);
+				}
+				if((to.getIsTheory() && to.getTheoryMarks()!=null && !to.getTheoryMarks().isEmpty())){
+					if(!(to.getTheoryMarks().matches("\\d{0,3}(\\.\\d{1,2})?"))){
+						if(examAbscentCode!=null && !examAbscentCode.contains(to.getTheoryMarks())){
+							if(regValid.isEmpty()){
+								regValid=to.getRegisterNo();
+							}else{
+								regValid=regValid+","+to.getRegisterNo();
+							}
+						}
+					}else{
+						double marks=Double.parseDouble(to.getTheoryMarks());
+						if(marks>maxMark){
+							if(reg.isEmpty()){
+								reg=to.getRegisterNo();
+							}else{
+								reg=reg+","+to.getRegisterNo();
+							}
+						}
+					}
+					
+				}else if(to.getIsPractical() && to.getPracticalMarks()!=null && !to.getPracticalMarks().isEmpty()){
+					if(!(to.getPracticalMarks().matches("\\d{0,3}(\\.\\d{1,2})?"))){
+						if(examAbscentCode!=null && !examAbscentCode.contains(to.getPracticalMarks())){
+							if(regValid.isEmpty()){
+								regValid=to.getRegisterNo();
+							}else{
+								regValid=regValid+","+to.getRegisterNo();
+							}
+						}
+					}else{
+						double marks=Double.parseDouble(to.getPracticalMarks());
+						if(marks>maxMark){
+							if(reg.isEmpty()){
+								reg=to.getRegisterNo();
+							}else{
+								reg=reg+","+to.getRegisterNo();
+							}
+						}
+					}
+				}
+			}
+			if(!reg.isEmpty()){
+				errors.add(CMSConstants.ERROR,new ActionError("knowledgepro.exam.max.marks.registerNo",reg));
+			}
+			if(!regValid.isEmpty()){
+				errors.add(CMSConstants.ERROR,new ActionError("knowledgepro.exam.max.marks.registerNo.validMarks",regValid));
+			}
+		
+		}
+	}
+	
+	
+	///admin false mark entry
+	public ActionForward initExamMarksEntryAdmin(ActionMapping mapping, ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		
+		log.info("Entered initExamMarksEntry input");
+		NewExamMarksEntryForm newExamMarksEntryForm = (NewExamMarksEntryForm) form;// Type casting the Action form to Required Form
+		newExamMarksEntryForm.resetFields();//Reseting the fields for input jsp
+		HttpSession session = request.getSession();
+		newExamMarksEntryForm.setRoleId(session.getAttribute("rid").toString());
+		//setRequiredDatatoForm(newExamMarksEntryForm, request);// setting the requested data to form
+		log.info("Exit initExamMarksEntry input");
+		newExamMarksEntryForm.setDisplatoList(new FalseNoDisplayTo());
+		List<ExamMarkEvaluationTo> evalList=new ArrayList<ExamMarkEvaluationTo>();
+		newExamMarksEntryForm.setExamEvalToList(evalList);
+		newExamMarksEntryForm.setEvalNo("0");
+		setUserId(request, newExamMarksEntryForm);
+		return mapping.findForward("initAdminFalseMarksEntry");
+	}
+	
+	public ActionForward setvaluesBybarcodeAdmin(ActionMapping mapping, ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		
+		log.info("Entered initExamMarksEntry input");
+		
+		NewExamMarksEntryForm newExamMarksEntryForm = (NewExamMarksEntryForm) form;// Type casting the Action form to Required Form
+		ActionErrors errors = newExamMarksEntryForm.validate(mapping, request);
+		IExamFalseNumberTransaction transaction = new ExamFalseNumberTransactionImpl();
+		if (newExamMarksEntryForm.getFalseNo()==null || newExamMarksEntryForm.getFalseNo().isEmpty()) {
+			errors.add(CMSConstants.ERROR,new ActionError("knowledgepro.admin.updateFailure"));
+		}if (!NewExamMarksEntryTransactionImpl.getInstance().checkFallseBox(newExamMarksEntryForm)) {
+			errors.add(CMSConstants.ERROR,new ActionError("knowledgepro.admin.updateFailure"));
+		}
+		if (errors.isEmpty()) {
+			newExamMarksEntryForm.setDisplatoList(new FalseNoDisplayTo());
+			NewExamMarksEntryHandler.getInstance().setValuesFalseNumberBased(newExamMarksEntryForm);
+			setStudentToList(mapping,request,newExamMarksEntryForm,response);
+			int ptype= (Integer) transaction.getData(newExamMarksEntryForm,"select c.program.programType.id from Course c where c.id="+newExamMarksEntryForm.getCourseId());
+			newExamMarksEntryForm.setProgramTypeId(String.valueOf(ptype));
+		}else{
+			addErrors(request, errors);
+		}
+		
+		log.info("Exit initExamMarksEntry input");
+		
+		return mapping.findForward("initAdminFalseMarksEntry");
+	}
+	
+	public ActionForward addEvaluatorsMarksAdmin(ActionMapping mapping, ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		
+		log.info("Entered NewExamMarksEntryAction - saveMarks");
+		
+		NewExamMarksEntryForm newExamMarksEntryForm = (NewExamMarksEntryForm) form;// Type casting the Action form to Required Form
+		ActionMessages messages=new ActionMessages();
+		ActionErrors errors = newExamMarksEntryForm.validate(mapping, request);
+		setUserId(request,newExamMarksEntryForm);
+		if (Integer.parseInt(newExamMarksEntryForm.getEvalNo())==1 
+				&& (newExamMarksEntryForm.getStudentMarksTo().getExamEvalTo().getFirstEvaluation()==null || newExamMarksEntryForm.getStudentMarksTo().getExamEvalTo().getFirstEvaluation().isEmpty())) {
+			errors.add(CMSConstants.ERROR,new ActionError("admissionFormForm.education.totalMark.notNumeric"));
+		}else if (Integer.parseInt(newExamMarksEntryForm.getEvalNo())==2 
+				&& (newExamMarksEntryForm.getStudentMarksTo().getExamEvalTo().getSecondEvaluation()==null || newExamMarksEntryForm.getStudentMarksTo().getExamEvalTo().getSecondEvaluation().isEmpty())){
+			errors.add(CMSConstants.ERROR,new ActionError("admissionFormForm.education.totalMark.notNumeric"));
+		}
+		else if (Integer.parseInt(newExamMarksEntryForm.getEvalNo())==3
+				&& (newExamMarksEntryForm.getStudentMarksTo().getExamEvalTo().getThirdEvaluation()==null || newExamMarksEntryForm.getStudentMarksTo().getExamEvalTo().getThirdEvaluation().isEmpty())){
+			errors.add(CMSConstants.ERROR,new ActionError("admissionFormForm.education.totalMark.notNumeric"));
+		}
+		validateMaxMarks(newExamMarksEntryForm,errors);
+		if (errors.isEmpty()) {
+			try {
+				boolean isUpdated =FalseNumExamMarksEntryHandler.getInstance().addEvalationMarksAdmin(newExamMarksEntryForm);
+				//newExamMarksEntryForm.setDisplatoList(new FalseNoDisplayTo());
+				newExamMarksEntryForm.setFalseNo(null);
+				newExamMarksEntryForm.getStudentMarksTo().setExamEvalTo(new ExamMarkEvaluationTo());
+				//setRequiredDatatoForm(newExamMarksEntryForm, request);
+			}  catch (Exception exception) {
+				String msg = super.handleApplicationException(exception);
+				newExamMarksEntryForm.setErrorMessage(msg);
+				newExamMarksEntryForm.setErrorStack(exception.getMessage());
+				return mapping.findForward(CMSConstants.ERROR_PAGE);
+			}
+		} else {
+			addErrors(request, errors);
+//			setRequiredDatatoForm(newExamMarksEntryForm, request);
+			log.info("Exit NewExamMarksEntryAction - saveMarks errors not empty ");
+			return mapping.findForward("initAdminFalseMarksEntry");
+		}
+		log.info("Entered NewExamMarksEntryAction - saveMarks");
+			return mapping.findForward("initAdminFalseMarksEntry");
+		
+	}
+	public ActionForward saveEvaluatorsMarksAdmin(ActionMapping mapping, ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		
+		log.info("Entered NewExamMarksEntryAction - saveMarks");
+		
+		NewExamMarksEntryForm newExamMarksEntryForm = (NewExamMarksEntryForm) form;// Type casting the Action form to Required Form
+		ActionMessages messages=new ActionMessages();
+		ActionErrors errors = newExamMarksEntryForm.validate(mapping, request);
+		setUserId(request,newExamMarksEntryForm);
+			//validateMaxMarks(newExamMarksEntryForm,errors);
+		if (errors.isEmpty()) {
+			try {
+				boolean isUpdated =FalseNumExamMarksEntryHandler.getInstance().saveEvalationMarks(newExamMarksEntryForm);
+				if (isUpdated) {
+					newExamMarksEntryForm.setDisplatoList(new FalseNoDisplayTo());
+					//List<ExamMarkEvaluationTo> evalList=new ArrayList<ExamMarkEvaluationTo>();
+					//newExamMarksEntryForm.setExamEvalToList(evalList);
+					//newExamMarksEntryForm.setEvalNo("0");
+					newExamMarksEntryForm.setSaved(true);
+					messages.add(CMSConstants.MESSAGES, new ActionError("knowledgepro.admin.addsuccess","Marks"));
+					saveMessages(request, messages);
+					
+				}else{
+					errors.add(CMSConstants.ERROR,new ActionError("kknowledgepro.admin.addfailure","Marks"));
+					addErrors(request, errors);
+				}
+				//setRequiredDatatoForm(newExamMarksEntryForm, request);
+			}  catch (Exception exception) {
+				String msg = super.handleApplicationException(exception);
+				newExamMarksEntryForm.setErrorMessage(msg);
+				newExamMarksEntryForm.setErrorStack(exception.getMessage());
+				return mapping.findForward(CMSConstants.ERROR_PAGE);
+			}
+		} else {
+			addErrors(request, errors);
+//			setRequiredDatatoForm(newExamMarksEntryForm, request);
+			log.info("Exit NewExamMarksEntryAction - saveMarks errors not empty ");
+			return mapping.findForward("initAdminFalseMarksEntry");
+		}
+		log.info("Entered NewExamMarksEntryAction - saveMarks");
+			return mapping.findForward("initAdminFalseMarksEntry");
+		
+	}
+	
+	private void validateMaxMarksadmin(NewExamMarksEntryForm newExamMarksEntryForm,ActionErrors errors) throws Exception{
+		Double maxMark=FalseNumExamMarksEntryHandler.getInstance().getMaxMarkOfSubject(newExamMarksEntryForm);
+		newExamMarksEntryForm.setQpCode(maxMark.toString());
+
+		if(maxMark==null){
+			errors.add(CMSConstants.ERROR,new ActionError("knowledgepro.exam.max.marks.notDefined"));
+		}else{
+			List<StudentMarksTO> list=newExamMarksEntryForm.getStudentList();
+			Iterator<StudentMarksTO> itr=list.iterator();
+			String reg="";
+			String regValid="";
+			List<String> examAbscentCode = NewSecuredMarksEntryHandler.getInstance().getExamAbscentCode();
+				StudentMarksTO to = newExamMarksEntryForm.getStudentMarksTo();
+					if((/*to.getIsTheory() && */to.getExamEvalTo().getFirstEvaluation()!=null && !to.getExamEvalTo().getFirstEvaluation().isEmpty())){
+						if(!(to.getExamEvalTo().getFirstEvaluation().matches("\\d{0,3}(\\.\\d{1,2})?") )){
+							if(examAbscentCode!=null && !examAbscentCode.contains(to.getExamEvalTo().getFirstEvaluation())){
+								errors.add(CMSConstants.ERROR,new ActionError("admissionFormForm.mark.false.invalid"));
+							}
+						}
+						else{
+							double marks=Double.parseDouble(to.getExamEvalTo().getFirstEvaluation());
+							if(marks>maxMark){
+								errors.add(CMSConstants.ERROR,new ActionError("admissionFormForm.mark.false.invalid"));
+							}
+						}
+					}
+					if((/*to.getIsTheory() && */to.getExamEvalTo().getSecondEvaluation()!=null && !to.getExamEvalTo().getSecondEvaluation().isEmpty())){
+						if(!(to.getExamEvalTo().getSecondEvaluation().matches("\\d{0,3}(\\.\\d{1,2})?") )){
+							if(examAbscentCode!=null && !examAbscentCode.contains(to.getExamEvalTo().getSecondEvaluation())){
+								errors.add(CMSConstants.ERROR,new ActionError("admissionFormForm.mark.false.invalid"));
+							}
+						}else{
+							double marks=Double.parseDouble(to.getExamEvalTo().getSecondEvaluation());
+							if(marks>maxMark){
+								errors.add(CMSConstants.ERROR,new ActionError("admissionFormForm.mark.false.invalid"));
+							}
+						}
+					}
+					if((/*to.getIsTheory() && */to.getExamEvalTo().getThirdEvaluation()!=null && !to.getExamEvalTo().getThirdEvaluation().isEmpty())){
+						if(!(to.getExamEvalTo().getThirdEvaluation().matches("\\d{0,3}(\\.\\d{1,2})?") )){
+							if(examAbscentCode!=null && !examAbscentCode.contains(to.getExamEvalTo().getThirdEvaluation())){
+								errors.add(CMSConstants.ERROR,new ActionError("admissionFormForm.mark.false.invalid"));
+							}
+						}else{
+							double marks=Double.parseDouble(to.getExamEvalTo().getThirdEvaluation());
+							if(marks>maxMark){
+								errors.add(CMSConstants.ERROR,new ActionError("admissionFormForm.mark.false.invalid"));
+							}
+						}
+					}
+				
+			
+			if(!reg.isEmpty()){
+				errors.add(CMSConstants.ERROR,new ActionError("knowledgepro.exam.max.marks.registerNo",reg));
+			}
+			if(!regValid.isEmpty()){
+				errors.add(CMSConstants.ERROR,new ActionError("knowledgepro.exam.max.marks.registerNo.validMarks",regValid));
+			}
+		}
+	
+		
+	}
+	
+
 	
 }

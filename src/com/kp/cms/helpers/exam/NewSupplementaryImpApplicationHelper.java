@@ -834,27 +834,27 @@ public class NewSupplementaryImpApplicationHelper {
 		if(!form.getAdditionalCharges().equalsIgnoreCase("0")){
 			//check student curretn mail and payumail same or not 
 			if(form.getPaymentMail()!=null && !form.getPaymentMail().equalsIgnoreCase("") && form.getPaymentMail().equalsIgnoreCase(form.getEmail())){
-				temp.append(form.getAdditionalCharges()).append("|").append(CMSConstants.PGI_SECURITY_ID).append("|").append(form.getStatus()).append("|||||||||||").append(form.getEmail()).append("|").append(form.getApplicantName()).append("|").append(form.getProductinfo()).append("|").append(form.getAmount()).append("|").append(form.getTxnid()).append("|").append(CMSConstants.PGI_MERCHANT_ID);
+				temp.append(form.getAdditionalCharges()).append("|").append(CMSConstants.PGI_MERCHANT_ID_EXAM_SCRUT_FEE).append("|").append(form.getStatus()).append("|||||||||||").append(form.getEmail()).append("|").append(form.getApplicantName()).append("|").append(form.getProductinfo()).append("|").append(form.getAmount()).append("|").append(form.getTxnid()).append("|").append(CMSConstants.PGI_CHECKSUM_KEY_EXAM_SCRUT_FEE);
 				
 			}else if(form.getPaymentMail()!=null && !form.getPaymentMail().equalsIgnoreCase("") && !form.getPaymentMail().equalsIgnoreCase(form.getEmail())){
 				
-				temp.append(form.getAdditionalCharges()).append("|").append(CMSConstants.PGI_SECURITY_ID).append("|").append(form.getStatus()).append("|||||||||||").append(form.getPaymentMail()).append("|").append(form.getApplicantName()).append("|").append(form.getProductinfo()).append("|").append(form.getAmount()).append("|").append(form.getTxnid()).append("|").append(CMSConstants.PGI_MERCHANT_ID);
+				temp.append(form.getAdditionalCharges()).append("|").append(CMSConstants.PGI_MERCHANT_ID_EXAM_SCRUT_FEE).append("|").append(form.getStatus()).append("|||||||||||").append(form.getPaymentMail()).append("|").append(form.getApplicantName()).append("|").append(form.getProductinfo()).append("|").append(form.getAmount()).append("|").append(form.getTxnid()).append("|").append(CMSConstants.PGI_CHECKSUM_KEY_EXAM_SCRUT_FEE);
 			}else{
-				temp.append(form.getAdditionalCharges()).append("|").append(CMSConstants.PGI_SECURITY_ID).append("|").append(form.getStatus()).append("|||||||||||").append(form.getEmail()).append("|").append(form.getApplicantName()).append("|").append(form.getProductinfo()).append("|").append(form.getAmount()).append("|").append(form.getTxnid()).append("|").append(CMSConstants.PGI_MERCHANT_ID);
+				temp.append(form.getAdditionalCharges()).append("|").append(CMSConstants.PGI_MERCHANT_ID_EXAM_SCRUT_FEE).append("|").append(form.getStatus()).append("|||||||||||").append(form.getEmail()).append("|").append(form.getApplicantName()).append("|").append(form.getProductinfo()).append("|").append(form.getAmount()).append("|").append(form.getTxnid()).append("|").append(CMSConstants.PGI_CHECKSUM_KEY_EXAM_SCRUT_FEE);
 				
 			}
 			
 		}else{
 			if(form.getPaymentMail()!=null && !form.getPaymentMail().equalsIgnoreCase("")  && form.getPaymentMail().equalsIgnoreCase(form.getEmail())){
-			    temp.append(CMSConstants.PGI_SECURITY_ID).append("|").append(form.getStatus()).append("|||||||||||").append(form.getEmail()).append("|").append(form.getApplicantName()).append("|").append(form.getProductinfo()).append("|").append(form.getAmount()).append("|").append(form.getTxnid()).append("|").append(CMSConstants.PGI_MERCHANT_ID);
+			    temp.append(CMSConstants.PGI_MERCHANT_ID_EXAM_SCRUT_FEE).append("|").append(form.getStatus()).append("|||||||||||").append(form.getEmail()).append("|").append(form.getApplicantName()).append("|").append(form.getProductinfo()).append("|").append(form.getAmount()).append("|").append(form.getTxnid()).append("|").append(CMSConstants.PGI_CHECKSUM_KEY_EXAM_SCRUT_FEE);
 			
 			}else if(form.getPaymentMail()!=null && !form.getPaymentMail().equalsIgnoreCase("") && !form.getPaymentMail().equalsIgnoreCase(form.getEmail())){
 				
-				temp.append(CMSConstants.PGI_SECURITY_ID).append("|").append(form.getStatus()).append("|||||||||||").append(form.getPaymentMail()).append("|").append(form.getApplicantName()).append("|").append(form.getProductinfo()).append("|").append(form.getAmount()).append("|").append(form.getTxnid()).append("|").append(CMSConstants.PGI_MERCHANT_ID);
+				temp.append(CMSConstants.PGI_MERCHANT_ID_EXAM_SCRUT_FEE).append("|").append(form.getStatus()).append("|||||||||||").append(form.getPaymentMail()).append("|").append(form.getApplicantName()).append("|").append(form.getProductinfo()).append("|").append(form.getAmount()).append("|").append(form.getTxnid()).append("|").append(CMSConstants.PGI_CHECKSUM_KEY_EXAM_SCRUT_FEE);
 				
 			}else {
 				
-				temp.append(CMSConstants.PGI_SECURITY_ID).append("|").append(form.getStatus()).append("|||||||||||").append(form.getEmail()).append("|").append(form.getApplicantName()).append("|").append(form.getProductinfo()).append("|").append(form.getAmount()).append("|").append(form.getTxnid()).append("|").append(CMSConstants.PGI_MERCHANT_ID);
+				temp.append(CMSConstants.PGI_MERCHANT_ID_EXAM_SCRUT_FEE).append("|").append(form.getStatus()).append("|||||||||||").append(form.getEmail()).append("|").append(form.getApplicantName()).append("|").append(form.getProductinfo()).append("|").append(form.getAmount()).append("|").append(form.getTxnid()).append("|").append(CMSConstants.PGI_CHECKSUM_KEY_EXAM_SCRUT_FEE);
 				
 			}
 		}
@@ -910,27 +910,27 @@ public class NewSupplementaryImpApplicationHelper {
 		if(!form.getAdditionalCharges().equalsIgnoreCase("0")){
 			//check student curretn mail and payumail same or not 
 			if(form.getPaymentMail()!=null && !form.getPaymentMail().equalsIgnoreCase("") && form.getPaymentMail().equalsIgnoreCase(form.getEmail())){
-				temp.append(form.getAdditionalCharges()).append("|").append(CMSConstants.PGI_SECURITY_ID).append("|").append(form.getStatus()).append("|||||||||||").append(form.getEmail()).append("|").append(form.getApplicantName()).append("|").append(form.getProductinfo()).append("|").append(form.getAmount()).append("|").append(form.getTxnid()).append("|").append(CMSConstants.PGI_MERCHANT_ID);
+				temp.append(form.getAdditionalCharges()).append("|").append(CMSConstants.PGI_MERCHANT_ID_EXAM_SCRUT_FEE).append("|").append(form.getStatus()).append("|||||||||||").append(form.getEmail()).append("|").append(form.getApplicantName()).append("|").append(form.getProductinfo()).append("|").append(form.getAmount()).append("|").append(form.getTxnid()).append("|").append(CMSConstants.PGI_CHECKSUM_KEY_EXAM_SCRUT_FEE);
 				
 			}else if(form.getPaymentMail()!=null && !form.getPaymentMail().equalsIgnoreCase("") && !form.getPaymentMail().equalsIgnoreCase(form.getEmail())){
 				
-				temp.append(form.getAdditionalCharges()).append("|").append(CMSConstants.PGI_SECURITY_ID).append("|").append(form.getStatus()).append("|||||||||||").append(form.getPaymentMail()).append("|").append(form.getApplicantName()).append("|").append(form.getProductinfo()).append("|").append(form.getAmount()).append("|").append(form.getTxnid()).append("|").append(CMSConstants.PGI_MERCHANT_ID);
+				temp.append(form.getAdditionalCharges()).append("|").append(CMSConstants.PGI_MERCHANT_ID_EXAM_SCRUT_FEE).append("|").append(form.getStatus()).append("|||||||||||").append(form.getPaymentMail()).append("|").append(form.getApplicantName()).append("|").append(form.getProductinfo()).append("|").append(form.getAmount()).append("|").append(form.getTxnid()).append("|").append(CMSConstants.PGI_CHECKSUM_KEY_EXAM_SCRUT_FEE);
 			}else{
-				temp.append(form.getAdditionalCharges()).append("|").append(CMSConstants.PGI_SECURITY_ID).append("|").append(form.getStatus()).append("|||||||||||").append(form.getEmail()).append("|").append(form.getApplicantName()).append("|").append(form.getProductinfo()).append("|").append(form.getAmount()).append("|").append(form.getTxnid()).append("|").append(CMSConstants.PGI_MERCHANT_ID);
+				temp.append(form.getAdditionalCharges()).append("|").append(CMSConstants.PGI_MERCHANT_ID_EXAM_SCRUT_FEE).append("|").append(form.getStatus()).append("|||||||||||").append(form.getEmail()).append("|").append(form.getApplicantName()).append("|").append(form.getProductinfo()).append("|").append(form.getAmount()).append("|").append(form.getTxnid()).append("|").append(CMSConstants.PGI_CHECKSUM_KEY_EXAM_SCRUT_FEE);
 				
 			}
 			
 		}else{
 			if(form.getPaymentMail()!=null && !form.getPaymentMail().equalsIgnoreCase("")  && form.getPaymentMail().equalsIgnoreCase(form.getEmail())){
-			    temp.append(CMSConstants.PGI_SECURITY_ID).append("|").append(form.getStatus()).append("|||||||||||").append(form.getEmail()).append("|").append(form.getApplicantName()).append("|").append(form.getProductinfo()).append("|").append(form.getAmount()).append("|").append(form.getTxnid()).append("|").append(CMSConstants.PGI_MERCHANT_ID);
+			    temp.append(CMSConstants.PGI_MERCHANT_ID_EXAM_SCRUT_FEE).append("|").append(form.getStatus()).append("|||||||||||").append(form.getEmail()).append("|").append(form.getApplicantName()).append("|").append(form.getProductinfo()).append("|").append(form.getAmount()).append("|").append(form.getTxnid()).append("|").append(CMSConstants.PGI_CHECKSUM_KEY_EXAM_SCRUT_FEE);
 			
 			}else if(form.getPaymentMail()!=null && !form.getPaymentMail().equalsIgnoreCase("") && !form.getPaymentMail().equalsIgnoreCase(form.getEmail())){
 				
-				temp.append(CMSConstants.PGI_SECURITY_ID).append("|").append(form.getStatus()).append("|||||||||||").append(form.getPaymentMail()).append("|").append(form.getApplicantName()).append("|").append(form.getProductinfo()).append("|").append(form.getAmount()).append("|").append(form.getTxnid()).append("|").append(CMSConstants.PGI_MERCHANT_ID);
+				temp.append(CMSConstants.PGI_MERCHANT_ID_EXAM_SCRUT_FEE).append("|").append(form.getStatus()).append("|||||||||||").append(form.getPaymentMail()).append("|").append(form.getApplicantName()).append("|").append(form.getProductinfo()).append("|").append(form.getAmount()).append("|").append(form.getTxnid()).append("|").append(CMSConstants.PGI_CHECKSUM_KEY_EXAM_SCRUT_FEE);
 				
 			}else {
 				
-				temp.append(CMSConstants.PGI_SECURITY_ID).append("|").append(form.getStatus()).append("|||||||||||").append(form.getEmail()).append("|").append(form.getApplicantName()).append("|").append(form.getProductinfo()).append("|").append(form.getAmount()).append("|").append(form.getTxnid()).append("|").append(CMSConstants.PGI_MERCHANT_ID);
+				temp.append(CMSConstants.PGI_MERCHANT_ID_EXAM_SCRUT_FEE).append("|").append(form.getStatus()).append("|||||||||||").append(form.getEmail()).append("|").append(form.getApplicantName()).append("|").append(form.getProductinfo()).append("|").append(form.getAmount()).append("|").append(form.getTxnid()).append("|").append(CMSConstants.PGI_CHECKSUM_KEY_EXAM_SCRUT_FEE);
 				
 			}
 		}
@@ -987,27 +987,27 @@ public class NewSupplementaryImpApplicationHelper {
 	/*	if(!admForm.getAdditionalCharges().equalsIgnoreCase("0")){
 			//check student curretn mail and payumail same or not 
 			if(admForm.getPaymentMail()!=null && !admForm.getPaymentMail().equalsIgnoreCase("") && admForm.getPaymentMail().equalsIgnoreCase(admForm.getEmail())){
-				temp.append(admForm.getAdditionalCharges()).append("|").append(CMSConstants.PGI_SECURITY_ID).append("|").append(admForm.getStatus()).append("|||||||||||").append(admForm.getEmail()).append("|").append(admForm.getStudentObj().getAdmAppln().getPersonalData().getFirstName()).append("|").append(admForm.getProductinfo()).append("|").append(admForm.getAmount()).append("|").append(admForm.getTxnid()).append("|").append(CMSConstants.PGI_MERCHANT_ID);
+				temp.append(admForm.getAdditionalCharges()).append("|").append(CMSConstants.PGI_MERCHANT_ID_EXAM_SCRUT_FEE).append("|").append(admForm.getStatus()).append("|||||||||||").append(admForm.getEmail()).append("|").append(admForm.getStudentObj().getAdmAppln().getPersonalData().getFirstName()).append("|").append(admForm.getProductinfo()).append("|").append(admForm.getAmount()).append("|").append(admForm.getTxnid()).append("|").append(CMSConstants.PGI_CHECKSUM_KEY_EXAM_SCRUT_FEE);
 				
 			}else if(admForm.getPaymentMail()!=null && !admForm.getPaymentMail().equalsIgnoreCase("") && !admForm.getPaymentMail().equalsIgnoreCase(admForm.getEmail())){
 				
-				temp.append(admForm.getAdditionalCharges()).append("|").append(CMSConstants.PGI_SECURITY_ID).append("|").append(admForm.getStatus()).append("|||||||||||").append(admForm.getPaymentMail()).append("|").append(admForm.getStudentObj().getAdmAppln().getPersonalData().getFirstName()).append("|").append(admForm.getProductinfo()).append("|").append(admForm.getAmount()).append("|").append(admForm.getTxnid()).append("|").append(CMSConstants.PGI_MERCHANT_ID);
+				temp.append(admForm.getAdditionalCharges()).append("|").append(CMSConstants.PGI_MERCHANT_ID_EXAM_SCRUT_FEE).append("|").append(admForm.getStatus()).append("|||||||||||").append(admForm.getPaymentMail()).append("|").append(admForm.getStudentObj().getAdmAppln().getPersonalData().getFirstName()).append("|").append(admForm.getProductinfo()).append("|").append(admForm.getAmount()).append("|").append(admForm.getTxnid()).append("|").append(CMSConstants.PGI_CHECKSUM_KEY_EXAM_SCRUT_FEE);
 			}else{
-				temp.append(admForm.getAdditionalCharges()).append("|").append(CMSConstants.PGI_SECURITY_ID).append("|").append(admForm.getStatus()).append("|||||||||||").append(admForm.getEmail()).append("|").append(admForm.getStudentObj().getAdmAppln().getPersonalData().getFirstName()).append("|").append(admForm.getProductinfo()).append("|").append(admForm.getAmount()).append("|").append(admForm.getTxnid()).append("|").append(CMSConstants.PGI_MERCHANT_ID);
+				temp.append(admForm.getAdditionalCharges()).append("|").append(CMSConstants.PGI_MERCHANT_ID_EXAM_SCRUT_FEE).append("|").append(admForm.getStatus()).append("|||||||||||").append(admForm.getEmail()).append("|").append(admForm.getStudentObj().getAdmAppln().getPersonalData().getFirstName()).append("|").append(admForm.getProductinfo()).append("|").append(admForm.getAmount()).append("|").append(admForm.getTxnid()).append("|").append(CMSConstants.PGI_CHECKSUM_KEY_EXAM_SCRUT_FEE);
 				
 			}
 			
 		}else{
 			if(admForm.getPaymentMail()!=null && !admForm.getPaymentMail().equalsIgnoreCase("")  && admForm.getPaymentMail().equalsIgnoreCase(admForm.getEmail())){
-			    temp.append(CMSConstants.PGI_SECURITY_ID).append("|").append(admForm.getStatus()).append("|||||||||||").append(admForm.getEmail()).append("|").append(admForm.getStudentObj().getAdmAppln().getPersonalData().getFirstName()).append("|").append(admForm.getProductinfo()).append("|").append(admForm.getAmount()).append("|").append(admForm.getTxnid()).append("|").append(CMSConstants.PGI_MERCHANT_ID);
+			    temp.append(CMSConstants.PGI_MERCHANT_ID_EXAM_SCRUT_FEE).append("|").append(admForm.getStatus()).append("|||||||||||").append(admForm.getEmail()).append("|").append(admForm.getStudentObj().getAdmAppln().getPersonalData().getFirstName()).append("|").append(admForm.getProductinfo()).append("|").append(admForm.getAmount()).append("|").append(admForm.getTxnid()).append("|").append(CMSConstants.PGI_CHECKSUM_KEY_EXAM_SCRUT_FEE);
 			
 			}else if(admForm.getPaymentMail()!=null && !admForm.getPaymentMail().equalsIgnoreCase("") && !admForm.getPaymentMail().equalsIgnoreCase(admForm.getEmail())){
 				
-				temp.append(CMSConstants.PGI_SECURITY_ID).append("|").append(admForm.getStatus()).append("|||||||||||").append(admForm.getPaymentMail()).append("|").append(admForm.getStudentObj().getAdmAppln().getPersonalData().getFirstName()).append("|").append(admForm.getProductinfo()).append("|").append(admForm.getAmount()).append("|").append(admForm.getTxnid()).append("|").append(CMSConstants.PGI_MERCHANT_ID);
+				temp.append(CMSConstants.PGI_MERCHANT_ID_EXAM_SCRUT_FEE).append("|").append(admForm.getStatus()).append("|||||||||||").append(admForm.getPaymentMail()).append("|").append(admForm.getStudentObj().getAdmAppln().getPersonalData().getFirstName()).append("|").append(admForm.getProductinfo()).append("|").append(admForm.getAmount()).append("|").append(admForm.getTxnid()).append("|").append(CMSConstants.PGI_CHECKSUM_KEY_EXAM_SCRUT_FEE);
 				
 			}else {
 				
-				temp.append(CMSConstants.PGI_SECURITY_ID).append("|").append(admForm.getStatus()).append("|||||||||||").append(admForm.getEmail()).append("|").append(admForm.getStudentObj().getAdmAppln().getPersonalData().getFirstName()).append("|").append(admForm.getProductinfo()).append("|").append(admForm.getAmount()).append("|").append(admForm.getTxnid()).append("|").append(CMSConstants.PGI_MERCHANT_ID);
+				temp.append(CMSConstants.PGI_MERCHANT_ID_EXAM_SCRUT_FEE).append("|").append(admForm.getStatus()).append("|||||||||||").append(admForm.getEmail()).append("|").append(admForm.getStudentObj().getAdmAppln().getPersonalData().getFirstName()).append("|").append(admForm.getProductinfo()).append("|").append(admForm.getAmount()).append("|").append(admForm.getTxnid()).append("|").append(CMSConstants.PGI_CHECKSUM_KEY_EXAM_SCRUT_FEE);
 				
 			}
 		}
@@ -1053,57 +1053,57 @@ public class NewSupplementaryImpApplicationHelper {
 			//check student curretn mail and payumail same or not 
 			if(admForm.getPaymentMail()!=null && !admForm.getPaymentMail().equalsIgnoreCase("") && admForm.getPaymentMail().equalsIgnoreCase(admForm.getEmail())){
  				temp.append(admForm.getAdditionalCharges()).append("|")
- 					.append(CMSConstants.PGI_SECURITY_ID).append("|")
+ 					.append(CMSConstants.PGI_MERCHANT_ID_EXAM_SCRUT_FEE).append("|")
  					.append(admForm.getStatus()).append("|||||||||||")
  					.append(admForm.getEmail()).append("|")
  					.append(admForm.getStudentObj().getAdmAppln().getPersonalData().getFirstName()).append("|")
  					.append(admForm.getProductinfo()).append("|")
  					.append(String.valueOf(admForm.getTotalFees())).append("|")
  					.append(admForm.getTxnid()).append("|")
- 					.append(CMSConstants.PGI_MERCHANT_ID);
+ 					.append(CMSConstants.PGI_CHECKSUM_KEY_EXAM_SCRUT_FEE);
 				
 			}else if(admForm.getPaymentMail()!=null && !admForm.getPaymentMail().equalsIgnoreCase("") && !admForm.getPaymentMail().equalsIgnoreCase(admForm.getEmail())){
 				temp.append(admForm.getAdditionalCharges()).append("|")
-					.append(CMSConstants.PGI_SECURITY_ID).append("|")
+					.append(CMSConstants.PGI_MERCHANT_ID_EXAM_SCRUT_FEE).append("|")
 					.append(admForm.getStatus()).append("|||||||||||")
 					.append(admForm.getPaymentMail()).append("|")
 					.append(admForm.getStudentObj().getAdmAppln().getPersonalData().getFirstName()).append("|")
 					.append(admForm.getProductinfo()).append("|")
 					.append(String.valueOf(admForm.getTotalFees())).append("|")
 					.append(admForm.getTxnid()).append("|")
-					.append(CMSConstants.PGI_MERCHANT_ID);
+					.append(CMSConstants.PGI_CHECKSUM_KEY_EXAM_SCRUT_FEE);
 			}else{
 				temp.append(admForm.getAdditionalCharges()).append("|")
-					.append(CMSConstants.PGI_SECURITY_ID).append("|")
+					.append(CMSConstants.PGI_MERCHANT_ID_EXAM_SCRUT_FEE).append("|")
 					.append(admForm.getStatus()).append("|||||||||||")
 					.append(admForm.getEmail()).append("|")
 					.append(admForm.getStudentObj().getAdmAppln().getPersonalData().getFirstName()).append("|")
 					.append(admForm.getProductinfo()).append("|")
 					.append(String.valueOf(admForm.getTotalFees())).append("|")
 					.append(admForm.getTxnid()).append("|")
-					.append(CMSConstants.PGI_MERCHANT_ID);
+					.append(CMSConstants.PGI_CHECKSUM_KEY_EXAM_SCRUT_FEE);
 			}
 			
 			
 			
 		}else{
 			if(admForm.getPaymentMail()!=null && !admForm.getPaymentMail().equalsIgnoreCase("")  && admForm.getPaymentMail().equalsIgnoreCase(admForm.getEmail())){
-			    temp.append(CMSConstants.PGI_SECURITY_ID).append("|")
+			    temp.append(CMSConstants.PGI_MERCHANT_ID_EXAM_SCRUT_FEE).append("|")
 			    	.append(admForm.getStatus()).append("|||||||||||")
 			    	.append(admForm.getEmail()).append("|")
 			    	.append(admForm.getStudentObj().getAdmAppln().getPersonalData().getFirstName()).append("|")
 			    	.append(admForm.getProductinfo()).append("|")
 			    	.append(String.valueOf(admForm.getTotalFees())).append("|")
 			    	.append(admForm.getTxnid()).append("|")
-			    	.append(CMSConstants.PGI_MERCHANT_ID);
+			    	.append(CMSConstants.PGI_CHECKSUM_KEY_EXAM_SCRUT_FEE);
 			
 			}else if(admForm.getPaymentMail()!=null && !admForm.getPaymentMail().equalsIgnoreCase("") && !admForm.getPaymentMail().equalsIgnoreCase(admForm.getEmail())){
 				
-				temp.append(CMSConstants.PGI_SECURITY_ID).append("|").append(admForm.getStatus()).append("|||||||||||").append(admForm.getPaymentMail()).append("|").append(admForm.getStudentObj().getAdmAppln().getPersonalData().getFirstName()).append("|").append(admForm.getProductinfo()).append("|").append(admForm.getAmount()).append("|").append(admForm.getTxnid()).append("|").append(CMSConstants.PGI_MERCHANT_ID);
+				temp.append(CMSConstants.PGI_MERCHANT_ID_EXAM_SCRUT_FEE).append("|").append(admForm.getStatus()).append("|||||||||||").append(admForm.getPaymentMail()).append("|").append(admForm.getStudentObj().getAdmAppln().getPersonalData().getFirstName()).append("|").append(admForm.getProductinfo()).append("|").append(admForm.getAmount()).append("|").append(admForm.getTxnid()).append("|").append(CMSConstants.PGI_CHECKSUM_KEY_EXAM_SCRUT_FEE);
 				
 			}else {
 				
-				temp.append(CMSConstants.PGI_SECURITY_ID).append("|").append(admForm.getStatus()).append("|||||||||||").append(admForm.getEmail()).append("|").append(admForm.getStudentObj().getAdmAppln().getPersonalData().getFirstName()).append("|").append(admForm.getProductinfo()).append("|").append(admForm.getAmount()).append("|").append(admForm.getTxnid()).append("|").append(CMSConstants.PGI_MERCHANT_ID);
+				temp.append(CMSConstants.PGI_MERCHANT_ID_EXAM_SCRUT_FEE).append("|").append(admForm.getStatus()).append("|||||||||||").append(admForm.getEmail()).append("|").append(admForm.getStudentObj().getAdmAppln().getPersonalData().getFirstName()).append("|").append(admForm.getProductinfo()).append("|").append(admForm.getAmount()).append("|").append(admForm.getTxnid()).append("|").append(CMSConstants.PGI_CHECKSUM_KEY_EXAM_SCRUT_FEE);
 				
 			}
 		}*/
@@ -1112,27 +1112,27 @@ public class NewSupplementaryImpApplicationHelper {
 	/*	if(!admForm.getAdditionalCharges().equalsIgnoreCase("0")){
 			//check student curretn mail and payumail same or not 
 			if(admForm.getPaymentMail()!=null && !admForm.getPaymentMail().equalsIgnoreCase("") && admForm.getPaymentMail().equalsIgnoreCase(admForm.getEmail())){
-				temp.append(admForm.getAdditionalCharges()).append("|").append(CMSConstants.PGI_SECURITY_ID).append("|").append(admForm.getStatus()).append("|||||||||||").append(admForm.getEmail()).append("|").append(admForm.getStudentObj().getAdmAppln().getPersonalData().getFirstName()).append("|").append(admForm.getProductinfo()).append("|").append(admForm.getAmount()).append("|").append(admForm.getTxnid()).append("|").append(CMSConstants.PGI_MERCHANT_ID);
+				temp.append(admForm.getAdditionalCharges()).append("|").append(CMSConstants.PGI_MERCHANT_ID_EXAM_SCRUT_FEE).append("|").append(admForm.getStatus()).append("|||||||||||").append(admForm.getEmail()).append("|").append(admForm.getStudentObj().getAdmAppln().getPersonalData().getFirstName()).append("|").append(admForm.getProductinfo()).append("|").append(admForm.getAmount()).append("|").append(admForm.getTxnid()).append("|").append(CMSConstants.PGI_CHECKSUM_KEY_EXAM_SCRUT_FEE);
 				
 			}else if(admForm.getPaymentMail()!=null && !admForm.getPaymentMail().equalsIgnoreCase("") && !admForm.getPaymentMail().equalsIgnoreCase(admForm.getEmail())){
 				
-				temp.append(admForm.getAdditionalCharges()).append("|").append(CMSConstants.PGI_SECURITY_ID).append("|").append(admForm.getStatus()).append("|||||||||||").append(admForm.getPaymentMail()).append("|").append(admForm.getStudentObj().getAdmAppln().getPersonalData().getFirstName()).append("|").append(admForm.getProductinfo()).append("|").append(admForm.getAmount()).append("|").append(admForm.getTxnid()).append("|").append(CMSConstants.PGI_MERCHANT_ID);
+				temp.append(admForm.getAdditionalCharges()).append("|").append(CMSConstants.PGI_MERCHANT_ID_EXAM_SCRUT_FEE).append("|").append(admForm.getStatus()).append("|||||||||||").append(admForm.getPaymentMail()).append("|").append(admForm.getStudentObj().getAdmAppln().getPersonalData().getFirstName()).append("|").append(admForm.getProductinfo()).append("|").append(admForm.getAmount()).append("|").append(admForm.getTxnid()).append("|").append(CMSConstants.PGI_CHECKSUM_KEY_EXAM_SCRUT_FEE);
 			}else{
-				temp.append(admForm.getAdditionalCharges()).append("|").append(CMSConstants.PGI_SECURITY_ID).append("|").append(admForm.getStatus()).append("|||||||||||").append(admForm.getEmail()).append("|").append(admForm.getStudentObj().getAdmAppln().getPersonalData().getFirstName()).append("|").append(admForm.getProductinfo()).append("|").append(admForm.getAmount()).append("|").append(admForm.getTxnid()).append("|").append(CMSConstants.PGI_MERCHANT_ID);
+				temp.append(admForm.getAdditionalCharges()).append("|").append(CMSConstants.PGI_MERCHANT_ID_EXAM_SCRUT_FEE).append("|").append(admForm.getStatus()).append("|||||||||||").append(admForm.getEmail()).append("|").append(admForm.getStudentObj().getAdmAppln().getPersonalData().getFirstName()).append("|").append(admForm.getProductinfo()).append("|").append(admForm.getAmount()).append("|").append(admForm.getTxnid()).append("|").append(CMSConstants.PGI_CHECKSUM_KEY_EXAM_SCRUT_FEE);
 				
 			}
 			
 		}else{
 			if(admForm.getPaymentMail()!=null && !admForm.getPaymentMail().equalsIgnoreCase("")  && admForm.getPaymentMail().equalsIgnoreCase(admForm.getEmail())){
-			    temp.append(CMSConstants.PGI_SECURITY_ID).append("|").append(admForm.getStatus()).append("|||||||||||").append(admForm.getEmail()).append("|").append(admForm.getStudentObj().getAdmAppln().getPersonalData().getFirstName()).append("|").append(admForm.getProductinfo()).append("|").append(admForm.getAmount()).append("|").append(admForm.getTxnid()).append("|").append(CMSConstants.PGI_MERCHANT_ID);
+			    temp.append(CMSConstants.PGI_MERCHANT_ID_EXAM_SCRUT_FEE).append("|").append(admForm.getStatus()).append("|||||||||||").append(admForm.getEmail()).append("|").append(admForm.getStudentObj().getAdmAppln().getPersonalData().getFirstName()).append("|").append(admForm.getProductinfo()).append("|").append(admForm.getAmount()).append("|").append(admForm.getTxnid()).append("|").append(CMSConstants.PGI_CHECKSUM_KEY_EXAM_SCRUT_FEE);
 			
 			}else if(admForm.getPaymentMail()!=null && !admForm.getPaymentMail().equalsIgnoreCase("") && !admForm.getPaymentMail().equalsIgnoreCase(admForm.getEmail())){
 				
-				temp.append(CMSConstants.PGI_SECURITY_ID).append("|").append(admForm.getStatus()).append("|||||||||||").append(admForm.getPaymentMail()).append("|").append(admForm.getStudentObj().getAdmAppln().getPersonalData().getFirstName()).append("|").append(admForm.getProductinfo()).append("|").append(admForm.getAmount()).append("|").append(admForm.getTxnid()).append("|").append(CMSConstants.PGI_MERCHANT_ID);
+				temp.append(CMSConstants.PGI_MERCHANT_ID_EXAM_SCRUT_FEE).append("|").append(admForm.getStatus()).append("|||||||||||").append(admForm.getPaymentMail()).append("|").append(admForm.getStudentObj().getAdmAppln().getPersonalData().getFirstName()).append("|").append(admForm.getProductinfo()).append("|").append(admForm.getAmount()).append("|").append(admForm.getTxnid()).append("|").append(CMSConstants.PGI_CHECKSUM_KEY_EXAM_SCRUT_FEE);
 				
 			}else {
 				
-				temp.append(CMSConstants.PGI_SECURITY_ID).append("|").append(admForm.getStatus()).append("|||||||||||").append(admForm.getEmail()).append("|").append(admForm.getStudentObj().getAdmAppln().getPersonalData().getFirstName()).append("|").append(admForm.getProductinfo()).append("|").append(admForm.getAmount()).append("|").append(admForm.getTxnid()).append("|").append(CMSConstants.PGI_MERCHANT_ID);
+				temp.append(CMSConstants.PGI_MERCHANT_ID_EXAM_SCRUT_FEE).append("|").append(admForm.getStatus()).append("|||||||||||").append(admForm.getEmail()).append("|").append(admForm.getStudentObj().getAdmAppln().getPersonalData().getFirstName()).append("|").append(admForm.getProductinfo()).append("|").append(admForm.getAmount()).append("|").append(admForm.getTxnid()).append("|").append(CMSConstants.PGI_CHECKSUM_KEY_EXAM_SCRUT_FEE);
 				
 			}
 		}*/
@@ -1179,27 +1179,27 @@ public class NewSupplementaryImpApplicationHelper {
 	/*	if(!admForm.getAdditionalCharges().equalsIgnoreCase("0")){
 			//check student curretn mail and payumail same or not 
 			if(admForm.getPaymentMail()!=null && !admForm.getPaymentMail().equalsIgnoreCase("") && admForm.getPaymentMail().equalsIgnoreCase(admForm.getEmail())){
-				temp.append(admForm.getAdditionalCharges()).append("|").append(CMSConstants.PGI_SECURITY_ID).append("|").append(admForm.getStatus()).append("|||||||||||").append(admForm.getEmail()).append("|").append(admForm.getStudentObj().getAdmAppln().getPersonalData().getFirstName()).append("|").append(admForm.getProductinfo()).append("|").append(admForm.getAmount()).append("|").append(admForm.getTxnid()).append("|").append(CMSConstants.PGI_MERCHANT_ID);
+				temp.append(admForm.getAdditionalCharges()).append("|").append(CMSConstants.PGI_MERCHANT_ID_EXAM_SCRUT_FEE).append("|").append(admForm.getStatus()).append("|||||||||||").append(admForm.getEmail()).append("|").append(admForm.getStudentObj().getAdmAppln().getPersonalData().getFirstName()).append("|").append(admForm.getProductinfo()).append("|").append(admForm.getAmount()).append("|").append(admForm.getTxnid()).append("|").append(CMSConstants.PGI_CHECKSUM_KEY_EXAM_SCRUT_FEE);
 				
 			}else if(admForm.getPaymentMail()!=null && !admForm.getPaymentMail().equalsIgnoreCase("") && !admForm.getPaymentMail().equalsIgnoreCase(admForm.getEmail())){
 				
-				temp.append(admForm.getAdditionalCharges()).append("|").append(CMSConstants.PGI_SECURITY_ID).append("|").append(admForm.getStatus()).append("|||||||||||").append(admForm.getPaymentMail()).append("|").append(admForm.getStudentObj().getAdmAppln().getPersonalData().getFirstName()).append("|").append(admForm.getProductinfo()).append("|").append(admForm.getAmount()).append("|").append(admForm.getTxnid()).append("|").append(CMSConstants.PGI_MERCHANT_ID);
+				temp.append(admForm.getAdditionalCharges()).append("|").append(CMSConstants.PGI_MERCHANT_ID_EXAM_SCRUT_FEE).append("|").append(admForm.getStatus()).append("|||||||||||").append(admForm.getPaymentMail()).append("|").append(admForm.getStudentObj().getAdmAppln().getPersonalData().getFirstName()).append("|").append(admForm.getProductinfo()).append("|").append(admForm.getAmount()).append("|").append(admForm.getTxnid()).append("|").append(CMSConstants.PGI_CHECKSUM_KEY_EXAM_SCRUT_FEE);
 			}else{
-				temp.append(admForm.getAdditionalCharges()).append("|").append(CMSConstants.PGI_SECURITY_ID).append("|").append(admForm.getStatus()).append("|||||||||||").append(admForm.getEmail()).append("|").append(admForm.getStudentObj().getAdmAppln().getPersonalData().getFirstName()).append("|").append(admForm.getProductinfo()).append("|").append(admForm.getAmount()).append("|").append(admForm.getTxnid()).append("|").append(CMSConstants.PGI_MERCHANT_ID);
+				temp.append(admForm.getAdditionalCharges()).append("|").append(CMSConstants.PGI_MERCHANT_ID_EXAM_SCRUT_FEE).append("|").append(admForm.getStatus()).append("|||||||||||").append(admForm.getEmail()).append("|").append(admForm.getStudentObj().getAdmAppln().getPersonalData().getFirstName()).append("|").append(admForm.getProductinfo()).append("|").append(admForm.getAmount()).append("|").append(admForm.getTxnid()).append("|").append(CMSConstants.PGI_CHECKSUM_KEY_EXAM_SCRUT_FEE);
 				
 			}
 			
 		}else{
 			if(admForm.getPaymentMail()!=null && !admForm.getPaymentMail().equalsIgnoreCase("")  && admForm.getPaymentMail().equalsIgnoreCase(admForm.getEmail())){
-			    temp.append(CMSConstants.PGI_SECURITY_ID).append("|").append(admForm.getStatus()).append("|||||||||||").append(admForm.getEmail()).append("|").append(admForm.getStudentObj().getAdmAppln().getPersonalData().getFirstName()).append("|").append(admForm.getProductinfo()).append("|").append(admForm.getAmount()).append("|").append(admForm.getTxnid()).append("|").append(CMSConstants.PGI_MERCHANT_ID);
+			    temp.append(CMSConstants.PGI_MERCHANT_ID_EXAM_SCRUT_FEE).append("|").append(admForm.getStatus()).append("|||||||||||").append(admForm.getEmail()).append("|").append(admForm.getStudentObj().getAdmAppln().getPersonalData().getFirstName()).append("|").append(admForm.getProductinfo()).append("|").append(admForm.getAmount()).append("|").append(admForm.getTxnid()).append("|").append(CMSConstants.PGI_CHECKSUM_KEY_EXAM_SCRUT_FEE);
 			
 			}else if(admForm.getPaymentMail()!=null && !admForm.getPaymentMail().equalsIgnoreCase("") && !admForm.getPaymentMail().equalsIgnoreCase(admForm.getEmail())){
 				
-				temp.append(CMSConstants.PGI_SECURITY_ID).append("|").append(admForm.getStatus()).append("|||||||||||").append(admForm.getPaymentMail()).append("|").append(admForm.getStudentObj().getAdmAppln().getPersonalData().getFirstName()).append("|").append(admForm.getProductinfo()).append("|").append(admForm.getAmount()).append("|").append(admForm.getTxnid()).append("|").append(CMSConstants.PGI_MERCHANT_ID);
+				temp.append(CMSConstants.PGI_MERCHANT_ID_EXAM_SCRUT_FEE).append("|").append(admForm.getStatus()).append("|||||||||||").append(admForm.getPaymentMail()).append("|").append(admForm.getStudentObj().getAdmAppln().getPersonalData().getFirstName()).append("|").append(admForm.getProductinfo()).append("|").append(admForm.getAmount()).append("|").append(admForm.getTxnid()).append("|").append(CMSConstants.PGI_CHECKSUM_KEY_EXAM_SCRUT_FEE);
 				
 			}else {
 				
-				temp.append(CMSConstants.PGI_SECURITY_ID).append("|").append(admForm.getStatus()).append("|||||||||||").append(admForm.getEmail()).append("|").append(admForm.getStudentObj().getAdmAppln().getPersonalData().getFirstName()).append("|").append(admForm.getProductinfo()).append("|").append(admForm.getAmount()).append("|").append(admForm.getTxnid()).append("|").append(CMSConstants.PGI_MERCHANT_ID);
+				temp.append(CMSConstants.PGI_MERCHANT_ID_EXAM_SCRUT_FEE).append("|").append(admForm.getStatus()).append("|||||||||||").append(admForm.getEmail()).append("|").append(admForm.getStudentObj().getAdmAppln().getPersonalData().getFirstName()).append("|").append(admForm.getProductinfo()).append("|").append(admForm.getAmount()).append("|").append(admForm.getTxnid()).append("|").append(CMSConstants.PGI_CHECKSUM_KEY_EXAM_SCRUT_FEE);
 				
 			}
 		}*/
@@ -1245,27 +1245,27 @@ public class NewSupplementaryImpApplicationHelper {
 	/*	if(!admForm.getAdditionalCharges().equalsIgnoreCase("0")){
 			//check student curretn mail and payumail same or not 
 			if(admForm.getPaymentMail()!=null && !admForm.getPaymentMail().equalsIgnoreCase("") && admForm.getPaymentMail().equalsIgnoreCase(admForm.getEmail())){
-				temp.append(admForm.getAdditionalCharges()).append("|").append(CMSConstants.PGI_SECURITY_ID).append("|").append(admForm.getStatus()).append("|||||||||||").append(admForm.getEmail()).append("|").append(admForm.getStudentObj().getAdmAppln().getPersonalData().getFirstName()).append("|").append(admForm.getProductinfo()).append("|").append(admForm.getAmount()).append("|").append(admForm.getTxnid()).append("|").append(CMSConstants.PGI_MERCHANT_ID);
+				temp.append(admForm.getAdditionalCharges()).append("|").append(CMSConstants.PGI_MERCHANT_ID_EXAM_SCRUT_FEE).append("|").append(admForm.getStatus()).append("|||||||||||").append(admForm.getEmail()).append("|").append(admForm.getStudentObj().getAdmAppln().getPersonalData().getFirstName()).append("|").append(admForm.getProductinfo()).append("|").append(admForm.getAmount()).append("|").append(admForm.getTxnid()).append("|").append(CMSConstants.PGI_CHECKSUM_KEY_EXAM_SCRUT_FEE);
 				
 			}else if(admForm.getPaymentMail()!=null && !admForm.getPaymentMail().equalsIgnoreCase("") && !admForm.getPaymentMail().equalsIgnoreCase(admForm.getEmail())){
 				
-				temp.append(admForm.getAdditionalCharges()).append("|").append(CMSConstants.PGI_SECURITY_ID).append("|").append(admForm.getStatus()).append("|||||||||||").append(admForm.getPaymentMail()).append("|").append(admForm.getStudentObj().getAdmAppln().getPersonalData().getFirstName()).append("|").append(admForm.getProductinfo()).append("|").append(admForm.getAmount()).append("|").append(admForm.getTxnid()).append("|").append(CMSConstants.PGI_MERCHANT_ID);
+				temp.append(admForm.getAdditionalCharges()).append("|").append(CMSConstants.PGI_MERCHANT_ID_EXAM_SCRUT_FEE).append("|").append(admForm.getStatus()).append("|||||||||||").append(admForm.getPaymentMail()).append("|").append(admForm.getStudentObj().getAdmAppln().getPersonalData().getFirstName()).append("|").append(admForm.getProductinfo()).append("|").append(admForm.getAmount()).append("|").append(admForm.getTxnid()).append("|").append(CMSConstants.PGI_CHECKSUM_KEY_EXAM_SCRUT_FEE);
 			}else{
-				temp.append(admForm.getAdditionalCharges()).append("|").append(CMSConstants.PGI_SECURITY_ID).append("|").append(admForm.getStatus()).append("|||||||||||").append(admForm.getEmail()).append("|").append(admForm.getStudentObj().getAdmAppln().getPersonalData().getFirstName()).append("|").append(admForm.getProductinfo()).append("|").append(admForm.getAmount()).append("|").append(admForm.getTxnid()).append("|").append(CMSConstants.PGI_MERCHANT_ID);
+				temp.append(admForm.getAdditionalCharges()).append("|").append(CMSConstants.PGI_MERCHANT_ID_EXAM_SCRUT_FEE).append("|").append(admForm.getStatus()).append("|||||||||||").append(admForm.getEmail()).append("|").append(admForm.getStudentObj().getAdmAppln().getPersonalData().getFirstName()).append("|").append(admForm.getProductinfo()).append("|").append(admForm.getAmount()).append("|").append(admForm.getTxnid()).append("|").append(CMSConstants.PGI_CHECKSUM_KEY_EXAM_SCRUT_FEE);
 				
 			}
 			
 		}else{
 			if(admForm.getPaymentMail()!=null && !admForm.getPaymentMail().equalsIgnoreCase("")  && admForm.getPaymentMail().equalsIgnoreCase(admForm.getEmail())){
-			    temp.append(CMSConstants.PGI_SECURITY_ID).append("|").append(admForm.getStatus()).append("|||||||||||").append(admForm.getEmail()).append("|").append(admForm.getStudentObj().getAdmAppln().getPersonalData().getFirstName()).append("|").append(admForm.getProductinfo()).append("|").append(admForm.getAmount()).append("|").append(admForm.getTxnid()).append("|").append(CMSConstants.PGI_MERCHANT_ID);
+			    temp.append(CMSConstants.PGI_MERCHANT_ID_EXAM_SCRUT_FEE).append("|").append(admForm.getStatus()).append("|||||||||||").append(admForm.getEmail()).append("|").append(admForm.getStudentObj().getAdmAppln().getPersonalData().getFirstName()).append("|").append(admForm.getProductinfo()).append("|").append(admForm.getAmount()).append("|").append(admForm.getTxnid()).append("|").append(CMSConstants.PGI_CHECKSUM_KEY_EXAM_SCRUT_FEE);
 			
 			}else if(admForm.getPaymentMail()!=null && !admForm.getPaymentMail().equalsIgnoreCase("") && !admForm.getPaymentMail().equalsIgnoreCase(admForm.getEmail())){
 				
-				temp.append(CMSConstants.PGI_SECURITY_ID).append("|").append(admForm.getStatus()).append("|||||||||||").append(admForm.getPaymentMail()).append("|").append(admForm.getStudentObj().getAdmAppln().getPersonalData().getFirstName()).append("|").append(admForm.getProductinfo()).append("|").append(admForm.getAmount()).append("|").append(admForm.getTxnid()).append("|").append(CMSConstants.PGI_MERCHANT_ID);
+				temp.append(CMSConstants.PGI_MERCHANT_ID_EXAM_SCRUT_FEE).append("|").append(admForm.getStatus()).append("|||||||||||").append(admForm.getPaymentMail()).append("|").append(admForm.getStudentObj().getAdmAppln().getPersonalData().getFirstName()).append("|").append(admForm.getProductinfo()).append("|").append(admForm.getAmount()).append("|").append(admForm.getTxnid()).append("|").append(CMSConstants.PGI_CHECKSUM_KEY_EXAM_SCRUT_FEE);
 				
 			}else {
 				
-				temp.append(CMSConstants.PGI_SECURITY_ID).append("|").append(admForm.getStatus()).append("|||||||||||").append(admForm.getEmail()).append("|").append(admForm.getStudentObj().getAdmAppln().getPersonalData().getFirstName()).append("|").append(admForm.getProductinfo()).append("|").append(admForm.getAmount()).append("|").append(admForm.getTxnid()).append("|").append(CMSConstants.PGI_MERCHANT_ID);
+				temp.append(CMSConstants.PGI_MERCHANT_ID_EXAM_SCRUT_FEE).append("|").append(admForm.getStatus()).append("|||||||||||").append(admForm.getEmail()).append("|").append(admForm.getStudentObj().getAdmAppln().getPersonalData().getFirstName()).append("|").append(admForm.getProductinfo()).append("|").append(admForm.getAmount()).append("|").append(admForm.getTxnid()).append("|").append(CMSConstants.PGI_CHECKSUM_KEY_EXAM_SCRUT_FEE);
 				
 			}
 		}*/
@@ -1311,27 +1311,27 @@ public class NewSupplementaryImpApplicationHelper {
 	/*	if(!admForm.getAdditionalCharges().equalsIgnoreCase("0")){
 			//check student curretn mail and payumail same or not 
 			if(admForm.getPaymentMail()!=null && !admForm.getPaymentMail().equalsIgnoreCase("") && admForm.getPaymentMail().equalsIgnoreCase(admForm.getEmail())){
-				temp.append(admForm.getAdditionalCharges()).append("|").append(CMSConstants.PGI_SECURITY_ID).append("|").append(admForm.getStatus()).append("|||||||||||").append(admForm.getEmail()).append("|").append(admForm.getStudentObj().getAdmAppln().getPersonalData().getFirstName()).append("|").append(admForm.getProductinfo()).append("|").append(admForm.getAmount()).append("|").append(admForm.getTxnid()).append("|").append(CMSConstants.PGI_MERCHANT_ID);
+				temp.append(admForm.getAdditionalCharges()).append("|").append(CMSConstants.PGI_MERCHANT_ID_EXAM_SCRUT_FEE).append("|").append(admForm.getStatus()).append("|||||||||||").append(admForm.getEmail()).append("|").append(admForm.getStudentObj().getAdmAppln().getPersonalData().getFirstName()).append("|").append(admForm.getProductinfo()).append("|").append(admForm.getAmount()).append("|").append(admForm.getTxnid()).append("|").append(CMSConstants.PGI_CHECKSUM_KEY_EXAM_SCRUT_FEE);
 				
 			}else if(admForm.getPaymentMail()!=null && !admForm.getPaymentMail().equalsIgnoreCase("") && !admForm.getPaymentMail().equalsIgnoreCase(admForm.getEmail())){
 				
-				temp.append(admForm.getAdditionalCharges()).append("|").append(CMSConstants.PGI_SECURITY_ID).append("|").append(admForm.getStatus()).append("|||||||||||").append(admForm.getPaymentMail()).append("|").append(admForm.getStudentObj().getAdmAppln().getPersonalData().getFirstName()).append("|").append(admForm.getProductinfo()).append("|").append(admForm.getAmount()).append("|").append(admForm.getTxnid()).append("|").append(CMSConstants.PGI_MERCHANT_ID);
+				temp.append(admForm.getAdditionalCharges()).append("|").append(CMSConstants.PGI_MERCHANT_ID_EXAM_SCRUT_FEE).append("|").append(admForm.getStatus()).append("|||||||||||").append(admForm.getPaymentMail()).append("|").append(admForm.getStudentObj().getAdmAppln().getPersonalData().getFirstName()).append("|").append(admForm.getProductinfo()).append("|").append(admForm.getAmount()).append("|").append(admForm.getTxnid()).append("|").append(CMSConstants.PGI_CHECKSUM_KEY_EXAM_SCRUT_FEE);
 			}else{
-				temp.append(admForm.getAdditionalCharges()).append("|").append(CMSConstants.PGI_SECURITY_ID).append("|").append(admForm.getStatus()).append("|||||||||||").append(admForm.getEmail()).append("|").append(admForm.getStudentObj().getAdmAppln().getPersonalData().getFirstName()).append("|").append(admForm.getProductinfo()).append("|").append(admForm.getAmount()).append("|").append(admForm.getTxnid()).append("|").append(CMSConstants.PGI_MERCHANT_ID);
+				temp.append(admForm.getAdditionalCharges()).append("|").append(CMSConstants.PGI_MERCHANT_ID_EXAM_SCRUT_FEE).append("|").append(admForm.getStatus()).append("|||||||||||").append(admForm.getEmail()).append("|").append(admForm.getStudentObj().getAdmAppln().getPersonalData().getFirstName()).append("|").append(admForm.getProductinfo()).append("|").append(admForm.getAmount()).append("|").append(admForm.getTxnid()).append("|").append(CMSConstants.PGI_CHECKSUM_KEY_EXAM_SCRUT_FEE);
 				
 			}
 			
 		}else{
 			if(admForm.getPaymentMail()!=null && !admForm.getPaymentMail().equalsIgnoreCase("")  && admForm.getPaymentMail().equalsIgnoreCase(admForm.getEmail())){
-			    temp.append(CMSConstants.PGI_SECURITY_ID).append("|").append(admForm.getStatus()).append("|||||||||||").append(admForm.getEmail()).append("|").append(admForm.getStudentObj().getAdmAppln().getPersonalData().getFirstName()).append("|").append(admForm.getProductinfo()).append("|").append(admForm.getAmount()).append("|").append(admForm.getTxnid()).append("|").append(CMSConstants.PGI_MERCHANT_ID);
+			    temp.append(CMSConstants.PGI_MERCHANT_ID_EXAM_SCRUT_FEE).append("|").append(admForm.getStatus()).append("|||||||||||").append(admForm.getEmail()).append("|").append(admForm.getStudentObj().getAdmAppln().getPersonalData().getFirstName()).append("|").append(admForm.getProductinfo()).append("|").append(admForm.getAmount()).append("|").append(admForm.getTxnid()).append("|").append(CMSConstants.PGI_CHECKSUM_KEY_EXAM_SCRUT_FEE);
 			
 			}else if(admForm.getPaymentMail()!=null && !admForm.getPaymentMail().equalsIgnoreCase("") && !admForm.getPaymentMail().equalsIgnoreCase(admForm.getEmail())){
 				
-				temp.append(CMSConstants.PGI_SECURITY_ID).append("|").append(admForm.getStatus()).append("|||||||||||").append(admForm.getPaymentMail()).append("|").append(admForm.getStudentObj().getAdmAppln().getPersonalData().getFirstName()).append("|").append(admForm.getProductinfo()).append("|").append(admForm.getAmount()).append("|").append(admForm.getTxnid()).append("|").append(CMSConstants.PGI_MERCHANT_ID);
+				temp.append(CMSConstants.PGI_MERCHANT_ID_EXAM_SCRUT_FEE).append("|").append(admForm.getStatus()).append("|||||||||||").append(admForm.getPaymentMail()).append("|").append(admForm.getStudentObj().getAdmAppln().getPersonalData().getFirstName()).append("|").append(admForm.getProductinfo()).append("|").append(admForm.getAmount()).append("|").append(admForm.getTxnid()).append("|").append(CMSConstants.PGI_CHECKSUM_KEY_EXAM_SCRUT_FEE);
 				
 			}else {
 				
-				temp.append(CMSConstants.PGI_SECURITY_ID).append("|").append(admForm.getStatus()).append("|||||||||||").append(admForm.getEmail()).append("|").append(admForm.getStudentObj().getAdmAppln().getPersonalData().getFirstName()).append("|").append(admForm.getProductinfo()).append("|").append(admForm.getAmount()).append("|").append(admForm.getTxnid()).append("|").append(CMSConstants.PGI_MERCHANT_ID);
+				temp.append(CMSConstants.PGI_MERCHANT_ID_EXAM_SCRUT_FEE).append("|").append(admForm.getStatus()).append("|||||||||||").append(admForm.getEmail()).append("|").append(admForm.getStudentObj().getAdmAppln().getPersonalData().getFirstName()).append("|").append(admForm.getProductinfo()).append("|").append(admForm.getAmount()).append("|").append(admForm.getTxnid()).append("|").append(CMSConstants.PGI_CHECKSUM_KEY_EXAM_SCRUT_FEE);
 				
 			}
 		}*/
@@ -1378,27 +1378,27 @@ public class NewSupplementaryImpApplicationHelper {
 	/*	if(!admForm.getAdditionalCharges().equalsIgnoreCase("0")){
 			//check student curretn mail and payumail same or not 
 			if(admForm.getPaymentMail()!=null && !admForm.getPaymentMail().equalsIgnoreCase("") && admForm.getPaymentMail().equalsIgnoreCase(admForm.getEmail())){
-				temp.append(admForm.getAdditionalCharges()).append("|").append(CMSConstants.PGI_SECURITY_ID).append("|").append(admForm.getStatus()).append("|||||||||||").append(admForm.getEmail()).append("|").append(admForm.getStudentObj().getAdmAppln().getPersonalData().getFirstName()).append("|").append(admForm.getProductinfo()).append("|").append(admForm.getAmount()).append("|").append(admForm.getTxnid()).append("|").append(CMSConstants.PGI_MERCHANT_ID);
+				temp.append(admForm.getAdditionalCharges()).append("|").append(CMSConstants.PGI_MERCHANT_ID_EXAM_SCRUT_FEE).append("|").append(admForm.getStatus()).append("|||||||||||").append(admForm.getEmail()).append("|").append(admForm.getStudentObj().getAdmAppln().getPersonalData().getFirstName()).append("|").append(admForm.getProductinfo()).append("|").append(admForm.getAmount()).append("|").append(admForm.getTxnid()).append("|").append(CMSConstants.PGI_CHECKSUM_KEY_EXAM_SCRUT_FEE);
 				
 			}else if(admForm.getPaymentMail()!=null && !admForm.getPaymentMail().equalsIgnoreCase("") && !admForm.getPaymentMail().equalsIgnoreCase(admForm.getEmail())){
 				
-				temp.append(admForm.getAdditionalCharges()).append("|").append(CMSConstants.PGI_SECURITY_ID).append("|").append(admForm.getStatus()).append("|||||||||||").append(admForm.getPaymentMail()).append("|").append(admForm.getStudentObj().getAdmAppln().getPersonalData().getFirstName()).append("|").append(admForm.getProductinfo()).append("|").append(admForm.getAmount()).append("|").append(admForm.getTxnid()).append("|").append(CMSConstants.PGI_MERCHANT_ID);
+				temp.append(admForm.getAdditionalCharges()).append("|").append(CMSConstants.PGI_MERCHANT_ID_EXAM_SCRUT_FEE).append("|").append(admForm.getStatus()).append("|||||||||||").append(admForm.getPaymentMail()).append("|").append(admForm.getStudentObj().getAdmAppln().getPersonalData().getFirstName()).append("|").append(admForm.getProductinfo()).append("|").append(admForm.getAmount()).append("|").append(admForm.getTxnid()).append("|").append(CMSConstants.PGI_CHECKSUM_KEY_EXAM_SCRUT_FEE);
 			}else{
-				temp.append(admForm.getAdditionalCharges()).append("|").append(CMSConstants.PGI_SECURITY_ID).append("|").append(admForm.getStatus()).append("|||||||||||").append(admForm.getEmail()).append("|").append(admForm.getStudentObj().getAdmAppln().getPersonalData().getFirstName()).append("|").append(admForm.getProductinfo()).append("|").append(admForm.getAmount()).append("|").append(admForm.getTxnid()).append("|").append(CMSConstants.PGI_MERCHANT_ID);
+				temp.append(admForm.getAdditionalCharges()).append("|").append(CMSConstants.PGI_MERCHANT_ID_EXAM_SCRUT_FEE).append("|").append(admForm.getStatus()).append("|||||||||||").append(admForm.getEmail()).append("|").append(admForm.getStudentObj().getAdmAppln().getPersonalData().getFirstName()).append("|").append(admForm.getProductinfo()).append("|").append(admForm.getAmount()).append("|").append(admForm.getTxnid()).append("|").append(CMSConstants.PGI_CHECKSUM_KEY_EXAM_SCRUT_FEE);
 				
 			}
 			
 		}else{
 			if(admForm.getPaymentMail()!=null && !admForm.getPaymentMail().equalsIgnoreCase("")  && admForm.getPaymentMail().equalsIgnoreCase(admForm.getEmail())){
-			    temp.append(CMSConstants.PGI_SECURITY_ID).append("|").append(admForm.getStatus()).append("|||||||||||").append(admForm.getEmail()).append("|").append(admForm.getStudentObj().getAdmAppln().getPersonalData().getFirstName()).append("|").append(admForm.getProductinfo()).append("|").append(admForm.getAmount()).append("|").append(admForm.getTxnid()).append("|").append(CMSConstants.PGI_MERCHANT_ID);
+			    temp.append(CMSConstants.PGI_MERCHANT_ID_EXAM_SCRUT_FEE).append("|").append(admForm.getStatus()).append("|||||||||||").append(admForm.getEmail()).append("|").append(admForm.getStudentObj().getAdmAppln().getPersonalData().getFirstName()).append("|").append(admForm.getProductinfo()).append("|").append(admForm.getAmount()).append("|").append(admForm.getTxnid()).append("|").append(CMSConstants.PGI_CHECKSUM_KEY_EXAM_SCRUT_FEE);
 			
 			}else if(admForm.getPaymentMail()!=null && !admForm.getPaymentMail().equalsIgnoreCase("") && !admForm.getPaymentMail().equalsIgnoreCase(admForm.getEmail())){
 				
-				temp.append(CMSConstants.PGI_SECURITY_ID).append("|").append(admForm.getStatus()).append("|||||||||||").append(admForm.getPaymentMail()).append("|").append(admForm.getStudentObj().getAdmAppln().getPersonalData().getFirstName()).append("|").append(admForm.getProductinfo()).append("|").append(admForm.getAmount()).append("|").append(admForm.getTxnid()).append("|").append(CMSConstants.PGI_MERCHANT_ID);
+				temp.append(CMSConstants.PGI_MERCHANT_ID_EXAM_SCRUT_FEE).append("|").append(admForm.getStatus()).append("|||||||||||").append(admForm.getPaymentMail()).append("|").append(admForm.getStudentObj().getAdmAppln().getPersonalData().getFirstName()).append("|").append(admForm.getProductinfo()).append("|").append(admForm.getAmount()).append("|").append(admForm.getTxnid()).append("|").append(CMSConstants.PGI_CHECKSUM_KEY_EXAM_SCRUT_FEE);
 				
 			}else {
 				
-				temp.append(CMSConstants.PGI_SECURITY_ID).append("|").append(admForm.getStatus()).append("|||||||||||").append(admForm.getEmail()).append("|").append(admForm.getStudentObj().getAdmAppln().getPersonalData().getFirstName()).append("|").append(admForm.getProductinfo()).append("|").append(admForm.getAmount()).append("|").append(admForm.getTxnid()).append("|").append(CMSConstants.PGI_MERCHANT_ID);
+				temp.append(CMSConstants.PGI_MERCHANT_ID_EXAM_SCRUT_FEE).append("|").append(admForm.getStatus()).append("|||||||||||").append(admForm.getEmail()).append("|").append(admForm.getStudentObj().getAdmAppln().getPersonalData().getFirstName()).append("|").append(admForm.getProductinfo()).append("|").append(admForm.getAmount()).append("|").append(admForm.getTxnid()).append("|").append(CMSConstants.PGI_CHECKSUM_KEY_EXAM_SCRUT_FEE);
 				
 			}
 		}*/

@@ -94,6 +94,7 @@ public static Map<Integer, String> getTeacherDepartmentsName(List<Object[]> teac
 						
 						int UserId=(Integer.parseInt(UDepartment[0].toString()));
 						toUser.setId(Integer.parseInt(UDepartment[0].toString()));
+						
 						if (UDepartment[1] != null ) 
 							{
 								if(!UDepartment[1].toString().isEmpty())
@@ -128,7 +129,9 @@ public static Map<Integer, String> getTeacherDepartmentsName(List<Object[]> teac
 					}
 					to.setDepartmentName(toUser.getDepartmentName());	
 			}
-			
+			if (tDepartment[2].toString().equals("ANUPAMA AUGUSTINE")) {
+				System.out.println(tDepartment[2].toString());
+			}
 			to.setTeacherName(tDepartment[2].toString());
 			to.setDeptTeacherName(to.getTeacherName().concat("  ("+to.getDepartmentName()+")"));
 			teacherMap.put(to.getId(), to.getDeptTeacherName());

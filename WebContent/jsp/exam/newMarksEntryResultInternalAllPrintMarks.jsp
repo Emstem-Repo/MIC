@@ -132,21 +132,21 @@
 									<td height="35" class="row-odd" align="center">Reg No.</td>
 									
 									<logic:iterate  property="examList" name="newExamMarksEntryForm" id="examid">
-									<logic:equal value="442" name="examid" property="examId">
+									<logic:equal value="508" name="examid" property="examId">
 									<td height="35" class="row-odd" align="center">
 									<bean:write name="examid" property="examName"/>
 									</td>
 									</logic:equal>
 									</logic:iterate>
 									<logic:iterate  property="examList" name="newExamMarksEntryForm" id="examid">
-									<logic:equal value="446" name="examid" property="examId">
+									<logic:equal value="509" name="examid" property="examId">
 									<td height="35" class="row-odd" align="center">
 									<bean:write name="examid" property="examName"/>
 									</td>
 									</logic:equal>
 									</logic:iterate>
 									<logic:iterate  property="examList" name="newExamMarksEntryForm" id="examid">
-									<logic:equal value="460" name="examid" property="examId">
+									<logic:equal value="510" name="examid" property="examId">
 									<td height="35" class="row-odd" align="center">
 									<bean:write name="examid" property="examName"/>
 									</td>
@@ -155,7 +155,7 @@
 									
 									
 									
-									<logic:iterate  property="examList" name="newExamMarksEntryForm" id="examid">
+									<%-- <logic:iterate  property="examList" name="newExamMarksEntryForm" id="examid">
 									<logic:equal value="440" name="examid" property="examId">
 									<td height="35" class="row-odd" align="center">
 									<bean:write name="examid" property="examName"/>
@@ -176,7 +176,7 @@
 									<bean:write name="examid" property="examName"/>
 									</td>
 									</logic:equal>
-									</logic:iterate>
+									</logic:iterate> --%>
 									
 									<logic:iterate  property="examList" name="newExamMarksEntryForm" id="examid">
 									<logic:equal value="441" name="examid" property="examId">

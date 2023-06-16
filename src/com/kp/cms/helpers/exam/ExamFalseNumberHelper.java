@@ -15,6 +15,7 @@ import com.kp.cms.bo.admin.Course;
 import com.kp.cms.bo.admin.Student;
 import com.kp.cms.bo.admin.Subject;
 import com.kp.cms.bo.exam.ExamDefinition;
+import com.kp.cms.bo.exam.ExamDefinitionBO;
 import com.kp.cms.bo.exam.ExamFalseNumberGen;
 import com.kp.cms.bo.exam.StudentFinalMarkDetails;
 import com.kp.cms.forms.exam.NewExamMarksEntryForm;
@@ -28,6 +29,7 @@ import com.kp.cms.transactions.ajax.ICommonExamAjax;
 import com.kp.cms.transactions.exam.IExamFalseNumberTransaction;
 import com.kp.cms.transactionsimpl.ajax.CommonAjaxExamImpl;
 import com.kp.cms.transactionsimpl.exam.ExamFalseNumberTransactionImpl;
+import com.kp.cms.transactionsimpl.exam.NewExamMarksEntryTransactionImpl;
 import com.kp.cms.utilities.PasswordGenerator;
 
 public class ExamFalseNumberHelper {
@@ -109,12 +111,21 @@ public class ExamFalseNumberHelper {
 				proggrameType="U";
 			else
 				proggrameType="P";
+			
+			ExamDefinitionBO edef=NewExamMarksEntryTransactionImpl.getInstance().getDetailsByExamID(Integer.parseInt(newExamMarksEntryForm.getExamId()));
 			StringBuilder falseNum=new StringBuilder("");
 			falseNum.append(String.valueOf(appYear).substring(2));
 			falseNum.append("0"+suborder);
 			falseNum.append(courseCode);
 			falseNum.append(sem);
-			falseNum.append(proggrameType+"01");
+			if (edef.getIsImprovement()) {
+				falseNum.append(proggrameType+"02");
+			}else if (edef.getIsReappearance()) {
+				falseNum.append(proggrameType+"03");
+			}else{
+				falseNum.append(proggrameType+"01");
+			}
+			
 			if(newExamMarksEntryForm.getGenerateRandomly()){
 				String randPass=PasswordGenerator.getRandomNo();
 				while(transaction.DuplicateFalseNo(newExamMarksEntryForm, randPass)){

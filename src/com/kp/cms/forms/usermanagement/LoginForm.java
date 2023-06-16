@@ -11,6 +11,7 @@ import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionMapping;
 
 import com.kp.cms.forms.BaseActionForm;
+import com.kp.cms.forms.fee.FeePrintReciept;
 import com.kp.cms.to.admin.NewsEventsTO;
 import com.kp.cms.to.admin.PublishSpecialFeesTO;
 import com.kp.cms.to.admin.StudentFeedbackInstructionsTO;
@@ -266,6 +267,7 @@ public class LoginForm extends BaseActionForm {
 	private List<ExamInternalRetestApplicationSubjectsTO> examInternalRetestApplicationSubjectsTO;
 	private List<RevaluationMarksUpdateTo> revaluationMemoList;
 	private String hallticketBlock;
+	private FeePrintReciept feePrintReciept;
 	
 	
 
@@ -2128,6 +2130,14 @@ public class LoginForm extends BaseActionForm {
 
 	public void setHallticketBlock(String hallticketBlock) {
 		this.hallticketBlock = hallticketBlock;
+	}
+
+	public FeePrintReciept getFeePrintReciept() {
+		return feePrintReciept;
+	}
+
+	public void setFeePrintReciept(FeePrintReciept feePrintReciept) {
+		this.feePrintReciept = feePrintReciept;
 	}
 	
 	

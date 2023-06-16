@@ -5237,9 +5237,12 @@ public static Map<String, String> semesterMap = null;
 					if(obj[4]!=null){
 						to.setStudentName(to.getStudentName()+" "+obj[4].toString());
 					}
-					/*if(obj[17]!=null){
-						to.setExamId(Integer.parseInt(obj[17].toString()));;
-					}*/
+					if (obj.length>17) {
+						if(obj[17]!=null){
+							to.setExamId(Integer.parseInt(obj[17].toString()));;
+						}
+					}
+					
 					subList=new ArrayList<SubjectTO>();
 					
 				}else{
