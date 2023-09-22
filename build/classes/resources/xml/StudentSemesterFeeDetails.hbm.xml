@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+	<hibernate-mapping>
+	<class name="com.kp.cms.bo.admin.StudentSemesterFeeDetails" table="stu_semester_fee_details">
+		<comment></comment>
+		<id name="id" type="int">
+            <column name="id" />
+            <generator class="native" />
+        </id>
+		
+		<many-to-one name="student" class="com.kp.cms.bo.admin.Student" fetch="select">
+            <column name="student_id">
+                <comment></comment>
+            </column>
+        </many-to-one>
+		
+		<many-to-one name="classes" class="com.kp.cms.bo.admin.Classes" fetch="select">
+            <column name="class_id">
+                <comment></comment>
+            </column>
+        </many-to-one>
+		
+		
+		
+		<property name="semister" type="string">
+			<column name="semester" length="30">
+				<comment></comment>
+			</column>
+		</property>
+		
+		<property name="universityFee" type="big_decimal">
+            <column name="admission_fees" precision="12">
+                <comment></comment>
+            </column>
+        </property>
+		
+		<property name="specialFee" type="big_decimal">
+            <column name="special_fees" precision="12">
+                <comment></comment>
+            </column>
+        </property>
+		
+		<property name="otherFee" type="big_decimal">
+            <column name="other_fees" precision="12">
+                <comment></comment>
+            </column>
+        </property>
+		
+		<property name="semesterFee" type="big_decimal">
+            <column name="semester_fee" precision="12">
+                <comment></comment>
+            </column>
+        </property>
+		
+		<property name="CATrainingFee" type="big_decimal">
+            <column name="ca_trainingFee" precision="12">
+                <comment></comment>
+            </column>
+        </property>
+		
+		<property name="remarks" type="string">
+			<column name="remarks" length="30">
+				<comment></comment>
+			</column>
+		</property>
+		
+		<property name="feeApprove" type="java.lang.Boolean">
+			<column name="fee_approve">
+				<comment></comment>
+			</column>
+		</property>
+		
+		<property name="date" type="timestamp">
+			<column name="fee_date" length="0">
+				<comment></comment>
+			</column>
+		</property>
+		
+		<property name="createdBy" type="string" update="false">
+			<column name="created_by" length="50">
+				<comment></comment>
+			</column>
+		</property>
+		
+		<property name="createdDate" type="timestamp" update="false">
+			<column name="created_date" length="0">
+				<comment></comment>
+			</column>
+		</property>
+		
+		<property name="modifiedBy" type="string">
+			<column name="modified_by" length="50">
+				<comment></comment>
+			</column>
+		</property>
+		
+		<property name="lastModifiedDate" type="timestamp">
+			<column name="last_modified_date" length="0">
+				<comment></comment>
+			</column>
+		</property>
+		
+		</class>
+		</hibernate-mapping>

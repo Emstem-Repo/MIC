@@ -3713,14 +3713,8 @@ public class NewSupplementaryImpApplicationAction extends BaseDispatchAction {
 				.format(new Date()));
 		newSupplementaryImpApplicationForm.setIsRevaluation("");
 		newSupplementaryImpApplicationForm.setIsScrutiny("");
-		if (newSupplementaryImpApplicationForm.isScrutiny()) {
-			return mapping
-					.findForward("initScrutinyAppStudentResult");
-		}
-		else{
-			//getDataToFormForRevaluationChoose(newSupplementaryImpApplicationForm, request);
-		return mapping.findForward(CMSConstants.INIT_REVALUATION_APP_STUDENT_RESULT);
-		}
+		return mapping
+		.findForward(CMSConstants.INIT_REVALUATION_APP_STUDENT_RESULT);
 	}
 
 	private void setDataToFormForRevaluation(

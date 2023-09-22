@@ -3330,8 +3330,8 @@ public class ApplicationRankHelper {
                         	     
                         	     //Computer Science
                               	else if(candidatePreference.getCourse().getId()==28){
-                              		if (admAppln.getId()==63180) {
-										System.out.println("62904");
+                              		if (admAppln.getId()==63219) {
+										System.out.println("63279");
 									}
                       		   if(isvhsc){
 
@@ -3433,10 +3433,14 @@ public class ApplicationRankHelper {
 								    } else {
 								        highestMark = mathMarks;
 								    }
+                              		if (!(isComputerScience || isMathematics || isComputerApplication)) {
+                                  		remark="rejected";
+            						}
                               		
                               		totalmarkforpart3=(totalmarkforpart3/maxmark)*800;//normalising
                               		
-                              		 if(!isMathematics || admAppln.getPersonalData().getStream().getId()!=10){
+                              		 if(/*!isMathematics || */admAppln.getPersonalData().getStream().getId()!=10){
+                              			totalmarkforpart3=totalmarkforpart3-penalty+bonus+highestMark;
                                	    	
                                  	      remark="rejected because he not done any Mathematics subject";
                                   		// adding indexmark object
@@ -3511,7 +3515,7 @@ public class ApplicationRankHelper {
       									
       									indexmarkList.add(si);
                               		     
-                      		   }
+                      		  }
                       		   }
                       		   else{
                       	   remark="Eligible";
@@ -3607,10 +3611,13 @@ public class ApplicationRankHelper {
 						    } else {
 						        highestMark = mathMarks;
 						    }
+                      	  if (!(isComputerScience || isMathematics || isComputerApplication)) {
+                      		remark="rejected";
+						}
                       		totalmarkforpart3=(totalmarkforpart3/maxmark)*1200;//normalising
                       	
-                      	    if(!isMathematics  || admAppln.getPersonalData().getStream().getId()!=10){
-                      	    	
+                      	    if(/*!isMathematics  || */admAppln.getPersonalData().getStream().getId()!=10){
+                      	    totalmarkforpart3=totalmarkforpart3-penalty+bonus+highestMark;
                       	      remark="rejected because he not done any Mathematics subject";
                        		// adding indexmark object
 	                        	   StudentIndexMark si=new StudentIndexMark();
@@ -4463,7 +4470,7 @@ public class ApplicationRankHelper {
                                      if (candidatePreference.getCourse().getId() != 33) {
                                          continue;
                                      }
-                                     if (admAppln.getId()==63355) {
+                                     if (admAppln.getId()==62756) {
 										System.out.println("sjsj");
 									}
                                      if (isvhsc) {
@@ -4505,7 +4512,7 @@ public class ApplicationRankHelper {
                                              if (detailMarkBO.getAdmSubjectForRank().getName().equalsIgnoreCase("Mathematics")) {
                                                  ismathsContain = true;
                                              }
-                                             if(detailMarkBO.getAdmSubjectForRank().getGroupName().equalsIgnoreCase("Computer Science")){
+                                             if(detailMarkBO.getAdmSubjectForRank().getName().equalsIgnoreCase("Computer Science")){
                                             	 isComputerContain=true;
                                              }
                                          }
@@ -4578,7 +4585,7 @@ public class ApplicationRankHelper {
                                              if (detailMarkBO.getAdmSubjectForRank().getName().equalsIgnoreCase("Mathematics")) {
                                                  ismathsContain = true;
                                              }
-                                             if(detailMarkBO.getAdmSubjectForRank().getGroupName().equalsIgnoreCase("Computer Science")){
+                                             if(detailMarkBO.getAdmSubjectForRank().getName().equalsIgnoreCase("Computer Science")){
                                             	 isComputerContain=true;
                                              }
                                          }
