@@ -12270,4 +12270,12 @@ This is a blank Tiles definition file with a commented example.
         <put name="page" value="Student Login "/>
         <put name="body" value="/jsp/exam/initScrutinyAppStudentResult.jsp"/>
     </definition>
+    
+    <definition name="initCareerMap" extends=".cmsLayout">
+        <put name="title" value="Career progress "/>
+        <put name="module" value="career"/>
+        <put name="page" value="Career Progress">
+        </put>
+        <put name="body" value="/jsp/exam/careerProgressionMap.jsp"/>
+    </definition>
 </tiles-definitions>

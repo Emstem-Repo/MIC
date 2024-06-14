@@ -1100,6 +1100,7 @@
 		<form-bean name="specialFeesForm" type="com.kp.cms.forms.exam.SpecialFeesForm"/>
 		<form-bean name="publishSpecialFeesForm" type="com.kp.cms.forms.admin.PublishSpecialFeesForm"/>
 		<form-bean name="falsenumSINOForm" type="com.kp.cms.forms.exam.FalseNumSiNoForm"/>
+		<form-bean name="careerProgressionForm" type="com.kp.cms.forms.exam.CareerProgressionForm"/>
 	</form-beans>
     <!--4
     ========================================= Global Exception Definitions
@@ -1437,8 +1438,8 @@
         </action>
         
         <!-- End for Admn message -->
-        <action path="/admissionFormSubmit" name="admissionFormForm"
-         type="com.kp.cms.actions.admission.AdmissionFormAction" parameter="method" validate="false" scope="session">
+        <action path="/admissionFormSubmit" name="admissionFormForm" type="com.kp.cms.actions.admission.AdmissionFormAction" parameter="method" validate="false" scope="session">
+            
             <forward name="applicationDetailPage" path="applicationDetailPage"/>
             <forward name="OnlineapplicationDetailPage" path="OnlineapplicationDetailPage"/>
 			<forward name="preferencedetails" path="preferencedetails"/>
@@ -6553,6 +6554,10 @@
 			
 			 <forward name="initAdminFalseMarksEntry" path="initAdminFalseMarksEntry"/>
 						
+        </action>
+        <action path="/careerProgression" type="com.kp.cms.actions.exam.CareerProgressionMapEntryAction" name="careerProgressionForm" scope="session" parameter="method" validate="false">
+            <forward name="initCareerMap" path="initCareerMap"/>
+            
         </action>
 		
 	</action-mappings>

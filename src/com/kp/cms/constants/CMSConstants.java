@@ -5065,16 +5065,23 @@ public class CMSConstants extends CMSExamConstants {
 	
 	
 	//allotement fee
-	public static final String PGI_MERCHANT_ID_ALLOTMENT = "xdRPRHGC";
+	/*public static final String PGI_MERCHANT_ID_ALLOTMENT = "xdRPRHGC";
 	public static final String PGI_SECURITY_ID_ALLOTMENT = "3sPSQVsUob";
-	public static final String PGI_CHECKSUM_KEY_ALLOTMENT = "3sPSQVsUob";
+	public static final String PGI_CHECKSUM_KEY_ALLOTMENT = "3sPSQVsUob";*/
 	
+	public static final String PGI_MERCHANT_ID_ALLOTMENT = "nxG3BF";
+	public static final String PGI_SECURITY_ID_ALLOTMENT = "Ec2ZzQJkF5A8E1HMYR0vdsBi3zKj4hCA";
+	public static final String PGI_CHECKSUM_KEY_ALLOTMENT = "Ec2ZzQJkF5A8E1HMYR0vdsBi3zKj4hCA";
 	
 	//application fees
-	public static final String PGI_MERCHANT_ID = "F0meUOlq";
-	//original saltCHANT_ID_STU = "rhzXewvw";
+	/*public static final String PGI_MERCHANT_ID = "F0meUOlq";
 	public static final String PGI_SECURITY_ID = "fQmaRSFBHb";
-	public static final String PGI_CHECKSUM_KEY = "fQmaRSFBHb";
+	public static final String PGI_CHECKSUM_KEY = "fQmaRSFBHb";*/
+	
+	
+	public static final String PGI_MERCHANT_ID = "nxG3BF";
+	public static final String PGI_SECURITY_ID = "Ec2ZzQJkF5A8E1HMYR0vdsBi3zKj4hCA";
+	public static final String PGI_CHECKSUM_KEY = "Ec2ZzQJkF5A8E1HMYR0vdsBi3zKj4hCA";
 	
 
 	//original key for student semester fees
